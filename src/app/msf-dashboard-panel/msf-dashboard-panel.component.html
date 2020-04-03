@@ -909,7 +909,8 @@
   <!-- ngIf doesn't work with AmCharts -->
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -960,7 +961,8 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayInfo">
     <div class="msf-dashboard-panel-title">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -991,7 +993,8 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayForm">
     <div class="msf-dashboard-panel-title">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -1021,7 +1024,8 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayPic">
     <div class="msf-dashboard-panel-title">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -1041,7 +1045,8 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -1079,7 +1084,8 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayMapbox ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -1099,7 +1105,8 @@
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayDynTable">
     <div class="msf-dashboard-panel-title">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
@@ -1137,7 +1144,8 @@
   <!-- Table view for advanced charts -->
   <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
       <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>

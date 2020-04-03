@@ -31,13 +31,13 @@
         <div [ngClass]="panel.isLoading ? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button" *ngIf="!globals.readOnlyDashboard">
             <mat-icon class="msf-dashboard-button-close-icon" (click)="removePanel(panel.id)" aria-label="close">close</mat-icon>
-            <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
+            <div class="msf-dashboard-button-move-icon" *ngIf="!mobileQuery.matches" (click)="disableContextMenu()"></div>
             <div class="cancel-button" (click)="cancelLoading(panel)">Cancel</div>
           </div>
         </div>
         <div class="msf-dashboard-panel-button" *ngIf="!globals.readOnlyDashboard">
           <mat-icon class="msf-dashboard-button-close-icon" (click)="removePanel(panel.id)" aria-label="close">close</mat-icon>
-          <div class="msf-dashboard-button-move-icon" (click)="disableContextMenu()"></div>
+          <div class="msf-dashboard-button-move-icon" *ngIf="!mobileQuery.matches" (click)="disableContextMenu()"></div>
         </div>
         <app-msf-dashboard-panel [values]="panel" [controlPanelVariables]="controlPanelVariables" [panelWidth]="panel.width" [panelHeight]="panel.height" [public]="public" [isMobile]="mobileQuery.matches"
                                  [currentHiddenCategories]="currentHiddenCategories" [addingOrRemovingPanels]="addingOrRemovingPanels" [controlPanelInterval]="controlPanelInterval"

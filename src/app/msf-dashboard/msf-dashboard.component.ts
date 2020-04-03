@@ -345,7 +345,7 @@ export class MsfDashboardComponent implements OnInit {
     else
     {
       dashboardPanels.sort (function (e1, e2) {
-        return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
+        return e1.y == e2.y ? e1.x - e2.x : e1.y - e2.y;
       });
     }
 
@@ -487,7 +487,7 @@ export class MsfDashboardComponent implements OnInit {
 
     // sort the dashboard panels from left to right then top to bottom
     this.dashboardPanels.sort (function (e1, e2) {
-      return e1.x == e2.x ? e1.y - e2.y : e1.x - e2.x;
+      return e1.y == e2.y ? e1.x - e2.x : e1.y - e2.y;
     });
 
     this.dashboardPanels.push (new MsfDashboardPanelValues (this.options, "New Panel", null, this.gridStackIdCount++,
