@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef, Injector } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4maps from "@amcharts/amcharts4/maps";
@@ -19,10 +22,9 @@ import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
-import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef, MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
 import { takeUntil, take } from 'rxjs/operators';
 import * as moment from 'moment';
-import { DatePipe } from '@angular/common';
 
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
@@ -44,7 +46,7 @@ import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dy
 import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
 import { ConfigFlags } from './msf-dashboard-configflags';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -315,6 +317,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   // variables for the dialog version
   dialogRef: any;
   dialogData: any;
+
+  // dashboard interface values
+  selectedStep: number = 1;
+  stepLoading: boolean = false;
+  menuCategories: any[] = [];
+  hasChild = (_: number, node: any) => (node.expandable);
 
   @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
@@ -7906,5 +7914,143 @@ export class MsfDashboardPanelComponent implements OnInit {
       return false;
 
     return true;
+  }
+
+  selectStep(step: number): void
+  {
+    this.selectedStep = step;
+
+    switch (this.selectedStep)
+    {
+      case 3:
+        if (!this.menuCategories.length)
+        {
+          this.stepLoading = true;
+          this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
+        }
+        break;
+
+      default:
+        this.stepLoading = false;
+        break;
+    }
+  }
+
+  recursiveMenuCategory(menuCategory): void
+  {
+    if (menuCategory.children && menuCategory.children.length)
+    {
+      // the submenu must have the items with children first
+      menuCategory.children.sort (function(e1, e2) {
+        if (e1.children.length && e2.children.length)
+          return 0;
+
+        return e2.children.length - e1.children.length;
+      });
+
+      for (let i = menuCategory.children.length - 1; i >= 0; i--)
+      {
+        let child = menuCategory.children[i];
+
+        if (child.typeOption == '1')
+          menuCategory.children.splice (i, 1);
+        else if (child.children && child.children.length)
+          this.recursiveMenuCategory (child);
+      }
+    }
+  }
+
+  selectDataSuccess(_this, data): void
+  {
+    _this.menuCategories = data;
+
+    for (let menuCategory of _this.menuCategories)
+    {
+      menuCategory.flatNodeMap = new Map<ExampleFlatNode, any> ();
+      menuCategory.nestedNodeMap = new Map<any, ExampleFlatNode> ();
+
+      let transformer = (node: any, level: number) =>
+      {
+        const existingNode = menuCategory.nestedNodeMap.get (node);
+        const flatNode = existingNode && existingNode.label === node.label
+          ? existingNode
+          : new ExampleFlatNode ();
+        flatNode.expandable = !!node.children && node.children.length > 0;
+        flatNode.id = node.id;
+        flatNode.uid = node.uid;
+        flatNode.label = node.label;
+        flatNode.level = level;
+        flatNode.menuOptionArgumentsAdmin = node.menuOptionArgumentsAdmin;
+        flatNode.categoryParentId = node.categoryParentId;
+        flatNode.baseUrl = node.baseUrl;
+        flatNode.icon = node.icon;
+        flatNode.tab = node.tab;
+        flatNode.tabType = node.tabType;
+        flatNode.menuParentId = node.menuParentId;
+        flatNode.toDelete = node.toDelete;
+        flatNode.dataAvailability = node.dataAvailability;
+        flatNode.metaData = node.metaData;
+        flatNode.order = node.order,
+        flatNode.selected = node.selected;
+        flatNode.applicationId = node.applicationId;
+        flatNode.isRoot = node.isRoot;
+        flatNode.children = node.children;
+        flatNode.initialRol = node.initialRol;
+        flatNode.finalRol = node.finalRol;
+        flatNode.typeOption = node.typeOption;
+        flatNode.welcome = node.welcome;
+    
+        menuCategory.flatNodeMap.set (flatNode, node);
+        menuCategory.nestedNodeMap.set (node, flatNode);
+
+        return flatNode;
+      };
+
+      menuCategory.transformer = transformer;
+
+      menuCategory.treeControl = new FlatTreeControl<ExampleFlatNode> (
+        node => node.level,
+        node => node.expandable
+      );
+
+      menuCategory.treeFlattener = new MatTreeFlattener (
+        transformer,
+        node => node.level,
+        node => node.expandable,
+        node => node.children
+      );
+
+      // remove options that are exclusive to the main menu
+      if (menuCategory.children && menuCategory.children.length)
+      {
+        // the submenu must have the items with children first
+        menuCategory.children.sort (function(e1, e2) {
+          if (e1.children.length && e2.children.length)
+            return 0;
+
+          return e2.children.length - e1.children.length;
+        });
+
+        for (let i = menuCategory.children.length - 1; i >= 0; i--)
+        {
+          let child = menuCategory.children[i];
+
+          if (child.typeOption == '1')
+            menuCategory.children.splice (i, 1);
+          else if (child.children && child.children.length)
+            _this.recursiveMenuCategory (child);
+        }
+      }
+
+      menuCategory.tree = new MatTreeFlatDataSource (menuCategory.treeControl, menuCategory.treeFlattener);
+      menuCategory.tree.data = menuCategory.children;
+    }
+
+    _this.stepLoading = false;
+  }
+
+  selectDataError(_this): void
+  {
+    _this.stepLoading = false;
   }
 }

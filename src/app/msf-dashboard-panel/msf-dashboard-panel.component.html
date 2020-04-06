@@ -11,26 +11,26 @@
   <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width < 3 || values.height < 7) && !dialogData)">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-config-container">
       <div class="msf-dashboard-panel-steps">
-        <div class="msf-dashboard-panel-step-selector">
-          <div class="msf-dashboard-panel-step-circle msf-dashboard-panel-step-circle-selected"><mat-icon>edit</mat-icon></div>
+        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(1)">
+          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 1 }"><mat-icon *ngIf="selectedStep == 1">edit</mat-icon></div>
           Panel Name
         </div>
-        <div class="msf-dashboard-panel-step-selector">
-          <div class="msf-dashboard-panel-step-circle"></div>
+        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(2)">
+          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
           Chart Type
         </div>
-        <div class="msf-dashboard-panel-step-selector">
-          <div class="msf-dashboard-panel-step-circle"></div>
+        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
+          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
           Select Source
         </div>
       </div>
-      <div class="msf-dashboard-panel-step-content">
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 1">
         <div class="msf-dashboard-panel-step-item msf-dashboard-name-step">
           <div class="datalake-search-input">
             <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
@@ -45,7 +45,8 @@
             </mat-form-field>
           </div>
         </div>
-        <!--
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 2">
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Chart Type Selection</span>
@@ -62,7 +63,7 @@
             <div class="msf-dashboard-assistant-chart-picker">
               <ng-container *ngFor="let chartType of chartTypes2">
                 <div *ngIf="checkChartMode(chartType)" (click)="selectChartType(chartType)"
-                 [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }">
+                  [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }">
                   <span class="chart-item-image">
                     <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}" />
                   </span>
@@ -76,7 +77,57 @@
             </div>
           </div>
         </div>
-        -->
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 3">
+        <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading"></div>
+        <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
+          <div class="select-data-body">
+            <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories">
+              <div class="menu-category-header">
+                <span class="menu-category-title">{{menuCategory.label}}</span>
+                <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}" />
+              </div>
+              <div class="menu-category-description">
+                <ng-container *ngIf="menuCategory.welcome.shortDescription">
+                  {{menuCategory.welcome.shortDescription}}
+                </ng-container>
+              </div>
+              <div class="menu-category-body">
+                <mat-form-field class="menu-item-search-input">
+                  <input matInput autocomplete="off" [(ngModel)]="menuCategory.searchLabel" (ngModelChange)="filterMenuOptions(menuCategory)">
+                  <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+                </mat-form-field>
+                <div class="menu-items">
+                  <ng-container *ngIf="menuCategory.tree">
+                    <mat-tree [dataSource]="menuCategory.tree" [treeControl]="menuCategory.treeControl">
+                      <mat-tree-node [ngClass]="{
+                                     'msf-show' : node.show,
+                                     'msf-show' : node.show == null,
+                                     'msf-hide': node.show == false }"
+                                     *matTreeNodeDef="let node" matTreeNodePadding>
+                        <mat-radio-button class="cancels-checkbox select-data-from-radio" (checked)="selectedItem == node" (click)="selectItem(node)">
+                          {{node.label}}
+                        </mat-radio-button>
+                      </mat-tree-node>
+                      <mat-tree-node [ngClass]="{
+                                     'msf-show' : node.show,
+                                     'msf-show' : node.show == null,
+                                     'msf-hide': node.show == false }"
+                                     *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
+                          <mat-icon class="mat-icon-rtl-mirror">
+                            {{menuCategory.treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                          </mat-icon>
+                        </button>
+                        {{node.label}}
+                      </mat-tree-node>
+                    </mat-tree>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
