@@ -2385,6 +2385,12 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                         color: $dashboard-assistant-analysis-font-color !important
         .msf-dashboard-panel-step-item
             background-color: $dashboard-assistant-sub-background-color
+            .mat-form-field-label
+                color: $font-color
+            .mat-form-field-appearance-outline .mat-form-field-outline
+                color: $font-color
+            .mat-form-field-appearance-outline .mat-form-field-outline-thick
+                color: $font-color !important
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -11943,3 +11949,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             display: flex
             flex-direction: column
             justify-content: center
+
+.panel-formfield
+    width: calc(100% - 20px) !important

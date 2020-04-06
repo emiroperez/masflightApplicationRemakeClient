@@ -32,12 +32,18 @@
       </div>
       <div class="msf-dashboard-panel-step-content">
         <div class="msf-dashboard-panel-step-item msf-dashboard-name-step">
-          <mat-form-field class="msf-full-width">
-            <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
-          </mat-form-field>
-          <mat-form-field class="msf-full-width">
-            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" placeholder="Description" [(ngModel)]="values.chartDescription"></textarea>
-          </mat-form-field>
+          <div class="datalake-search-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
+              <mat-label>Panel Name</mat-label>
+              <input matInput autocomplete="off" type="text" [(ngModel)]="values.chartName"/>
+            </mat-form-field>
+          </div>
+          <div class="datalake-search-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" [(ngModel)]="values.chartDescription"></textarea>
+            </mat-form-field>
+          </div>
         </div>
         <!--
         <div class="msf-dashboard-panel-step-item">
