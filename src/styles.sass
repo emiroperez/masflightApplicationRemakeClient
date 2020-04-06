@@ -362,6 +362,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-panel-container-chart
             background-color: $dashboard-panel-chart-background-color
             color: $font-color
+            .msf-dashboard-panel-title-description
+                color: $dashboard-input-underline-color !important
+        .msf-dashboard-title-label-description
+            color: $admin-menu-input-underline !important
         .msf-dashboard-control-variables-title
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
         .msf-dashboard-info-function-title
@@ -4702,9 +4706,9 @@ mat-tab-group
     .msf-dashboard-panel-title-description
         font-weight: lighter !important
         font-size: 12px
-        color: #595959!important
         line-height: 1.5
         padding: 5px 0px
+        padding-bottom: 0px !important
         text-align: justify
         max-height: 50px
         overflow-y: auto
@@ -11849,7 +11853,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     font-size: 12px
     text-align: left
     margin-top: 15px !important
-    color: #9e9e9e !important
 
 .msf-dashboard-panel-dynamic-table
     height: 100%
