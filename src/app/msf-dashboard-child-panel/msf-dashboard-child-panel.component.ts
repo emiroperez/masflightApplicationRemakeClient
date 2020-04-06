@@ -1190,7 +1190,7 @@ export class MsfDashboardChildPanelComponent {
     }
 
     _this.values = new MsfDashboardPanelValues (_this.data.options, data.title,
-      data.id, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
+      null, data.id, null, null, null, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
 

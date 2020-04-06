@@ -420,7 +420,7 @@ export class MsfDashboardDrillDownComponent {
             let panel = data[j];
 
             _this.data.childPanelValues.push (new MsfDashboardPanelValues (_this.data.options,
-              panel.title, panel.description,panel.id, null, null, _this.getOption (panel.option),
+              panel.title, panel.description, panel.id, null, null, null, null, panel.chartType, _this.getOption (panel.option),
               panel.analysis, panel.xaxis, panel.values, panel.function,
               null, null, panel.lastestResponse, panel.paletteColors));
 
