@@ -13,20 +13,33 @@
   </div>
   <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
-      Test
+      {{values.chartName}}
     </div>
     <div class="msf-dashboard-panel-config-container">
       <div class="msf-dashboard-panel-steps">
         <div class="msf-dashboard-panel-step-selector">
-          <div class="msf-dashboard-panel-step-circle"></div>
+          <div class="msf-dashboard-panel-step-circle msf-dashboard-panel-step-circle-selected"><mat-icon>edit</mat-icon></div>
           Panel Name
         </div>
         <div class="msf-dashboard-panel-step-selector">
-          <div class="msf-dashboard-panel-step-circle msf-dashboard-panel-step-circle-selected"><mat-icon>edit</mat-icon></div>
+          <div class="msf-dashboard-panel-step-circle"></div>
           Chart Type
+        </div>
+        <div class="msf-dashboard-panel-step-selector">
+          <div class="msf-dashboard-panel-step-circle"></div>
+          Select Source
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-name-step">
+          <mat-form-field class="msf-full-width">
+            <input matInput autocomplete="off" type="text" placeholder="Panel Name" [(ngModel)]="values.chartName"/>
+          </mat-form-field>
+          <mat-form-field class="msf-full-width">
+            <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" placeholder="Description" [(ngModel)]="values.chartDescription"></textarea>
+          </mat-form-field>
+        </div>
+        <!--
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Chart Type Selection</span>
@@ -57,6 +70,7 @@
             </div>
           </div>
         </div>
+        -->
       </div>
     </div>
   </div>
