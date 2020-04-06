@@ -1559,13 +1559,4 @@ export class MsfDashboardChildPanelComponent {
       && !(this.values.currentChartType.flags & ChartFlags.PIECHART)
       && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART);
   }
-
-
-  getHeight(): string {
-    if(this.values.chartDescription.length>0){
-      return "calc(100% - 130px) !important";
-    }else{      
-      return "82% !important";
-    }
-  }
 }
