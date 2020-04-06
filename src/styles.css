@@ -18099,13 +18099,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   flex-direction: row-reverse;
   padding-right: 10px;
   margin-top: 9px;
-  display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
-  padding-left: initial;
-  padding-right: 5px;
-  padding-top: initial;
-  font-size: 12px;
 }
 .msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .mat-flat-button {
   padding-left: 10px;
