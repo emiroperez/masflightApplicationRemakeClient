@@ -1314,10 +1314,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .msf-dashboard-assistant-chart-item
                 .chart-item-image
                     border-style: solid
-                    border-color: $dashboard-assistant-sub-background-color
-                    background-color: $dashboard-assistant-sub-background-color
+                    border-color: $admin-menu-background
+                    background-color: $admin-menu-background
                 .chart-item-label
-                    background-color: $dashboard-assistant-sub-background-color
+                    background-color: $admin-menu-background
                 &:hover
                     .chart-item-image
                         border-style: solid
@@ -2363,6 +2363,28 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $dynamic-table-preview-color
         .publicize-dashboard-container
             color: $font-color
+        .msf-dashboard-panel-steps
+            background-color: $dashboard-assistant-sub-background-color
+            .msf-dashboard-panel-step-selector
+                border-bottom: 2px solid $background-color
+                .msf-dashboard-panel-step-circle
+                    background-color: $background-color
+                    border: 3px solid $tertiary-background-color
+                &:hover
+                    background-color: $primary-color
+                    color: #ffffff
+                    .msf-dashboard-panel-step-circle
+                        background-color: $primary-color
+                        border: 3px solid #ffffff
+                        .mat-icon
+                            color: $dashboard-assistant-analysis-font-color !important
+                .msf-dashboard-panel-step-circle-selected
+                    background-color: $primary-color
+                    border: 3px solid #ffffff
+                    .mat-icon
+                        color: $dashboard-assistant-analysis-font-color !important
+        .msf-dashboard-panel-step-item
+            background-color: $dashboard-assistant-sub-background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -8969,10 +8991,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-picker
     display: grid
-    grid-template: repeat(2, 1fr) / repeat(6, 1fr)
+    grid-template: repeat(2, 1fr) / repeat(5, 1fr)
     grid-row-gap: 20px
     grid-column-gap: 1px
-    width: 730px
     height: 100%
     .msf-dashboard-assistant-chart-item, .msf-dashboard-assistant-chart-item-selected
         width: 100px
@@ -10857,7 +10878,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     grid-template-rows: repeat(auto-fill, 140px) !important
 
 .msf-dashboard-assistant-chart-picker-scroll
-    height: calc(100% - 92px)
+    height: calc(100% - 38px)
     overflow-y: auto
 
 .msf-chart-config-label-container
@@ -11881,6 +11902,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-bottom: 10px
         width: 200px
 
+.msf-dashboard-panel-config-name
+    font-size: 16px !important
+    margin-bottom: 15px
+
 .msf-dashboard-panel-config-container
     display: flex
     flex-direction: row
@@ -11888,7 +11913,29 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     width: 100%
     .msf-dashboard-panel-steps
         height: 100%
-        width: 200px
+        width: 225px
+        margin-right: 10px
+        .msf-dashboard-panel-step-selector
+            display: flex
+            height: 60px
+            align-items: center
+            padding-left: 10px
+            cursor: pointer
+            .msf-dashboard-panel-step-circle
+                width: 20px
+                height: 20px
+                border-radius: 15px
+                margin-right: 10px
+                .mat-icon
+                    vertical-align: middle !important
+                    font-size: 15px !important
+                    width: 15px !important
+                    height: 15px !important
     .msf-dashboard-panel-step-content
-        width: 100%
+        width: calc(100% - 225px)
         height: 100%
+        .msf-dashboard-panel-step-item
+            padding: 10px
+            height: calc(100% - 20px)
+            .msf-dashboard-assistant-chart-mode
+                margin-top: 10px

@@ -12,12 +12,19 @@
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
   <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
-    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       Test
     </div>
     <div class="msf-dashboard-panel-config-container">
       <div class="msf-dashboard-panel-steps">
-        Test
+        <div class="msf-dashboard-panel-step-selector">
+          <div class="msf-dashboard-panel-step-circle"></div>
+          Panel Name
+        </div>
+        <div class="msf-dashboard-panel-step-selector">
+          <div class="msf-dashboard-panel-step-circle msf-dashboard-panel-step-circle-selected"><mat-icon>edit</mat-icon></div>
+          Chart Type
+        </div>
       </div>
       <div class="msf-dashboard-panel-step-content">
         <div class="msf-dashboard-panel-step-item">
