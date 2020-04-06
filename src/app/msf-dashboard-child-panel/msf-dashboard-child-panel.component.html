@@ -3,14 +3,17 @@
     <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
   </div>
 </div>
-<div class="msf-dashboard-control-variables-title" id="msf-dashboard-parent-title" *ngIf="!globals.popupLoading">
+<div class="msf-dashboard-control-variables-title msf-dashboard-control-variables-title-childPanel" id="msf-dashboard-parent-title" *ngIf="!globals.popupLoading">
   <div class="msf-dashboard-control-variables-close-button">
     <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
   </div>
-  <span *ngIf="values">{{values.chartName}}</span>
+  <div *ngIf="values" class="msf-flex msf-dashboard-childPanel-drilldown">
+    <span>{{values.chartName}}</span>
+    <span *ngIf="values.chartDescription.length>0" class="msf-dashboard-title-label-description">{{values.chartDescription}}</span>
+  </div>
   <span *ngIf="!values" style="padding: 5px"></span>
 </div>
-<div class="{{(!globals.popupLoading && !errorMessage) ? 'msf-dashboard-child-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" id="msf-dashboard-child-panel-chart-display">
+<div style="height: calc(100% - 130px) !important"  class="{{(!globals.popupLoading && !errorMessage) ? 'msf-dashboard-child-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}" id="msf-dashboard-child-panel-chart-display" >
   <div *ngIf="isTablePanel()" class="msf-dashboard-child-panel-table">
     <app-msf-table #msfTableRef [isLoading]="globals.popupLoading" (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="true"></app-msf-table>
   </div>

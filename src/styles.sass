@@ -455,7 +455,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
         .msf-shared-dashboard-dialog .mat-dialog-container, .msf-dashboard-child-panel-dialog .mat-dialog-container
             background-color: $quaternary-background-color !important
-        #msf-dashboard-drill-down-container
+        #msf-dashboard-drill-down-container, .msf-dashboard-drill-down-container-withoutBtn
             color: $font-color
         .msf-dashboard-color-picker-threshold-container
             background-color: $dashboard-threshold-background-color
@@ -5227,7 +5227,8 @@ mat-tab-group
             cursor: pointer
 
 #msf-dashboard-parent-title
-    height: 25px
+    // height: 25px
+    height: auto
 
 #msf-dashboard-drill-down-container
     height: 87%
@@ -11902,3 +11903,53 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .dialog-url-message
     margin-top: 10px
+
+.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn
+    display: flex
+    flex-direction: row-reverse
+    padding-right: 10px
+    margin-top: 9px
+    .mat-flat-button
+        padding-left: 10px
+        padding-right: 10px
+        .mat-button-wrapper
+            font-size: 12px
+    .msf-dashboard-panel-control-variable-button
+        display: flex
+        width: 40px
+        flex-direction: column
+        .mat-mini-fab
+            width: 35px
+            height: 35px
+            margin-top: 2px
+            .mat-button-wrapper
+                line-height: 20px
+                img, .mat-icon
+                    width: 21px
+                    height: 21px
+                    font-size: 21px
+                    margin-top: -1px
+
+.msf-dashboard-panel-container-drillDown
+    overflow-y: auto
+    overflow-x: hidden
+    border-radius: 0px
+
+
+#msf-dashboard-drill-down-container-withoutBtn
+    height: calc(100% - 100px)
+    background-color: inherit
+    padding: inherit
+
+.msf-dashboard-panel-sub-container-column-drillDown
+    width: calc(100% - 5px) !important
+
+.msf-dashboard-childPanel-drilldown
+    flex-direction: column
+    align-items: center
+    .msf-dashboard-title-label-description
+        margin-top: 5px !important
+
+.msf-dashboard-control-variables-title-childPanel
+    padding-bottom: 0px !important
+
