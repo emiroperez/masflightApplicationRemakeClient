@@ -548,6 +548,8 @@ export class MsfChartPreviewComponent {
           categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
+        else
+          valueAxis.min = 0;
 
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
