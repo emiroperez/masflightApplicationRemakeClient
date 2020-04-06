@@ -79,7 +79,8 @@ export class MsfDashboardDrillDownComponent {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
       functionCtrl: new FormControl ({ value: '', disabled: true }),
-      panelNameCtrl: new FormControl ({ value: '', disabled: true })
+      panelNameCtrl: new FormControl ({ value: '', disabled: true }),
+      panelDescriptionCtrl: new FormControl ({ value: '', disabled: true })
     });
 
     // configure child panels in order to be able to configure the drill down settings
@@ -236,6 +237,8 @@ export class MsfDashboardDrillDownComponent {
     this.chartForm.get ('chartCtrl').enable ();
     this.chartForm.get ('variableCtrl').enable ();
     this.chartForm.get ('panelNameCtrl').enable ();
+    this.chartForm.get ('panelDescriptionCtrl').enable ();
+
 
     if (this.currentValue.currentChartType.flags & ChartFlags.XYCHART)
       this.chartForm.get ('xaxisCtrl').enable ();
@@ -388,7 +391,7 @@ export class MsfDashboardDrillDownComponent {
       this.chartForm.get ('functionCtrl').setValue ('');
 
     this.chartForm.get ('panelNameCtrl').setValue (this.currentValue.chartName);
-    // this.chartForm.get ('panelDescriptionCtrl').setValue (this.currentValue.chartDescription);
+    this.chartForm.get ('panelDescriptionCtrl').setValue (this.currentValue.chartDescription);
   }
 
   getOption(dashboardPanelOption)
@@ -547,7 +550,7 @@ export class MsfDashboardDrillDownComponent {
 
   checkPanelDescription(): void
   {
-    this.currentValue.chartDescription = this.chartForm.get ('panelDestriptionCtrl').value;
+    this.currentValue.chartDescription = this.chartForm.get ('panelDescriptionCtrl').value;
     this.checkIfPanelIsConfigured ();
   }
 

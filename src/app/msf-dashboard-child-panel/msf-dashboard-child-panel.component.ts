@@ -988,6 +988,7 @@ export class MsfDashboardChildPanelComponent {
       chart.exporting.menu.align = "left";
       chart.exporting.menu.verticalAlign = "bottom";
       chart.exporting.title = this.values.chartName;
+      chart.exporting.description = this.values.chartDescription;
       chart.exporting.filePrefix = this.values.chartName;
       chart.exporting.useWebFonts = false;
 
@@ -1188,7 +1189,7 @@ export class MsfDashboardChildPanelComponent {
     }
 
     _this.values = new MsfDashboardPanelValues (_this.data.options, data.title,
-      null, data.id, null, null, null, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
+      data.description, data.id, null, null, null, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
 
@@ -1557,5 +1558,14 @@ export class MsfDashboardChildPanelComponent {
       && !(this.values.currentChartType.flags & ChartFlags.ADVANCED)
       && !(this.values.currentChartType.flags & ChartFlags.PIECHART)
       && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART);
+  }
+
+
+  getHeight(): string {
+    if(this.values.chartDescription.length>0){
+      return "calc(100% - 130px) !important";
+    }else{      
+      return "82% !important";
+    }
   }
 }
