@@ -510,9 +510,18 @@ export class DatalakeTablePreviewComponent {
       //si hay registros guardados
       let size = this.displayedColumns.length;
       let columnsName = this.displayedColumns;
+      //genero el row que voy a guardar      
+      let row=[];
+      for (let i = 0; i < this.displayedColumns.length; i++) {
+        const column = this.displayedColumns[i];
+        if (column != 'actions' && column != 'rDeltaLakeRowID') {
+          let columnNew = {'fieldName': column,
+                    'dataType': 'String',
+                    'fieldValue': element[column] }
+            row.push(columnNew);
+        }
 
       for (let j = 0; j < this.RowsInserted.length; j++) {
-        let row=[];
         let index = -1;
         let insert = false;
         for (let i = 0; i < size; i++) {
@@ -527,6 +536,7 @@ export class DatalakeTablePreviewComponent {
             if (this.RowsInserted[j][column] && this.RowsInserted[j][column].length > 0) {
               insert = true;
             }
+            //si el la columna del elemento del array es diferente a la que se va insertar detengo el for
             if (this.RowsInserted[j][column] != element[column]) {
               index = j;
               i = size;
