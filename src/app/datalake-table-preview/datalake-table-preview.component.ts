@@ -40,7 +40,8 @@ export class DatalakeTablePreviewComponent {
   tokenResult: any = "";
   insertRow: boolean = false;
   tableLocation: any;
-  RowsInserted2: any[] = [];
+  RowsInsertedSend: any[] = [];
+  RowsUpdatedSend: any[] = [];
   // NumberRows: any;
   // callServiceData: boolean;
   pageEvent: PageEvent;
@@ -263,7 +264,7 @@ export class DatalakeTablePreviewComponent {
     if (element.hoverDelete) {
       return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow-active.png";
     }
-    return "../../assets/images/" + this.globals.theme + "-datalake-DeleteRow.png";
+    return "../../assets/images/datalake-DeleteRow.png";
   }
 
   MarkEditAsUpdate(element) {
@@ -281,12 +282,24 @@ export class DatalakeTablePreviewComponent {
       this.appService.confirmationOrCancelDialog(this, "Do you want to delete this row?",
         function (_this) {
           if (row.rDeltaLakeRowID) {
-            _this.RowsDeleted.push(row);
-            //borro si fue actualizado
+            let rowDelete=[];
+            for (let i = 0; i < this.displayedColumns.length; i++) {
+              const column = this.displayedColumns[i];
+              if (column != 'actions' && column != 'rDeltaLakeRowID') {
+                let columnNew = {'fieldName': column,
+                          'dataType': 'String',
+                          'fieldValue': row[column] }
+                  rowDelete.push(columnNew);
+              }
+            }
+            // _this.RowsDeleted.push(row);
+            _this.RowsDeleted.push(rowDelete);
+            //borro si fue actualizado o nuevo
             if (row['update']) {
               const index: number = _this.RowsUpdated.findIndex(d => d.rDeltaLakeRowID === row['rDeltaLakeRowID']);
               if (index != -1) {
                 _this.RowsUpdated.splice(index, 1);
+                _this.RowsUpdatedSend.splice(index, 1);
               }
             }
           } else {
@@ -298,8 +311,11 @@ export class DatalakeTablePreviewComponent {
               }
             }
           }
-          //revisar
-          _this.dataSource.splice(index, 1);
+          
+          const indexData: number = _this.dataSource.findIndex(d => d === row);
+              if (index != -1) {
+                _this.dataSource.splice(indexData, 1);
+              }
           _this.dataSourceTable = new MatTableDataSource(_this.dataSource);
         },
         function (_this,reset) {
@@ -361,8 +377,10 @@ export class DatalakeTablePreviewComponent {
       tableName: this.tableName,
       schemaName: this.schemaName,
       tableLocation: this.tableLocation,
-      inserts: this.RowsInserted,
-      updates: this.RowsUpdated,
+      // inserts: this.RowsInserted,
+      inserts: this.RowsInsertedSend,
+      // updates: this.RowsUpdated,
+      updates: this.RowsUpdatedSend,
       deletes: this.RowsDeleted
     }
     this.service.DatalakeUpdateRows(this, request, this.saveHandler, this.saveError);
@@ -414,7 +432,7 @@ export class DatalakeTablePreviewComponent {
     // let RowsModifiedPage = this.dataSource.filter(a => (a['update'] === true) || a['new'] === true);
 
     for (let i = 0; i < this.RowsInserted.length; i++) {
-      this.RowsInserted2 = this.RowsInserted[i];
+      this.RowsInsertedSend = this.RowsInserted[i];
     } 
   }
 
@@ -464,10 +482,23 @@ export class DatalakeTablePreviewComponent {
   addUpdatetoArray(element) {
     //adiciono los registros actualizados los que ya tenia guardados
     //si el registro existe lo borro y adiciono el actual
+    let row=[];
+    for (let i = 0; i < this.displayedColumns.length; i++) {
+      const column = this.displayedColumns[i];
+      if (column != 'actions' && column != 'rDeltaLakeRowID') {
+        let columnNew = {'fieldName': column,
+                  'dataType': 'String',
+                  'fieldValue': element[column] }
+          row.push(columnNew);
+      }
+    }
+
     const index: number = this.RowsUpdated.findIndex(d => d.rDeltaLakeRowID === element['rDeltaLakeRowID']);
     if (index != -1) {
       this.RowsUpdated.splice(index, 1);
+      this.RowsUpdatedSend.splice(index, 1);
     }
+    this.RowsUpdatedSend.push(row);
     this.RowsUpdated.push(element);
   }
 
@@ -503,7 +534,7 @@ export class DatalakeTablePreviewComponent {
           }
         }
         if (index != -1 && insert) {
-          this.RowsInserted2.push(row);
+          this.RowsInsertedSend.push(row);
           this.RowsInserted.push(element);
         }
       }
@@ -524,7 +555,7 @@ export class DatalakeTablePreviewComponent {
         }
       }
       if (insert) {
-        this.RowsInserted2.push(row);
+        this.RowsInsertedSend.push(row);
         this.RowsInserted.push(element);
       }
     }
@@ -541,6 +572,8 @@ export class DatalakeTablePreviewComponent {
     this.RowsInserted = [];
     this.RowsUpdated = [];
     this.RowsDeleted = [];
+    this.RowsInsertedSend = [];
+    this.RowsUpdatedSend = [];
   }
 
 }
