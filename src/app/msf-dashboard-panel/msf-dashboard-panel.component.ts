@@ -77,6 +77,24 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   paletteColors: string[];
 
+  chartTypes2: any[] = [
+    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
+    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', createSeries: this.createSimpleVertColumnSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png', createSeries: this.createSimpleHorizColumnSeries, allowedInAdvancedMode: true },
+    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
+    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries, allowedInAdvancedMode: false },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createSimpleLineSeries, allowedInAdvancedMode: true },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, image: 'scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, image: 'simple-scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
+    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
+    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
+    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
+  ];
+
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, createSeries: this.createHorizColumnSeries },
@@ -7854,5 +7872,39 @@ export class MsfDashboardPanelComponent implements OnInit {
   getMasFlightLogoImage(): string
   {
     return "../../assets/images/dark-theme-masFlight-logo.png";
+  }
+
+  checkChartTypeSelection(): void
+  {
+/*    this.selectingAnalysis = null;
+    this.analysisSelected = null;
+
+    if (this.chartMode === "advanced")
+    {
+      if (!this.selectedChartType.allowedInAdvancedMode)
+        this.selectedChartType = this.chartTypes[0];
+
+      this.selectingXAxis = null;
+      this.xAxisSelected = null;
+      this.selectingValue = null;
+      this.valueSelected = null;
+      this.startAtZero = false;
+    }
+    else
+    {
+      this.selectingAggregationValue = null;
+      this.aggregationValueSelected = null;
+
+      if (!this.isLineOrBarChart ())
+        this.startAtZero = false;
+    }*/
+  }
+
+  checkChartMode(chartType): boolean
+  {
+    if (!chartType.allowedInAdvancedMode/* && this.chartMode === "advanced"*/)
+      return false;
+
+    return true;
   }
 }

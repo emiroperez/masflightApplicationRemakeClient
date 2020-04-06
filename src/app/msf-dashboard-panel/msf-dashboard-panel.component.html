@@ -13,6 +13,49 @@
   </div>
   <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header">
+      Test
+    </div>
+    <div class="msf-dashboard-panel-config-container">
+      <div class="msf-dashboard-panel-steps">
+        Test
+      </div>
+      <div class="msf-dashboard-panel-step-content">
+        <div class="msf-dashboard-panel-step-item">
+          <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
+            <span>Chart Type Selection</span>
+            <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
+              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
+                Basic
+              </mat-radio-button>
+              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'advanced'">
+                Advanced
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="msf-dashboard-assistant-chart-picker-scroll">
+            <div class="msf-dashboard-assistant-chart-picker">
+              <ng-container *ngFor="let chartType of chartTypes2">
+                <div *ngIf="checkChartMode(chartType)" (click)="selectChartType(chartType)"
+                 [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }">
+                  <span class="chart-item-image">
+                    <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}" />
+                  </span>
+                  <div class="chart-item-label">
+                    <div class="label-align">
+                      {{chartType.name}}
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header">
       <div class="msf-dashboard-panel-sub-container-row msf-dashboard-panel-discover-button">
         <button class="flat-button discover-button" mat-button (click)="openDiscoveryDialog()">
           <img class="search-icon" src="../../assets/images/search-icon.png"/>
@@ -28,7 +71,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <!--input url Img-->
+        input url Img
         <mat-form-field  *ngIf="values.currentChartType.name==='Link Image'" class="msf-full-width">
             <input matInput autocomplete="off" type="text" placeholder="Type Image Url" [(ngModel)]="values.urlImg"/>
           </mat-form-field>
@@ -676,97 +719,6 @@
       </div>
     </ng-container>
     <ng-container *ngIf="isDynTablePanel()">
-      <!-- Dynamic table
-      <div class="msf-dashboard-panel-sub-container-column">
-        <div class="msf-dashboard-addmenu-icon-item">
-          <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.margin-left.px]="10" [style.margin-right.px]="10" [style.width.px]="20" [style.height.px]="20">
-          <span class="msf-dashboard-addmenu-item-text dynamic-table-config-label">Configuration</span>
-        </div>
-      </div>
-      <div class="msf-dynamic-table-variable-content">
-        <div class="msf-var-content">
-          <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Variables" [(ngModel)]="this.values.dynTableVariables" (ngModelChange)="orderVariable($event)" openedChange="show()">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        <ng-container *ngFor="let variable of this.values.dynTableVariables">
-          <mat-card class="msf-var-name-content">
-            {{variable.name}}
-            <div class="msf-var-buttons">
-              <i class="material-icons" *ngIf="variable.direction === 'vertical'" (click)="changeVariableDirection(variable)">arrow_downward</i>
-              <i class="material-icons" *ngIf="variable.direction === 'horizontal'" (click)="changeVariableDirection(variable)">arrow_forward</i>
-              <i class="material-icons" (click)="deleteVariable(variable)">close</i>
-            </div>
-          </mat-card>
-        </ng-container>
-      </div>
-      <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
-        <div class="msf-var-content">
-          <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Values" [(ngModel)]="this.values.dynTableValues" (ngModelChange)="orderValues($event)">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let value of filteredVariables | async" [value]="value">
-                {{value.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-accordion>
-            <ng-container *ngFor="let val of this.values.dynTableValues"> 
-              <mat-expansion-panel class="msf-val-name-content">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{val.name}}
-                  </mat-panel-title>
-                </mat-expansion-panel-header>   
-                <div class="msf-component-radio">
-                  <mat-radio-group [(ngModel)]="val.function" (ngModelChange)="checkPanelConfiguration()">
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.summary" (ngModelChange)="checkPanelConfiguration()">Summary</mat-checkbox>
-                      <i *ngIf="val.summary" class="material-icons alias-button" (click)="configureAlias(val, 'Summary')">more_horiz</i>
-                      <i *ngIf="!val.summary" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.average" (ngModelChange)="checkPanelConfiguration()">Average</mat-checkbox>
-                      <i *ngIf="val.average" class="material-icons alias-button" (click)="configureAlias(val, 'Average')">more_horiz</i>
-                      <i *ngIf="!val.average" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.mean" (ngModelChange)="checkPanelConfiguration()">Mean</mat-checkbox>
-                      <i *ngIf="val.mean" class="material-icons alias-button" (click)="configureAlias(val, 'Mean')">more_horiz</i>
-                      <i *ngIf="!val.mean" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.max" (ngModelChange)="checkPanelConfiguration()">Max</mat-checkbox>
-                      <i *ngIf="val.max" class="material-icons alias-button" (click)="configureAlias(val, 'Max')">more_horiz</i>
-                      <i *ngIf="!val.max" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.min" (ngModelChange)="checkPanelConfiguration()">Min</mat-checkbox>
-                      <i *ngIf="val.min" class="material-icons alias-button" (click)="configureAlias(val, 'Min')">more_horiz</i>
-                      <i *ngIf="!val.min" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.stddeviation" (ngModelChange)="checkPanelConfiguration()">Std Deviation</mat-checkbox>
-                      <i *ngIf="val.stddeviation" class="material-icons alias-button" (click)="configureAlias(val, 'Std Deviation')">more_horiz</i>
-                      <i *ngIf="!val.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.count" (ngModelChange)="checkPanelConfiguration()">Count</mat-checkbox>
-                      <i *ngIf="val.count" class="material-icons alias-button" (click)="configureAlias(val, 'Count')">more_horiz</i>
-                      <i *ngIf="!val.count" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                  </mat-radio-group>
-                </div>
-              </mat-expansion-panel>
-            </ng-container>
-          </mat-accordion>
-        </div>
-      </div>
-      -->
       <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-dynamic-table">
         <button mat-button [disabled]="!this.values.currentOptionCategories" class="dynamic-table-config-button"
           [ngClass]="{ 'flat-button': this.values.currentOptionCategories, 'flat-button-disabled': !this.values.currentOptionCategories }" (click)="configureDynamicTable()">
@@ -916,6 +868,7 @@
       </div>
     </ng-container>
   </div>
+  -->
   <!-- ngIf doesn't work with AmCharts -->
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
