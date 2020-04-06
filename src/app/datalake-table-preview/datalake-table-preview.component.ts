@@ -24,33 +24,55 @@ export class DatalakeTablePreviewComponent {
   edit: boolean = false;
   rowSelected: any = null;
   rowDelete: any;
-  disabledEdit: boolean = false;
-  disabledDelete: boolean = false;
+  // disabledEdit: boolean = false;
+  // disabledDelete: boolean = false;
   filter: string;
   RowsUpdated: any[] = [];
+  RowsInserted: any[] = [];
+  RowsDeleted: any[] = [];
   lengthpag: any;
   pageI: any = 0;
-  pageSize: any;
-  paginatorData: PageEvent;
+  pageSize: any = 5;
   TABLEPREVIEWLIMIT: number;
   firstTime: boolean = true;
+  schemaName: any;
+  tableName: any;
+  tokenResult: any = "";
+  insertRow: boolean = false;
+  tableLocation: any;
+  RowsInserted2: any[] = [];
+  // NumberRows: any;
+  // callServiceData: boolean;
+  pageEvent: PageEvent;
 
   constructor(public dialogRef: MatDialogRef<DatalakeTablePreviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private service: DatalakeService,
     public globals: Globals, private excelService: ExcelService, private appService: ApplicationService) {
 
+    this.tableName = data.values.tableName;
+    this.schemaName = data.values.schemaName;
     this.globals.popupLoading = true;
     this.edit = data.edit;
     this.TABLEPREVIEWLIMIT = this.edit ? -1 : TABLE_PREVIEW_LIMIT;
-    this.service.getDatalakeTableData(this, data.values.schemaName, data.values.tableName, this.TABLEPREVIEWLIMIT, this.handlerSuccess, this.handlerError);
+    this.service.getDatalakeTableData(this, data.values.schemaName, data.values.tableName, this.TABLEPREVIEWLIMIT, this.pageI, this.pageSize, this.tokenResult, this.handlerSuccess, this.handlerError);
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    if (this.RowsInserted.length === 0 && this.RowsUpdated.length === 0 && this.RowsDeleted.length === 0) {
+      this.dialogRef.close();
+    } else {
+      this.appService.confirmationOrCancelDialog(this, "Do you want to save the changes?",
+        function (_this) {
+          _this.saveAll();
+        },
+        function (_this,reset) {
+          _this.dialogRef.close();
+        }
+      );
+    }
   }
 
   handlerSuccess(_this, data): void {
-    
     if (!data) {
       _this.globals.popupLoading = false;
       return;
@@ -61,19 +83,25 @@ export class DatalakeTablePreviewComponent {
       return;
     }
 
+    _this.tokenResult = data.tokenResult;
+    let cantRows = data.cantRows;
+
     if (_this.firstTime) {
       for (let column of data.Columns)
         _this.displayedColumns.push(column.title);
 
+
       if (_this.edit) {
-        if (_this.displayedColumns.length > 0) {
+        const columnId: number = _this.displayedColumns.findIndex(d => d === 'rDeltaLakeRowID');
+        if (_this.displayedColumns.length > 0 && columnId != -1) {
           _this.displayedColumns.unshift("actions");
         }
       }
     }
+
     if (data.Values) {
       for (let result of data.Values) {
-        let item = {};
+        let item = { hoverDelete: false, hoverEdit: false, edit: false, update: false };
         for (let i = 0; i < _this.displayedColumns.length; i++) {
           if (!_this.edit) {
             item[_this.displayedColumns[i]] = result[i];
@@ -81,16 +109,42 @@ export class DatalakeTablePreviewComponent {
             item[_this.displayedColumns[i]] = result[i - 1];
           }
         }
+
+        if (_this.edit) {
+          //verifico si existen registros modificados y modifico el data que obtuve
+          const index: number = _this.RowsUpdated.findIndex(d => d.rDeltaLakeRowID === item['rDeltaLakeRowID']);
+          if (index != -1) {
+            item = _this.RowsUpdated[index];
+          }
+        }
         _this.dataSource.push(item);
       }
+
+
+      if (_this.edit && _this.pageI === 0) {
+        //verifico si hay registros nuevos y los agrego al comienzo si estoy en la primera pagina
+        _this.RowsInserted.forEach(element => {
+          _this.dataSource.unshift(element);
+        });
+        // si estoy insertando una nueva fila
+        if (_this.insertRow) {
+          let newRow = { new: true, };
+          _this.displayedColumns.forEach(element => {
+            if (element != 'actions') {
+              newRow[element] = null;
+            }
+          });
+          // _this.addInsertToArray(newRow);
+          _this.dataSource.unshift(newRow);
+          _this.insertRow = false;
+        }
+
+      }
+
     }
-
-    // this.lengthpag = data.Rows;
-    _this.lengthpag = 20;
-    _this.pageSize = 10;
-
+    _this.lengthpag = cantRows;
     _this.dataSourceTable = new MatTableDataSource(_this.dataSource);
-    // _this.dataSourceTable.paginator = _this.paginator;
+    // _this.dataSourceTable.paginator = _this.paginator; //(test)
     _this.globals.popupLoading = false;
   }
 
@@ -170,7 +224,8 @@ export class DatalakeTablePreviewComponent {
     this.excelService.exportAsExcelFile(excelData, this.data.values.longName + " - Table Data", tableColumnFormats);
   }
 
-  editRow(row) {
+  editRow($event, row) {
+    $event.stopPropagation();
     if (this.rowSelected === row) {
       this.rowSelected = null;
       row.edit = false;
@@ -184,18 +239,13 @@ export class DatalakeTablePreviewComponent {
     }
   }
 
-  removeRow(row) {
-    if (this.rowDelete === row) {
-      this.rowDelete = null;
-    } else {
-      this.rowDelete = row;
-      this.rowSelected = null;
-    }
-  }
-
   getEditRowImage(element) {
     if (element.update && element != this.rowSelected) {
-      return "../../assets/images/datalake-rowUpdate.png";
+      if (element.hoverEdit) {
+        return "../../assets/images/" + this.globals.theme + "-datalake-rowUpdate.png";
+      } else {
+        return "../../assets/images/datalake-rowUpdate.png";
+      }
     }
     if (element === this.rowSelected) {
       return "../../assets/images/" + this.globals.theme + "-datalake-EditRow-active.png";
@@ -217,7 +267,52 @@ export class DatalakeTablePreviewComponent {
   }
 
   MarkEditAsUpdate(element) {
-    element.update = true
+    if (!element.new) {
+      element.update = true
+      this.addUpdatetoArray(element);
+    } else {
+      this.addInsertToArray(element);
+    }
+  }
+
+  removeRow(row) {
+    const index: number = this.dataSource.findIndex(d => d === row);
+    if (index > -1) {
+      this.appService.confirmationOrCancelDialog(this, "Do you want to delete this row?",
+        function (_this) {
+          if (row.rDeltaLakeRowID) {
+            _this.RowsDeleted.push(row);
+            //borro si fue actualizado
+            if (row['update']) {
+              const index: number = _this.RowsUpdated.findIndex(d => d.rDeltaLakeRowID === row['rDeltaLakeRowID']);
+              if (index != -1) {
+                _this.RowsUpdated.splice(index, 1);
+              }
+            }
+          } else {
+            if (row['new']) {
+              const index: number = _this.RowsInserted.findIndex(d => d === row);
+              if (index != -1) {
+                _this.RowsInserted.splice(index, 1);
+                _this.RowsInserted2.splice(index, 1);
+              }
+            }
+          }
+          //revisar
+          _this.dataSource.splice(index, 1);
+          _this.dataSourceTable = new MatTableDataSource(_this.dataSource);
+        },
+        function (_this,reset) {
+
+          if (_this.rowSelected) {
+            _this.rowSelected.edit = false;
+          }
+          row.edit = true;
+          _this.rowSelected = row;
+        }
+      );
+
+    }
   }
 
   filterDataTable(): void {
@@ -237,62 +332,215 @@ export class DatalakeTablePreviewComponent {
 
     search = search.toLowerCase();
     let size = this.displayedColumns.length;
-    for (let i = 0; i < size; i++) {
-      const element = this.displayedColumns[i];
-      let index = -1;
-      filteredResults =
-        this.dataSource.
-          filter(function (a) {
+    let columnsName = this.displayedColumns;
+    filteredResults =
+      this.dataSource.
+        filter(function (a) {
+          let index = -1;
+          for (let i = 0; i < size; i++) {
+            const element = columnsName[i];
             if (element != 'actions') {
               index = a[element].toLowerCase().indexOf(search);
               if (index > -1) {
                 i = size;
               }
-              return index > -1;
             }
-          });
-    }
+          }
+          return index > -1;
+        });
+
 
     this.dataSourceTable = new MatTableDataSource(filteredResults);
     this.dataSourceTable.paginator = this.paginator;
   }
 
+  saveAll() {
+    this.globals.popupLoading = true;
+    let request;
+    request = {
+      tableName: this.tableName,
+      schemaName: this.schemaName,
+      tableLocation: this.tableLocation,
+      inserts: this.RowsInserted,
+      updates: this.RowsUpdated,
+      deletes: this.RowsDeleted
+    }
+    this.service.DatalakeUpdateRows(this, request, this.saveHandler, this.saveError);
+  }
+
   SaveRows() {
-
-    this.appService.confirmationDialog(this, "Do you want to save the changes?",
-      function (_this) {
-        //registros actualizados en la pagina actual
-        let RowsUpdatePage = this.dataSource.filter(a => (a['update'] === true));
-
-        for (let i = 0; i < RowsUpdatePage.length; i++) {
-          const element = this.RowsUpdatePage[i];
-          if (element['update']) {
-            //adiciono los nuevos registros a los que ya tenia guardados
-            this.RowsUpdated.push(element);
+    // this.saveRowsModified();
+    if (this.RowsInserted.length > 0 || this.RowsUpdated.length > 0 || this.RowsDeleted.length > 0) {
+      this.appService.confirmationOrCancelDialog(this, "Do you want to save the changes?",
+        function (_this) {
+          _this.saveAll();
+        },
+        function (_this,reset) {
+          if(reset){
+            _this.globals.popupLoading = true;
+            _this.resetData();
+            _this.firstTime = true;
+            _this.dataSource = [];
+            _this.displayedColumns = [];          
+            _this.pageI = 0;
+            _this.tokenResult = "";
+            _this.paginator.firstPage();
+            _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
+              _this.pageI,_this.pageSize,_this.tokenResult, _this.handlerSuccess,_this.handlerError);
           }
         }
-        //llamar al servicio que envia los datos
-        // _this.globals.isLoading = true;
-        // _this.service.Datalake_updateRows(_this, RowsUpdated, _this.saveHandler, _this.saveError);
-      }
-    );
+      );
+    }
   }
 
-  saveHandler(_this, data) {
-    _this.RowsUpdated = [];
+  saveHandler(_this, data) {    
+    _this.resetData();
+    _this.firstTime = true;
+    _this.dataSource = []; 
+    _this.displayedColumns = [];
+    _this.pageI = 0;
+    _this.tokenResult = "";
+    _this.paginator.firstPage();
+    _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
+      _this.pageI, _this.pageSize, _this.tokenResult, _this.handlerSuccess, _this.handlerError);
   }
 
-  saveError() {
+  saveError(_this, result): void {
+    _this.globals.popupLoading = false;
+  }
+
+  saveRowsModified() {
+    //guardo localmente los registros que se actualizaron , insertaron o eliminaron
+    // let RowsModifiedPage = this.dataSource.filter(a => (a['update'] === true) || a['new'] === true);
+
+    for (let i = 0; i < this.RowsInserted.length; i++) {
+      this.RowsInserted2 = this.RowsInserted[i];
+    } 
+  }
+
+  cleanSelect(row) {
+    if (row !== this.rowSelected) {
+      this.rowSelected = null;
+      this.dataSourceTable.data.forEach(element => {
+        element.edit = false;
+      });
+      this.rowDelete = null;
+    }
   }
 
   public getServerData(event?: PageEvent) {
     if (!this.globals.popupLoading) {
-      this.paginatorData = event;
+      this.globals.popupLoading = true;
+      this.pageI = event.pageIndex;
+      this.pageSize = event.pageSize;
+      // this.saveRowsModified();      
       this.firstTime = false;
       this.dataSource = [];
-      this.service.getDatalakeTableData(this, this.data.values.schemaName, this.data.values.tableName, this.TABLEPREVIEWLIMIT, this.handlerSuccess, this.handlerError);
+      this.service.getDatalakeTableData(this, this.data.values.schemaName, this.data.values.tableName,
+        this.TABLEPREVIEWLIMIT, event.pageIndex, event.pageSize, this.tokenResult, this.handlerSuccess, this.handlerError);
       return event;
     }
+  }
+
+  InsertRows() {
+    if (this.pageI != 0) {
+      this.insertRow = true;
+      this.paginator.firstPage();
+    } else {
+      this.insertRow = false;
+      let newRow = { new: true, };
+      this.displayedColumns.forEach(element => {
+        if (element != 'actions') {
+          newRow[element] = null;
+        }
+      });
+      // this.addInsertToArray(newRow);
+      this.dataSource.unshift(newRow);
+      this.dataSourceTable = new MatTableDataSource(this.dataSource);
+
+    }
+  }
+
+  addUpdatetoArray(element) {
+    //adiciono los registros actualizados los que ya tenia guardados
+    //si el registro existe lo borro y adiciono el actual
+    const index: number = this.RowsUpdated.findIndex(d => d.rDeltaLakeRowID === element['rDeltaLakeRowID']);
+    if (index != -1) {
+      this.RowsUpdated.splice(index, 1);
+    }
+    this.RowsUpdated.push(element);
+  }
+
+  addInsertToArray(element) {
+    //adiciono los nuevos registros a los que ya tenia guardados
+    //si el registro existe lo borro y adiciono el actual    
+    
+    if (this.RowsInserted.length > 0) {
+      //si hay registros guardados
+      let size = this.displayedColumns.length;
+      let columnsName = this.displayedColumns;
+
+      for (let j = 0; j < this.RowsInserted.length; j++) {
+        let row=[];
+        let index = -1;
+        let insert = false;
+        for (let i = 0; i < size; i++) {
+          const column = columnsName[i];
+          if (column != 'actions' && column != 'rDeltaLakeRowID') {
+
+            let columnNew = {'fieldName': column,
+                    'dataType': 'String',
+                    'fieldValue': this.RowsInserted[j][column] }
+            row.push(columnNew);
+
+            if (this.RowsInserted[j][column] && this.RowsInserted[j][column].length > 0) {
+              insert = true;
+            }
+            if (this.RowsInserted[j][column] != element[column]) {
+              index = j;
+              i = size;
+            }
+          }
+        }
+        if (index != -1 && insert) {
+          this.RowsInserted2.push(row);
+          this.RowsInserted.push(element);
+        }
+      }
+    } else {
+      let insert = false;
+      let row=[];
+      for (let i = 0; i < this.displayedColumns.length; i++) {
+        const column = this.displayedColumns[i];
+        if (column != 'actions' && column != 'rDeltaLakeRowID') {
+          let columnNew = {'fieldName': column,
+                    'dataType': 'String',
+                    'fieldValue': element[column] }
+            row.push(columnNew);
+
+          if (element[column] && element[column].length > 0) {
+            insert = true;
+          }
+        }
+      }
+      if (insert) {
+        this.RowsInserted2.push(row);
+        this.RowsInserted.push(element);
+      }
+    }
+  }
+
+  resetData() {
+    this.rowSelected = null;
+    this.dataSourceTable.data.forEach(element => {
+      element.edit = false;
+      element.update = false;
+      element.new = false;
+    });
+    this.rowDelete = null;
+    this.RowsInserted = [];
+    this.RowsUpdated = [];
+    this.RowsDeleted = [];
   }
 
 }

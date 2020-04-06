@@ -29,10 +29,10 @@ export class DatalakeService {
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    getDatalakeTableData(_this, schemaName, tableName, limit, handlerSuccess, handlerError): void
+    getDatalakeTableData(_this, schemaName, tableName, limit,page_number, pageSize, token, handlerSuccess, handlerError): void
     {        
         // let url = this.host + "/GetDatalakeTableData?userName=erich&token="+this.globals.token+"&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
-        let url = this.host + "/GetDatalakeTableData?userName="+this.globals.userName+"&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
+        let url = this.host + "/GetDatalakeTableData?userName="+this.globals.userName+"&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit+ "&page_number=" + page_number+ "&pageSize=" + pageSize+ "&token=" + token;
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
@@ -217,6 +217,13 @@ export class DatalakeService {
     {        
         let url = "http://54.227.194.7:3000/download-user-file/"+ruta
         window.open(url,'_blank');
-
     }
+
+    DatalakeUpdateRows(_this, request, handlerSuccess, handlerError): void
+    {
+        let url = this.host + "/DatalakeUpdateRows";
+        request.userName = this.globals.userName;
+        this.http.post(_this, url, request, handlerSuccess, handlerError);
+    }
+    
 }

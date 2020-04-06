@@ -134,7 +134,7 @@ export class DatalakeTableCardComponent implements OnInit {
   }
 
   exportCSV(){
-    this.service.getDatalakeTableData (this, this.values.schemaName, this.values.tableName, -1, this.handlerSuccess, this.handlerError);
+    this.service.getDatalakeTableData (this, this.values.schemaName, this.values.tableName, -1,"","","", this.handlerSuccess, this.handlerError);
   }
 
   handlerSuccess(_this, data): void
@@ -173,7 +173,7 @@ export class DatalakeTableCardComponent implements OnInit {
   editTable(): void
   {
     let dialogRef = this.dialog.open (DatalakeTablePreviewComponent, {
-      panelClass: 'datalake-table-show-table-dialog',
+      panelClass: 'datalake-table-show-table-dialog', disableClose: true,
       data: { values: this.values, edit: true }
     });
 

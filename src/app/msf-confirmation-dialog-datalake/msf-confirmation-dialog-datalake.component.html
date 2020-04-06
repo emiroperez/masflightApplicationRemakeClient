@@ -1,0 +1,14 @@
+<div class="msf-dashboard-control-variables-title">
+    <div class="msf-dashboard-control-variables-close-button">
+      <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="dialogRef.close(null)">close</mat-icon>
+    </div>
+    Confirm
+  </div>
+  <div class="msf-dashboard-control-variables msf-confirm-container">
+    {{confirmMessage}}
+  </div>
+  <div class="msf-dashboard-control-variables-button">
+    <button mat-button class="flat-button" (click)="dialogRef.close(true)">Confirm</button>
+    <span class="button-separator"></span>
+    <button mat-button class="flat-button" (click)="dialogRef.close(false)">Cancel</button>
+  </div>
