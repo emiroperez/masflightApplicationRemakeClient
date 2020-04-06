@@ -506,12 +506,9 @@ export class DatalakeTablePreviewComponent {
     //adiciono los nuevos registros a los que ya tenia guardados
     //si el registro existe lo borro y adiciono el actual    
     
-    if (this.RowsInserted.length > 0) {
-      //si hay registros guardados
-      let size = this.displayedColumns.length;
-      let columnsName = this.displayedColumns;
-      //genero el row que voy a guardar      
+    //genero el row que voy a guardar      
       let row=[];
+      let insert = false;
       for (let i = 0; i < this.displayedColumns.length; i++) {
         const column = this.displayedColumns[i];
         if (column != 'actions' && column != 'rDeltaLakeRowID') {
@@ -519,19 +516,23 @@ export class DatalakeTablePreviewComponent {
                     'dataType': 'String',
                     'fieldValue': element[column] }
             row.push(columnNew);
+            if (element[column] && element[column].length > 0) {
+              insert = true;
+            }
         }
+      }
+    
+    if (this.RowsInserted.length > 0) {
+      //si hay registros guardados
+      let size = this.displayedColumns.length;
+      let columnsName = this.displayedColumns;
 
       for (let j = 0; j < this.RowsInserted.length; j++) {
         let index = -1;
-        let insert = false;
+        insert = false;
         for (let i = 0; i < size; i++) {
           const column = columnsName[i];
           if (column != 'actions' && column != 'rDeltaLakeRowID') {
-
-            let columnNew = {'fieldName': column,
-                    'dataType': 'String',
-                    'fieldValue': this.RowsInserted[j][column] }
-            row.push(columnNew);
 
             if (this.RowsInserted[j][column] && this.RowsInserted[j][column].length > 0) {
               insert = true;
@@ -549,21 +550,6 @@ export class DatalakeTablePreviewComponent {
         }
       }
     } else {
-      let insert = false;
-      let row=[];
-      for (let i = 0; i < this.displayedColumns.length; i++) {
-        const column = this.displayedColumns[i];
-        if (column != 'actions' && column != 'rDeltaLakeRowID') {
-          let columnNew = {'fieldName': column,
-                    'dataType': 'String',
-                    'fieldValue': element[column] }
-            row.push(columnNew);
-
-          if (element[column] && element[column].length > 0) {
-            insert = true;
-          }
-        }
-      }
       if (insert) {
         this.RowsInsertedSend.push(row);
         this.RowsInserted.push(element);
