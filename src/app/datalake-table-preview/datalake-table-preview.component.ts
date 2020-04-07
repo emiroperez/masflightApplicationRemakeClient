@@ -30,6 +30,7 @@ export class DatalakeTablePreviewComponent {
   RowsUpdated: any[] = [];
   RowsInserted: any[] = [];
   RowsDeleted: any[] = [];
+  RowsDeletedSend : any[] = [];
   lengthpag: any;
   pageI: any = 0;
   pageSize: any = 5;
@@ -117,8 +118,15 @@ export class DatalakeTablePreviewComponent {
           if (index != -1) {
             item = _this.RowsUpdated[index];
           }
+
+          //verifico si existen registros eliminado, si el registro no existe lo agrego al data
+          const indexDelete: number = _this.RowsDeleted.findIndex(d => d.rDeltaLakeRowID === item['rDeltaLakeRowID']);
+          if (indexDelete === -1) {
+            _this.dataSource.push(item);
+          }
+        }else{
+          _this.dataSource.push(item);
         }
-        _this.dataSource.push(item);
       }
 
 
@@ -139,7 +147,6 @@ export class DatalakeTablePreviewComponent {
           _this.dataSource.unshift(newRow);
           _this.insertRow = false;
         }
-
       }
 
     }
@@ -267,12 +274,15 @@ export class DatalakeTablePreviewComponent {
     return "../../assets/images/datalake-DeleteRow.png";
   }
 
-  MarkEditAsUpdate(element) {
+  MarkEditAsUpdate(element,j) {
     if (!element.new) {
-      element.update = true
+      element.update = true;
       this.addUpdatetoArray(element);
-    } else {
-      this.addInsertToArray(element);
+    } 
+    else {
+      if(this.RowsInserted.length==0){
+        this.saveNewRows();
+      }
     }
   }
 
@@ -283,18 +293,19 @@ export class DatalakeTablePreviewComponent {
         function (_this) {
           if (row.rDeltaLakeRowID) {
             let rowDelete=[];
-            for (let i = 0; i < this.displayedColumns.length; i++) {
-              const column = this.displayedColumns[i];
-              if (column != 'actions' && column != 'rDeltaLakeRowID') {
+            for (let i = 0; i < _this.displayedColumns.length; i++) {
+              const column = _this.displayedColumns[i];
+              if (column != 'actions') {
                 let columnNew = {'fieldName': column,
                           'dataType': 'String',
                           'fieldValue': row[column] }
                   rowDelete.push(columnNew);
               }
             }
-            // _this.RowsDeleted.push(row);
-            _this.RowsDeleted.push(rowDelete);
-            //borro si fue actualizado o nuevo
+
+            _this.RowsDeleted.push(row);
+            _this.RowsDeletedSend.push(rowDelete);
+            //borro si fue actualizado
             if (row['update']) {
               const index: number = _this.RowsUpdated.findIndex(d => d.rDeltaLakeRowID === row['rDeltaLakeRowID']);
               if (index != -1) {
@@ -302,22 +313,30 @@ export class DatalakeTablePreviewComponent {
                 _this.RowsUpdatedSend.splice(index, 1);
               }
             }
+            // const indexData: number = _this.dataSource.findIndex(d => d.rDeltaLakeRowID === row['rDeltaLakeRowID']);
+            //     if (index != -1) {
+            //       _this.dataSource[indexData]['rDeltaLakeRowID'] = true;
+            //     }
           } else {
+            //borro si es nuevo
             if (row['new']) {
               const index: number = _this.RowsInserted.findIndex(d => d === row);
               if (index != -1) {
                 _this.RowsInserted.splice(index, 1);
-                _this.RowsInserted2.splice(index, 1);
               }
             }
+            // const indexData: number = _this.dataSource.findIndex(d => d === row);
+            //     if (index != -1) {
+            //       _this.dataSource.splice(indexData, 1);
+            //     }
           }
-          
           const indexData: number = _this.dataSource.findIndex(d => d === row);
-              if (index != -1) {
-                _this.dataSource.splice(indexData, 1);
-              }
+          if (indexData != -1) {
+            _this.dataSource.splice(indexData, 1);
+          }
           _this.dataSourceTable = new MatTableDataSource(_this.dataSource);
         },
+
         function (_this,reset) {
 
           if (_this.rowSelected) {
@@ -364,14 +383,15 @@ export class DatalakeTablePreviewComponent {
           }
           return index > -1;
         });
-
-
     this.dataSourceTable = new MatTableDataSource(filteredResults);
     this.dataSourceTable.paginator = this.paginator;
   }
 
   saveAll() {
     this.globals.popupLoading = true;
+    if(this.pageI === 0){
+      this.saveNewRows();
+    }
     let request;
     request = {
       tableName: this.tableName,
@@ -381,8 +401,9 @@ export class DatalakeTablePreviewComponent {
       inserts: this.RowsInsertedSend,
       // updates: this.RowsUpdated,
       updates: this.RowsUpdatedSend,
-      deletes: this.RowsDeleted
+      deletes: this.RowsDeletedSend
     }
+    //revisar si hay registros para insertar repetidos y avisarle al usuario si quiere conservalos. 
     this.service.DatalakeUpdateRows(this, request, this.saveHandler, this.saveError);
   }
 
@@ -427,15 +448,6 @@ export class DatalakeTablePreviewComponent {
     _this.globals.popupLoading = false;
   }
 
-  saveRowsModified() {
-    //guardo localmente los registros que se actualizaron , insertaron o eliminaron
-    // let RowsModifiedPage = this.dataSource.filter(a => (a['update'] === true) || a['new'] === true);
-
-    for (let i = 0; i < this.RowsInserted.length; i++) {
-      this.RowsInsertedSend = this.RowsInserted[i];
-    } 
-  }
-
   cleanSelect(row) {
     if (row !== this.rowSelected) {
       this.rowSelected = null;
@@ -449,9 +461,12 @@ export class DatalakeTablePreviewComponent {
   public getServerData(event?: PageEvent) {
     if (!this.globals.popupLoading) {
       this.globals.popupLoading = true;
+      if(this.pageI===0){
+        this.saveNewRows();
+      }
       this.pageI = event.pageIndex;
       this.pageSize = event.pageSize;
-      // this.saveRowsModified();      
+      // this.saveRowsModified();
       this.firstTime = false;
       this.dataSource = [];
       this.service.getDatalakeTableData(this, this.data.values.schemaName, this.data.values.tableName,
@@ -472,7 +487,6 @@ export class DatalakeTablePreviewComponent {
           newRow[element] = null;
         }
       });
-      // this.addInsertToArray(newRow);
       this.dataSource.unshift(newRow);
       this.dataSourceTable = new MatTableDataSource(this.dataSource);
 
@@ -485,7 +499,7 @@ export class DatalakeTablePreviewComponent {
     let row=[];
     for (let i = 0; i < this.displayedColumns.length; i++) {
       const column = this.displayedColumns[i];
-      if (column != 'actions' && column != 'rDeltaLakeRowID') {
+      if (column != 'actions') {
         let columnNew = {'fieldName': column,
                   'dataType': 'String',
                   'fieldValue': element[column] }
@@ -502,60 +516,111 @@ export class DatalakeTablePreviewComponent {
     this.RowsUpdated.push(element);
   }
 
-  addInsertToArray(element) {
-    //adiciono los nuevos registros a los que ya tenia guardados
-    //si el registro existe lo borro y adiciono el actual    
-    
-    //genero el row que voy a guardar      
-      let row=[];
-      let insert = false;
-      for (let i = 0; i < this.displayedColumns.length; i++) {
-        const column = this.displayedColumns[i];
-        if (column != 'actions' && column != 'rDeltaLakeRowID') {
-          let columnNew = {'fieldName': column,
-                    'dataType': 'String',
-                    'fieldValue': element[column] }
-            row.push(columnNew);
-            if (element[column] && element[column].length > 0) {
-              insert = true;
-            }
-        }
-      }
-    
-    if (this.RowsInserted.length > 0) {
-      //si hay registros guardados
-      let size = this.displayedColumns.length;
-      let columnsName = this.displayedColumns;
-
-      for (let j = 0; j < this.RowsInserted.length; j++) {
-        let index = -1;
-        insert = false;
-        for (let i = 0; i < size; i++) {
-          const column = columnsName[i];
+  saveNewRows() {
+    //guardo localmente los registros que se insertaron antes de cambiar de pagina 
+    //borro los que tenia y los vuelvo a insertar
+    this.RowsInserted = [];
+    this.RowsInsertedSend = [];
+    this.dataSource.forEach(data => {
+      if (data['new']) {
+        let valido = false;
+        let row = [];
+        for (let i = 0; i < this.displayedColumns.length; i++) {
+          const column = this.displayedColumns[i];
           if (column != 'actions' && column != 'rDeltaLakeRowID') {
-
-            if (this.RowsInserted[j][column] && this.RowsInserted[j][column].length > 0) {
-              insert = true;
+            let columnNew = {
+              'fieldName': column,
+              'dataType': 'String',
+              'fieldValue': data[column]
             }
-            //si el la columna del elemento del array es diferente a la que se va insertar detengo el for
-            if (this.RowsInserted[j][column] != element[column]) {
-              index = j;
-              i = size;
+            row.push(columnNew);
+            if (data[column] && data[column].length > 0) {
+              valido = true;
             }
           }
         }
-        if (index != -1 && insert) {
+        if (valido) {
           this.RowsInsertedSend.push(row);
-          this.RowsInserted.push(element);
+          this.RowsInserted.push(data);
         }
       }
-    } else {
-      if (insert) {
+    });
+  }
+
+  addInsertToArray(element,RowsTable) {
+    //adiciono los nuevos registros a los que ya tenia guardados
+    //si el registro existe lo borro y adiciono el actual    
+    //genero el row que voy a guardar      
+    let row = [];
+    let insert = false;
+    for (let i = 0; i < this.displayedColumns.length; i++) {
+      const column = this.displayedColumns[i];
+      if (column != 'actions' && column != 'rDeltaLakeRowID') {
+        let columnNew = {
+          'fieldName': column,
+          'dataType': 'String',
+          'fieldValue': element[column]
+        }
+        row.push(columnNew);
+        if (element[column] && element[column].length > 0) {
+          insert = true;
+        }
+      }
+    }
+
+    if (insert) {
+      if (this.RowsInserted.length > 0) {
+        //si hay registros guardados
+      if (this.RowsInserted.length < RowsTable ){
+        //inserto el registro
+            this.RowsInsertedSend.push(row);
+            this.RowsInserted.push(element);
+      }else{
+        //es igual entonces actualizo
+          let size = this.displayedColumns.length;
+          let sizeRows = this.RowsInserted.length;
+          let columnsName = this.displayedColumns;
+          let cont = 0;
+          let index = -1;
+          let match : any[] = [];
+          for (let j = 0; j < sizeRows; j++) {
+              cont = 0;
+              for (let i = 0; i < size; i++) {
+                const column = columnsName[i];
+                if (column != 'actions' && column != 'rDeltaLakeRowID') {
+                  //si el la columna del elemento del array es diferente a la que se va insertar 
+                  //detengo el for de las columnas, sino sigo contando las columnas que coinciden
+                  //si todas las columnas coinciden ya no analizo mas rows y detengo el for de los rows
+                  if (this.RowsInserted[j][column] != element[column]) {
+                    i = size;
+                  } else {
+                    cont = cont + 1;
+                    if (cont == (size - 2)) {
+                      // match.push(j);
+                      index = j;
+                      j = sizeRows;
+                    }
+                  }
+                }
+              }
+          }
+          if (cont != (size - 2)) {
+            // if (match.length!=0) {
+            this.RowsInsertedSend.push(row);
+            this.RowsInserted.push(element);
+          }
+          //si la cantidad de columnas que coinciden son las mismas no inserto 
+          else {
+            this.RowsInsertedSend[index] = row;
+          }
+        }
+      } else {
         this.RowsInsertedSend.push(row);
         this.RowsInserted.push(element);
       }
     }
   }
+
 
   resetData() {
     this.rowSelected = null;
@@ -570,6 +635,7 @@ export class DatalakeTablePreviewComponent {
     this.RowsDeleted = [];
     this.RowsInsertedSend = [];
     this.RowsUpdatedSend = [];
+    this.RowsDeletedSend = [];
   }
 
 }
