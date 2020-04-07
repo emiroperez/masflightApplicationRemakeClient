@@ -5504,7 +5504,8 @@ mat-tab-group
             right: 24px
 
 .msf-dashboard-assistant-edit-tab-group
-    height: 100% !important
+    margin: -10px !important
+    height: calc(100% + 20px) !important
     .msf-dashboard-assistant-edit-tab-container
         width: 100%
         height: 100% !important
@@ -8903,25 +8904,34 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     display: flex
                     flex-direction: column
                     font-weight: 500
-            .msf-dashboard-assistant-content
-                display: flex
-                flex-direction: column
-                .msf-dashboard-assistant-tab-group
-                    height: 143px
-                    margin-top: -3px
-                    .mat-tab-header, .mat-tab-label-container
-                        width: 100%
-                    .mat-tab-label
-                        opacity: 1 !important
-                        background-color: inherit
-                    .mat-tab-labels
-                        background-color: inherit
-                .msf-dashboard-assistant-table
-                    overflow: auto
-                    width: 100%
-                    height: 100%
-            .msf-dashboard-assistant-argument-value
-                font-weight: 550
+
+.msf-dashboard-assistant-argument-value
+    font-weight: 550
+
+.msf-dashboard-assistant-content
+    display: flex
+    flex-direction: column
+    margin: -10px
+    height: calc(100% + 20px)
+    .msf-dashboard-assistant-table
+        overflow: auto
+        width: 100%
+        height: 100%
+
+.msf-dashboard-assistant-tab-group
+    display: flex
+    height: 143px
+    margin-top: -3px
+    .mat-tab-group
+        width: 100%
+        text-align: left
+    .mat-tab-header, .mat-tab-label-container
+        width: 100%
+    .mat-tab-label
+        opacity: 1 !important
+        background-color: inherit
+    .mat-tab-labels
+        background-color: inherit
 
 .msf-dashboard-assistant-step1-right
     height: calc(100% + 15px)
@@ -11093,13 +11103,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         padding-left: 0 !important
 
 .no-control-variables-container
-    margin-top: 45px
+    margin: auto
     text-align: center
     width: 240px
     padding: 20px
     font-weight: 550
     font-size: 14px
-    margin-left: 230px
 
 .datalake-table-export-excel
     padding: 0px !important

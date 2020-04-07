@@ -47,6 +47,7 @@ import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-d
 import { ConfigFlags } from './msf-dashboard-configflags';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
+import { ComponentType } from '../commons/ComponentType';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -320,11 +321,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   // dashboard interface values
   selectedStep: number = 1;
-  stepLoading: boolean = false;
+  stepLoading: number = 0;
   menuCategories: any[] = [];
   hasChild = (_: number, node: any) => (node.expandable);
+  configTableLoading: boolean = false;
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('msfConfigTableRef', { static: false })
+  msfConfigTableRef: MsfTableComponent;
+
+  @ViewChild('autosize', { static: false })
+  autosize: CdkTextareaAutosize;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -7925,15 +7931,366 @@ export class MsfDashboardPanelComponent implements OnInit {
       case 3:
         if (!this.menuCategories.length)
         {
-          this.stepLoading = true;
+          this.stepLoading = 3;
           this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
         }
         break;
 
+      case 4:
+        this.stepLoading = 4;
+        this.service.loadOptionCategoryArguments (this, this.values.currentOption.id, this.setCategories, this.categoriesError);
+        break;
+
+      case 5:
+        this.stepLoading = 5;
+        break;
+
       default:
-        this.stepLoading = false;
+        this.stepLoading = 0;
         break;
     }
+  }
+
+  setCategories(_this, data): void
+  {
+    let optionCategories = [];
+
+    if (_this.stepLoading != 4)
+      return;
+
+    if (!data.length)
+    {
+      _this.stepLoading = 0;
+      return;
+    }
+
+    //if (_this.tabs)
+    //  _this.tabs.realignInkBar ();
+
+    data = data.sort((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
+
+    for (let optionCategory of data)
+    {
+      for (let category of optionCategory.categoryArgumentsId)
+      {
+        for (let argument of category.arguments)
+        {
+          if (argument.value1)
+            argument.value1 = JSON.parse (argument.value1);
+
+          if (argument.value2)
+            argument.value2 = JSON.parse (argument.value2);
+
+          if (argument.value3)
+            argument.value3 = JSON.parse (argument.value3);
+
+          if (argument.value4)
+            argument.value4 = JSON.parse (argument.value4);
+
+          if (argument.dateLoaded)
+            argument.dateLoaded = JSON.parse (argument.dateLoaded);
+
+          if (argument.currentDateRangeValue)
+            argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
+
+          if (argument.minDate)
+            argument.minDate = new Date (argument.minDate);
+
+          if (argument.maxDate)
+            argument.maxDate = new Date (argument.maxDate);
+
+          if (argument.filters)
+          {
+            argument.filters = JSON.parse (argument.filters);
+
+            for (let i = argument.filters.length - 1; i >= 0; i--)
+            {
+              let filter = argument.filters[i];
+              let argExists = false;
+
+              for (let option of data)
+              {
+                for (let item of option.categoryArgumentsId)
+                {
+                  if (filter.argument == item.id)
+                  {
+                    argument.filters[i].argument = item;
+                    argExists = true;
+                    break;
+                  }
+                }
+
+                if (argExists)
+                  break;
+              }
+
+              if (!argExists)
+                argument.filters.splice(i, 1);
+            }
+          }
+        }
+
+        optionCategories.push(category);
+      }
+    }
+
+    // if the category is not empty, add the categories that are missing
+    if (_this.values.currentOptionCategories != null)
+    {
+      for (let optionCategory of optionCategories)
+      {
+        for (let curOptionCategory of _this.values.currentOptionCategories)
+        {
+          for (let curCategoryArgument of curOptionCategory.arguments)
+          {
+            for (let argument of optionCategory.arguments)
+            {
+              if (curCategoryArgument.name1 == argument.name1)
+              {
+                argument.value1 = curCategoryArgument.value1;
+                argument.value2 = curCategoryArgument.value2;
+                argument.value3 = curCategoryArgument.value3;
+                argument.value4 = curCategoryArgument.value4;
+                argument.dateLoaded = curCategoryArgument.dateLoaded;
+                argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                argument.dateSelectionMode = curCategoryArgument.dateSelectionMode;
+                argument.anchored = curCategoryArgument.anchored;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    _this.values.currentOptionCategories = optionCategories;
+    _this.configureControlVariables ();
+    _this.configTableLoading = true;
+    _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
+  }
+
+  loadConfigTableData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
+    this.msfConfigTableRef.displayedColumns = [];
+
+    if (!this.actualPageNumber)
+      this.msfConfigTableRef.dataSource = null;
+
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
+    }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=0";
+    urlArg = encodeURIComponent (urlBase);
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    if (isDevMode ())
+      console.log (urlBase);
+
+    this.authService.get (this.msfConfigTableRef, url, handlerSuccess, handlerError);
+  }
+
+  categoriesError(_this): void
+  {
+    if (_this.stepLoading != 4)
+      return;
+
+    _this.stepLoading = 0;
+  }
+
+  getArgumentLabel1(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label1;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name1;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel2(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label2;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name2;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel3(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.label3;
+    if (!value)
+      value = argument.title;
+    if (!value)
+      value = argument.name3;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  getArgumentLabel4(argument: Arguments)
+  {
+    let value: String;
+
+    value = argument.name4;
+
+    if (!value.endsWith (':'))
+      return value + ": ";
+
+    if (!value.endsWith (" "))
+      return value + " ";
+
+    return value;
+  }
+
+  valueIsEmpty(value)
+  {
+    if (value)
+    {
+      if (Array.isArray (value) || value === typeof String)
+      {
+        if (value.length)
+          return false;
+      }
+      else
+        return false;
+    }
+
+    return true;
+  }
+
+  isTitleOnly(argument: Arguments): boolean
+  {
+    return ComponentType.title == argument.type;
+  }
+
+  isSingleCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.singleCheckbox == argument.type;
+  }
+
+  isTaxiTimesCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.taxiTimesCheckbox == argument.type;
+  }
+
+  isDateRange(argument: Arguments): boolean
+  {
+    return ComponentType.dateRange == argument.type;
+  }
+
+  configureControlVariables(): void
+  {
+    if (!this.values.currentOptionCategories)
+      return;
+
+    for (let controlVariable of this.values.currentOptionCategories)
+    {
+      if (controlVariable.arguments)
+      {
+        for (let i = 0; i < controlVariable.arguments.length; i++)
+        {
+          let controlVariableArgument = controlVariable.arguments[i];
+          let args: any[];
+
+          controlVariableArgument.checkboxes = [];
+
+          if (this.isTaxiTimesCheckbox (controlVariable.arguments[i]) && !controlVariable.taxiTimesCheckbox)
+          {
+            // Make sure that this specific checkbox is always the last argument in a control variable
+            controlVariable.taxiTimesCheckbox = controlVariable.arguments[i];
+          }
+          else if (i + 1 < controlVariable.arguments.length
+            && (this.isSingleCheckbox (controlVariable.arguments[i + 1])))
+          {
+            // Count the number of checkboxes for a special case
+            args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
+
+            for (let argument of args)
+            {
+              if (!this.isSingleCheckbox (argument))
+                break;
+
+              controlVariableArgument.checkboxes.push (argument);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  isMatIcon(icon): boolean
+  {
+    return !icon.endsWith (".png");
+  }
+
+  getImageIcon(controlVariable, hover): string
+  {
+    let newurl, filename: string;
+    let path: string[];
+    let url;
+
+    url = controlVariable.icon;
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    if (hover)
+      newurl += this.globals.theme + "-hover-" + filename;
+    else
+      newurl += this.globals.theme + "-" + filename;
+
+    return newurl;
+  }
+
+  setCtrlVariableLoading(value: boolean): void
+  {
+    if (value)
+      this.stepLoading = 4;
+    else
+      this.stepLoading = 0;
   }
 
   recursiveMenuCategory(menuCategory): void
@@ -7962,6 +8319,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   selectDataSuccess(_this, data): void
   {
+    if (_this.stepLoading != 3)
+      return;
+
     _this.menuCategories = data;
 
     for (let menuCategory of _this.menuCategories)
@@ -8046,11 +8406,153 @@ export class MsfDashboardPanelComponent implements OnInit {
       menuCategory.tree.data = menuCategory.children;
     }
 
-    _this.stepLoading = false;
+    _this.stepLoading = 0;
   }
 
   selectDataError(_this): void
   {
-    _this.stepLoading = false;
+    if (_this.stepLoading != 3)
+      return;
+
+    _this.stepLoading = 0;
+  }
+
+  tablePreview: boolean = true;
+
+  checkTablePreviewVisibility(): string
+  {
+    if (this.tablePreview)
+      return "block";
+
+    return "none";
+  }
+
+  checkEditVisibility(): string
+  {
+    if (!this.tablePreview)
+      return "block";
+
+    return "none";
+  }
+
+  analysisSelected: any = null;
+  selectingAnalysis: boolean = false;
+  xAxisSelected: any = null;
+  selectingXAxis: boolean = false;
+  valueSelected: any = null;
+  selectingValue: boolean = false;
+  chartPreviewHover: boolean = false;
+  aggregationValueSelected: any = null;
+  selectingAggregationValue: boolean = false;
+  lastColumn: any;
+
+  hasAnalysisByValue(): boolean
+  {
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        return true;
+
+      return false;
+    }
+
+    return true;
+  }
+
+  selectAnalysis(): void
+  {
+    if (this.selectingAnalysis)
+    {
+      this.lastColumn = null;
+      this.selectingAnalysis = false;
+    }
+
+    this.selectingAnalysis = true;
+    this.selectingXAxis = false;
+    this.selectingValue = false;
+    this.selectingAggregationValue = false;
+    this.lastColumn = null;
+    this.analysisSelected = null;
+  }
+
+  selectXAxis(): void
+  {
+    if (this.selectingXAxis)
+    {
+      this.lastColumn = null;
+      this.selectingXAxis = false;
+    }
+
+    this.selectingAnalysis = false;
+    this.selectingXAxis = true;
+    this.selectingValue = false;
+    this.selectingAggregationValue = false;
+    this.lastColumn = null;
+    this.xAxisSelected = null;
+  }
+
+  selectValue(): void
+  {
+    if (this.selectingValue)
+    {
+      this.lastColumn = null;
+      this.selectingValue = false;
+    }
+
+    this.selectingAnalysis = false;
+    this.selectingXAxis = false;
+    this.selectingValue = true;
+    this.selectingAggregationValue = false;
+    this.lastColumn = null;
+    this.valueSelected = null;
+  }
+
+  selectAggregationValue(): void
+  {
+    if (this.selectingAggregationValue)
+    {
+      this.lastColumn = false;
+      this.selectingAggregationValue = false;
+    }
+
+    this.selectingAnalysis = false;
+    this.selectingXAxis = false;
+    this.selectingValue = false;
+    this.selectingAggregationValue = true;
+    this.lastColumn = null;
+    this.aggregationValueSelected = null;
+  }
+
+  finishLoadingConfigTable(error): void
+  {
+    //if (this.values.currentOptionCategories)
+    //  this.tabs.realignInkBar ();
+
+    this.stepLoading = 0;
+    this.configTableLoading = false;
+
+    if (error)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to generate results." }
+      });
+
+      return;
+    }
+
+    if (!this.msfConfigTableRef.tableOptions.dataSource && !this.msfConfigTableRef.tableOptions.template)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "Results not available." }
+      });
+
+      return;
+    }
+
+//    this.configuredControlVariables = true;
+    this.tablePreview = true;
+    this.analysisSelected = null;
+    this.xAxisSelected = null;
+    this.valueSelected = null;
   }
 }
