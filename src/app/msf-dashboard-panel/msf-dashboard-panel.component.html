@@ -148,7 +148,7 @@
                   No Control Variables For This Option
                 </div>
                 <ng-container *ngIf="values.currentOptionCategories">
-                  <mat-tab-group #tabs>
+                  <mat-tab-group #configTabs>
                     <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                       <ng-template mat-tab-label>
                         <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)"
@@ -285,11 +285,11 @@
             </mat-tab-group>
           </div>
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-buttons" [ngStyle]="{ 'display': checkEditVisibility() }">
-            <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
-              CANCEL
+            <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
+              Cancel
             </button>
             <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
-              REFRESH
+              Refresh
             </button>
           </div>
         </div>

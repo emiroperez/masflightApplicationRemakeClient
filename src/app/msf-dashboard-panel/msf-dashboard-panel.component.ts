@@ -22,7 +22,7 @@ import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ReplaySubject, Subject } from 'rxjs';
-import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef, MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material';
+import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef, MatTreeFlatDataSource, MatTreeFlattener, MatTabGroup } from '@angular/material';
 import { takeUntil, take } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -325,6 +325,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   menuCategories: any[] = [];
   hasChild = (_: number, node: any) => (node.expandable);
   configTableLoading: boolean = false;
+  configuredControlVariables: boolean = false;
+
+  @ViewChild("configTabs", { static: false })
+  configTabs: MatTabGroup;
+
+  @ViewChild("editTabs", { static: false })
+  editTabs: MatTabGroup;
 
   @ViewChild('msfConfigTableRef', { static: false })
   msfConfigTableRef: MsfTableComponent;
@@ -7964,8 +7971,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    //if (_this.tabs)
-    //  _this.tabs.realignInkBar ();
+    if (_this.tabs)
+      _this.configTabs.realignInkBar ();
 
     data = data.sort((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
 
@@ -8200,6 +8207,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   refreshTable(): void
   {
     this.stepLoading = 4;
+    this.configTableLoading = true;
     this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
     this.changeDetectorRef.detectChanges ();
   }
@@ -8217,6 +8225,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.tempOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.tablePreview = false;
+    this.changeDetectorRef.detectChanges ();
+    this.editTabs.realignInkBar ();
   }
 
   isTitleOnly(argument: Arguments): boolean
@@ -8547,8 +8557,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   finishLoadingConfigTable(error): void
   {
-    //if (this.values.currentOptionCategories)
-    //  this.tabs.realignInkBar ();
+    if (this.values.currentOptionCategories)
+      this.configTabs.realignInkBar ();
 
     this.stepLoading = 0;
     this.configTableLoading = false;
@@ -8571,7 +8581,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-//    this.configuredControlVariables = true;
+    this.configuredControlVariables = true;
     this.tablePreview = true;
     this.analysisSelected = null;
     this.xAxisSelected = null;
