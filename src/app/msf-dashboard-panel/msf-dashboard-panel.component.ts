@@ -8197,6 +8197,28 @@ export class MsfDashboardPanelComponent implements OnInit {
     return true;
   }
 
+  refreshTable(): void
+  {
+    this.stepLoading = 4;
+    this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
+    this.changeDetectorRef.detectChanges ();
+  }
+
+  tempOptionCategories: any;
+
+  cancelEdit(): void
+  {
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
+    this.tablePreview = true;
+    this.tempOptionCategories = null;
+  }
+
+  goToEditor(): void
+  {
+    this.tempOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+    this.tablePreview = false;
+  }
+
   isTitleOnly(argument: Arguments): boolean
   {
     return ComponentType.title == argument.type;

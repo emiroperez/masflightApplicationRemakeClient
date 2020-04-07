@@ -234,7 +234,7 @@
             </div>
           </div>
 
-          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group" *ngIf="false">
+          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit" [ngStyle]="{ 'display': checkEditVisibility() }">
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                 <ng-template mat-tab-label>
@@ -284,7 +284,14 @@
               </mat-tab>
             </mat-tab-group>
           </div>
-
+          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-buttons" [ngStyle]="{ 'display': checkEditVisibility() }">
+            <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="cancelEdit()">
+              CANCEL
+            </button>
+            <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
+              REFRESH
+            </button>
+          </div>
         </div>
       </div>
       <!--

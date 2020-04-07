@@ -8921,7 +8921,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-assistant-tab-group
     display: flex
     height: 143px
-    margin-top: -3px
     .mat-tab-group
         width: 100%
         text-align: left
@@ -11905,8 +11904,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 200px
 
 .msf-dashboard-panel-config-name
+    display: block !important
+    overflow: hidden
     font-size: 16px !important
     margin-bottom: 15px
+    width: calc(100% - 50px) !important
+    white-space: nowrap
+    text-overflow: ellipsis
+    text-align: left
 
 .msf-dashboard-panel-config-gridstack
     display: block !important
@@ -11946,6 +11951,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             width: calc(100% - 20px)
             .msf-dashboard-assistant-chart-mode
                 margin-top: 10px
+        .msf-dashboard-panel-step-variables-edit
+            height: calc(100% - 50px) !important
+        .msf-dashboard-panel-step-variables-buttons
+            height: 50px !important
+            padding: 10px !important
+            margin-top: 10px !important
         .msf-dashboard-name-step
             display: flex
             flex-direction: column
