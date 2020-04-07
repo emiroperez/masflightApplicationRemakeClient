@@ -5778,24 +5778,28 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let configFlags = ConfigFlags.NONE;
 
-    if (this.values.currentChartType.flags & ChartFlags.FORM ||
-      this.values.currentChartType.flags & ChartFlags.TABLE)
-      configFlags = ConfigFlags.THRESHOLDS;
-    else if (this.values.currentChartType.flags & ChartFlags.PIECHART
-      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
-      configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
-    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
-    else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
+    if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.MAP
+      || this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.PICTURE))
     {
-      configFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
-
-      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      if (this.values.currentChartType.flags & ChartFlags.FORM ||
+        this.values.currentChartType.flags & ChartFlags.TABLE)
+        configFlags = ConfigFlags.THRESHOLDS;
+      else if (this.values.currentChartType.flags & ChartFlags.PIECHART
+        || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+        configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
+      else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+        configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
+      else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
       {
-        configFlags |= ConfigFlags.LIMITVALUES;
+        configFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
 
-        if (this.isSimpleChart ())
-          configFlags |= ConfigFlags.THRESHOLDS;
+        if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+        {
+          configFlags |= ConfigFlags.LIMITVALUES;
+
+          if (this.isSimpleChart ())
+            configFlags |= ConfigFlags.THRESHOLDS;
+        }
       }
     }
 
@@ -5805,6 +5809,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       configFlags &= ~ConfigFlags.LIMITVALUES;
       configFlags |= ConfigFlags.LIMITAGGREGATOR;
     }
+
+    // alwaws display the description
+    configFlags |= ConfigFlags.DESCRIPTION;
 
     this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',

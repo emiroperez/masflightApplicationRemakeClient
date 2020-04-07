@@ -23,7 +23,8 @@ export class MsfDashboardAdditionalSettingsComponent {
     ConfigFlags.CHARTCOLORS,
     ConfigFlags.HEATMAPCOLOR,
     ConfigFlags.THRESHOLDS,
-    ConfigFlags.GOALS
+    ConfigFlags.GOALS,
+    ConfigFlags.DESCRIPTION
   ];
 
   advSettingsOpen: number = 0;
@@ -182,6 +183,10 @@ export class MsfDashboardAdditionalSettingsComponent {
 
       case 6:
         configFlag = ConfigFlags.GOALS;
+        break;
+
+      case 7:
+        configFlag = ConfigFlags.DESCRIPTION;
         break;
     }
 
