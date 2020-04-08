@@ -2393,8 +2393,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
             .mat-form-field-appearance-outline .mat-form-field-outline-thick
                 color: $font-color !important
-        .msf-dashboard-panel-step-variables-buttons
-            background-color: $background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -11955,10 +11953,22 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .msf-dashboard-panel-step-variables-edit
             height: calc(100% - 50px) !important
         .msf-dashboard-panel-step-variables-buttons
+            display: flex !important
             height: 50px !important
-            padding-top: 15px !important
-            padding-bottom: 5px !important
-            margin-top: 10px !important
+            padding: 20px 20px 0px 20px !important
+            .edit-label
+                display: flex
+                width: 100%
+                font-size: 14px
+                font-weight: 500
+                .mat-icon
+                    margin-top: 5px
+                    margin-right: 10px
+                .edit-text
+                    margin-top: 10px
+            .msf-dashboard-assistant-step-button
+                width: 100px
+                height: 40px
         .msf-dashboard-assistant-cancel-button
             margin-right: 7px
         .msf-dashboard-name-step

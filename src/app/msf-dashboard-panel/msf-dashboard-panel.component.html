@@ -33,9 +33,13 @@
           <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
           Control Variables
         </div>
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(5)">
+        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(5)" *ngIf="!isDynTablePanel()">
           <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
           Distribution Chart
+        </div>
+        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
+          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
+          Distribution Table
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 1">
@@ -240,6 +244,15 @@
                   <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
                   {{controlVariable.label}}
                 </ng-template>
+                <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-buttons" [ngStyle]="{ 'display': checkEditVisibility() }">
+                  <div class="edit-label"><mat-icon>edit</mat-icon><div class="edit-text">Edit Control Variable</div></div>
+                  <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                  <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
+                    Save
+                  </button>
+                </div>
                 <div class="msf-dashboard-assistant-tab-container msf-dashboard-assistant-edit-tab-container">
                   <div class="msf-dashboard-control-panel-variable-tab-container msf-dashboard-assistant-edit-tab-container msf-control-variables-overlay">
                     <div class="msf-dashboard-control-panel-variable-arguments">
@@ -281,14 +294,6 @@
                 </div>
               </mat-tab>
             </mat-tab-group>
-          </div>
-          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-buttons" [ngStyle]="{ 'display': checkEditVisibility() }">
-            <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
-              Cancel
-            </button>
-            <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
-              Refresh
-            </button>
           </div>
         </div>
       </div>
