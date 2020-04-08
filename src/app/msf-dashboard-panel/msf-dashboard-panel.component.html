@@ -23,7 +23,7 @@
         </div>
         <div class="msf-dashboard-panel-step-selector" (click)="selectStep(2)">
           <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
-          Chart Type
+          Panel Type
         </div>
         <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
           <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
@@ -58,7 +58,7 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Chart Type Selection</span>
-            <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
+            <mat-radio-group [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
               <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
                 Basic
               </mat-radio-button>
@@ -69,15 +69,15 @@
           </div>
           <div class="msf-dashboard-assistant-chart-picker-scroll">
             <div class="msf-dashboard-assistant-chart-picker">
-              <ng-container *ngFor="let chartType of chartTypes2">
-                <div *ngIf="checkChartMode(chartType)" (click)="selectChartType(chartType)"
-                     [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }">
+              <ng-container *ngFor="let panelType of panelTypes">
+                <div *ngIf="checkPanelType(panelType)" (click)="selectPanelType(panelType)"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedPanelType !== panelType, 'msf-dashboard-assistant-chart-item-selected' : selectedPanelType === panelType }">
                   <span class="chart-item-image">
-                    <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}" />
+                    <img src="../../assets/images/{{globals.theme}}-{{panelType.image}}" />
                   </span>
                   <div class="chart-item-label">
                     <div class="label-align">
-                      {{chartType.name}}
+                      {{panelType.name}}
                     </div>
                   </div>
                 </div>
@@ -137,10 +137,9 @@
           </div>
         </div>
       </div>
-      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 4">
+      <div [ngClass]="{ 'msf-dashboard-panel-container-invisible': selectedStep != 4, 'msf-dashboard-panel-step-content': selectedStep == 4 }">
         <div [ngClass]="{ 'msf-dashboard-panel-container-invisible': stepLoading != 4, 'msf-dashboard-panel-step-loading': stepLoading == 4 }"></div>
         <div [ngClass]="{ 'msf-dashboard-panel-container-invisible': stepLoading == 4, 'msf-dashboard-panel-step-item': stepLoading != 4 }">
-
           <div [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
             <div class="msf-dashboard-assistant-content">
               <div class="msf-dashboard-assistant-tab-group">
@@ -233,7 +232,6 @@
               </div>
             </div>
           </div>
-
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit" [ngStyle]="{ 'display': checkEditVisibility() }">
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">

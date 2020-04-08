@@ -80,7 +80,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   paletteColors: string[];
 
-  chartTypes2: any[] = [
+  panelTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
     { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', createSeries: this.createSimpleVertColumnSeries, allowedInAdvancedMode: true },
@@ -96,6 +96,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
+    { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false }
   ];
 
   chartTypes: any[] = [
@@ -320,6 +321,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   dialogData: any;
 
   // dashboard interface values
+  selectedPanelType: any = this.panelTypes[0];
   selectedStep: number = 1;
   stepLoading: number = 0;
 
@@ -331,7 +333,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   configTableLoading: boolean = false;
   configuredControlVariables: boolean = false;
   tempOptionCategories: any = null;
-  chartMode: string = "basic";
+  panelMode: string = "basic";
 
   @ViewChild("configTabs", { static: false })
   configTabs: MatTabGroup;
@@ -4560,9 +4562,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkChartType(): void
   {
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-      this.chartMode = "advanced";
+      this.panelMode = "advanced";
     else
-      this.chartMode = "basic";
+      this.panelMode = "basic";
 
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
@@ -6678,7 +6680,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         if (values)
         {
-          if (values.chartMode === "advanced")
+          if (values.panelMode === "advanced")
             values.currentChartTypeName = "Advanced " + values.currentChartTypeName;
 
           for (let chartType of this.chartTypes)
@@ -7906,35 +7908,63 @@ export class MsfDashboardPanelComponent implements OnInit {
     return "../../assets/images/dark-theme-masFlight-logo.png";
   }
 
-  checkChartTypeSelection(): void
+  checkPanelTypeSelection(): void
   {
-/*    this.selectingAnalysis = null;
+    this.selectingAnalysis = null;
     this.analysisSelected = null;
 
-    if (this.chartMode === "advanced")
+    if (this.panelMode === "advanced")
     {
-      if (!this.selectedChartType.allowedInAdvancedMode)
-        this.selectedChartType = this.chartTypes[0];
+      if (!this.selectedPanelType.allowedInAdvancedMode)
+        this.selectedPanelType = this.panelTypes[0];
 
       this.selectingXAxis = null;
       this.xAxisSelected = null;
       this.selectingValue = null;
       this.valueSelected = null;
-      this.startAtZero = false;
+//      this.startAtZero = false;
     }
     else
     {
       this.selectingAggregationValue = null;
       this.aggregationValueSelected = null;
 
-      if (!this.isLineOrBarChart ())
-        this.startAtZero = false;
-    }*/
+//      if (!this.isLineOrBarChart ())
+//        this.startAtZero = false;
+    }
   }
 
-  checkChartMode(chartType): boolean
+  selectPanelType(panelType): void
   {
-    if (!chartType.allowedInAdvancedMode && this.values.currentChartType.flags & ChartFlags.ADVANCED)
+    this.selectedPanelType = panelType;
+    this.selectingXAxis = null;
+    this.selectingAnalysis = null;
+    this.selectingValue = null;
+    this.selectingAggregationValue = null;
+
+    // Remove X Axis selection if the chart type doesn't use it
+    //if (!this.haveXAxis ())
+    //  this.xAxisSelected = null;
+
+    // Remove analysis selection if the simple chart uses intervals
+    if (this.panelMode === "advanced" && !(this.selectedPanelType.flags & ChartFlags.XYCHART))
+      this.analysisSelected = null;
+
+    for (let chart of this.chartTypes)
+    {
+      if (chart.name === panelType.name)
+      {
+        this.values.currentChartType = chart;
+        break;
+      }
+    }
+
+    this.checkChartType ();
+  }
+
+  checkPanelType(chartType): boolean
+  {
+    if (!chartType.allowedInAdvancedMode && this.panelMode === "advanced")
       return false;
 
     return true;
@@ -7964,6 +7994,22 @@ export class MsfDashboardPanelComponent implements OnInit {
       case 5:
         this.stepLoading = 5;
         break;
+
+      case 2:
+        // set panel type for the interface
+        for (let type of this.panelTypes)
+        {
+          if (this.values.currentChartType.name === type.name)
+          {
+            this.selectedPanelType = type;
+            break;
+          }
+        }
+
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+          this.panelMode = "advanced";
+        else
+          this.panelMode = "basic";
 
       default:
         this.stepLoading = 0;
