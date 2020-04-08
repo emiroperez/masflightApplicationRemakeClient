@@ -7916,21 +7916,34 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.panelMode === "advanced")
     {
       if (!this.selectedPanelType.allowedInAdvancedMode)
+      {
         this.selectedPanelType = this.panelTypes[0];
+
+        for (let chart of this.chartTypes)
+        {
+          if (chart.name === this.selectedPanelType.name)
+          {
+            this.values.currentChartType = chart;
+            break;
+          }
+        }
+
+        this.checkChartType ();
+      }
 
       this.selectingXAxis = null;
       this.xAxisSelected = null;
       this.selectingValue = null;
       this.valueSelected = null;
-//      this.startAtZero = false;
+      this.values.startAtZero = false;
     }
     else
     {
       this.selectingAggregationValue = null;
       this.aggregationValueSelected = null;
 
-//      if (!this.isLineOrBarChart ())
-//        this.startAtZero = false;
+      if (!this.isLineOrBarChart ())
+        this.values.startAtZero = false;
     }
   }
 
