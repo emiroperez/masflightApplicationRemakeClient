@@ -96,6 +96,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
+    { name: 'Table', flags: ChartFlags.TABLE, image: 'table.png', allowedInAdvancedMode: false },
     { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false }
   ];
 
@@ -4561,11 +4562,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
-    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-      this.panelMode = "advanced";
-    else
-      this.panelMode = "basic";
-
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       if (this.values.urlImg && this.values.urlImg != "")
@@ -7887,6 +7883,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   selectPanelType(panelType): void
   {
+    let name = panelType.name;
+
     this.selectedPanelType = panelType;
     this.selectingXAxis = null;
     this.selectingAnalysis = null;
@@ -7894,12 +7892,15 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.selectingAggregationValue = null;
 
     // Remove X Axis selection if the chart type doesn't use it
-    //if (!this.haveXAxis ())
-    //  this.xAxisSelected = null;
+    if (!this.haveXAxis ())
+      this.xAxisSelected = null;
 
     // Remove analysis selection if the simple chart uses intervals
     if (this.panelMode === "advanced" && !(this.selectedPanelType.flags & ChartFlags.XYCHART))
       this.analysisSelected = null;
+
+    if (this.panelMode === "advanced")
+      name = "Advanced " + name;
 
     for (let chart of this.chartTypes)
     {
@@ -7943,7 +7944,12 @@ export class MsfDashboardPanelComponent implements OnInit {
         break;
 
       case 5:
-        this.stepLoading = 5;
+        if (!this.msfConfigTableRef.dataSource)
+        {
+          this.stepLoading = 5;
+          this.configTableLoading = true;
+          this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
+        }
         break;
 
       case 2:
@@ -8712,6 +8718,49 @@ export class MsfDashboardPanelComponent implements OnInit {
   dynTableHasValues(): boolean
   {
     if (this.values.dynTableValues && this.values.dynTableValues.length)
+      return true;
+
+    return false;
+  }
+
+  hoverTableColumn(index): void
+  {
+    if (this.lastColumn !== index)
+      this.lastColumn = index;
+  }
+
+  setChartValue(): void
+  {
+    if (this.selectingAnalysis)
+    {
+      this.analysisSelected = this.lastColumn;
+      this.selectingAnalysis = false;
+    }
+
+    if (this.selectingXAxis)
+    {
+      this.xAxisSelected = this.lastColumn;
+      this.selectingXAxis = false;
+    }
+
+    if (this.selectingValue)
+    {
+      this.valueSelected = this.lastColumn;
+      this.selectingValue = false;
+    }
+
+    if (this.selectingAggregationValue)
+    {
+      this.aggregationValueSelected = this.lastColumn;
+      this.selectingAggregationValue = false;
+    }
+
+    this.lastColumn = null;
+  }
+
+  haveXAxis(): boolean
+  {
+    if (this.selectedPanelType.flags & ChartFlags.XYCHART)
       return true;
 
     return false;

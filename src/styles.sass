@@ -8959,15 +8959,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-assistant-step1-edit-right
     height: calc(100% + 5px)
 
-.msf-dashboard-assistant-chart-type-label
-    font-weight: 550
-    font-size: 14px
-    margin-left: 10px
-
 .msf-dashboard-assistant-min-value-at-zero
-    margin-left: 365px
-    margin-top: -1px
-    height: 18px
+    display: flex
+    flex-direction: column
+    text-align: left
+    .cancels-checkbox
+        font-size: 11px
 
 .msf-dashboard-assistant-interval-mode
     margin-left: 295px
@@ -8979,13 +8976,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-config-buttons
     display: flex
+    width: 100%
+    margin-top: -15px
     .msf-dashboard-assistant-chart-config-space
         margin: 20px 7px
         padding: 10px
         width: 102px
     .msf-dashboard-assistant-chart-config-button
         margin: 20px 7px
-        padding: 10px
+        padding: 10px 0px
         width: 100px
         font-weight: 550
         border-width: 1px
@@ -9062,8 +9061,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         color: #ffffff
 
 .msf-dashboard-select-distribution-chart-table-container
-    width: 730px
-    height: calc(100% - 78px)
+    margin-left: -10px
+    height: calc(100% - 54px)
+    width: calc(100% + 20px)
     .msf-dashboard-select-distribution-chart-table
         height: 100%
         overflow: auto
@@ -12003,6 +12003,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             width: calc(100% - 20px)
             .msf-dashboard-assistant-chart-mode
                 margin-top: 10px
+            .table-config-label
+                margin-top: 5px
+                align-self: baseline
+            .table-column-list
+                margin-top: 15px
+                margin-bottom: 0px !important
+                height: 100%
         .msf-dashboard-panel-step-variables-edit
             height: calc(100% - 50px) !important
         .msf-dashboard-panel-step-variables-buttons

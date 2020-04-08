@@ -34,11 +34,11 @@
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
             <span class="step-label">Control Variables</span>
           </div>
-          <div [ngClass]="values.currentOption && values.currentOptionCategories ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel()">
+          <div [ngClass]="values.currentOption && values.currentOptionCategories ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel()">
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
             <span class="step-label">Distribution Chart</span>
           </div>
-          <div [ngClass]="values.currentOption && values.currentOptionCategories ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
+          <div [ngClass]="values.currentOption && values.currentOptionCategories ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel() || isTablePanel()">
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
             <span class="step-label">Distribution Table</span>
           </div>
@@ -315,18 +315,76 @@
           </div>
         </div>
       </div>
-      <!--
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 5">
         <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5"></div>
         <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
 
           <div style="display: flex">
-            <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
-            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="chartMode !== 'advanced' && isLineOrBarChart()">
-              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
-              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
+            <div class="msf-dashboard-assistant-chart-config-buttons">
+              <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
+                   [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }"
+                   (click)="selectAnalysis()">
+                Analysis by
+              </div>
+              <ng-container *ngIf="panelMode === 'basic'">
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-axis-button': !xAxisSelected, 'msf-dashboard-assistant-chart-config-axis-button-selected': (xAxisSelected || (!xAxisSelected && selectingXAxis)) }"
+                     (click)="selectXAxis()" *ngIf="haveXAxis()">
+                  X - Axis
+                </div>
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
+                     (click)="selectValue()">
+                  Values
+                </div>
+                <div class="assistant-function-combobox">
+                  <mat-form-field>
+                    <mat-select placeholder="Function" [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
+                      <mat-option *ngFor="let fun of functions" [value]="fun">
+                        {{fun.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="panelMode === 'advanced'">
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }"
+                     (click)="selectAggregationValue()">
+                  Aggregation Value
+                </div>
+                <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
+              </ng-container>
+              <!--
+    <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()"
+         (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()"
+         [style.margin-left.px]="calcMargin()">
+      <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
+           src="../../assets/images/{{globals.theme}}-chart-preview.png" />
+      <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
+           src="../../assets/images/dark-theme-chart-preview.png" />
+      Chart Preview
+    </div>
+    <div class="msf-dashboard-assistant-space" *ngIf="panelMode === 'advanced' && !isChartConfigured()"></div>
+    -->
+              <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="panelMode === 'advanced'">
+                <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
+                  <mat-form-field>
+                    <mat-select placeholder="Ncile" [(ngModel)]="ncile">
+                      <mat-option *ngFor="let value of nciles" [value]="value">
+                        {{value}}%
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="assistant-function-combobox" *ngIf="intervalType === 'value'">
+                  <mat-form-field>
+                    <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="intValue">
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
-            <div class="msf-dashboard-assistant-interval-mode" *ngIf="chartMode === 'advanced'">
+            <div class="msf-dashboard-assistant-interval-mode" *ngIf="panelMode === 'advanced'">
               <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
               <mat-radio-group [(ngModel)]="values.intervalType">
                 <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'ncile'">
@@ -337,73 +395,15 @@
                 </mat-radio-button>
               </mat-radio-group>
             </div>
-          </div>
-          <div class="msf-dashboard-assistant-chart-config-buttons">
-            <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
-                 [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }"
-                 (click)="selectAnalysis()">
-              Analysis by
-            </div>
-            <ng-container *ngIf="chartMode === 'basic'">
-              <div class="msf-dashboard-assistant-chart-config-button"
-                   [ngClass]="{ 'msf-dashboard-assistant-chart-config-axis-button': !xAxisSelected, 'msf-dashboard-assistant-chart-config-axis-button-selected': (xAxisSelected || (!xAxisSelected && selectingXAxis)) }"
-                   (click)="selectXAxis()" *ngIf="haveXAxis()">
-                X - Axis
-              </div>
-              <div class="msf-dashboard-assistant-chart-config-button"
-                   [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
-                   (click)="selectValue()">
-                Values
-              </div>
-              <div class="assistant-function-combobox">
-                <mat-form-field>
-                  <mat-select placeholder="Function" [(ngModel)]="function">
-                    <mat-option *ngFor="let fun of functions" [value]="fun">
-                      {{fun.name}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </ng-container>
-            <ng-container *ngIf="chartMode === 'advanced'">
-              <div class="msf-dashboard-assistant-chart-config-button"
-                   [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }"
-                   (click)="selectAggregationValue()">
-                Aggregation Value
-              </div>
-              <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
-            </ng-container>
-            <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()"
-                 (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()"
-                 [style.margin-left.px]="calcMargin()">
-              <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
-                   src="../../assets/images/{{globals.theme}}-chart-preview.png" />
-              <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
-                   src="../../assets/images/dark-theme-chart-preview.png" />
-              Chart Preview
-            </div>
-            <div class="msf-dashboard-assistant-space" *ngIf="chartMode === 'advanced' && !isChartConfigured()"></div>
-            <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="chartMode === 'advanced'">
-              <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
-                <mat-form-field>
-                  <mat-select placeholder="Ncile" [(ngModel)]="ncile">
-                    <mat-option *ngFor="let value of nciles" [value]="value">
-                      {{value}}%
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div class="assistant-function-combobox" *ngIf="intervalType === 'value'">
-                <mat-form-field>
-                  <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="intValue">
-                </mat-form-field>
-              </div>
+            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && isLineOrBarChart()">
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
             </div>
           </div>
           <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
             <div class="results-container msf-dashboard-select-distribution-chart-table">
-              <table mat-table [dataSource]="msfTableRef.dataSource" class="mat-elevation-z8 datasource results">
-                <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfTableRef.metadata; let i = index">
+              <table mat-table [dataSource]="msfConfigTableRef.dataSource" class="mat-elevation-z8 datasource results">
+                <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfConfigTableRef.metadata; let i = index">
                   <th class="msf-show-table" [ngClass]="{
                     'distribution-chart-column-analysis-header-hover' : (lastColumn === column && selectingAnalysis),
                     'distribution-chart-column-analysis-header-selected' : analysisSelected === column,
@@ -466,15 +466,14 @@
                     </span>
                   </td>
                 </ng-container>
-                <tr mat-header-row *matHeaderRowDef="msfTableRef.displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: msfTableRef.displayedColumns;" [style.height.px]="40"></tr>
+                <tr mat-header-row *matHeaderRowDef="msfConfigTableRef.displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: msfConfigTableRef.displayedColumns;" [style.height.px]="40"></tr>
               </table>
             </div>
           </div>
 
         </div>
       </div>
-      -->
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 6">
         <div class="msf-dashboard-panel-step-item msf-dashboard-panel-dyn-table-item" *ngIf="isDynTablePanel()">
           <div class="dynamic-table-config-values-container">
@@ -515,6 +514,21 @@
           <button mat-button class="dynamic-table-config-button flat-button" (click)="configureDynamicTable()">
             Configure Dynamic Table
           </button>
+        </div>
+        <div class="msf-dashboard-panel-step-item msf-dashboard-panel-dyn-table-item" *ngIf="isTablePanel()">
+          <div class="msf-dashboard-addmenu-icon-item table-config-label">
+            <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
+            <span class="msf-dashboard-addmenu-item-text">Column Selector</span>
+          </div>
+          <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-form-column table-column-list" id="msf-dashboard-panel-form-container-column" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.tableVariables.length > 2) || (values.height.value >= 6 && values.tableVariables.length > 3)) ? 'scroll' : 'hidden'}">
+            <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-table-container-row" *ngFor="let tableVariable of values.tableVariables">
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container">
+                <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked">
+                  {{tableVariable.name}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
