@@ -113,7 +113,7 @@
                                      'msf-show' : node.show == null,
                                      'msf-hide': node.show == false }"
                                      *matTreeNodeDef="let node" matTreeNodePadding>
-                        <mat-radio-button class="cancels-checkbox select-data-from-radio" (checked)="selectedItem == node" (click)="selectItem(node)">
+                        <mat-radio-button class="cancels-checkbox select-data-from-radio" [checked]="selectedItem == node" (click)="selectItem(node)">
                           {{node.label}}
                         </mat-radio-button>
                       </mat-tree-node>

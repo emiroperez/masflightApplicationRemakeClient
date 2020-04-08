@@ -322,10 +322,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   // dashboard interface values
   selectedStep: number = 1;
   stepLoading: number = 0;
+
   menuCategories: any[] = [];
+  selectedItem: any = null;
+
   hasChild = (_: number, node: any) => (node.expandable);
+
   configTableLoading: boolean = false;
   configuredControlVariables: boolean = false;
+  tempOptionCategories: any = null;
+  chartMode: string = "basic";
 
   @ViewChild("configTabs", { static: false })
   configTabs: MatTabGroup;
@@ -400,10 +406,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
   }
 
-  triggerResize() {
+  triggerResize()
+  {
     // Wait for changes to be applied, then trigger textarea resize.
-    this.zone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
+    this.zone.onStable.pipe (take (1)).subscribe (() => this.autosize.resizeToFitContent (true));
   }
 
   ngOnInit()
@@ -4553,6 +4559,11 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+      this.chartMode = "advanced";
+    else
+      this.chartMode = "basic";
+
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       if (this.values.urlImg && this.values.urlImg != "")
@@ -7923,7 +7934,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   checkChartMode(chartType): boolean
   {
-    if (!chartType.allowedInAdvancedMode/* && this.chartMode === "advanced"*/)
+    if (!chartType.allowedInAdvancedMode && this.values.currentChartType.flags & ChartFlags.ADVANCED)
       return false;
 
     return true;
@@ -7932,6 +7943,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   selectStep(step: number): void
   {
     this.selectedStep = step;
+    this.menuCategories = [];
 
     switch (this.selectedStep)
     {
@@ -7939,6 +7951,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (!this.menuCategories.length)
         {
           this.stepLoading = 3;
+          this.selectedItem = null;
           this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
         }
         break;
@@ -7967,12 +7980,19 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (!data.length)
     {
-      _this.stepLoading = 0;
+      // load table when there are no control variables
+      _this.configTableLoading = true;
+      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
       return;
     }
 
     if (_this.tabs)
       _this.configTabs.realignInkBar ();
+
+    if (_this.values.currentOptionCategories == null)
+      _this.tablePreview = false;
+    else
+      _this.tablePreview = true;
 
     data = data.sort((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
 
@@ -8072,8 +8092,17 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.values.currentOptionCategories = optionCategories;
     _this.configureControlVariables ();
-    _this.configTableLoading = true;
-    _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
+
+    if (_this.tablePreview)
+    {
+      _this.configTableLoading = true;
+      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
+    }
+    else
+    {
+      _this.stepLoading = 0;
+      _this.changeDetectorRef.detectChanges();
+    }
   }
 
   loadConfigTableData(handlerSuccess, handlerError): void
@@ -8095,7 +8124,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=0";
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=25&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -8211,8 +8240,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
     this.changeDetectorRef.detectChanges ();
   }
-
-  tempOptionCategories: any;
 
   cancelEdit(): void
   {
@@ -8391,6 +8418,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         flatNode.finalRol = node.finalRol;
         flatNode.typeOption = node.typeOption;
         flatNode.welcome = node.welcome;
+
+        if (_this.values.currentOption.id == flatNode.id && !_this.selectedItem)
+          _this.selectedItem = flatNode;
     
         menuCategory.flatNodeMap.set (flatNode, node);
         menuCategory.nestedNodeMap.set (node, flatNode);
@@ -8586,5 +8616,66 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.analysisSelected = null;
     this.xAxisSelected = null;
     this.valueSelected = null;
+  }
+
+  selectItem(item): void
+  {
+    this.selectedItem = item;
+
+    for (let option of this.values.options)
+    {
+      if (option.id == item.id)
+      {
+        this.values.currentOption = option;
+        break;
+      }
+    }
+
+    this.loadChartFilterValues (this.values.currentOption);
+  }
+
+  filterMenuOptions(menuCategory): void
+  {
+    for (let index = 0; index < menuCategory.treeControl.dataNodes.length; index++)
+    {
+      const option = menuCategory.treeControl.dataNodes[index];
+
+      this.setShowOption (option, menuCategory.searchLabel);
+      this.recursiveOption (option, menuCategory.searchLabel);
+    }
+
+    if (menuCategory.searchLabel)
+      menuCategory.treeControl.expandAll ();
+    else
+      menuCategory.treeControl.collapseAll ();
+  }
+
+  recursiveOption(option: any, searchLabel: string): void
+  {
+    if (option.children.length)
+    {
+      for (let index = 0; index < option.children.length; index++)
+      {
+        const element = option.children[index];
+  
+        this.setShowOption (element, searchLabel);
+        this.recursiveOption (element, searchLabel);
+      }
+    }
+    else
+      this.setShowOption (option, searchLabel);
+  }
+
+  setShowOption(option: any, searchLabel: string): void
+  {
+    if (searchLabel != "" && searchLabel != null)
+    {
+      if (option.label.toLowerCase ().indexOf (searchLabel.toLowerCase ()) != -1)
+        option.show = true;
+      else
+        option.show = false;
+    }
+    else
+      option.show = true;
   }
 }
