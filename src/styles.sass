@@ -2367,20 +2367,20 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $font-color
         .msf-dashboard-panel-steps
             background-color: $dashboard-assistant-sub-background-color
-            .msf-dashboard-panel-step-selector
+            .msf-dashboard-panel-step-selector, .msf-dashboard-panel-step-selector-disabled
                 border-bottom: 2px solid $background-color
                 .msf-dashboard-panel-step-circle
                     background-color: $background-color
                     border: 3px solid $tertiary-background-color
-                &:hover
-                    background-color: $primary-color
-                    color: #ffffff
-                    .msf-dashboard-panel-step-circle
-                        background-color: $primary-color
-                        border: 3px solid #ffffff
-                        .mat-icon
-                            color: $dashboard-assistant-analysis-font-color !important
                 .msf-dashboard-panel-step-circle-selected
+                    background-color: $primary-color
+                    border: 3px solid #ffffff
+                    .mat-icon
+                        color: $dashboard-assistant-analysis-font-color !important
+            .msf-dashboard-panel-step-selector:hover
+                background-color: $primary-color
+                color: #ffffff
+                .msf-dashboard-panel-step-circle
                     background-color: $primary-color
                     border: 3px solid #ffffff
                     .mat-icon
@@ -2393,6 +2393,29 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
             .mat-form-field-appearance-outline .mat-form-field-outline-thick
                 color: $font-color !important
+        .msf-dashboard-panel-dyn-table-item
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            .dynamic-table-config-values-container
+                display: grid
+                grid-row-gap: 20px
+                height: 50%
+                margin-bottom: 20px
+                .dynamic-table-config-value
+                    display: flex
+                    align-items: center
+                    border-radius: 5px
+                    padding: 15px
+                    box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06) !important
+                    .value-label
+                        margin-left: 5px
+                        margin-right: 5px
+        .msf-dashboard-panel-button-separator
+            background-color: $background-color
+        .dynamic-table-config-value
+            background-color: $background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -11924,13 +11947,22 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 225px
         min-width: 225px
         margin-right: 10px
-        overflow-y: auto
+        .msf-dashboard-panel-steps-container
+            height: calc(100% - 60px)
+            overflow-y: auto
         .msf-dashboard-panel-step-selector
+            cursor: pointer
+        .msf-dashboard-panel-step-selector-disabled
+            cursor: not-allowed
+            .msf-dashboard-panel-step-circle
+                opacity: 0.25
+            .step-label
+                opacity: 0.25
+        .msf-dashboard-panel-step-selector, .msf-dashboard-panel-step-selector-disabled
             display: flex
             height: 60px
             align-items: center
             padding-left: 10px
-            cursor: pointer
             .msf-dashboard-panel-step-circle
                 width: 20px
                 height: 20px
@@ -11941,6 +11973,27 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     font-size: 15px !important
                     width: 15px !important
                     height: 15px !important
+        .msf-dashboard-panel-step-button-container
+            display: flex
+            flex-direction: row
+            height: 60px
+            width: 100%
+            .msf-dashboard-panel-generate-button, .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-cancel-button
+                display: flex
+                flex-direction: column
+                height: 60px
+                align-items: center
+                cursor: pointer
+                justify-content: center
+                font-weight: 500
+                border-radius: 0 !important
+            .msf-dashboard-panel-generate-button
+                width: 100%
+            .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-cancel-button
+                width: calc(50% - 1px)
+            .msf-dashboard-panel-button-separator
+                height: 60px
+                width: 2px
     .msf-dashboard-panel-step-content
         width: calc(100% - 235px)
         height: inherit
@@ -11970,7 +12023,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 width: 100px
                 height: 40px
         .msf-dashboard-assistant-cancel-button
-            margin-right: 7px
+            margin-left: 7px
         .msf-dashboard-name-step
             display: flex
             flex-direction: column

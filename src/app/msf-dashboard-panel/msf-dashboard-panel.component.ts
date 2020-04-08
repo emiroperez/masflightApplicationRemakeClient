@@ -6725,68 +6725,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     );
   }
 
-  orderVariable(elements)
-  {
-    if (elements)
-    {
-      let elementsOrdered;
-
-      for (let element of elements)
-      {
-        if (!element.direction)
-          element.direction = "vertical";
-
-        if(element.order == null)
-        {
-          element.order = this.dynTableOrder;  
-          this.dynTableOrder++;  
-        }      
-      }
-
-      elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
-      this.values.dynTableVariables = elementsOrdered;
-    }
-
-    this.checkPanelConfiguration ();
-  }
-
-  orderValues(elements)
-  {
-    if (elements)
-    {
-      let elementsOrdered;
-
-      for (let element of elements)
-      {
-        if (element.order == null)
-        {
-          element.order = this.dynTableOrderValue;  
-          this.dynTableOrderValue++;  
-        }      
-      }
-
-      elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
-      this.values.dynTableValues = elementsOrdered;
-    }
-
-    this.checkPanelConfiguration ();
-  }
-
-  deleteVariable(variable): void
-  {
-    variable.order = null;
-    this.values.dynTableVariables.splice (this.values.dynTableVariables.indexOf (variable), 1);
-    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables)); // force update on the variables combo box
-  }
-
-  changeVariableDirection(variable): void
-  {
-    if (variable.direction === "vertical")
-      variable.direction = "horizontal";
-    else
-      variable.direction = "vertical";
-  }
-
   isDynamicTableSet(): boolean
   {
     if (!this.isDynamicTableVariablesSet () || !this.dynamicTableHasFunctions ())
@@ -8736,5 +8674,46 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else
       option.show = true;
+  }
+
+  resultsGenerated(): boolean
+  {
+    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated);
+  }
+
+  dynTableHasXAxis(): boolean
+  {
+    if (this.values.dynTableVariables)
+    {
+      for (let variable of this.values.dynTableVariables)
+      {
+        if (variable.direction === "horizontal")
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  dynTableHasYAxis(): boolean
+  {
+    if (this.values.dynTableVariables)
+    {
+      for (let variable of this.values.dynTableVariables)
+      {
+        if (variable.direction === "vertical")
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  dynTableHasValues(): boolean
+  {
+    if (this.values.dynTableValues && this.values.dynTableValues.length)
+      return true;
+
+    return false;
   }
 }

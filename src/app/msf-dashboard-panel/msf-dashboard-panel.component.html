@@ -17,29 +17,47 @@
     </div>
     <div class="msf-dashboard-panel-config-container">
       <div class="msf-dashboard-panel-steps">
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(1)">
-          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 1 }"><mat-icon *ngIf="selectedStep == 1">edit</mat-icon></div>
-          Panel Name
+        <div class="msf-dashboard-panel-steps-container">
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(1)">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 1 }"><mat-icon *ngIf="selectedStep == 1">edit</mat-icon></div>
+            <span class="step-label">Panel Name</span>
+          </div>
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(2)">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
+            <span class="step-label">Panel Type</span>
+          </div>
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
+            <span class="step-label">Select Source</span>
+          </div>
+          <div [ngClass]="values.currentOption ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(4)">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
+            <span class="step-label">Control Variables</span>
+          </div>
+          <div [ngClass]="values.currentOption && values.currentOptionCategories ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel()">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
+            <span class="step-label">Distribution Chart</span>
+          </div>
+          <div [ngClass]="values.currentOption && values.currentOptionCategories ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
+            <span class="step-label">Distribution Table</span>
+          </div>
         </div>
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(2)">
-          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
-          Panel Type
-        </div>
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
-          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
-          Select Source
-        </div>
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(4)">
-          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
-          Control Variables
-        </div>
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(5)" *ngIf="!isDynTablePanel()">
-          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
-          Distribution Chart
-        </div>
-        <div class="msf-dashboard-panel-step-selector" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
-          <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
-          Distribution Table
+        <div class="msf-dashboard-panel-step-button-container">
+          <ng-container *ngIf="resultsGenerated()">
+            <button mat-button class="msf-dashboard-panel-generate-button2" [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" [disabled]="!generateBtnEnabled" (click)="loadData()">
+              Generate
+            </button>
+            <div class="msf-dashboard-panel-button-separator"></div>
+            <button mat-button class="msf-dashboard-panel-cancel-button flat-button" (click)="goToResults()">
+              Cancel
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!resultsGenerated()">
+            <button mat-button class="msf-dashboard-panel-generate-button" [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" [disabled]="!generateBtnEnabled" (click)="loadData()">
+              Generate
+            </button>
+          </ng-container>
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 1">
@@ -246,11 +264,11 @@
                 </ng-template>
                 <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-buttons" [ngStyle]="{ 'display': checkEditVisibility() }">
                   <div class="edit-label"><mat-icon>edit</mat-icon><div class="edit-text">Edit Control Variable</div></div>
-                  <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
-                    Cancel
-                  </button>
                   <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
                     Save
+                  </button>
+                  <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
+                    Cancel
                   </button>
                 </div>
                 <div class="msf-dashboard-assistant-tab-container msf-dashboard-assistant-edit-tab-container">
@@ -457,6 +475,48 @@
         </div>
       </div>
       -->
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 6">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-panel-dyn-table-item" *ngIf="isDynTablePanel()">
+          <div class="dynamic-table-config-values-container">
+            <div class="dynamic-table-config-value">
+              X-Axis:
+              <ng-container *ngIf="dynTableHasXAxis()">
+                <ng-container *ngFor="let variable of values.dynTableVariables">
+                  <span class="value-label" *ngIf="variable.direction === 'horizontal'">{{variable.name}}</span>
+                </ng-container>
+              </ng-container>
+              <span class="value-label" *ngIf="!dynTableHasXAxis()">
+                None
+              </span>
+            </div>
+            <div class="dynamic-table-config-value">
+              Y-Axis:
+              <ng-container *ngIf="dynTableHasYAxis()">
+                <ng-container *ngFor="let variable of values.dynTableVariables">
+                  <span class="value-label" *ngIf="variable.direction === 'vertical'">{{variable.name}}</span>
+                </ng-container>
+              </ng-container>
+              <span class="value-label" *ngIf="!dynTableHasYAxis()">
+                None
+              </span>
+            </div>
+            <div class="dynamic-table-config-value">
+              Values:
+              <ng-container *ngIf="dynTableHasValues()">
+                <ng-container *ngFor="let variable of values.dynTableValues">
+                  <span class="value-label">{{variable.name}}</span>
+                </ng-container>
+              </ng-container>
+              <span class="value-label" *ngIf="!dynTableHasValues()">
+                None
+              </span>
+            </div>
+          </div>
+          <button mat-button class="dynamic-table-config-button flat-button" (click)="configureDynamicTable()">
+            Configure Dynamic Table
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <!--
