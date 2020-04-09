@@ -4734,6 +4734,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
       this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
 
+      if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
+        || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
+        this.values.function = this.functions[0];
+
       this.values.formVariables = [];
     }
 
@@ -7852,6 +7857,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!this.selectedPanelType.allowedInAdvancedMode)
       {
         this.selectedPanelType = this.panelTypes[0];
+
+        if (!this.values.function)
+          this.values.function = this.functions[0];
 
         for (let chart of this.chartTypes)
         {

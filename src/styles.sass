@@ -9028,10 +9028,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-picker
     display: grid
-    grid-template: repeat(2, 1fr) / repeat(5, 1fr)
+    grid-template-columns: repeat(auto-fill, 120px)
     grid-row-gap: 20px
     grid-column-gap: 1px
     height: 100%
+    margin-bottom: 15px
+    justify-content: center
     .msf-dashboard-assistant-chart-item, .msf-dashboard-assistant-chart-item-selected
         width: 100px
         height: 140px
@@ -9156,7 +9158,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin: -10px
     justify-content: center
     .select-data-menu-category
-        width: 417px
+        width: 351px
         .menu-category-header
             display: flex
             .menu-category-title
@@ -9239,6 +9241,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-assistant-chart-mode
     display: flex
     padding-bottom: 10px
+    .panel-type-combobox
+        margin-top: -17px
+        margin-left: 15px
+        margin-bottom: -12px
+        width: 150px !important
     .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
         border-color: #ffffff !important
     .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle

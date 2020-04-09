@@ -8,10 +8,10 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width < 3 || values.height < 7) && !dialogData)">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width <= 3 || values.height <= 6) && !dialogData)">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width >= 3 && values.height >= 7) || dialogData)">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width > 3 && values.height > 6) || dialogData)">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       {{values.chartName}}
     </div>
@@ -80,14 +80,12 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Panel Type Selection</span>
-            <mat-radio-group [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
-              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
-                Basic
-              </mat-radio-button>
-              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'advanced'">
-                Advanced
-              </mat-radio-button>
-            </mat-radio-group>
+            <mat-form-field class="msf-full-width panel-type-combobox">
+              <mat-select [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
+                <mat-option [value]="'basic'">Basic</mat-option>
+                <mat-option [value]="'advanced'">Advanced</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
           <div class="msf-dashboard-assistant-chart-picker-scroll">
             <div class="msf-dashboard-assistant-chart-picker">
