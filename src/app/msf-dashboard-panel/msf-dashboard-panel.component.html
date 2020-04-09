@@ -90,7 +90,7 @@
           <div class="msf-dashboard-assistant-chart-picker-scroll">
             <div class="msf-dashboard-assistant-chart-picker">
               <ng-container *ngFor="let panelType of panelTypes">
-                <div *ngIf="checkPanelType(panelType)" (click)="selectPanelType(panelType)"
+                <div id="{{panelType.name}}-panel" *ngIf="checkPanelType(panelType)" (click)="selectPanelType(panelType)"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedPanelType !== panelType, 'msf-dashboard-assistant-chart-item-selected' : selectedPanelType === panelType }">
                   <span class="chart-item-image">
                     <img src="../../assets/images/{{globals.theme}}-{{panelType.image}}" />
@@ -184,7 +184,7 @@
                               Edit
                             </button>
                           </div>
-                          <div class="msf-dashboard-assistant-argument">
+                          <div class="msf-dashboard-assistant-argument msf-dashboard-assistant-argument-scroll">
                             <div class="msf-dashboard-assistant-argument-container"
                                  *ngFor="let argument of controlVariable.arguments">
                               <div class="msf-block" *ngIf="argument.name1">

@@ -7870,6 +7870,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
+        this.scrollSelectedPanelIntoView ();
         this.checkChartType ();
       }
 
@@ -7976,10 +7977,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         else
           this.panelMode = "basic";
 
+        this.changeDetectorRef.detectChanges ();
+        this.scrollSelectedPanelIntoView ();
+
       default:
         this.stepLoading = 0;
         break;
     }
+  }
+
+  scrollSelectedPanelIntoView(): void
+  {
+    let target;
+
+    target = document.getElementById (this.selectedPanelType.name + "-panel");
+    target.parentNode.parentNode.scrollTop = target.offsetTop - 107;
   }
 
   setCategories(_this, data): void
@@ -7996,9 +8008,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
       return;
     }
-
-    if (_this.tabs)
-      _this.configTabs.realignInkBar ();
 
     if (_this.values.currentOptionCategories == null)
       _this.tablePreview = false;
@@ -8112,7 +8121,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
     {
       _this.stepLoading = 0;
-      _this.changeDetectorRef.detectChanges();
+      _this.changeDetectorRef.detectChanges ();
+      _this.editTabs.realignInkBar ();
     }
   }
 
@@ -8257,6 +8267,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
     this.tablePreview = true;
     this.tempOptionCategories = null;
+    this.changeDetectorRef.detectChanges ();
+    this.configTabs.realignInkBar ();
   }
 
   goToEditor(): void
@@ -8598,11 +8610,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   finishLoadingConfigTable(error): void
   {
-    if (this.values.currentOptionCategories)
-      this.configTabs.realignInkBar ();
-
     this.stepLoading = 0;
     this.configTableLoading = false;
+
+    this.changeDetectorRef.detectChanges ();
+
+    if (this.configTabs)
+      this.configTabs.realignInkBar ();
 
     if (error)
     {
