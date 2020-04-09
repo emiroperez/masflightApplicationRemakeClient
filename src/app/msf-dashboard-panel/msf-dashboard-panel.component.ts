@@ -8117,6 +8117,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.configTableLoading = true;
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
+/*      _this.stepLoading = 0;
+      _this.changeDetectorRef.detectChanges ();
+      _this.configTabs.realignInkBar ();*/
     }
     else
     {
@@ -8276,7 +8279,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.tempOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.tablePreview = false;
     this.changeDetectorRef.detectChanges ();
-    this.editTabs.realignInkBar ();
+    this.editTabs.realignInkBar();
+    this.editTabs._tabHeader._alignInkBarToSelectedTab ();
   }
 
   isTitleOnly(argument: Arguments): boolean

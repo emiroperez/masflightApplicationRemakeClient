@@ -163,10 +163,10 @@
           <div [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
             <div class="msf-dashboard-assistant-content">
               <div class="msf-dashboard-assistant-tab-group">
-                <div class="no-control-variables-container" *ngIf="!values.currentOptionCategories">
+                <div class="no-control-variables-container" *ngIf="!values.currentOptionCategories && stepLoading != 4 && tablePreview">
                   No Control Variables For This Option
                 </div>
-                <ng-container *ngIf="values.currentOptionCategories">
+                <ng-container *ngIf="values.currentOptionCategories && stepLoading != 4 && tablePreview">
                   <mat-tab-group #configTabs>
                     <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                       <ng-template mat-tab-label>
@@ -252,7 +252,7 @@
               </div>
             </div>
           </div>
-          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit" [ngStyle]="{ 'display': checkEditVisibility() }">
+          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit" *ngIf="!tablePreview">
             <mat-tab-group #editTabs>
               <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                 <ng-template mat-tab-label>
