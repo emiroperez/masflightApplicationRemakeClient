@@ -8446,7 +8446,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         flatNode.typeOption = node.typeOption;
         flatNode.welcome = node.welcome;
 
-        if (_this.values.currentOption.id == flatNode.id && !_this.selectedItem)
+        if (_this.values.currentOption && _this.values.currentOption.id == flatNode.id && !_this.selectedItem)
           _this.selectedItem = flatNode;
     
         menuCategory.flatNodeMap.set (flatNode, node);
