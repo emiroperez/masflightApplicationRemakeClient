@@ -13,8 +13,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 
 // dashboard gridstack constants
 const maxDashboardWidth = 12;
-const defaultPanelHeight = 8;
-const defaultPanelWidth = 4;
+const defaultPanelHeight = 9;
+const defaultPanelWidth = 6;
 
 @Component({
   selector: 'app-msf-dashboard',

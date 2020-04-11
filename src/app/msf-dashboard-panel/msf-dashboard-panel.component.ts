@@ -323,6 +323,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   // dashboard interface values
   selectedPanelType: any = this.panelTypes[0];
+  controlVariablesSet: boolean = false;
   selectedStep: number = 1;
   stepLoading: number = 0;
 
@@ -2487,6 +2488,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         setTimeout (() =>
         {
+          this.controlVariablesSet = true;
           this.loadData ();
         }, 100);
       }
@@ -2518,6 +2520,8 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
           }, 100);
 
+          this.controlVariablesSet = true;
+
           if (this.values.currentChartType.flags & ChartFlags.PICTURE)
             this.values.displayPic = true;
           else if (this.values.currentChartType.flags & ChartFlags.FORM)
@@ -2527,7 +2531,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
       else
+      {
+        this.controlVariablesSet = true;
         this.values.displayChart = true;
+      }
 
       this.startUpdateInterval ();
     }
@@ -7933,12 +7940,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   selectStep(step: number): void
   {
-    this.selectedStep = step;
     this.menuCategories = [];
 
-    switch (this.selectedStep)
+    switch (step)
     {
       case 3:
+        this.selectedStep = 3;
+
         if (!this.menuCategories.length)
         {
           this.stepLoading = 3;
@@ -7948,11 +7956,20 @@ export class MsfDashboardPanelComponent implements OnInit {
         break;
 
       case 4:
+        if (!this.values.currentOption)
+          return;
+
+        this.selectedStep = 4;
         this.stepLoading = 4;
         this.service.loadOptionCategoryArguments (this, this.values.currentOption.id, this.setCategories, this.categoriesError);
         break;
 
       case 5:
+        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
+          return;
+
+        this.selectedStep = 5;
+
         if (!this.msfConfigTableRef.dataSource)
         {
           this.stepLoading = 5;
@@ -7961,7 +7978,17 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         break;
 
+      case 6:
+        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
+          return;
+
+        this.selectedStep = 6;
+        this.stepLoading = 0;
+        break;
+
       case 2:
+        this.selectedStep = 2;
+
         // set panel type for the interface
         for (let type of this.panelTypes)
         {
@@ -7981,6 +8008,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.scrollSelectedPanelIntoView ();
 
       default:
+        this.selectedStep = step;
         this.stepLoading = 0;
         break;
     }
@@ -8117,13 +8145,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.configTableLoading = true;
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
-/*      _this.stepLoading = 0;
-      _this.changeDetectorRef.detectChanges ();
-      _this.configTabs.realignInkBar ();*/
     }
     else
     {
       _this.stepLoading = 0;
+      _this.controlVariablesSet = false;
       _this.changeDetectorRef.detectChanges ();
       _this.editTabs.realignInkBar ();
     }
@@ -8640,6 +8666,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
+    this.controlVariablesSet = true;
     this.configuredControlVariables = true;
     this.tablePreview = true;
     this.analysisSelected = null;
@@ -8649,6 +8676,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   selectItem(item): void
   {
+    if (item == this.selectedItem)
+      return;
+
     this.selectedItem = item;
 
     for (let option of this.values.options)
@@ -8660,6 +8690,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
     }
 
+    this.controlVariablesSet = false;
     this.loadChartFilterValues (this.values.currentOption);
   }
 

@@ -11970,8 +11970,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             height: calc(100% - 60px)
             overflow-y: auto
         .msf-dashboard-panel-step-selector
+            @include disable-text-selection
             cursor: pointer
         .msf-dashboard-panel-step-selector-disabled
+            @include disable-text-selection
             cursor: not-allowed
             .msf-dashboard-panel-step-circle
                 opacity: 0.25
