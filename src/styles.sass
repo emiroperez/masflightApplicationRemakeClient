@@ -2416,6 +2416,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $background-color
         .msf-dashboard-addmenu-icon-item
             color: $font-color !important
+        .content-panel-img
+            border-color: $font-color
+        .no-image
+            background-color: $primary-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -11105,7 +11109,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-bottom: 10px
     width: 100%
 
-.datalake-search-input , .datalake-search-editTable
+.datalake-search-input, .datalake-search-editTable
     .mat-form-field-label-wrapper
         top: -1.4em
     .mat-form-field-appearance-outline .mat-form-field-infix
@@ -11113,6 +11117,30 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         transform: translateY(-1.1em) scale(.75)
         width: 133.33333%
+
+.image-link-input
+    height: 100% !important
+    .image-url-container
+        text-align: left
+        padding: 15px
+        padding-top: 0
+        height: calc(100% - 80px)
+        .content-panel-img
+            margin-top: 10px
+            height: calc(100% - 20px)
+            justify-content: center
+            align-items: center
+            border-style: solid
+            border-radius: 5px
+            border-width: 1px
+
+.no-image
+    display: flex
+    width: 100px
+    height: 50px
+    justify-content: center
+    align-items: center
+    font-weight: 550
 
 .datalake-search-formfield
     width: 100%
@@ -11419,6 +11447,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     height: 100%
     width: auto
     justify-content: center
+    align-items: center
     flex-direction: row
     img
         object-fit: contain
@@ -12062,6 +12091,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 justify-content: center
                 font-weight: 500
                 border-radius: 0 !important
+            .msf-dashboard-panel-generate-button.flat-button-disabled
+                cursor: not-allowed !important
             .msf-dashboard-panel-generate-button
                 width: 100%
             .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-cancel-button

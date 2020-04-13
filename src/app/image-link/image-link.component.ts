@@ -1,13 +1,26 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-image-link',
   templateUrl: './image-link.component.html'
 })
-export class ImageLinkComponent { 
+export class ImageLinkComponent
+{
+  @Input('url')
+  url: string;
 
-    @Input('url')
-    url: string;
+  validUrl: boolean = true;
     
-    constructor() { }
+  constructor() { }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['url'])
+      this.validUrl = true; // validate URL again
+  }
+
+  invalidUrl(): void
+  {
+    this.validUrl = false;
+  }
 }

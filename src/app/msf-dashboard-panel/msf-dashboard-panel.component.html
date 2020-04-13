@@ -26,21 +26,27 @@
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
             <span class="step-label">Panel Type</span>
           </div>
-          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
-            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
-            <span class="step-label">Select Source</span>
-          </div>
-          <div [ngClass]="values.currentOption ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(4)">
-            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
-            <span class="step-label">Control Variables</span>
-          </div>
-          <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel()">
-            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
-            <span class="step-label">Distribution Chart</span>
-          </div>
-          <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel() || isTablePanel()">
-            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
-            <span class="step-label">Distribution Table</span>
+          <ng-container *ngIf="!isPicturePanel()">
+            <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
+              <span class="step-label">Select Source</span>
+            </div>
+            <div [ngClass]="values.currentOption ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(4)">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
+              <span class="step-label">Control Variables</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
+              <span class="step-label">Distribution Chart</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel() || isTablePanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
+              <span class="step-label">Distribution Table</span>
+            </div>
+          </ng-container>
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isPicturePanel()">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 12 }"><mat-icon *ngIf="selectedStep == 12">edit</mat-icon></div>
+            <span class="step-label">Image URL</span>
           </div>
         </div>
         <div class="msf-dashboard-panel-step-button-container">
@@ -516,6 +522,22 @@
                 <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked">
                   {{tableVariable.name}}
                 </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 12">
+        <div class="msf-dashboard-panel-step-item">
+          <div class="datalake-search-input image-link-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
+              <mat-label>Image URL</mat-label>
+              <input matInput autocomplete="off" type="text" [(ngModel)]="values.urlImg" (ngModelChange)="checkChartType()"/>
+            </mat-form-field>
+            <div class="image-url-container">
+              Preview
+              <div class="content-panel-img">
+                <app-image-link [url]="values.urlImg"></app-image-link>
               </div>
             </div>
           </div>

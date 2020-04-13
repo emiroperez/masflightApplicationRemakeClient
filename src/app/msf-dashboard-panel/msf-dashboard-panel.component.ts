@@ -3579,7 +3579,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
-      chartSeries: this.values.chartSeries,
+      chartSeries: _this.values.chartSeries,
       controlVariables: _this.oldOptionCategories
     });
 
