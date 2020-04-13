@@ -56,7 +56,7 @@ export class DatalakeTablePreviewComponent {
     this.globals.popupLoading = true;
     this.edit = data.edit;
     this.TABLEPREVIEWLIMIT = this.edit ? -1 : TABLE_PREVIEW_LIMIT;
-    this.service.getDatalakeTableData(this, data.values.schemaName, data.values.tableName, this.TABLEPREVIEWLIMIT, this.pageI, this.pageSize, this.tokenResult, this.handlerSuccess, this.handlerError);
+    this.service.getDatalakeTableData(this, data.values.schemaName, data.values.tableName, this.TABLEPREVIEWLIMIT, this.pageI, this.pageSize, this.tokenResult,"", this.handlerSuccess, this.handlerError);
   }
 
   onNoClick(): void {
@@ -65,6 +65,7 @@ export class DatalakeTablePreviewComponent {
     } else {
       this.appService.confirmationOrCancelDialog(this, "Do you want to save the changes?",
         function (_this) {
+          _this.filter="";
           _this.saveAll();
         },
         function (_this,reset) {
@@ -352,21 +353,44 @@ export class DatalakeTablePreviewComponent {
 
   filterDataTable(): void {
     let search, filteredResults
-    // let filteredResults = [];
-
-    if (!this.dataSource.length)
-      return;
 
     // get the search keyword
     search = this.filter;
-    if (!search) {
+    if (search.length!=0 && search.length<3) {
       this.dataSourceTable = new MatTableDataSource(this.dataSource);
       this.dataSourceTable.paginator = this.paginator;
       return;
     }
 
-    search = search.toLowerCase();
-    let size = this.displayedColumns.length;
+    this.globals.popupLoading = true;
+    if (search.length>=3 && (this.RowsInserted.length > 0 || this.RowsUpdated.length > 0 || this.RowsDeleted.length > 0)) {
+      this.appService.confirmationOrCancelDialog(this, "Do you want to save the changes before before filtering?",
+        function (_this) {
+          _this.saveAll();
+        },
+        function (_this,reset) {
+          if(reset){
+            _this.globals.popupLoading = true;
+            _this.resetData();
+            _this.firstTime = true;
+            _this.dataSource = [];
+            _this.displayedColumns = [];          
+            _this.pageI = 0;
+            _this.tokenResult = "";
+            _this.paginator.firstPage();
+            _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
+              _this.pageI,_this.pageSize,_this.tokenResult, _this.filter,_this.handlerSuccess,_this.handlerError);
+          }
+        }
+      );
+    }else{
+      this.firstTime = false;
+      this.dataSource = [];
+      this.service.getDatalakeTableData(this, this.schemaName, this.tableName, this.TABLEPREVIEWLIMIT,
+        this.pageI,this.pageSize,this.tokenResult, this.filter,this.handlerSuccess,this.handlerError);
+
+    }
+/*    let size = this.displayedColumns.length;
     let columnsName = this.displayedColumns;
     filteredResults =
       this.dataSource.
@@ -384,7 +408,7 @@ export class DatalakeTablePreviewComponent {
           return index > -1;
         });
     this.dataSourceTable = new MatTableDataSource(filteredResults);
-    this.dataSourceTable.paginator = this.paginator;
+    this.dataSourceTable.paginator = this.paginator;*/
   }
 
   saveAll() {
@@ -412,6 +436,7 @@ export class DatalakeTablePreviewComponent {
     if (this.RowsInserted.length > 0 || this.RowsUpdated.length > 0 || this.RowsDeleted.length > 0) {
       this.appService.confirmationOrCancelDialog(this, "Do you want to save the changes?",
         function (_this) {
+          this.filter="";
           _this.saveAll();
         },
         function (_this,reset) {
@@ -425,23 +450,28 @@ export class DatalakeTablePreviewComponent {
             _this.tokenResult = "";
             _this.paginator.firstPage();
             _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
-              _this.pageI,_this.pageSize,_this.tokenResult, _this.handlerSuccess,_this.handlerError);
+              _this.pageI,_this.pageSize,_this.tokenResult,"", _this.handlerSuccess,_this.handlerError);
           }
         }
       );
     }
   }
 
-  saveHandler(_this, data) {    
+  saveHandler(_this, data) {
     _this.resetData();
     _this.firstTime = true;
     _this.dataSource = []; 
     _this.displayedColumns = [];
-    _this.pageI = 0;
-    _this.tokenResult = "";
     _this.paginator.firstPage();
-    _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
-      _this.pageI, _this.pageSize, _this.tokenResult, _this.handlerSuccess, _this.handlerError);
+    _this.pageI = 0;
+    if(_this.filter != ""){
+      _this.tokenResult = "";
+      _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
+        _this.pageI, _this.pageSize, _this.tokenResult,_this.filter, _this.handlerSuccess, _this.handlerError);
+    }else{
+      _this.service.getDatalakeTableData(_this, _this.schemaName, _this.tableName, _this.TABLEPREVIEWLIMIT,
+        _this.pageI, _this.pageSize, _this.tokenResult,_this.filter, _this.handlerSuccess, _this.handlerError);
+    }
   }
 
   saveError(_this, result): void {
@@ -470,7 +500,7 @@ export class DatalakeTablePreviewComponent {
       this.firstTime = false;
       this.dataSource = [];
       this.service.getDatalakeTableData(this, this.data.values.schemaName, this.data.values.tableName,
-        this.TABLEPREVIEWLIMIT, event.pageIndex, event.pageSize, this.tokenResult, this.handlerSuccess, this.handlerError);
+        this.TABLEPREVIEWLIMIT, event.pageIndex, event.pageSize, this.tokenResult, "",this.handlerSuccess, this.handlerError);
       return event;
     }
   }

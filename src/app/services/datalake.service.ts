@@ -29,10 +29,12 @@ export class DatalakeService {
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 
-    getDatalakeTableData(_this, schemaName, tableName, limit,page_number, pageSize, token, handlerSuccess, handlerError): void
+    getDatalakeTableData(_this, schemaName, tableName, limit,page_number, pageSize, token,search, handlerSuccess, handlerError): void
     {        
         // let url = this.host + "/GetDatalakeTableData?userName=erich&token="+this.globals.token+"&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit;
-        let url = this.host + "/GetDatalakeTableData?userName="+this.globals.userName+"&schemaName=" + schemaName + "&tableName=" + tableName + "&limit=" + limit+ "&page_number=" + page_number+ "&pageSize=" + pageSize+ "&token=" + token;
+        let url = this.host + "/GetDatalakeTableData?userName="+this.globals.userName+"&schemaName=" + schemaName + 
+        "&tableName=" + tableName + "&limit=" + limit+ "&page_number=" + page_number+ "&pageSize=" + pageSize+ 
+        "&token=" + token+ "&filter=" + search.toLowerCase();
         this.http.get(_this, url, handlerSuccess, handlerError, null);
     }
 

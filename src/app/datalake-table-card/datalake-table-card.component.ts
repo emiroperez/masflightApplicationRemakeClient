@@ -134,7 +134,7 @@ export class DatalakeTableCardComponent implements OnInit {
   }
 
   exportCSV(){
-    this.service.getDatalakeTableData (this, this.values.schemaName, this.values.tableName, -1,"","","", this.handlerSuccess, this.handlerError);
+    this.service.getDatalakeTableData (this, this.values.schemaName, this.values.tableName, -1,"","","","", this.handlerSuccess, this.handlerError);
   }
 
   handlerSuccess(_this, data): void
