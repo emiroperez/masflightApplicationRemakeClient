@@ -35,13 +35,17 @@
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
               <span class="step-label">Control Variables</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
               <span class="step-label">Distribution Chart</span>
             </div>
             <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel() || isTablePanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
               <span class="step-label">Distribution Table</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(7)" *ngIf="isInformationPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 7 }"><mat-icon *ngIf="selectedStep == 7">edit</mat-icon></div>
+              <span class="step-label">Info Configuration</span>
             </div>
           </ng-container>
           <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isPicturePanel()">
@@ -525,6 +529,86 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 7">
+        <div class="msf-dashboard-panel-step-item">
+
+          <div class="msf-dashboard-panel-sub-container-column">
+            <div class="msf-dashboard-panel-sub-container-row">
+              <div class="msf-dashboard-chart-options-container msf-dashboard-info-chart-options">
+                <div class="msf-dashboard-chart-selector">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">table_chart</mat-icon>
+                  </div>
+                  <div class="msf-dashboard-chart-op-container">
+                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                      <mat-select formControlName="infoNumVarCtrl" placeholder="Number of variables" [(value)]="values.infoNumVariables" (selectionChange)="checkNumVariables()">
+                        <mat-option *ngFor="let number of [1,2,3]" [value]="number">
+                          {{number}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="msf-dashboard-chart-selector">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">filter_1</mat-icon>
+                  </div>
+                  <div class="msf-dashboard-chart-op-container">
+                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                      <mat-select formControlName="infoVar1Ctrl" placeholder="Variable #1" [(value)]="values.infoVar1">
+                        <ngx-mat-select-search [formControl]="infoVar1FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                        <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                          {{variable.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button [disabled]="!values.infoVar1" mat-icon-button (click)="goToFunctions(0)" [ngClass]="values.infoVar1 ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon aria-label="Functions for Variable #1">more_horiz</mat-icon>
+                  </button>
+                </div>
+                <div class="msf-dashboard-chart-selector">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">filter_2</mat-icon>
+                  </div>
+                  <div class="msf-dashboard-chart-op-container">
+                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                      <mat-select formControlName="infoVar2Ctrl" placeholder="Variable #2" [(value)]="values.infoVar2">
+                        <ngx-mat-select-search [formControl]="infoVar2FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                        <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                          {{variable.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button [disabled]="!values.infoVar2" mat-icon-button (click)="goToFunctions(1)" [ngClass]="values.infoVar2 ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon aria-label="Functions for Variable #2">more_horiz</mat-icon>
+                  </button>
+                </div>
+                <div class="msf-dashboard-chart-selector">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">filter_3</mat-icon>
+                  </div>
+                  <div class="msf-dashboard-chart-op-container">
+                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                      <mat-select formControlName="infoVar3Ctrl" placeholder="Variable #3" [(value)]="values.infoVar3">
+                        <ngx-mat-select-search [formControl]="infoVar3FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                        <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                          {{variable.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button [disabled]="!values.infoVar3" mat-icon-button (click)="goToFunctions(2)" [ngClass]="values.infoVar3 ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon aria-label="Functions for Variable #3">more_horiz</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 12">
