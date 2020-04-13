@@ -4398,6 +4398,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.displayDynTable = false;
 
     this.storeChartValues ();
+    this.changeDetectorRef.detectChanges ();
+    this.selectStep (this.selectedStep);
   }
 
   goToResults(): void
@@ -7862,9 +7864,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.selectingAnalysis = null;
     this.analysisSelected = null;
+    this.values.variable = null;
+    this.values.xaxis = null;
 
     if (this.panelMode === "advanced")
     {
+      let selectedChartType;
+
       if (!this.selectedPanelType.allowedInAdvancedMode)
       {
         this.selectedPanelType = this.panelTypes[0];
@@ -7872,29 +7878,34 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (!this.values.function)
           this.values.function = this.functions[0];
 
-        for (let chart of this.chartTypes)
-        {
-          if (chart.name === this.selectedPanelType.name)
-          {
-            this.values.currentChartType = chart;
-            break;
-          }
-        }
-
         this.scrollSelectedPanelIntoView ();
-        this.checkChartType ();
       }
+
+      selectedChartType = "Advanced " + this.selectedPanelType.name;
+
+      for (let chart of this.chartTypes)
+      {
+        if (chart.name === selectedChartType)
+        {
+          this.values.currentChartType = chart;
+          break;
+        }
+      }
+
+      this.checkChartType ();
 
       this.selectingXAxis = null;
       this.xAxisSelected = null;
       this.selectingValue = null;
       this.valueSelected = null;
+      this.values.valueColumn = null;
       this.values.startAtZero = false;
     }
     else
     {
       this.selectingAggregationValue = null;
       this.aggregationValueSelected = null;
+      this.values.valueColumn = null;
 
       if (!this.isLineOrBarChart ())
         this.values.startAtZero = false;
@@ -7912,8 +7923,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.selectingAggregationValue = null;
 
     // Remove X Axis selection if the chart type doesn't use it
-    if (!this.haveXAxis ())
+    if (!this.haveXAxis())
+    {
       this.xAxisSelected = null;
+      this.values.xaxis = null;
+    }
 
     // Remove analysis selection if the simple chart uses intervals
     if (this.panelMode === "advanced" && !(this.selectedPanelType.flags & ChartFlags.XYCHART))
@@ -7924,7 +7938,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     for (let chart of this.chartTypes)
     {
-      if (chart.name === panelType.name)
+      if (chart.name === name)
       {
         this.values.currentChartType = chart;
         break;
@@ -7980,6 +7994,48 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.configTableLoading = true;
           this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
         }
+        else
+        {
+          if (this.values.variable)
+          {
+            for (let column of this.msfConfigTableRef.metadata)
+            {
+              if (this.values.variable.id == column.columnName)
+              {
+                this.analysisSelected = column;
+                break;
+              }
+            }
+          }
+
+          if (this.values.xaxis)
+          {
+            for (let column of this.msfConfigTableRef.metadata)
+            {
+              if (this.values.xaxis.id == column.columnName)
+              {
+                this.xAxisSelected = column;
+                break;
+              }
+            }
+          }
+
+          if (this.values.valueColumn)
+          {
+            for (let column of this.msfConfigTableRef.metadata)
+            {
+              if (this.values.valueColumn.id == column.columnName)
+              {
+                if (this.panelMode === "advanced")
+                  this.aggregationValueSelected = column;
+                else
+                  this.valueSelected = column;
+
+                break;
+              }
+            }
+          }
+        }
         break;
 
       case 6:
@@ -7993,20 +8049,33 @@ export class MsfDashboardPanelComponent implements OnInit {
       case 2:
         this.selectedStep = 2;
 
-        // set panel type for the interface
-        for (let type of this.panelTypes)
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
         {
-          if (this.values.currentChartType.name === type.name)
+          this.panelMode = "advanced";
+
+          for (let type of this.panelTypes)
           {
-            this.selectedPanelType = type;
-            break;
+            if (this.values.currentChartType.name === "Advanced " + type.name)
+            {
+              this.selectedPanelType = type;
+              break;
+            }
           }
         }
-
-        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-          this.panelMode = "advanced";
         else
+        {
           this.panelMode = "basic";
+
+          // set panel type for the interface
+          for (let type of this.panelTypes)
+          {
+            if (this.values.currentChartType.name === type.name)
+            {
+              this.selectedPanelType = type;
+              break;
+            }
+          }
+        }
 
         this.changeDetectorRef.detectChanges ();
         this.scrollSelectedPanelIntoView ();
@@ -8592,6 +8661,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.analysisSelected = null;
+    this.values.variable = null;
   }
 
   selectXAxis(): void
@@ -8608,6 +8678,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.xAxisSelected = null;
+    this.values.xaxis = null;
   }
 
   selectValue(): void
@@ -8624,6 +8695,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.valueSelected = null;
+    this.values.valueColumn = null;
   }
 
   selectAggregationValue(): void
@@ -8640,6 +8712,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.selectingAggregationValue = true;
     this.lastColumn = null;
     this.aggregationValueSelected = null;
+    this.values.valueColumn = null;
   }
 
   finishLoadingConfigTable(error): void
@@ -8676,6 +8749,49 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.analysisSelected = null;
     this.xAxisSelected = null;
     this.valueSelected = null;
+
+    if (this.selectedStep == 5)
+    {
+      if (this.values.variable)
+      {
+        for (let column of this.msfConfigTableRef.metadata)
+        {
+          if (this.values.variable.id == column.columnName)
+          {
+            this.analysisSelected = column;
+            break;
+          }
+        }
+      }
+
+      if (this.values.xaxis)
+      {
+        for (let column of this.msfConfigTableRef.metadata)
+        {
+          if (this.values.xaxis.id == column.columnName)
+          {
+            this.xAxisSelected = column;
+            break;
+          }
+        }
+      }
+
+      if (this.values.valueColumn)
+      {
+        for (let column of this.msfConfigTableRef.metadata)
+        {
+          if (this.values.valueColumn.id == column.columnName)
+          {
+            if (this.panelMode === "advanced")
+              this.aggregationValueSelected = column;
+            else
+              this.valueSelected = column;
+
+            break;
+          }
+        }
+      }
+    }
   }
 
   selectItem(item): void
@@ -8795,25 +8911,69 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.selectingAnalysis)
     {
       this.analysisSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.variable = variable;
+          break;
+        }
+      }
+
       this.selectingAnalysis = false;
+      this.checkPanelConfiguration ();
     }
 
     if (this.selectingXAxis)
     {
       this.xAxisSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.xaxis = variable;
+          break;
+        }
+      }
+
       this.selectingXAxis = false;
+      this.checkPanelConfiguration ();
     }
 
     if (this.selectingValue)
     {
       this.valueSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.valueColumn = variable;
+          break;
+        }
+      }
+
       this.selectingValue = false;
+      this.checkPanelConfiguration ();
     }
 
     if (this.selectingAggregationValue)
     {
       this.aggregationValueSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.valueColumn = variable;
+          break;
+        }
+      }
+
       this.selectingAggregationValue = false;
+      this.checkPanelConfiguration ();
     }
 
     this.lastColumn = null;
