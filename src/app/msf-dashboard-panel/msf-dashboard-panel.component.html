@@ -8,10 +8,10 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width <= 5 || values.height <= 6) && !dialogData)">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && (isTinyPanel() && !dialogData)">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && ((values.width > 5 && values.height > 6) || dialogData)">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && (!isTinyPanel() || dialogData)">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       {{values.chartName}}
     </div>
@@ -317,7 +317,7 @@
         <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5"></div>
         <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
 
-          <div style="display: flex">
+          <div class="msf-dashboard-panel-chart-config-container" [ngClass]="{ 'msf-dashboard-panel-chart-config-container-small': isSmallPanel() }">
             <div class="msf-dashboard-assistant-chart-config-buttons">
               <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
                    [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }"
@@ -353,18 +353,6 @@
                 </div>
                 <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
               </ng-container>
-              <!--
-    <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()"
-         (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()"
-         [style.margin-left.px]="calcMargin()">
-      <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
-           src="../../assets/images/{{globals.theme}}-chart-preview.png" />
-      <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
-           src="../../assets/images/dark-theme-chart-preview.png" />
-      Chart Preview
-    </div>
-    <div class="msf-dashboard-assistant-space" *ngIf="panelMode === 'advanced' && !isChartConfigured()"></div>
-    -->
               <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="panelMode === 'advanced'">
                 <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
                   <mat-form-field>
@@ -398,7 +386,7 @@
               <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
             </div>
           </div>
-          <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
+          <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8" [ngClass]="{ 'msf-dashboard-select-distribution-chart-table-container-small': isSmallPanel() }">
             <div class="results-container msf-dashboard-select-distribution-chart-table">
               <table mat-table [dataSource]="msfConfigTableRef.dataSource" class="mat-elevation-z8 datasource results">
                 <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfConfigTableRef.metadata; let i = index">

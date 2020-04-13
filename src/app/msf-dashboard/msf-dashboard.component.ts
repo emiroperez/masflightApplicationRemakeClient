@@ -90,20 +90,20 @@ export class MsfDashboardComponent implements OnInit {
 
   controlVariableDialogOpen: boolean = false;
   readOnlyDashboard: boolean = false;
-
   
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
   constructor(public globals: Globals, private service: ApplicationService,
-    public dialog: MatDialog, private changeDetector: ChangeDetectorRef, media: MediaMatcher)
+    public dialog: MatDialog, private changeDetector: ChangeDetectorRef,
+    public media: MediaMatcher)
   {
     this.readOnlyDashboard = this.globals.readOnlyDashboard ? true : false;
     this.globals.showPaginator = false; // hide paginator
     
-    this.mobileQuery = media.matchMedia('(max-width: 767px)');
-    this._mobileQueryListener = () => changeDetector.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery = media.matchMedia ('(max-width: 767px)');
+    this._mobileQueryListener = () => changeDetector.detectChanges ();
+    this.mobileQuery.addListener (this._mobileQueryListener);
   }
 
   ngOnInit()
