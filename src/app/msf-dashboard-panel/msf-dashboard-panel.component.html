@@ -332,7 +332,12 @@
                 </div>
                 <div class="msf-dashboard-assistant-chart-config-button"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
-                     (click)="selectValue()">
+                     (click)="selectValue()" *ngIf="!isSimpleChart()">
+                  Value
+                </div>
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !this.values.valueList || (this.values.valueList && !this.values.valueList.length), 'msf-dashboard-assistant-chart-config-values-button-selected': this.values.valueList && this.values.valueList.length }"
+                     (click)="selectValues()" *ngIf="isSimpleChart()">
                   Values
                 </div>
                 <div class="assistant-function-combobox">
@@ -351,7 +356,6 @@
                      (click)="selectAggregationValue()">
                   Aggregation
                 </div>
-                <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
               </ng-container>
               <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="panelMode === 'advanced'">
                 <div class="assistant-function-combobox" *ngIf="values.intervalType === 'ncile'">
@@ -396,7 +400,7 @@
                 'distribution-chart-column-axis-header-hover' : (lastColumn === column && selectingXAxis),
                 'distribution-chart-column-axis-header-selected' :  xAxisSelected === column,
                 'distribution-chart-column-values-header-hover' : (lastColumn === column && selectingValue),
-                'distribution-chart-column-values-header-selected' : valueSelected === column,
+                'distribution-chart-column-values-header-selected' : ((valueSelected === column && !isSimpleChart ()) || isValueSelectedForSimpleChart (column)),
                 'distribution-chart-column-aggregation-header-hover' : (lastColumn === column && selectingAggregationValue),
                 'distribution-chart-column-aggregation-header-selected' : aggregationValueSelected === column
                 }" mat-header-cell *matHeaderCellDef (mouseover)="hoverTableColumn(column)" (click)="setChartValue()">
@@ -408,7 +412,7 @@
                 'distribution-chart-column-axis-row-hover' : (lastColumn === column && selectingXAxis),
                 'distribution-chart-column-axis-row-selected' : xAxisSelected === column,
                 'distribution-chart-column-values-row-hover' : (lastColumn === column && selectingValue),
-                'distribution-chart-column-values-row-selected' : valueSelected === column,
+                'distribution-chart-column-values-row-selected' : ((valueSelected === column && !isSimpleChart ()) || isValueSelectedForSimpleChart (column)),
                 'distribution-chart-column-aggregation-row-hover' : (lastColumn === column && selectingAggregationValue),
                 'distribution-chart-column-aggregation-row-selected' : aggregationValueSelected === column
                 }" mat-cell *matCellDef="let element; let rowNumber = dataIndex" (mouseover)="hoverTableColumn(column)"
@@ -506,7 +510,7 @@
             <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
             <span class="msf-dashboard-addmenu-item-text">Column Selector</span>
           </div>
-          <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-form-column table-column-list" id="msf-dashboard-panel-form-container-column" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.tableVariables.length > 2) || (values.height.value >= 6 && values.tableVariables.length > 3)) ? 'scroll' : 'hidden'}">
+          <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-form-column table-column-list" id="msf-dashboard-panel-form-container-column">
             <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-table-container-row" *ngFor="let tableVariable of values.tableVariables">
               <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container">
                 <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked">

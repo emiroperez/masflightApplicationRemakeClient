@@ -48,6 +48,7 @@ import { ConfigFlags } from './msf-dashboard-configflags';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
 import { ComponentType } from '../commons/ComponentType';
+import { MsfDashboardPanelValueSelectorComponent } from '../msf-dashboard-panel-value-selector/msf-dashboard-panel-value-selector.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -3001,7 +3002,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         url += "&chartType=advancedbar";
       else
-        url += "&chartType=advancedsimplebar";
+        url += "&chartType=simpleadvancedbar";
     }
     else
     {
@@ -7899,6 +7900,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.selectingValue = null;
       this.valueSelected = null;
       this.values.valueColumn = null;
+      this.values.valueList = [];
       this.values.startAtZero = false;
     }
     else
@@ -7906,6 +7908,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.selectingAggregationValue = null;
       this.aggregationValueSelected = null;
       this.values.valueColumn = null;
+      this.values.valueList = [];
 
       if (!this.isLineOrBarChart ())
         this.values.startAtZero = false;
@@ -7985,6 +7988,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       case 5:
         if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
           return;
+
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+          this.panelMode = "advanced";
+        else
+          this.panelMode = "basic";
 
         this.selectedStep = 5;
 
@@ -8715,6 +8723,44 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.valueColumn = null;
   }
 
+  selectValues(): void
+  {
+    let dialogRef = this.dialog.open (MsfDashboardPanelValueSelectorComponent,
+    {
+      width: '500px',
+      panelClass: 'msf-dashboard-value-selector-dialog',
+      data: {
+        title: this.values.chartName,
+        chartColumnOptions: JSON.parse (JSON.stringify (this.msfConfigTableRef.metadata)),
+        valueList: this.values.valueList
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (result)
+      {
+        this.values.valueList = [];
+
+        for (let item of result)
+        {
+          if (!item.checked)
+            continue;
+
+          for (let column of this.values.chartColumnOptions)
+          {
+            if (column.id === item.columnName)
+            {
+              this.values.valueList.push (column);
+              break;
+            }
+          }
+        }
+
+        this.checkPanelConfiguration();
+      }
+    });
+  }
+
   finishLoadingConfigTable(error): void
   {
     this.stepLoading = 0;
@@ -8862,6 +8908,23 @@ export class MsfDashboardPanelComponent implements OnInit {
   resultsGenerated(): boolean
   {
     return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated);
+  }
+
+  isValueSelectedForSimpleChart(column): boolean
+  {
+    if (!this.isSimpleChart())
+      return false;
+
+    if (!this.values.valueList)
+      return false;
+
+    for (let value of this.values.valueList)
+    {
+      if (column.columnName === value.id)
+        return true;
+    }
+
+    return false;
   }
 
   dynTableHasXAxis(): boolean

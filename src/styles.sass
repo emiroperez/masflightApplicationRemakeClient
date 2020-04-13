@@ -325,7 +325,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
         .msf-dashboard-column-properties-align
             color: $font-color
-        .msf-dashboard-panel-container
+        .msf-dashboard-panel-container, .msf-dashboard-arguments-container
             background-color: $dashboard-panel-background-color
             color: $font-color
             .msf-dashboard-panel-sub-container-column, .msf-var-content
@@ -2414,6 +2414,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $background-color
         .dynamic-table-config-value
             background-color: $background-color
+        .msf-dashboard-addmenu-icon-item
+            color: $font-color !important
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4542,6 +4544,13 @@ mat-tab-group
     .flat-button
         margin: auto
 
+.msf-dashboard-addmenu-icon-item
+    display: flex
+    align-items: center
+    padding-bottom: 15px
+    .msf-dashboard-panel-item-text
+        vertical-align: middle
+
 .msf-dashboard-panel-container
     padding: 10px
     overflow-y: visible
@@ -4568,11 +4577,6 @@ mat-tab-group
             text-align: left
         .msf-full-width
             @extend .msf-dashboard-form-field
-        .msf-dashboard-addmenu-icon-item
-            align-items: center
-            padding-bottom: 5px
-            .msf-dashboard-panel-item-text
-                vertical-align: middle
     .dynamic-table-config-label
         vertical-align: super
     .msf-dynamic-table-variable-content
@@ -4842,6 +4846,14 @@ mat-tab-group
     min-height: 605px
     padding: 0px
     overflow: hidden
+
+.msf-dashboard-value-selector-dialog .mat-dialog-container
+    min-height: 441px
+    max-height: 441px
+    padding: 0px
+    overflow: hidden
+    .msf-dashboard-arguments-container
+        height: 416px !important
 
 .msf-dashboard-panel-dialog .mat-dialog-container
     padding: 0px
@@ -11124,6 +11136,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-arguments-container
     height: calc(100% - 25px)
     padding: 12px
+    #msf-dashboard-panel-form-container-column
+        height: 300px !important
+        padding: 0 !important
 
 .arrow-theme-button
     .msf-category-argument-arrow-icon
@@ -12070,6 +12085,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 margin-top: 15px
                 margin-bottom: 0px !important
                 height: 100%
+                overflow-y: auto
         .msf-dashboard-panel-step-variables-edit
             height: calc(100% + 20px) !important
         .msf-dashboard-panel-step-variables-buttons
