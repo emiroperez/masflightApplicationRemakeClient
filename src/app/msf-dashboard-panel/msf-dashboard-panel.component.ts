@@ -2942,7 +2942,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         url += "&chartType=advancedbar";
       else
-        url += "&chartType=advancedsimplebar";
+        url += "&chartType=simpleadvancedbar";
     }
     else
     {
