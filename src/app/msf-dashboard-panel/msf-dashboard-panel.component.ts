@@ -100,7 +100,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
     { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
     { name: 'Table', flags: ChartFlags.TABLE, image: 'table.png', allowedInAdvancedMode: false },
-    { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false }
+    { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false },
+
+    { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
+    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
+    { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
+    { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
+    { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
+    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
   ];
 
   chartTypes: any[] = [
@@ -7955,6 +7962,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     if (!chartType.allowedInAdvancedMode && this.panelMode === "advanced")
       return false;
+
+    if (this.globals.currentApplication.name !== "masFlight")
+    {
+      // don't allow map types on applications other than masFlight
+      if ((chartType.flags & ChartFlags.MAP) || (chartType.flags & ChartFlags.HEATMAP))
+        return false;
+    }
 
     return true;
   }
