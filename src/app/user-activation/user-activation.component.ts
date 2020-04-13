@@ -246,7 +246,8 @@ export class UserActivationComponent implements OnInit {
     let self = this;
     let dialogRef = this.dialog.open (CreateUserDialogComponent,
     {
-      height: '565px',
+      // height: '565px',
+      height: '500px',
       width: '700px',
       panelClass: 'create-user-container',
       data: { customers: this.customers }
