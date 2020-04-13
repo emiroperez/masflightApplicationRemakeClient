@@ -349,23 +349,23 @@
                 <div class="msf-dashboard-assistant-chart-config-button"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }"
                      (click)="selectAggregationValue()">
-                  Aggregation Value
+                  Aggregation
                 </div>
                 <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
               </ng-container>
               <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="panelMode === 'advanced'">
-                <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
+                <div class="assistant-function-combobox" *ngIf="values.intervalType === 'ncile'">
                   <mat-form-field>
-                    <mat-select placeholder="Ncile" [(ngModel)]="ncile">
+                    <mat-select placeholder="Ncile" [(ngModel)]="values.intValue">
                       <mat-option *ngFor="let value of nciles" [value]="value">
                         {{value}}%
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="assistant-function-combobox" *ngIf="intervalType === 'value'">
+                <div class="assistant-function-combobox" *ngIf="values.intervalType === 'value'">
                   <mat-form-field>
-                    <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="intValue">
+                    <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="values.intValue">
                   </mat-form-field>
                 </div>
               </div>
@@ -376,7 +376,7 @@
                 <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'ncile'">
                   By Ncile
                 </mat-radio-button>
-                <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'value'">
+                <mat-radio-button class="cancels-checkbox interval-checkbox second-option" [value]="'value'">
                   By Value
                 </mat-radio-button>
               </mat-radio-group>

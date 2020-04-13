@@ -8981,12 +8981,25 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         font-size: 11px
 
 .msf-dashboard-assistant-interval-mode
-    margin-left: 295px
-    margin-top: -1px
+    margin-top: 5px
     height: 18px
+    display: flex
+    width: 100%
+    justify-content: flex-end
+    .msf-dashboard-assistant-chart-type-label
+        font-size: 11px !important
     .mat-radio-group
-        font-weight: 550
-        font-size: 14px
+        font-size: 11px
+        display: flex
+        flex-direction: column
+        .mat-radio-container
+            width: 15px !important
+            height: 15px !important
+            .mat-radio-outer-circle, .mat-radio-inner-circle
+                width: 15px !important
+                height: 15px !important
+        .second-option
+            margin-top: 10px
 
 .msf-dashboard-assistant-chart-config-buttons
     display: flex
@@ -9088,6 +9101,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         flex-direction: row !important
         margin-top: -10px
         margin-bottom: 5px
+    .msf-dashboard-assistant-interval-mode
+        margin-top: -7px !important
+        margin-bottom: 8px !important
+        justify-content: flex-start !important
+        .mat-radio-group
+            flex-direction: row !important
+            .second-option
+                margin-top: 0px !important
 
 .msf-dashboard-select-distribution-chart-table-container
     margin-left: -10px
