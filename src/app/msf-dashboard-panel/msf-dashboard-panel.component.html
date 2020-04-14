@@ -328,7 +328,6 @@
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 5">
         <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5"></div>
         <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
-
           <div class="msf-dashboard-panel-chart-config-container" [ngClass]="{ 'msf-dashboard-panel-chart-config-container-small': isSmallPanel() }">
             <div class="msf-dashboard-assistant-chart-config-buttons">
               <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
@@ -476,7 +475,6 @@
               </table>
             </div>
           </div>
-
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 6">
@@ -544,11 +542,12 @@
               <div class="msf-dashboard-chart-options-container msf-dashboard-info-chart-options">
                 <div class="msf-dashboard-chart-selector">
                   <div class="msf-dashboard-chart-analysis-title">
-                    <mat-icon class="msf-dashboard-chart-icon">table_chart</mat-icon>
+                    <mat-icon class="msf-dashboard-chart-icon num-variables-icon">table_chart</mat-icon>
                   </div>
-                  <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-                      <mat-select formControlName="infoNumVarCtrl" placeholder="Number of variables" [(value)]="values.infoNumVariables" (selectionChange)="checkNumVariables()">
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Number of variables</mat-label>
+                      <mat-select [(ngModel)]="values.infoNumVariables" (ngModelChange)="checkNumVariables()">
                         <mat-option *ngFor="let number of [1,2,3]" [value]="number">
                           {{number}}
                         </mat-option>
@@ -561,8 +560,8 @@
                     <mat-icon class="msf-dashboard-chart-icon">filter_1</mat-icon>
                   </div>
                   <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-                      <mat-select formControlName="infoVar1Ctrl" placeholder="Variable #1" [(value)]="values.infoVar1">
+                    <mat-form-field class="msf-full-width">
+                      <mat-select [disabled]="!values.infoNumVariables" placeholder="Variable #1" [(ngModel)]="values.infoVar1">
                         <ngx-mat-select-search [formControl]="infoVar1FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                         <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                           {{variable.name}}
@@ -579,8 +578,8 @@
                     <mat-icon class="msf-dashboard-chart-icon">filter_2</mat-icon>
                   </div>
                   <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-                      <mat-select formControlName="infoVar2Ctrl" placeholder="Variable #2" [(value)]="values.infoVar2">
+                    <mat-form-field class="msf-full-width">
+                      <mat-select [disabled]="values.infoNumVariables < 2" placeholder="Variable #2" [(ngModel)]="values.infoVar2">
                         <ngx-mat-select-search [formControl]="infoVar2FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                         <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                           {{variable.name}}
@@ -597,8 +596,8 @@
                     <mat-icon class="msf-dashboard-chart-icon">filter_3</mat-icon>
                   </div>
                   <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-                      <mat-select formControlName="infoVar3Ctrl" placeholder="Variable #3" [(value)]="values.infoVar3">
+                    <mat-form-field class="msf-full-width">
+                      <mat-select [disabled]="values.infoNumVariables < 3" placeholder="Variable #3" [(ngModel)]="values.infoVar3">
                         <ngx-mat-select-search [formControl]="infoVar3FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                         <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                           {{variable.name}}

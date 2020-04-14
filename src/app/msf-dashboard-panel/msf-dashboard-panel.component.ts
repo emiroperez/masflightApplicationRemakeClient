@@ -375,10 +375,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       xaxisCtrl: new FormControl ({ value: '', disabled: true }),
       valueCtrl: new FormControl ({ value: '', disabled: true }),
       valueListCtrl: new FormControl ({ value: '', disabled: true }),
-      infoNumVarCtrl: new FormControl ({ value: '', disabled: true }),
-      infoVar1Ctrl: new FormControl ({ value: '', disabled: true }),
-      infoVar2Ctrl: new FormControl ({ value: '', disabled: true }),
-      infoVar3Ctrl: new FormControl ({ value: '', disabled: true }),
       columnCtrl: new FormControl ({ value: '', disabled: true }),
       fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
       valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
@@ -2943,13 +2939,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       for (let j = 0; j < 5; j++)
       {
+        let funcShortName = ['Avg ', 'Sum ', 'Min ', 'Max ', 'Count '];
+
         if (!infoFunc[j].checked)
           continue;
 
         variables.push ({
           id : i,
           function : infoFunc[j].id,
-          title : infoFunc[j].title,
+          title : (infoFunc[j].title && infoFunc[j].title != "") ? infoFunc[j].title : (funcShortName[j] + infoVar.name),
           measure : infoFunc[j].measure,
           column : infoVar.id
         });
@@ -4064,8 +4062,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       || !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
       this.panelForm.get ('variableCtrl').enable ();
 
-    this.panelForm.get ('infoNumVarCtrl').enable ();
-
     if (this.values.currentChartType.flags & ChartFlags.XYCHART)
       this.panelForm.get ('xaxisCtrl').enable ();
 
@@ -4222,7 +4218,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.variableCtrlBtnEnabled = true;
 
     _this.panelForm.get ('variableCtrl').enable ();
-    _this.panelForm.get ('infoNumVarCtrl').enable ();
 
     if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
       _this.panelForm.get ('xaxisCtrl').enable ();
@@ -4636,7 +4631,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       let i;
 
       this.values.infoNumVariables = 0;
-      this.panelForm.get ('infoNumVarCtrl').setValue (0);
 
       if (this.values.currentChartType.flags & ChartFlags.TABLE
         || this.values.currentChartType.flags & ChartFlags.MAP
@@ -4730,24 +4724,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       for (i = 0; i < this.values.infoFunc1.length; i++)
         this.values.infoFunc1[i].checked = false;
 
-      this.panelForm.get ('infoVar1Ctrl').reset ();
-      this.panelForm.get ('infoVar1Ctrl').disable ();
-
       this.values.infoVar2 = null;
 
       for (i = 0; i < this.values.infoFunc2.length; i++)
         this.values.infoFunc2[i].checked = false;
 
-      this.panelForm.get ('infoVar2Ctrl').reset ();
-      this.panelForm.get ('infoVar2Ctrl').disable ();
-
       this.values.infoVar3 = null;
 
       for (i = 0; i < this.values.infoFunc3.length; i++)
         this.values.infoFunc3[i].checked = false;
-
-      this.panelForm.get ('infoVar3Ctrl').reset ();
-      this.panelForm.get ('infoVar3Ctrl').disable ();
 
       this.panelForm.get ('columnCtrl').reset ();
       this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
@@ -4997,7 +4982,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           this.panelForm.get ('dataFormCtrl').setValue (option);
           this.panelForm.get ('variableCtrl').enable ();
-          this.panelForm.get ('infoNumVarCtrl').enable ();
           this.panelForm.get ('columnCtrl').enable ();
           this.panelForm.get ('fontSizeCtrl').enable ();
           this.panelForm.get ('valueFontSizeCtrl').enable ();
@@ -5344,8 +5328,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
-              this.panelForm.get ('infoVar1Ctrl').enable ();
               this.values.infoVar1 = this.values.chartColumnOptions[i];
               this.values.variable = null;
               this.values.infoNumVariables++;
@@ -5360,8 +5342,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
-              this.panelForm.get ('infoVar2Ctrl').enable ();
               this.values.infoVar2 = this.values.chartColumnOptions[i];
               this.values.xaxis = null;
               this.values.infoNumVariables++;
@@ -5376,8 +5356,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
-              this.panelForm.get ('infoVar3Ctrl').enable ();
               this.values.infoVar3 = this.values.chartColumnOptions[i];
               this.values.valueColumn = null;
               this.values.infoNumVariables++;
@@ -5386,9 +5364,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
       }
-
-      if (this.values.infoNumVariables)
-        this.panelForm.get ('infoNumVarCtrl').setValue (this.values.infoNumVariables);
 
       // set function values
       for (i = 0; i < this.values.lastestResponse.length; i++)
@@ -5772,33 +5747,20 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let i;
 
-    if (this.values.infoNumVariables >= 1)
-      this.panelForm.get ('infoVar1Ctrl').enable ();
-
-    if (this.values.infoNumVariables >= 2)
-      this.panelForm.get ('infoVar2Ctrl').enable ();
-    else
+    if (this.values.infoNumVariables < 2)
     {
       this.values.infoVar2 = null;
 
       for (i = 0; i < this.values.infoFunc2.length; i++)
         this.values.infoFunc2[i].checked = false;
-
-      this.panelForm.get ('infoVar2Ctrl').reset ();
-      this.panelForm.get ('infoVar2Ctrl').disable ();
     }
 
-    if (this.values.infoNumVariables == 3)
-      this.panelForm.get ('infoVar3Ctrl').enable ();
-    else
+    if (this.values.infoNumVariables != 3)
     {
       this.values.infoVar3 = null;
 
       for (i = 0; i < this.values.infoFunc3.length; i++)
         this.values.infoFunc3[i].checked = false;
-
-      this.panelForm.get ('infoVar3Ctrl').reset ();
-      this.panelForm.get ('infoVar3Ctrl').disable ();
     }
 
     this.checkPanelConfiguration ();
