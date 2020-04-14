@@ -4028,8 +4028,8 @@ mat-tab-group
     border-top-left-radius: 10px
     position: absolute
     padding-left: 5px
-    right: 0px
-    bottom: 0px
+    right: 5px
+    bottom: 5px
     padding: 5px
     border-style: solid
     .msf-dashboard-map-panelinfo-container
@@ -4773,7 +4773,6 @@ mat-tab-group
             background-position: center
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
-        position: relative
         height: calc(100% - 35px)
 
 .msf-dashboard-panel-pic-button
@@ -4987,6 +4986,9 @@ mat-tab-group
     margin-left: -10px
     .msf-dashboard-child-panel-table
         width: calc(100% + 10px)
+
+.msf-dashboard-table-container-with-anchroed-args
+    margin-top: 0 !important
 
 .msf-dashboard-menu-component
     @include disable-text-selection
@@ -5355,8 +5357,6 @@ mat-tab-group
 
 .msf-dashboard-form-display-result-horizontal
     padding: 3px 0
-    margin-left: -10px
-    margin-right: -10px
     padding-left: 10px
 
 .msf-dashboard-form-display-result-vertical
@@ -11275,7 +11275,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-form-container
     width: 100%
     display: table
-    margin-top: -10px
 
 .airline-restriction-dialog
     .mat-dialog-container
@@ -11975,4 +11974,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .panel-without-desc
     height: 82% !important
 
+.simple-form-results-container
+    overflow-y: auto
+    overflow-x: hidden
+    margin-left: -10px
+    padding-right: 0 !important
+    margin-top: -10px
+    width: calc(100% + 20px) !important
 
+.simple-form-results-container-with-anchored-args
+    margin-top: 0px !important

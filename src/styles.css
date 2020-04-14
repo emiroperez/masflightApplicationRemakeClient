@@ -8562,8 +8562,8 @@ mat-tab-group {
   border-top-left-radius: 10px;
   position: absolute;
   padding-left: 5px;
-  right: 0px;
-  bottom: 0px;
+  right: 5px;
+  bottom: 5px;
   padding: 5px;
   border-style: solid;
 }
@@ -9572,7 +9572,6 @@ mat-tab-group {
   padding-right: 5px;
   padding-top: initial;
   font-size: 12px;
-  position: relative;
   height: calc(100% - 35px);
 }
 
@@ -9840,6 +9839,10 @@ mat-tab-group {
 }
 .msf-dashboard-table-container .msf-dashboard-child-panel-table {
   width: calc(100% + 10px);
+}
+
+.msf-dashboard-table-container-with-anchroed-args {
+  margin-top: 0 !important;
 }
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
@@ -10269,8 +10272,6 @@ mat-tab-group {
 
 .msf-dashboard-form-display-result-horizontal, .msf-dashboard-form-display-result-vertical {
   padding: 3px 0;
-  margin-left: -10px;
-  margin-right: -10px;
   padding-left: 10px;
 }
 
@@ -17342,7 +17343,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .msf-dashboard-form-container {
   width: 100%;
   display: table;
-  margin-top: -10px;
 }
 
 .airline-restriction-dialog .mat-dialog-container {
@@ -18203,6 +18203,19 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .panel-without-desc {
   height: 82% !important;
+}
+
+.simple-form-results-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: -10px;
+  padding-right: 0 !important;
+  margin-top: -10px;
+  width: calc(100% + 20px) !important;
+}
+
+.simple-form-results-container-with-anchored-args {
+  margin-top: 0px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */
