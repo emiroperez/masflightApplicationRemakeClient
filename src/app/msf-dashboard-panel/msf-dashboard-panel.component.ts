@@ -8034,10 +8034,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         break;
 
       case 6:
+      case 7:
+      case 8:
+      case 9:
         if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
           return;
 
-        this.selectedStep = 6;
+        this.selectedStep = step;
         this.stepLoading = 0;
         break;
 
@@ -8105,7 +8108,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    if (_this.values.currentOptionCategories == null)
+    if (_this.values.currentOptionCategories == null || !_this.controlVariablesSet)
       _this.tablePreview = false;
     else
       _this.tablePreview = true;

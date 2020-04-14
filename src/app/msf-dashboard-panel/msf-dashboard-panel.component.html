@@ -51,8 +51,8 @@
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 8">edit</mat-icon></div>
               <span class="step-label">Distribution Form</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isMapPanel() || isHeatMapPanel() || isMapboxPanel()">
-              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 9">edit</mat-icon></div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isHeatMapPanel() || isMapboxPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 9 }"><mat-icon *ngIf="selectedStep == 9">edit</mat-icon></div>
               <span class="step-label">Distribution Map</span>
             </div>
           </ng-container>
@@ -550,7 +550,6 @@
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 7">
         <div class="msf-dashboard-panel-step-item msf-dashboard-info-step">
-
           <div class="msf-dashboard-panel-sub-container-column">
             <div class="msf-dashboard-panel-sub-container-row">
               <div class="msf-dashboard-chart-options-container msf-dashboard-info-chart-options">
@@ -626,12 +625,10 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 8">
         <div class="msf-dashboard-panel-step-item msf-dashboard-info-step msf-dashboard-simple-form-step">
-
           <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-sub-container">
             <div class="msf-dashboard-chart-options-container">
               <div class="msf-dashboard-chart-selector msf-simple-form-selector">
@@ -757,7 +754,78 @@
               The form doesn't contain any columns
             </div>
           </div>
-
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 9">
+        <div class="msf-dashboard-panel-step-item heatmap-panel-step" *ngIf="isHeatMapPanel()">
+          <div class="msf-dashboard-panel-sub-container-column">
+            <div class="msf-dashboard-chart-options-container">
+              <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">place</mat-icon>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width">
+                    <mat-select placeholder="Geography Data" [(ngModel)]="values.geodata">
+                      <mat-option *ngFor="let geodata of geodatas" [value]="geodata">
+                        {{geodata.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">vpn_key</mat-icon>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="geodataKeyCtrl" placeholder="Geography Data Key" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
+                      <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">data_usage</mat-icon>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
+                      <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="msf-dashboard-panel-step-item heatmap-panel-step" *ngIf="isMapboxPanel()">
+          <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
+            <div class="msf-dashboard-chart-options-container">
+              <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">style</mat-icon>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width">
+                    <mat-select placeholder="Style" [(ngModel)]="values.style">
+                      <mat-option *ngFor="let style of msfMapRef.mapTypes" [value]="style">
+                        {{style.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 10">
