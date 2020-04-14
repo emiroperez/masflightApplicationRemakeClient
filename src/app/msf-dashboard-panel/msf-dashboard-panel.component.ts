@@ -8210,15 +8210,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     _this.values.currentOptionCategories = optionCategories;
-    _this.configureControlVariables ();
 
     if (_this.tablePreview)
     {
+      _this.configureControlVariables ();
       _this.configTableLoading = true;
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
     }
     else
     {
+      _this.tempOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+      _this.values.currentOptionCategories = null;
       _this.stepLoading = 0;
       _this.controlVariablesSet = false;
       _this.changeDetectorRef.detectChanges ();
@@ -8739,6 +8741,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
 
       return;
+    }
+
+    if (this.tempOptionCategories)
+    {
+      this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
+      this.tempOptionCategories = null;
     }
 
     this.controlVariablesSet = true;

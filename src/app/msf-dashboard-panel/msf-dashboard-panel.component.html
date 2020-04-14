@@ -274,7 +274,7 @@
           </div>
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit" *ngIf="!tablePreview">
             <mat-tab-group #editTabs>
-              <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
+              <mat-tab *ngFor="let controlVariable of tempOptionCategories">
                 <ng-template mat-tab-label>
                   <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
                   <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
