@@ -45,7 +45,7 @@
             </div>
             <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(7)" *ngIf="isInformationPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 7 }"><mat-icon *ngIf="selectedStep == 7">edit</mat-icon></div>
-              <span class="step-label">Info Configuration</span>
+              <span class="step-label">Configuration Infomation</span>
             </div>
           </ng-container>
           <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isPicturePanel()">
@@ -73,15 +73,15 @@
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 1">
         <div class="msf-dashboard-panel-step-item msf-dashboard-name-step">
           <div class="datalake-search-input">
-            <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
+            <mat-form-field class="msf-full-width datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
               <mat-label>Panel Name</mat-label>
               <input matInput autocomplete="off" type="text" [(ngModel)]="values.chartName" />
             </mat-form-field>
           </div>
-          <div class="datalake-search-input">
-            <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
+          <div class="datalake-search-input panel-description-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
               <mat-label>Description</mat-label>
-              <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" [(ngModel)]="values.chartDescription"></textarea>
+              <textarea matInput [(ngModel)]="values.chartDescription"></textarea>
             </mat-form-field>
           </div>
         </div>
@@ -90,12 +90,14 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Panel Type Selection</span>
-            <mat-form-field class="msf-full-width panel-type-combobox">
-              <mat-select [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
-                <mat-option [value]="'basic'">Basic</mat-option>
-                <mat-option [value]="'advanced'">Advanced</mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="datalake-search-input">
+              <mat-form-field class="msf-full-width panel-type-combobox config-panel-form-field" appearance="outline">
+                <mat-select [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
+                  <mat-option [value]="'basic'">Basic</mat-option>
+                  <mat-option [value]="'advanced'">Advanced</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
           <div class="msf-dashboard-assistant-chart-picker-scroll">
             <div class="msf-dashboard-assistant-chart-picker">
@@ -350,9 +352,10 @@
                      (click)="selectValues()" *ngIf="isSimpleChart()">
                   Values
                 </div>
-                <div class="assistant-function-combobox">
-                  <mat-form-field>
-                    <mat-select placeholder="Function" [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
+                <div class="assistant-function-combobox datalake-search-input">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
+                    <mat-label>Function</mat-label>
+                    <mat-select [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
                       <mat-option *ngFor="let fun of functions" [value]="fun">
                         {{fun.name}}
                       </mat-option>
@@ -368,18 +371,20 @@
                 </div>
               </ng-container>
               <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="panelMode === 'advanced'">
-                <div class="assistant-function-combobox" *ngIf="values.intervalType === 'ncile'">
-                  <mat-form-field>
-                    <mat-select placeholder="Ncile" [(ngModel)]="values.intValue">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="values.intervalType === 'ncile'">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
+                    <mat-label>Ncile</mat-label>
+                    <mat-select [(ngModel)]="values.intValue">
                       <mat-option *ngFor="let value of nciles" [value]="value">
                         {{value}}%
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="assistant-function-combobox" *ngIf="values.intervalType === 'value'">
-                  <mat-form-field>
-                    <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="values.intValue">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="values.intervalType === 'value'">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
+                    <mat-label>Value</mat-label>
+                    <input matInput autocomplete="off" [(ngModel)]="values.intValue">
                   </mat-form-field>
                 </div>
               </div>
@@ -532,7 +537,7 @@
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 7">
-        <div class="msf-dashboard-panel-step-item">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-info-step">
 
           <div class="msf-dashboard-panel-sub-container-column">
             <div class="msf-dashboard-panel-sub-container-row">

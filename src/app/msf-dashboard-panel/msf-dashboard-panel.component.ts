@@ -5827,7 +5827,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
-      height: '362px',
+      height: '382px',
       width: '600px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
@@ -7916,6 +7916,17 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.aggregationValueSelected = null;
       this.values.valueColumn = null;
       this.values.valueList = [];
+
+      for (let chart of this.chartTypes)
+      {
+        if (chart.name === this.selectedPanelType.name)
+        {
+          this.values.currentChartType = chart;
+          break;
+        }
+      }
+
+      this.checkChartType ();
 
       if (!this.isLineOrBarChart ())
         this.values.startAtZero = false;

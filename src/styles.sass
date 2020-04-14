@@ -9309,7 +9309,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-mode
     display: flex
-    padding-bottom: 10px
     .panel-type-combobox
         margin-top: -17px
         margin-left: 15px
@@ -12119,6 +12118,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 margin-bottom: 0px !important
                 height: 100%
                 overflow-y: auto
+        .msf-dashboard-info-step
+            display: flex
+            justify-content: center
+            align-items: center
         .msf-dashboard-panel-step-variables-edit
             height: calc(100% + 20px) !important
         .msf-dashboard-panel-step-variables-buttons
@@ -12144,6 +12147,36 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             display: flex
             flex-direction: column
             justify-content: center
+            .panel-description-input
+                height: 100%
+                .mat-form-field
+                    height: 100%
+                    .mat-form-field-wrapper
+                        height: 100%
+                        .mat-form-field-flex
+                            height: 100%
+                            .mat-form-field-infix
+                                height: calc(100% - 30px)
+                                .mat-input-element
+                                    overflow-y: auto
+                                    height: 100% !important
+                                    resize: none
+
 
 .panel-formfield
     width: calc(100% - 20px) !important
+
+.config-panel-form-field
+    margin-top: -3px
+    .mat-select-trigger
+        margin-bottom: 5px
+    .mat-select-arrow-wrapper
+        transform: inherit !important
+    .mat-input-element
+        margin-top: 0.5px
+        margin-bottom: 4.5px
+    .mat-form-field-label-wrapper
+        top: -1.3em !important
+
+.config-panel-form-field.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
+    transform: translateY(-1.2em) scale(.75) !important
