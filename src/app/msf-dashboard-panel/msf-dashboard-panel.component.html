@@ -35,7 +35,7 @@
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
               <span class="step-label">Control Variables</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
               <span class="step-label">Distribution Chart</span>
             </div>
@@ -50,6 +50,10 @@
             <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(8)" *ngIf="isSimpleFormPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 8">edit</mat-icon></div>
               <span class="step-label">Distribution Form</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isMapPanel() || isHeatMapPanel() || isMapboxPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 9">edit</mat-icon></div>
+              <span class="step-label">Distribution Map</span>
             </div>
           </ng-container>
           <div class="msf-dashboard-panel-step-selector" (click)="selectStep(10)" *ngIf="isPicturePanel()">
