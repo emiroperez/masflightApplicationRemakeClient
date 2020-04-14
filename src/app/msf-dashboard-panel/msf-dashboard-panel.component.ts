@@ -2691,8 +2691,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   getParameters()
   {
-    let currentOptionCategories = this.values.currentOptionCategories;
+    let currentOptionCategories;
     let params;
+
+    if (this.tempOptionCategories)
+      currentOptionCategories = this.tempOptionCategories;
+    else
+      currentOptionCategories = this.values.currentOptionCategories;
 
     if (currentOptionCategories)
     {
@@ -8213,6 +8218,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (_this.tablePreview)
     {
+      _this.tempOptionCategories = null;
       _this.configureControlVariables ();
       _this.configTableLoading = true;
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
