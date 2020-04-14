@@ -8710,44 +8710,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.valueColumn = null;
   }
 
-  selectValues(): void
-  {
-    let dialogRef = this.dialog.open (MsfDashboardPanelValueSelectorComponent,
-    {
-      width: '500px',
-      panelClass: 'msf-dashboard-value-selector-dialog',
-      data: {
-        title: this.values.chartName,
-        chartColumnOptions: JSON.parse (JSON.stringify (this.msfConfigTableRef.metadata)),
-        valueList: this.values.valueList
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((result) => {
-      if (result)
-      {
-        this.values.valueList = [];
-
-        for (let item of result)
-        {
-          if (!item.checked)
-            continue;
-
-          for (let column of this.values.chartColumnOptions)
-          {
-            if (column.id === item.columnName)
-            {
-              this.values.valueList.push (column);
-              break;
-            }
-          }
-        }
-
-        this.checkPanelConfiguration();
-      }
-    });
-  }
-
   finishLoadingConfigTable(error): void
   {
     this.stepLoading = 0;
