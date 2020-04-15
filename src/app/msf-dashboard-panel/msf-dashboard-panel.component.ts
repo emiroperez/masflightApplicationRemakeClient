@@ -8118,7 +8118,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       _this.tablePreview = true;
 
-    data = data.sort((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
+    data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
 
     for (let optionCategory of data)
     {
@@ -8176,12 +8176,12 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
 
               if (!argExists)
-                argument.filters.splice(i, 1);
+                argument.filters.splice (i, 1);
             }
           }
         }
 
-        optionCategories.push(category);
+        optionCategories.push (category);
       }
     }
 
@@ -8225,7 +8225,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else
     {
-      _this.tempOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+      _this.tempOptionCategories = optionCategories;
       _this.values.currentOptionCategories = null;
       _this.stepLoading = 0;
       _this.controlVariablesSet = false;
