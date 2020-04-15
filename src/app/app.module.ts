@@ -406,7 +406,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfPartialSummariesComponent,
     PublicDashboardComponent,
     PublicizeDashboardDialogComponent,
-    MsfDashboardPanelValueSelectorComponent
+    MsfDashboardPanelValueSelectorComponent,
     PublicizeDashboardDialogComponent,
     UrlMessageComponent
   ],
@@ -516,7 +516,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfDashboardBrowserComponent,
     MsfPartialSummariesComponent,
     PublicizeDashboardDialogComponent,
-    UrlMessageComponent
+    UrlMessageComponent,
     PublicizeDashboardDialogComponent,
     MsfDashboardPanelValueSelectorComponent
   ]
