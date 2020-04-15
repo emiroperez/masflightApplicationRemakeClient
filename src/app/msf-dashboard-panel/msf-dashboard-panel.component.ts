@@ -9036,44 +9036,4 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     return width < 875 ? true : false;
   }
-
-  isTinyPanel(): boolean
-  {
-    let element, item, width, height;
-
-    if (this.dialogData)
-      return false;
-
-    element = document.getElementsByClassName ("lb-generated-id-" + this.values.gridId);
-    item = element ? element[0] : null;
-
-    if (!item)
-      return true;
-
-    if (item.style.width != null && item.style.width != "")
-      width = parseInt (item.style.width, 10);
-    else
-      width = item.offsetWidth;
-
-    if (item.style.height != null && item.style.height != "")
-      height = parseInt (item.style.height, 10);
-    else
-      height = item.offsetHeight;
-
-    if (!this.values.displayChart && !this.values.displayInfo && !this.values.displayForm && !this.values.displayPic
-      && !this.values.displayTable && !this.values.displayMapbox && !this.values.displayDynTable && !this.globals.readOnlyDashboard
-      && width >= 600 && height >= 390 && this.panelConfigRefresh)
-    {
-      // refresh panel if it can be configurable
-      setTimeout (() => {
-        this.selectStep (this.selectedStep);
-        this.panelConfigRefresh = false;
-      }, 10);
-    }
-
-    if (width < 600 || height < 390)
-      this.panelConfigRefresh = true;
-
-    return (width < 600 || height < 390) ? true : false;
-  }
 }

@@ -8,10 +8,12 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && (isTinyPanel() && !dialogData)">
+  <!--
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && !dialogData">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && (!isTinyPanel() || dialogData)">
+  -->
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       {{values.chartName}}
     </div>
@@ -140,11 +142,13 @@
                   {{menuCategory.welcome.shortDescription}}
                 </ng-container>
               </div>
-              <div class="menu-category-body">
+              <div class="menu-category-search">
                 <mat-form-field class="menu-item-search-input">
                   <input matInput autocomplete="off" [(ngModel)]="menuCategory.searchLabel" (ngModelChange)="filterMenuOptions(menuCategory)">
                   <mat-icon class="search-icon" aria-label="search">search</mat-icon>
                 </mat-form-field>
+              </div>
+              <div class="menu-category-body">
                 <div class="menu-items">
                   <ng-container *ngIf="menuCategory.tree">
                     <mat-tree [dataSource]="menuCategory.tree" [treeControl]="menuCategory.treeControl">
@@ -894,7 +898,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-row">
       <mat-form-field class="msf-full-width">
-        <textarea matInput 
+        <textarea matInput
         cdkTextareaAutosize
         #autosize="cdkTextareaAutosize"
         cdkAutosizeMinRows="1"
@@ -1666,20 +1670,20 @@
   <div class="{{values.displayChart && !advTableView ? 'msf-dashboard-panel-container-chart' : 'msf-dashboard-panel-container-invisible'}}">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard || (globals.readOnlyDashboard && isAdvChartPanel())">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard && !isAdvChartPanel()"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard || (globals.readOnlyDashboard && isAdvChartPanel())">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard && !isAdvChartPanel()"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
@@ -1688,7 +1692,7 @@
         </div>
         <div class="anchored-argument-button">
           <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
-            (click)="removedAnchoredArgument(anchoredArgument)">
+                  (click)="removedAnchoredArgument(anchoredArgument)">
             <div class="anchor-icon"></div>
           </button>
         </div>
@@ -1721,20 +1725,20 @@
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayInfo">
     <div class="msf-dashboard-panel-title">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="width: 100%; height: 100%">
@@ -1756,20 +1760,20 @@
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayForm">
     <div class="msf-dashboard-panel-title">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-form-container">
@@ -1790,20 +1794,20 @@
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayPic">
     <div class="msf-dashboard-panel-title">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
@@ -1814,38 +1818,38 @@
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-table-container">
         <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 77px)">
-          <app-msf-table #msfTableRef [isLoading]="values.isLoading" 
-          (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
-           [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
-           [paginator]="paginator" [pageIndex]="pageIndex" 
-           (paginatorlength)=paginatorlength($event)
-           (shmoreResult)=shmoreResult($event)
-           (sortingDataTable)=sortingDataTable($event)></app-msf-table>
+          <app-msf-table #msfTableRef [isLoading]="values.isLoading"
+                         (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
+                         [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
+                         [paginator]="paginator" [pageIndex]="pageIndex"
+                         (paginatorlength)=paginatorlength($event)
+                         (shmoreResult)=shmoreResult($event)
+                         (sortingDataTable)=sortingDataTable($event)></app-msf-table>
         </div>
         <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
-          (page)="pageEvent = getServerData($event)" showFirstLastButtons
-          [ngClass]="values.showPaginator && !values.isLoading && (moreResultsBtn || (!moreResultsBtn && actualPageNumber!=0)) ? 
+                       (page)="pageEvent = getServerData($event)" showFirstLastButtons
+                       [ngClass]="values.showPaginator && !values.isLoading && (moreResultsBtn || (!moreResultsBtn && actualPageNumber!=0)) ?
            'msf-paginator-tableDashboard' : 'msf-hide'"></mat-paginator>
         <div [ngClass]="moreResultsBtn ? 'msf-menu-more-button' : 'msf-menu-more-button disabled-more-button'"
-          (click)="moreTableResults()" [style.margin-top-px]="3" *ngIf="msfTableRef && msfTableRef.dataSource && !values.showPaginator">
+             (click)="moreTableResults()" [style.margin-top-px]="3" *ngIf="msfTableRef && msfTableRef.dataSource && !values.showPaginator">
           <img style="width: 16px; height: 16px;" src="../../assets/images/{{globals.theme}}-more.png" class="msf-menu-image msf-vertical-middle msf-line">
           <div class="msf-vertical-middle msf-line" style="font-size: 13px;">More Result</div>
         </div>
@@ -1856,20 +1860,20 @@
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayMapbox ? 'block' : 'none'">
     <div class="msf-dashboard-panel-title">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
@@ -1880,20 +1884,20 @@
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="values.displayDynTable">
     <div class="msf-dashboard-panel-title">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: calc(100% - 20px)">
@@ -1922,20 +1926,20 @@
   <div *ngIf="values.displayChart && advTableView" class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack">
     <div class="msf-dashboard-panel-title" *ngIf="values.displayChart">
       <div class="msf-dashboard-panel-title-label-icon">
-      <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
-      <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard || (globals.readOnlyDashboard && isAdvChartPanel())">...</div>
-      <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard && !isAdvChartPanel()"></div>
-      <ng-container *ngIf="public">
-        <div class="msf-dashboard-panel-powered-logo">Powered By</div>
-        <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
-        <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
-      </ng-container>
-    </div>
-    <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard || (globals.readOnlyDashboard && isAdvChartPanel())">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard && !isAdvChartPanel()"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" style="height: calc(100% - 20px)" [style.width.%]="100" [style.margin-top.px]="5">
