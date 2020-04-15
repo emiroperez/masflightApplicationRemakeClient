@@ -170,6 +170,10 @@
             <img src="../../assets/images/{{globals.theme}}-fullscreen.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Full Screen</span>
         </button>
+        <button class="msf-menu-icon" (click)="havingProblems()">
+            <img src="../../assets/images/{{globals.theme}}-fullscreen.png" class="msf-menu-image msf-vertical-middle">
+            <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Having Problems</span>
+        </button>
     </div>
 </div>
 
