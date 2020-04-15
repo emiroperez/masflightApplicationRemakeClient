@@ -11,7 +11,7 @@ export class MsfDashboardPanelTypePipe implements PipeTransform
     transform(items: any[], currentApplicationName: string): any[]
     {
         // filter out the map option if the application is not masFlight
-        return items.filter (item => ((!(item.flags & ChartFlags.MAP) && currentApplicationName !== "masFlight")
+        return items.filter (item => ((!(item.flags & ChartFlags.MAP || item.flags & ChartFlags.HEATMAP) && currentApplicationName !== "masFlight")
             || (currentApplicationName === "masFlight")));
     }
 }

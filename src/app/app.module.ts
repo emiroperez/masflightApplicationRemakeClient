@@ -215,6 +215,7 @@ import { MsfPartialSummariesComponent } from './msf-partial-summaries/msf-partia
 import { PublicDashboardComponent } from './public-dashboard/public-dashboard.component';
 import { PublicizeDashboardDialogComponent } from './publicize-dashboard-dialog/publicize-dashboard-dialog.component';
 import { MsfDashboardPanelValueSelectorComponent } from './msf-dashboard-panel-value-selector/msf-dashboard-panel-value-selector.component';
+import { UrlMessageComponent } from './url-message/url-message.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -406,6 +407,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PublicDashboardComponent,
     PublicizeDashboardDialogComponent,
     MsfDashboardPanelValueSelectorComponent
+    PublicizeDashboardDialogComponent,
+    UrlMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -512,6 +515,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfDashboardPanelComponent,
     MsfDashboardBrowserComponent,
     MsfPartialSummariesComponent,
+    PublicizeDashboardDialogComponent,
+    UrlMessageComponent
     PublicizeDashboardDialogComponent,
     MsfDashboardPanelValueSelectorComponent
   ]

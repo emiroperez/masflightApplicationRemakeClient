@@ -1,0 +1,16 @@
+<div>
+    <div mat-dialog-title class="dialog-title"> {{title}}</div>
+    <div mat-dialog-content style="flex: 1">
+        <div class="dialog-message">
+            <p>{{ message }}</p>
+        </div>
+        <div class="dialog-message dialog-url-message">
+            <p>URL: {{ url }}</p>
+        </div>
+    </div>
+    <mat-dialog-actions style="float: right">
+      <button *ngIf="url" mat-flat-button class="flat-button" (click)="copyMessageToClipboard()">Copy URL To Clipboard</button>
+      <span *ngIf="url" class="button-separator"></span>
+      <button mat-flat-button class="flat-button" (click)="close()" cdkFocusInitial>Close</button>
+    </mat-dialog-actions>
+</div>

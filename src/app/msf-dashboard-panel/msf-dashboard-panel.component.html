@@ -1046,7 +1046,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes.length">
-        <div class="msf-dashboard-map-routelist-container" style="height: calc(100% - 71px)">
+        <div class="msf-dashboard-map-routelist-container">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
             <div class="msf-dashboard-map-item-flight">
               <span *ngIf="isArray(item.Flight)">{{item.TouchedAirports}}</span>
@@ -1121,7 +1121,7 @@
       </div>
       <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column simple-form-results-container" [ngClass]="{ 'simple-form-results-container-with-anchored-args': displayAnchoredArguments }">
       <div class="msf-dashboard-form-container">
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
           <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
@@ -1161,7 +1161,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'flex' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
       <div class="msf-dashboard-panel-title-label-icon">
         <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
@@ -1180,15 +1180,15 @@
       <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-table-container">
-        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 77px)">
-          <app-msf-table #msfTableRef [isLoading]="values.isLoading"
-                         (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
-                         [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
-                         [paginator]="paginator" [pageIndex]="pageIndex"
-                         (paginatorlength)=paginatorlength($event)
-                         (shmoreResult)=shmoreResult($event)
-                         (sortingDataTable)=sortingDataTable($event)></app-msf-table>
+      <div class="msf-dashboard-table-container" [ngClass]="{ 'msf-dashboard-table-container-with-anchroed-args': displayAnchoredArguments }">
+        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 27px)">
+          <app-msf-table #msfTableRef [isLoading]="values.isLoading" 
+          (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
+           [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
+           [paginator]="paginator" [pageIndex]="pageIndex" 
+           (paginatorlength)=paginatorlength($event)
+           (shmoreResult)=shmoreResult($event)
+           (sortingDataTable)=sortingDataTable($event)></app-msf-table>
         </div>
         <mat-paginator #paginator [pageIndex]="pageI" [pageSize]="pageSize" [length]="lengthpag" hidePageSize
                        (page)="pageEvent = getServerData($event)" showFirstLastButtons

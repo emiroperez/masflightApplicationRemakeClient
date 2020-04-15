@@ -362,6 +362,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-panel-container-chart
             background-color: $dashboard-panel-chart-background-color
             color: $font-color
+            .msf-dashboard-panel-title-description
+                color: $dashboard-input-underline-color !important
+        .msf-dashboard-title-label-description
+            color: $admin-menu-input-underline !important
         .msf-dashboard-control-variables-title
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
         .msf-dashboard-info-function-title
@@ -453,7 +457,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $font-color
         .msf-shared-dashboard-dialog .mat-dialog-container, .msf-dashboard-child-panel-dialog .mat-dialog-container
             background-color: $quaternary-background-color !important
-        #msf-dashboard-drill-down-container
+        #msf-dashboard-drill-down-container, .msf-dashboard-drill-down-container-withoutBtn
             color: $font-color
         .msf-dashboard-color-picker-container
             color: $font-color
@@ -4075,8 +4079,8 @@ mat-tab-group
     border-top-left-radius: 10px
     position: absolute
     padding-left: 5px
-    right: 0px
-    bottom: 0px
+    right: 5px
+    bottom: 5px
     padding: 5px
     border-style: solid
     .msf-dashboard-map-panelinfo-container
@@ -4408,8 +4412,23 @@ mat-tab-group
     overflow-x: hidden
     -webkit-overflow-scrolling: touch
     transition: 0.5s
+    .msf-dashboard-header.is-mobile
+        margin-top: 15px
+        flex-direction: column-reverse
+    .msf-dashboard-header-private-mobile
+        flex-direction: column !important
+        width: inherit !important
+        margin-top: 0 !important
+        .msf-dashboard-control-panel-button-title
+            margin-top: 10px
+            position: inherit !important
+            align-self: center
+            align-items: center
+            padding: 10px 0px 10px 15px !important
+        .msf-dashboard-control-panel-button-arrow
+            position: inherit !important
     .msf-dashboard-header
-        position: relative
+        display: flex
         .msf-dashboard-title
             padding-top: 20px
             padding-bottom: 10px
@@ -4417,9 +4436,10 @@ mat-tab-group
             text-align: left
             margin-left: 16px
             display: flex
-            flex-direction: Column
+            flex-direction: column
             align-items: flex-start
             padding-right: 10px
+            width: 100%
             .msf-dashboard-title-btn
                 display: flex
                 flex-direction: row
@@ -4429,25 +4449,25 @@ mat-tab-group
                     padding: 0px
                     margin: 0px
                     width: calc(100% - 175px)
-        .msf-dashboard-title-private-mobile
-            flex-direction: column !important
-            .msf-dashboard-control-panel-button-title
-                margin-top: 10px
-                position: inherit !important
-                align-self: center
-                align-items: center
-                padding: 10px 0px 10px 15px !important
-            .msf-dashboard-control-panel-button-arrow
-                position: inherit !important
+        .msf-dashboard-control-panel
+            margin-top: 20px
+            display: flex
+            flex-direction: row
+        .msf-dashboard-control-panel.is-mobile
+            margin-top: 0 !important
+            align-items: inherit !important
+            justify-content: center
+            width: 100%
         .msf-dashboard-title.is-mobile
             font-size: 9px !important
-            flex-direction: column-reverse
+            flex-direction: column
+            width: inherit !important
             .msf-dashboard-control-panel-button-title
                 font-size: 12px !important
             .msf-dashboard-title-description
                 width: calc(100% - 16px)
             .msf-dashboard-title-label-description
-                margin-top: 0 !important
+                margin-top: 10px !important
                 display: block
                 width: 100%
                 white-space: normal
@@ -4746,9 +4766,9 @@ mat-tab-group
     .msf-dashboard-panel-title-description
         font-weight: lighter !important
         font-size: 12px
-        color: #595959!important
         line-height: 1.5
         padding: 5px 0px
+        padding-bottom: 0px !important
         text-align: justify
         max-height: 50px
         overflow-y: auto
@@ -4806,7 +4826,6 @@ mat-tab-group
             background-position: center
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
-        position: relative
         height: calc(100% - 35px)
         .content-image
             margin-top: -7px !important
@@ -4840,7 +4859,6 @@ mat-tab-group
 
 .msf-dashboard-child-panel-container
     width: 98%
-    height: 82%
 
 #msf-dashboard-child-panel-chart-display
     @extend .msf-dashboard-child-panel-container
@@ -5032,6 +5050,9 @@ mat-tab-group
     margin-left: -10px
     .msf-dashboard-child-panel-table
         width: calc(100% + 10px)
+
+.msf-dashboard-table-container-with-anchroed-args
+    margin-top: 0 !important
 
 .msf-dashboard-menu-component
     @include disable-text-selection
@@ -5296,7 +5317,8 @@ mat-tab-group
             cursor: pointer
 
 #msf-dashboard-parent-title
-    height: 25px
+    // height: 25px
+    height: auto
 
 #msf-dashboard-drill-down-container
     height: 87%
@@ -5417,8 +5439,6 @@ mat-tab-group
 
 .msf-dashboard-form-display-result-horizontal
     padding: 3px 0
-    margin-left: -10px
-    margin-right: -10px
     padding-left: 10px
 
 .msf-dashboard-form-display-result-vertical
@@ -11401,7 +11421,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-form-container
     width: 100%
     display: table
-    margin-top: -10px
 
 .airline-restriction-dialog
     .mat-dialog-container
@@ -11997,7 +12016,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     font-size: 12px
     text-align: left
     margin-top: 15px !important
-    color: #9e9e9e !important
 
 .msf-dashboard-panel-dynamic-table
     height: 100%

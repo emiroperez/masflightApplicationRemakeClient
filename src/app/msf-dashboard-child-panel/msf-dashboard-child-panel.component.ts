@@ -783,8 +783,6 @@ export class MsfDashboardChildPanelComponent {
           categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
-        else
-          valueAxis.min = 0;
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -990,6 +988,7 @@ export class MsfDashboardChildPanelComponent {
       chart.exporting.menu.align = "left";
       chart.exporting.menu.verticalAlign = "bottom";
       chart.exporting.title = this.values.chartName;
+      chart.exporting.description = this.values.chartDescription;
       chart.exporting.filePrefix = this.values.chartName;
       chart.exporting.useWebFonts = false;
 
@@ -1190,7 +1189,7 @@ export class MsfDashboardChildPanelComponent {
     }
 
     _this.values = new MsfDashboardPanelValues (_this.data.options, data.title,
-      data.id, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
+      data.description, data.id, null, null, null, null, null, _this.getOption (data.option), data.analysis, data.xaxis,
       data.values, data.function, data.chartType, JSON.stringify (_this.data.currentOptionCategories),
       data.lastestResponse, data.paletteColors);
 

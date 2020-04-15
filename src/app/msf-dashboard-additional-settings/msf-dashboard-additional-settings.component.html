@@ -158,6 +158,16 @@
     </div>
   </div>
 </div>
+<div *ngIf="haveConfig(7) && !oneSettingActive" [ngClass]="advSettingsOpen == 7 ? 'msf-dashboard-menu-component-active' : 'msf-dashboard-menu-component'" (click)="componentClickHandler(7)">
+  <span class="msf-menu-component-text msf-control-variables-text">Panel Description</span>
+  <i *ngIf="advSettingsOpen != 6" class="material-icons msf-menu-cmpte-row">expand_more</i>
+  <i *ngIf="advSettingsOpen == 6" class="material-icons msf-menu-cmpte-row">expand_less</i>
+</div>
+<div class="msf-dashboard-color-picker-container" [style.margin.px]="10" *ngIf="advSettingsOpen == 7">
+  <mat-form-field class="msf-full-width">
+    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" placeholder="Description" [(ngModel)]="data.values.chartDescription"></textarea>
+  </mat-form-field>
+</div>
 <div class="msf-dashboard-control-variables-button">
   <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
 </div>

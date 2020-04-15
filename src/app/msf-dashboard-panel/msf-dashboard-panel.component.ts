@@ -5916,6 +5916,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     let dialogRef = this.dialog.open (MsfDashboardDrillDownComponent, {
       height: (this.values.chartName && this.values.chartName.length >= 45) ? '590px ': '560px',
+      // height: (this.values.chartName && this.values.chartName.length >= 45) ? '620px ': '590px',
       width: '450px',
       panelClass: 'msf-dashboard-child-panel-dialog',
       data: {

@@ -9,14 +9,8 @@
   </div>
   {{data.title}}
 </div>
-<div class="msf-dashboard-control-variables-title" *ngIf="!globals.popupLoading">
-  <div class="msf-dashboard-control-variables-close-button">
-    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="closeDialog()">close</mat-icon>
-  </div>
-  {{data.description}}
-</div>
-<div class="msf-dashboard-panel-container" id="msf-dashboard-drill-down-container" *ngIf="data.childPanelValues.length">
-  <div class="msf-dashboard-panel-sub-container-column">
+<div class="msf-dashboard-panel-container msf-dashboard-panel-container-drillDown" id="msf-dashboard-drill-down-container-withoutBtn" *ngIf="data.childPanelValues.length">
+  <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
     <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <mat-select placeholder="Drill Down" (selectionChange)="loadChartFilterValues($event.value)">
         <ngx-mat-select-search [formControl]="dataFormFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
@@ -26,12 +20,25 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="msf-dashboard-panel-sub-container-column">
+  <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
     <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <input matInput formControlName="panelNameCtrl" autocomplete="off" placeholder="Panel Name" [(value)]="currentValue == null ? '' : currentValue.chartName" (blur)="checkPanelName()"/>
     </mat-form-field>
   </div>
-  <div class="msf-dashboard-panel-sub-container-column">
+  <div  class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
+    <mat-form-field class="msf-full-width" id="msf-dashboard-drill-down-container-column"
+     [formGroup]="chartForm">
+      <textarea matInput 
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="100"
+      placeholder="Panel Description" 
+      formControlName="panelDescriptionCtrl"
+      [(value)]="currentValue == null ? '' : currentValue.chartDescription" (blur)="checkPanelDescription()"></textarea>
+  </mat-form-field>
+  </div>
+  <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
     <mat-form-field [formGroup]="chartForm" class="msf-full-width" id="msf-dashboard-drill-down-container-column">
       <mat-select formControlName="chartCtrl" placeholder="Chart Type" (selectionChange)="checkChartType($event.value)">
         <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
@@ -41,7 +48,7 @@
     </mat-form-field>
   </div>
   <div *ngIf="!isTablePanel()">
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
       <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container drill-down-label-container">
         <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
         <span class="msf-dashboard-addmenu-item-text">Chart Configuration</span>
@@ -51,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
       <div class="msf-dashboard-chart-options-container">
         <div class="msf-dashboard-chart-selector">
           <div class="msf-dashboard-chart-analysis-title">
@@ -122,7 +129,7 @@
             <input matInput autocomplete="off" placeholder="Horizontal Axis Name" [disabled]="horizAxisDisabled" [(ngModel)]="currentValue.horizAxisName">
           </mat-form-field>
         </div>
-        <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
+        <!-- <div class="msf-dashboard-panel-sub-container-column-reverse" id="msf-dashboard-drill-down-sub-container-column-reverse">
           <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
           <div class="msf-dashboard-panel-control-variable-button msf-child-panel-control-variable-button">
             <button [disabled]="currentValue == nullValue" [style.margin-left.px]="7" mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
@@ -132,12 +139,12 @@
               <mat-icon aria-label="Delete Panel">delete</mat-icon>
             </button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
   <div *ngIf="isTablePanel()">
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown">
       <div class="msf-dashboard-chart-options-container">
         <div class="msf-dashboard-chart-selector">
           <div class="msf-dashboard-chart-analysis-title">
@@ -147,9 +154,9 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" *ngIf="currentValue.tableVariables.length">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown" *ngIf="currentValue.tableVariables.length">
       <div class="msf-dashboard-chart-options-container" id="msf-dashboard-drill-down-table-container">
-        <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-table-container-column">
+        <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown" id="msf-dashboard-panel-table-container-column">
           <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container" *ngFor="let tableVariable of currentValue.tableVariables; let column = index">
             <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked" (ngModelChange)="checkIfPanelIsConfigured()">
               {{tableVariable.name}}
@@ -158,9 +165,9 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" *ngIf="!currentValue.tableVariables.length">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown" *ngIf="!currentValue.tableVariables.length">
       <div class="msf-dashboard-chart-options-container" id="msf-dashboard-drill-down-table-container">
-        <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-table-container-column-empty">
+        <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-column-drillDown" id="msf-dashboard-panel-table-container-column-empty">
           <div class="msf-no-results">
             You don't have added any variable to filter
           </div>
@@ -175,5 +182,17 @@
         </button>
       </div>
     </div>
+  </div>
+</div>
+<div *ngIf="data.childPanelValues.length && !isTablePanel()"
+class="msf-dashboard-panel-sub-container-column-reverse-drillDownBtn" id="msf-dashboard-drill-down-sub-container-column-reverse">
+  <button mat-flat-button class="flat-button" (click)="closeDialog()">OK</button>
+  <div class="msf-dashboard-panel-control-variable-button msf-child-panel-control-variable-button">
+    <button [disabled]="currentValue == nullValue" [style.margin-left.px]="7" mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+      <img [style.width.px]="24" [style.height.px]="24" src="../../assets/images/additional-options.png"/>
+    </button>
+    <button [disabled]="(currentValue == nullValue) || (currentIndex != -1 && newPanel[currentIndex])" mat-mini-fab (click)="deletePanel(currentIndex)" color="primary" matTooltip="Delete Panel">
+      <mat-icon aria-label="Delete Panel">delete</mat-icon>
+    </button>
   </div>
 </div>
