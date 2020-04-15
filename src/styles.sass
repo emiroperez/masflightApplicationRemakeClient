@@ -455,9 +455,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $quaternary-background-color !important
         #msf-dashboard-drill-down-container
             color: $font-color
-        .msf-dashboard-color-picker-threshold-container
-            background-color: $dashboard-threshold-background-color
-            border-color: $dashboard-border-color
         .msf-dashboard-color-picker-container
             color: $font-color
         .msf-dashboard-color-picker-threshold-input
@@ -2420,6 +2417,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-color: $font-color
         .no-image
             background-color: $primary-color
+        .goals-thresholds-tab
+            background-color: $dashboard-threshold-background-color
+        .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
+            border-bottom: 1px solid $dashboard-border-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4510,10 +4511,10 @@ mat-tab-group
     position: absolute
     right: 0
     .msf-dashboard-button-close-icon
-        z-index: 2
+        z-index: 1
         @include msf-dashboard-icon(5px)
     .msf-dashboard-button-move-icon
-        z-index: 2
+        z-index: 1
         background-repeat: no-repeat
         width: 12px
         height: 12px
@@ -5174,7 +5175,6 @@ mat-tab-group
     padding-bottom: 10px
 
 .msf-dashboard-color-picker-layout
-    margin-left: 100px
     padding-top: 10px
     padding-bottom: 10px
 
@@ -5196,48 +5196,67 @@ mat-tab-group
         @include msf-dashboard-color-picker-selector-style(pointer)
 
 .msf-dashboard-color-picker-threshold-input
-    padding-top: 5px
+    display: flex
+    height: 45px
+    align-items: center
+    .goal-thresholds-label
+        display: flex
+        align-items: center
+        width: 100px
+        padding-left: 15px
+        .mat-icon
+            margin-right: 10px
+    .goal-thresholds-buttons
+        width: 100%
+        text-align: end
 
-.msf-dashboard-color-picker-new-threshold-container
-    height: 300px !important
+.goals-thresholds-tab
+    height: 100%
 
 .msf-dashboard-color-picker-threshold-container
     overflow-y: auto
-    height: 101px
-    padding-top: 5px
-    border-style: solid
-    border-width: 1px
+    height: calc(100% - 46px)
     display: flex
     flex-direction: column
     width: 100%
-    .msf-dashboard-color-picker-goal-item
-        padding: 10px !important
-        width: calc(100% - 20px) !important
     .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
         display: flex
         flex-direction: row
         width: calc(100% - 10px)
         padding: 5px
+        padding-top: 10px
         margin-top: -8px
         .msf-width-30-min
+            margin-top: 7px
             width: 30%
             padding-right: 10px
         .msf-width-30-max
+            margin-top: 7px
             width: 30%
         .msf-width-30-column
+            margin-top: 7px
             width: 30%
             padding-right: 10px
         .msf-width-15-min
+            margin-top: 7px
             width: 15%
             padding-right: 10px
         .msf-width-15-max
+            margin-top: 7px
             width: 15%
         .msf-width-45
+            margin-top: 7px
             width: 45%
             padding-right: 10px
-        .msf-dashboard-color-picker-selector-new-container
-            width: 40%
+        .msf-width-60
+            margin-top: 7px
+            width: 60%
+            padding-right: 10px
+        .mat-form-field-wrapper
+            padding-bottom: 0 !important
         .msf-dashboard-color-picker-selector-container
+            margin-top: 7px
+            width: 25%
             padding-top: 0px
             .msf-dashboard-color-picker-selector-label
                 margin-right: 0px
@@ -12199,3 +12218,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .heatmap-panel-step
     display: flex
     align-items: center
+
+.color-picker-tab
+    align-items: center
+    justify-content: center
+    display: flex
+    flex-direction: column
+    height: 100%

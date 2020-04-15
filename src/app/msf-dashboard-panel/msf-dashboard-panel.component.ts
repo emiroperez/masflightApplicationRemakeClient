@@ -347,6 +347,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   tempOptionCategories: any = null;
   panelMode: string = "basic";
   panelConfigRefresh: boolean = false;
+  advConfigFlags: ConfigFlags = null;
+  useThemeColors: boolean = false;
 
   @ViewChild("configTabs", { static: false })
   configTabs: MatTabGroup;
@@ -5815,39 +5817,82 @@ export class MsfDashboardPanelComponent implements OnInit {
     return new Intl.NumberFormat ('en-us', { maximumFractionDigits: 1 }).format (result);
   }
 
-  goToAdditionalSettings(): void
+  toggleThemeColors(): void
   {
-    let configFlags = ConfigFlags.NONE;
+    if (!this.values.paletteColors || !this.values.paletteColors.length)
+    {
+      if (this.hasHeatMapColorSettings ())
+        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].heatMapColor));
+      else
+        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].resultColors));
+    }
+    else
+      this.values.paletteColors = [];
+  }
+
+  hasLimitResultsSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.LIMITVALUES) ? true : false;
+  }
+
+  hasLimitValueRangeSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.LIMITAGGREGATOR) ? true : false;
+  }
+
+  hasColorSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.CHARTCOLORS) ? true : false;
+  }
+
+  hasHeatMapColorSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.HEATMAPCOLOR) ? true : false;
+  }
+
+  hasThresholdValuesSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.THRESHOLDS) ? true : false;
+  }
+
+  hasGoalsSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.GOALS) ? true : false;
+  }
+
+  configureAdditionalSettings(): void
+  {
+    this.advConfigFlags = ConfigFlags.NONE;
 
     if (this.values.currentChartType.flags & ChartFlags.FORM ||
       this.values.currentChartType.flags & ChartFlags.TABLE)
-      configFlags = ConfigFlags.THRESHOLDS;
+      this.advConfigFlags = ConfigFlags.THRESHOLDS;
     else if (this.values.currentChartType.flags & ChartFlags.PIECHART
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
-      configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
+      this.advConfigFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
+      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
-      configFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
+      this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
 
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
-        configFlags |= ConfigFlags.LIMITVALUES;
+        this.advConfigFlags |= ConfigFlags.LIMITVALUES;
 
         if (this.isSimpleChart ())
-          configFlags |= ConfigFlags.THRESHOLDS;
+          this.advConfigFlags |= ConfigFlags.THRESHOLDS;
       }
     }
 
     // don't allow the option to limit results on advanced charts
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
-      configFlags &= ~ConfigFlags.LIMITVALUES;
-      configFlags |= ConfigFlags.LIMITAGGREGATOR;
+      this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
+      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR;
     }
 
-    this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
+/*    this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
       height: 'auto',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -5856,7 +5901,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values,
         configFlags: configFlags
       }
-    });
+    });*/
   }
 
   goToDrillDownSettings(): void
@@ -8049,6 +8094,25 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.stepLoading = 0;
         break;
 
+      case 11:
+        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
+          return;
+
+        this.configureAdditionalSettings ();
+
+        if (this.values.limitMode == null)
+          this.values.limitMode = 0;
+
+        if (this.values.limitAmount == null)
+          this.values.limitAmount = 10;
+
+        if (!this.values.paletteColors || !this.values.paletteColors.length)
+          this.useThemeColors = true;
+
+        this.selectedStep = 11;
+        this.stepLoading = 0;
+        break;
+
       case 2:
         this.selectedStep = 2;
 
@@ -9023,7 +9087,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.dialogData)
       return false;
 
-    element = document.getElementsByClassName("lb-generated-id-" + this.values.gridId);
+    element = document.getElementsByClassName ("lb-generated-id-" + this.values.gridId);
     item = element ? element[0] : null;
 
     if (!item)
@@ -9035,5 +9099,47 @@ export class MsfDashboardPanelComponent implements OnInit {
       width = item.offsetWidth;
 
     return width < 875 ? true : false;
+  }
+
+  hasAdditinalSettings(): boolean
+  {
+    if (!this.isDynTablePanel() && !this.isTablePanel() && !this.isInformationPanel() && !this.isSimpleFormPanel() && !this.isMapPanel() && !this.isHeatMapPanel())
+      return true;
+
+    return (this.isHeatMapPanel () || this.isSimpleFormPanel () || this.isTablePanel ()) ? true : false;
+  }
+
+  trackColor(index): number
+  {
+    return index;
+  }
+
+  addThreshold(): void
+  {
+    this.values.thresholds.push ({
+      min: 0,
+      max: 0,
+      color: "#000000"
+    });
+  }
+
+  removeThreshold(): void
+  {
+    if (this.values.thresholds.length)
+      this.values.thresholds.pop ();
+  }
+
+  addGoal(): void
+  {
+    this.values.goals.push ({
+      value: 0,
+      color: "#000000"
+    });
+  }
+
+  removeGoal(): void
+  {
+    if (this.values.goals.length)
+      this.values.goals.pop ();
   }
 }
