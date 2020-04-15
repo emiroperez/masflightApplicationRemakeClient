@@ -1,4 +1,4 @@
-import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren, HostListener } from '@angular/core';
+import { OnInit, Component, Inject, AfterViewInit, ChangeDetectorRef, Renderer2, ViewChild, ViewChildren, HostListener, Output, EventEmitter } from '@angular/core';
 import { ApiClient } from '../api/api-client';
 import { Globals } from '../globals/Globals';
 import { ApplicationService } from '../services/application.service';
@@ -409,6 +409,7 @@ export class EditCategoryArgumentDialog {
 
   optionId: number;
 
+
   constructor(
     private globals: Globals,
     private authService: AuthService,
@@ -493,6 +494,11 @@ export class EditCategoryArgumentDialog {
             }
           }
         }
+        // if (this.isSortingCheckboxes (argument))
+        // {
+        //  let url =  this.globals.baseUrl + "/getMetaByOptionId?optionId="+ data.optionId;
+        //  this.authService.get (this, url, this.handlerSuccess, this.handlerError);
+        // }
       }
   }
 
@@ -853,6 +859,12 @@ export class EditCategoryArgumentDialog {
     }
   }
 
+  setLoading(value: boolean): void
+  {
+    // this.loading = value;
+    this.globals.isLoading = value;
+  }
+
   getItems(item, search, handlerSuccess){
     let url;
 
@@ -866,21 +878,19 @@ export class EditCategoryArgumentDialog {
       return;
     }
 
-    if (item.url.includes ("?"))
-    {
-      if (item.url.substring (0, 1) == "/")
-        url = this.globals.baseUrl + item.url + "&search=" + (search != null ? search : '');
-      else
-        url = item.url + "&search=" + (search != null ? search : '');
-    }
-    else
-    {
-      if (item.url.substring (0, 1) == "/")
-        url = this.globals.baseUrl + item.url + "?search=" + (search != null ? search : '');
-      else
-        url = item.url + "?search=" + (search != null ? search : '');
-    }
-
+    if (item.url.includes("?")) {
+        if (item.url.substring(0, 1) == "/")
+          url = this.globals.baseUrl + item.url + "&search=" + (search != null ? search : '');
+        else
+          url = item.url + "&search=" + (search != null ? search : '');
+      }
+      else {
+        if (item.url.substring(0, 1) == "/")
+          url = this.globals.baseUrl + item.url + "?search=" + (search != null ? search : '');
+        else
+          url = item.url + "?search=" + (search != null ? search : '');
+      }
+  
     url += "&appId=" + this.globals.currentApplication.id;
 
     if (this.globals.testingPlan != -1)
