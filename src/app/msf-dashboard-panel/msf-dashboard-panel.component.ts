@@ -7943,6 +7943,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!this.isLineOrBarChart ())
         this.values.startAtZero = false;
     }
+
+    if (this.values.limitMode != null)
+      this.values.limitMode = 0;
+
+    if (this.values.limitAmount != null)
+      this.values.limitAmount = 10;
+
+    if (this.values.paletteColors != null)
+      this.useThemeColors = true;
   }
 
   selectPanelType(panelType): void

@@ -2417,7 +2417,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-color: $font-color
         .no-image
             background-color: $primary-color
-        .goals-thresholds-tab
+        .goals-thresholds-tab, .limit-results-tab, .color-picker-tab
             background-color: $dashboard-threshold-background-color
         .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
             border-bottom: 1px solid $dashboard-border-color
@@ -5228,29 +5228,29 @@ mat-tab-group
         margin-top: -8px
         .msf-width-30-min
             margin-top: 7px
-            width: 30%
+            width: 30% !important
             padding-right: 10px
         .msf-width-30-max
             margin-top: 7px
-            width: 30%
-        .msf-width-30-column
+            width: 30% !important
+        .msf-width-40-column
             margin-top: 7px
-            width: 30%
+            width: 40% !important
             padding-right: 10px
         .msf-width-15-min
             margin-top: 7px
-            width: 15%
+            width: 15% !important
             padding-right: 10px
         .msf-width-15-max
             margin-top: 7px
-            width: 15%
+            width: 15% !important
         .msf-width-45
             margin-top: 7px
-            width: 45%
+            width: 45% !important
             padding-right: 10px
         .msf-width-60
             margin-top: 7px
-            width: 60%
+            width: 60% !important
             padding-right: 10px
         .mat-form-field-wrapper
             padding-bottom: 0 !important
@@ -9093,16 +9093,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-assistant-chart-picker
     display: grid
     grid-template-columns: repeat(auto-fill, 115px)
+    grid-row-gap: 20px
     height: 100%
-    margin-bottom: 15px
     justify-content: center
     .msf-dashboard-assistant-chart-item, .msf-dashboard-assistant-chart-item-selected
         width: 100px
         height: 140px
         align-self: center
         text-align: center
-        margin: auto
-        margin-bottom: 20px
         display: flex
         flex-direction: column
         cursor: pointer
@@ -9352,7 +9350,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         .mat-radio-label
             width: 100%
             .mat-radio-label-content
-                padding-left: 0 !important
                 text-align: center
                 width: 100%
 
@@ -11288,7 +11285,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-right: 10px
 
 .msf-dashboard-limit-amount-input
-    width: 95%
+    margin-left: 5px
 
 @mixin membership-header-button
     position: absolute
@@ -12219,9 +12216,23 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     display: flex
     align-items: center
 
-.color-picker-tab
+.color-picker-tab, .limit-results-tab
     align-items: center
     justify-content: center
     display: flex
     flex-direction: column
     height: 100%
+
+.limit-radio-group
+    margin-bottom: 20px !important
+    .mat-radio-group
+        display: grid
+        grid-row-gap: 3vh
+        .msf-dashboard-assistant-mode
+            margin-left: 0 !important
+            margin-top: 0 !important
+            padding: 14px 20px !important
+            align-items: center
+            .mat-radio-container
+                width: 15px !important
+                height: 15px !important

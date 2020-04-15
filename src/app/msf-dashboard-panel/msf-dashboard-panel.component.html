@@ -104,6 +104,16 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Panel Type Selection</span>
+            <!--
+            <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
+              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
+                Basic
+              </mat-radio-button>
+              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'advanced'">
+                Advanced
+              </mat-radio-button>
+            </mat-radio-group>
+            -->
             <div class="datalake-search-input">
               <mat-form-field class="msf-full-width panel-type-combobox config-panel-form-field" appearance="outline">
                 <mat-select [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
@@ -858,15 +868,6 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
             <mat-tab-group>
-              <mat-tab label="Limit Results" *ngIf="hasLimitResultsSettings()">
-
-              </mat-tab>
-              <mat-tab label="Limit Value Range" *ngIf="hasLimitValueRangeSettings()">
-
-              </mat-tab>
-              <mat-tab label="Threshold Values" *ngIf="hasLimitValueRangeSettings()">
-
-              </mat-tab>
               <mat-tab label="Color Picker" *ngIf="hasColorSettings()">
                 <div class="color-picker-tab">
                   <mat-checkbox color="primary" [(ngModel)]="useThemeColors" (click)="toggleThemeColors()">
@@ -891,6 +892,87 @@
                   </ng-container>
                 </div>
               </mat-tab>
+              <mat-tab label="Limit Results" *ngIf="hasLimitResultsSettings()">
+                <div class="limit-results-tab">
+                  <div class="center msf-component-radio msf-dashboard-additional-settings-title msf-dashboard-assistant-chart-mode limit-radio-group">
+                    <mat-radio-group [(ngModel)]="values.limitMode" name="Limit Mode">
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="0" (click)="values.limitMode = 0">No Limit</mat-radio-button>
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="1" (click)="values.limitMode = 1">Top Values</mat-radio-button>
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="2" (click)="values.limitMode = 2">Bottom Values</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" *ngIf="values.limitMode" appearance="outline">
+                      <mat-label>Amount of results to limit</mat-label>
+                      <input matInput autocomplete="off" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="values.limitAmount">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Limit Value Range" *ngIf="hasLimitValueRangeSettings()">
+                <div class="limit-results-tab">
+                  <div class="center msf-component-radio msf-dashboard-additional-settings-title msf-dashboard-assistant-chart-mode limit-radio-group">
+                    <mat-radio-group [(ngModel)]="values.limitMode" name="Limit Mode">
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="0" (click)="values.limitMode = 0">No Limit</mat-radio-button>
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="1" (click)="values.limitMode = 1">Range Limit</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" *ngIf="values.limitMode" appearance="outline">
+                      <mat-label>Min Value</mat-label>
+                      <input matInput autocomplete="off" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="values.minValueRange">
+                    </mat-form-field>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" *ngIf="values.limitMode" appearance="outline">
+                      <mat-label>Max Value</mat-label>
+                      <input matInput autocomplete="off" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="values.maxValueRange">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Threshold Values" *ngIf="hasThresholdValuesSettings()">
+                <div class="goals-thresholds-tab">
+                  <div class="msf-dashboard-color-picker-threshold-input">
+                    <div class="goal-thresholds-label"><mat-icon>bar_chart</mat-icon> Thresholds</div>
+                    <div class="goal-thresholds-buttons">
+                      <button mat-icon-button (click)="addThreshold()">
+                        <mat-icon aria-label="add">add_circle</mat-icon>
+                      </button>
+                      {{values.thresholds.length}}
+                      <button mat-icon-button (click)="removeThreshold()">
+                        <mat-icon aria-label="delete">remove_circle</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="msf-dashboard-color-picker-threshold-container" *ngIf="values.thresholds">
+                    <div class="msf-dashboard-color-picker-threshold-item datalake-search-input" *ngFor="let threshold of values.thresholds; trackBy: trackColor">
+                      <mat-form-field class="msf-width-40-column datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Select Column</mat-label>
+                        <mat-select [(ngModel)]="threshold.column">
+                          <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                          <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable.item.id">
+                            {{variable.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="msf-width-15-min datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Min</mat-label>
+                        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="threshold.min"/>
+                      </mat-form-field>
+                      <mat-form-field class="msf-width-15-max datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Max</mat-label>
+                        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="threshold.max"/>
+                      </mat-form-field>
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
               <mat-tab label="Goals" *ngIf="hasGoalsSettings()">
                 <div class="goals-thresholds-tab">
                   <div class="msf-dashboard-color-picker-threshold-input">
@@ -909,7 +991,7 @@
                     <div class="msf-dashboard-color-picker-goal-item datalake-search-input" *ngFor="let goal of values.goals; trackBy: trackColor">
                       <mat-form-field class="msf-width-60 datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
                         <mat-label>Name</mat-label>
-                        <input matInput autocomplete="off" [(ngModel)]="goal.name" />
+                        <input matInput autocomplete="off" [(ngModel)]="goal.name"/>
                       </mat-form-field>
                       <mat-form-field class="msf-width-15-max datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
                         <mat-label>Value</mat-label>
