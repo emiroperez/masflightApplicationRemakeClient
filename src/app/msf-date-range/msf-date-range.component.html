@@ -27,7 +27,7 @@
                     <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
-                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
+                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
@@ -171,7 +171,7 @@
                 </mat-form-field>
                 <span class="anchor-date-label" *ngIf="argument.label2">{{argument.label2}}</span>
                 <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
-                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" matInput [matDatepicker]="picker2" autocomplete="off" class="msf-full-width msf-menu-arg-select" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
+                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" [matDatepicker]="picker2" autocomplete="off" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
