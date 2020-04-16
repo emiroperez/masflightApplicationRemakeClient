@@ -15,7 +15,14 @@
   -->
   <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
-      {{values.chartName}}
+      <span *ngIf="values.chartName">
+        <span *ngIf="!values.currentOption">{{values.chartName}}</span>
+        <span *ngIf="values.currentOption">{{values.chartName}} - {{values.currentOption.label}}</span>
+      </span>
+      <span *ngIf="!values.chartName">
+        <span *ngIf="!values.currentOption">Untitled</span>
+        <span *ngIf="values.currentOption">Untitled - {{values.currentOption.label}}</span>
+      </span>
     </div>
     <div class="msf-dashboard-panel-config-container">
       <div class="msf-dashboard-panel-steps">
@@ -89,7 +96,7 @@
           <div class="datalake-search-input">
             <mat-form-field class="msf-full-width datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
               <mat-label>Panel Name</mat-label>
-              <input matInput autocomplete="off" type="text" [(ngModel)]="values.chartName" />
+              <input matInput autocomplete="off" type="text" [(ngModel)]="values.chartName"/>
             </mat-form-field>
           </div>
           <div class="datalake-search-input panel-description-input">
@@ -354,7 +361,7 @@
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 5">
         <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5"></div>
         <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
-          <div class="msf-dashboard-panel-chart-config-container" [ngClass]="{ 'msf-dashboard-panel-chart-config-container-small': isSmallPanel() }">
+          <div class="msf-dashboard-panel-chart-config-container">
             <div class="msf-dashboard-assistant-chart-config-buttons">
               <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
                    [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }"
@@ -436,7 +443,7 @@
               <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
             </div>
           </div>
-          <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8" [ngClass]="{ 'msf-dashboard-select-distribution-chart-table-container-small': isSmallPanel() }">
+          <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
             <div class="results-container msf-dashboard-select-distribution-chart-table">
               <table mat-table [dataSource]="msfConfigTableRef.dataSource" class="mat-elevation-z8 datasource results">
                 <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfConfigTableRef.metadata; let i = index">

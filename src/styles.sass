@@ -8997,9 +8997,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-assistant-argument-scroll
     overflow-y: auto
     font-size: 11px !important
+    display: flex
+    flex-direction: column
+    justify-content: center
+    height: 100%
 
 .msf-dashboard-assistant-argument-value
     font-weight: 550
+    margin-left: 5px
 
 .msf-dashboard-assistant-content
     display: flex
@@ -9145,13 +9150,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         color: #ffffff
 
 .msf-dashboard-panel-chart-config-container
+    flex-direction: column
     display: flex
     .msf-dashboard-assistant-chart-config-button
         font-size: 82.5%
-
-.msf-dashboard-panel-chart-config-container-small
-    flex-direction: column
-    .msf-dashboard-assistant-chart-config-button
         height: 15px
     .msf-dashboard-assistant-min-value-at-zero
         flex-direction: row !important
@@ -9168,7 +9170,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-select-distribution-chart-table-container
     margin-left: -10px
-    height: calc(100% - 51px)
+    height: calc(100% - 71px)
     width: calc(100% + 20px)
     .msf-dashboard-select-distribution-chart-table
         height: 100%
@@ -9176,9 +9178,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         th
             min-width: 100px
             text-align: center
-
-.msf-dashboard-select-distribution-chart-table-container-small
-    height: calc(100% - 71px) !important
 
 .distribution-chart-column-analysis-header-hover, .distribution-chart-column-analysis-row-hover, .distribution-chart-column-axis-header-hover, .distribution-chart-column-axis-row-hover, .distribution-chart-column-values-header-hover, .distribution-chart-column-values-row-hover,.distribution-chart-column-aggregation-header-hover, .distribution-chart-column-aggregation-row-hover
     cursor: pointer

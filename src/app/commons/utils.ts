@@ -681,7 +681,24 @@ export class Utils{
             }
 
             if (type == ComponentType.dateRange)
-                return this.getDateFormat (value, argument.dateFormat);
+            {
+                let currentValueType = (argument.selectionMode >> 1) & 3;
+                let dateFormat = "MM/dd/yyyy";
+
+                switch (currentValueType)
+                {
+                    case 3:
+                    case 2:
+                        dateFormat = "yyyy";
+                        break;
+
+                    case 1:
+                        dateFormat = "MMM/yyyy";
+                        break;
+                }
+
+                return this.getDateFormat (value, dateFormat);
+            }
             else if (type == ComponentType.airport)
             {
                 if (typeof value === "string")
@@ -902,8 +919,6 @@ export class Utils{
               datePipe = new DatePipe ('en-US');
               return datePipe.transform (value.toDate (), format);
             }
-            else
-              return value;
 
             if (format == null)
                 format = 'MMddyyyy';

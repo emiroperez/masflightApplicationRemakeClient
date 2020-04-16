@@ -3253,6 +3253,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
+    if (!this.values.chartName)
+      this.values.chartName = "Untitled";
+
     this.globals.startTimestamp = new Date ();
 
     // check if any variable that requires grouping are in configure properly
@@ -9089,27 +9092,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       return true;
 
     return false;
-  }
-
-  isSmallPanel(): boolean
-  {
-    let element, item, width;
-
-    if (this.dialogData)
-      return false;
-
-    element = document.getElementsByClassName ("lb-generated-id-" + this.values.gridId);
-    item = element ? element[0] : null;
-
-    if (!item)
-      return true;
-
-    if (item.style.width != null && item.style.width != "")
-      width = parseInt (item.style.width, 10);
-    else
-      width = item.offsetWidth;
-
-    return width < 875 ? true : false;
   }
 
   hasAdditinalSettings(): boolean
