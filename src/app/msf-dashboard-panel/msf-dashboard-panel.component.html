@@ -901,6 +901,10 @@
               </mat-tab>
               <mat-tab label="Limit Results" *ngIf="hasLimitResultsSettings()">
                 <div class="limit-results-tab">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label">
+                    <mat-icon class="msf-dashboard-chart-icon" aria-label="Limit Results">show_chart</mat-icon>
+                    <span class="msf-dashboard-addmenu-item-text">Set Limit Results</span>
+                  </div>
                   <div class="center msf-component-radio msf-dashboard-additional-settings-title msf-dashboard-assistant-chart-mode limit-radio-group">
                     <mat-radio-group [(ngModel)]="values.limitMode" name="Limit Mode">
                       <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="0" (click)="values.limitMode = 0">No Limit</mat-radio-button>
@@ -918,6 +922,10 @@
               </mat-tab>
               <mat-tab label="Limit Value Range" *ngIf="hasLimitValueRangeSettings()">
                 <div class="limit-results-tab">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label">
+                    <mat-icon class="msf-dashboard-chart-icon" aria-label="Limit Results">show_chart</mat-icon>
+                    <span class="msf-dashboard-addmenu-item-text">Value Range Limit</span>
+                  </div>
                   <div class="center msf-component-radio msf-dashboard-additional-settings-title msf-dashboard-assistant-chart-mode limit-radio-group">
                     <mat-radio-group [(ngModel)]="values.limitMode" name="Limit Mode">
                       <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="0" (click)="values.limitMode = 0">No Limit</mat-radio-button>
@@ -941,7 +949,7 @@
               <mat-tab label="Threshold Values" *ngIf="hasThresholdValuesSettings()">
                 <div class="goals-thresholds-tab">
                   <div class="msf-dashboard-color-picker-threshold-input">
-                    <div class="goal-thresholds-label"><mat-icon>bar_chart</mat-icon> Thresholds</div>
+                    <div class="goal-thresholds-label"><mat-icon>assessment</mat-icon> Thresholds</div>
                     <div class="goal-thresholds-buttons">
                       <button mat-icon-button (click)="addThreshold()">
                         <mat-icon aria-label="add">add_circle</mat-icon>
@@ -972,7 +980,7 @@
                         <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="threshold.max"/>
                       </mat-form-field>
                       <div class="msf-dashboard-color-picker-selector-container">
-                        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
+                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex" />
                         <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>
                       </div>
@@ -1005,7 +1013,7 @@
                         <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="goal.value"/>
                       </mat-form-field>
                       <div class="msf-dashboard-color-picker-selector-container">
-                        <span class="msf-dashboard-color-picker-selector-label">Color:</span>
+                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="goal.color" [style.background]="goal.color" [(cpOutputFormat)]="hex"/>
                         <span class="msf-dashboard-color-picker-color-label">{{goal.color}}</span>
                       </div>
