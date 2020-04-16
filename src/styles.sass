@@ -2424,10 +2424,18 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .goals-thresholds-tab, .limit-results-tab, .color-picker-tab
             background-color: $dashboard-threshold-background-color
         .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
-            border-bottom: 1px solid $dashboard-border-color
+            border-bottom: 1px solid $dashboard-panel-background-color
         .msf-dashboard-color-picker-grid-layout
             .msf-dashboard-color-picker-selector-container
                 background-color: $dashboard-panel-background-color
+        .datasource-selected
+            color: $primary-color
+        .info-image
+            background-image: url(assets/images/info.png)
+            &:hover
+                background-image: url(assets/images/info-hover.png) !important
+        .info-image-open
+            background-image: url(assets/images/info-open.png)
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -9284,19 +9292,20 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin: -10px
     .select-data-menu-category
         width: 100%
-        min-width: 351px
+        min-width: 400px
         .menu-category-header
             display: flex
-            .menu-category-title
-                display: flex
-                font-size: 20px
-                height: 130px
-                align-items: center
-                margin-left: 30px
-                margin-right: 30px
-                width: 100%
-                font-weight: 550
-                justify-content: center
+            .info-container
+                 margin-left: 16px
+                 margin-right: 30px
+                 .menu-category-title
+                     display: flex
+                     font-size: 20px
+                     height: 100px
+                     align-items: center
+                     width: 100%
+                     font-weight: 550
+                     text-align: left
             .menu-category-image
                 width: 42%
                 height: 42%
@@ -9323,7 +9332,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 .mat-input-element
                     width: calc(100% - 24px)
         .menu-category-body
-            height: calc(100% - 262px)
+            height: calc(100% - 231px)
             .menu-items
                 height: 100%
                 overflow-y: auto
@@ -12290,3 +12299,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .theme-color-checkbox
     text-align: end
     width: calc(100% - 160px)
+
+.info-image, .info-image-open
+    margin-top: 20px
+    height: 54px
+    width: 43px
+
+.datasource-selected
+    padding-left: 15px

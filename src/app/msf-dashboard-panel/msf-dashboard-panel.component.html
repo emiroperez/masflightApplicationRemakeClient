@@ -17,11 +17,11 @@
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       <span *ngIf="values.chartName">
         <span *ngIf="!values.currentOption">{{values.chartName}}</span>
-        <span *ngIf="values.currentOption">{{values.chartName}} - {{values.currentOption.label}}</span>
+        <span *ngIf="values.currentOption">{{values.chartName}}<span class="datasource-selected">Data Source Selected:</span> {{values.currentOption.label}}</span>
       </span>
       <span *ngIf="!values.chartName">
         <span *ngIf="!values.currentOption">Untitled</span>
-        <span *ngIf="values.currentOption">Untitled - {{values.currentOption.label}}</span>
+        <span *ngIf="values.currentOption">Untitled<span class="datasource-selected">Data Source Selected:</span> {{values.currentOption.label}}</span>
       </span>
     </div>
     <div class="msf-dashboard-panel-config-container">
@@ -151,18 +151,24 @@
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 3">
         <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 3"></div>
-        <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
+        <div class="msf-dashboard-panel-step-item" *ngIf="stepLoading != 3">
           <div class="select-data-body">
             <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories">
               <div class="menu-category-header">
-                <span class="menu-category-title">{{menuCategory.label}}</span>
+                <div class="info-container">
+                  <div *ngIf="!menuCategory.infoOpen" class="info-image"></div>
+                  <div *ngIf="menuCategory.infoOpen" class="info-image-open"></div>
+                  <span class="menu-category-title">{{menuCategory.label}}</span>
+                </div>
                 <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}" />
               </div>
+              <!--
               <div class="menu-category-description">
                 <ng-container *ngIf="menuCategory.welcome.shortDescription">
                   {{menuCategory.welcome.shortDescription}}
                 </ng-container>
               </div>
+              -->
               <div class="menu-category-search">
                 <mat-form-field class="menu-item-search-input">
                   <input matInput autocomplete="off" [(ngModel)]="menuCategory.searchLabel" (ngModelChange)="filterMenuOptions(menuCategory)">
@@ -359,8 +365,8 @@
         </div>
       </div>
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 5">
-        <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5"></div>
-        <div class="msf-dashboard-panel-step-item" *ngIf="!stepLoading">
+        <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5 || stepLoading == 4"></div>
+        <div class="msf-dashboard-panel-step-item" *ngIf="stepLoading != 5 && stepLoading != 4">
           <div class="msf-dashboard-panel-chart-config-container">
             <div class="msf-dashboard-assistant-chart-config-buttons">
               <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"

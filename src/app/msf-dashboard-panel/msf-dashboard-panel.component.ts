@@ -8018,13 +8018,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       case 3:
         this.selectedStep = 3;
-
-        if (!this.menuCategories.length)
-        {
-          this.stepLoading = 3;
-          this.selectedItem = null;
-          this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
-        }
+        this.stepLoading = 3;
+        this.selectedItem = null;
+        this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
         break;
 
       case 4:
@@ -8049,9 +8045,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         if (!this.msfConfigTableRef.dataSource)
         {
-          this.stepLoading = 5;
-          this.configTableLoading = true;
-          this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
+          if (this.stepLoading != 4)
+          {
+            this.stepLoading = 5;
+            this.configTableLoading = true;
+            this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
+          }
         }
         else
         {
@@ -8801,6 +8800,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   finishLoadingConfigTable(error): void
   {
+    if (this.stepLoading != 4 && this.stepLoading != 5)
+      return;
+
     this.stepLoading = 0;
     this.configTableLoading = false;
 
