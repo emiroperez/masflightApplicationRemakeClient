@@ -7887,6 +7887,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.analysisSelected = null;
     this.values.variable = null;
     this.values.xaxis = null;
+    this.values.geodata = null;
 
     if (this.panelMode === "advanced")
     {
