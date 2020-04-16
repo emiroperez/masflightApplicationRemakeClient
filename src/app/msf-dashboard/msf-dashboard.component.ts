@@ -44,8 +44,8 @@ export class MsfDashboardComponent implements OnInit {
     draggable: {
       handle: ".msf-dashboard-button-move-icon"
     },
+    alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     resizable: {
-      autoHide: true,
       handles: 'sw, w, s, e, se'
     }
   };
