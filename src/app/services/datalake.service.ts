@@ -227,5 +227,12 @@ export class DatalakeService {
         request.userName = this.globals.userName;
         this.http.post(_this, url, request, handlerSuccess, handlerError);
     }
-    
+
+    getDatalakeTableEditData(_this, schemaName, tableName,page_number, pageSize, token,search, handlerSuccess, handlerError): void
+    {        
+       let url = this.host + "/GetDatalakeTableEditData?userName="+this.globals.userName+"&schemaName=" + schemaName + 
+        "&tableName=" + tableName + "&page_number=" + page_number+ "&pageSize=" + pageSize+ 
+        "&token=" + token+ "&filter=" + search.toLowerCase();
+        this.http.get(_this, url, handlerSuccess, handlerError, null);
+    }
 }

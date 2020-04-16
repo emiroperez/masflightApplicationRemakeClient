@@ -23,12 +23,12 @@
             <mat-icon matPrefix aria-label="search">search</mat-icon>
         </mat-form-field>
       </div>
-      <button *ngIf="edit" mat-button class="datalake-table-export-excel" 
+      <button *ngIf="showIcon" mat-button class="datalake-table-export-excel" 
       [disabled]="!displayedColumns.length || (RowsInserted.length === 0 && this.RowsUpdated.length === 0 && this.RowsDeleted.length === 0)"
         (click)="SaveRows()" matTooltip="Save">
         <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-datalake-SaveRow.png">
       </button>
-      <button *ngIf="edit" mat-button class="datalake-table-export-excel" [disabled]="!displayedColumns.length"
+      <button *ngIf="showIcon" mat-button class="datalake-table-export-excel" [disabled]="!displayedColumns.length"
         (click)="InsertRows()" matTooltip="Insert New Row ">
         <img class="datalake-table-export-excel-img" src="../../assets/images/{{globals.theme}}-datalake-AddRow.png">
       </button>
