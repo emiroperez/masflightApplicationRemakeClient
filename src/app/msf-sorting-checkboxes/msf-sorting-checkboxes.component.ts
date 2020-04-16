@@ -17,6 +17,9 @@ export class MsfSortingCheckboxesComponent implements OnInit {
   @Input("currentOptionId")
   currentOptionId: number;
 
+  @Input("show")
+  show: boolean = true;
+
   @Input("createdMetas")
   createdMetas: any;
 

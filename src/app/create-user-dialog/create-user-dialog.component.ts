@@ -26,11 +26,11 @@ export class CreateUserDialogComponent
     passwordValidator : new FormControl('', [Validators.required]),
     repeatPasswordValidator : new FormControl('', [Validators.required, CreateUserDialogComponent.passwordMatchValidator (this)]),
     emailValidator : new FormControl('', [Validators.required, Validators.email]),
-    addressValidator : new FormControl(''),
+    // addressValidator : new FormControl(''),
     countryValidator : new FormControl('', [Validators.required]),
-    stateValidator : new FormControl(null, [CreateUserDialogComponent.stateValidator (this)]),
-    postalCodeValidator : new FormControl(''),
-    phoneNumberValidator : new FormControl(''),
+    stateValidator : new FormControl({value: null, disabled: true}, [CreateUserDialogComponent.stateValidator (this)]),
+    // postalCodeValidator : new FormControl(''),
+    // phoneNumberValidator : new FormControl(''),
     customerValidator : new FormControl('', [Validators.required])
   });
 
@@ -52,6 +52,7 @@ export class CreateUserDialogComponent
   selectedStates: State[];
   customers: Customer[];
   user: User;
+  // disable: boolean = true; 
 
   constructor(public dialogRef: MatDialogRef<CreateUserDialogComponent>,
     private userServices: UserService,
@@ -198,6 +199,13 @@ export class CreateUserDialogComponent
     {
       this.states = event.value.states;
       this.selectedStates = this.states;
+      if(this.states.length!=0){
+        this.personalInformationForm.controls['stateValidator'].enable();
+        // this.disable=true;
+      }else{
+        // this.disable=false;
+        this.personalInformationForm.controls['stateValidator'].disable();
+      }
       this.stateSearchChange ();
     }
     else
@@ -214,11 +222,11 @@ export class CreateUserDialogComponent
     this.user.password = this.personalInformationForm.get ('passwordValidator').value;
     this.user.repeatPassword = this.personalInformationForm.get ('repeatPasswordValidator').value;
     this.user.email = this.personalInformationForm.get ('emailValidator').value;
-    this.user.address = this.personalInformationForm.get ('addressValidator').value;
+    // this.user.address = this.personalInformationForm.get ('addressValidator').value;
     this.user.country = this.personalInformationForm.get ('countryValidator').value;
     this.user.CState = this.personalInformationForm.get ('stateValidator').value;
-    this.user.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
-    this.user.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
+    // this.user.postalCode = this.personalInformationForm.get ('postalCodeValidator').value;
+    // this.user.phoneNumber = this.personalInformationForm.get ('phoneNumberValidator').value;
     this.user.customerInfo = null;
     this.user.customer = this.personalInformationForm.get ('customerValidator').value;
   }
@@ -324,10 +332,10 @@ export class CreateUserDialogComponent
     return this.personalInformationForm.get ('emailValidator').hasError ('exists') ? 'E-mail already exists' : '';
   }
 
-  getErrorAddressMessage(): string
-  {
-    return this.personalInformationForm.get ('addressValidator').hasError ('required') ? 'You must enter an address' : '';
-  }
+  // getErrorAddressMessage(): string
+  // {
+  //   return this.personalInformationForm.get ('addressValidator').hasError ('required') ? 'You must enter an address' : '';
+  // }
 
   getErrorCountryMessage(): string
   {
@@ -339,15 +347,15 @@ export class CreateUserDialogComponent
     return this.personalInformationForm.get ('stateValidator').hasError ('required') ? 'You must select a state' : '';
   }
 
-  getErrorPostalCodeMessage(): string
-  {
-    return this.personalInformationForm.get ('postalCodeValidator').hasError ('required') ? 'You must enter a postal code' : '';
-  }
+  // getErrorPostalCodeMessage(): string
+  // {
+  //   return this.personalInformationForm.get ('postalCodeValidator').hasError ('required') ? 'You must enter a postal code' : '';
+  // }
 
-  getErrorPhoneNumberMessage(): string
-  {
-    return this.personalInformationForm.get ('phoneNumberValidator').hasError ('required') ? 'You must enter a phone number' : '';
-  }
+  // getErrorPhoneNumberMessage(): string
+  // {
+  //   return this.personalInformationForm.get ('phoneNumberValidator').hasError ('required') ? 'You must enter a phone number' : '';
+  // }
 
   getErrorCustomerMessage(): string
   {

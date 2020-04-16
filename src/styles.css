@@ -439,6 +439,12 @@
   background-color: #222222;
   color: #ffffff;
 }
+.dark-theme .msf-dashboard-panel-container-chart .msf-dashboard-panel-title-description {
+  color: #595959 !important;
+}
+.dark-theme .msf-dashboard-title-label-description {
+  color: #9e9e9e !important;
+}
 .dark-theme .msf-dashboard-control-variables-title {
   text-align: center;
   font-size: 20px;
@@ -1617,6 +1623,15 @@
 }
 .dark-theme .register-step-header {
   color: #ffffff;
+}
+.dark-theme .register-step-header .mat-form-field-disabled .mat-form-field-label {
+  color: #727277 !important;
+}
+.dark-theme .register-step-header .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow {
+  color: #727277 !important;
+}
+.dark-theme .register-step-header .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+  background-color: #727277 !important;
 }
 .dark-theme .msf-register-list li:before, .dark-theme .msf-register-list-big li:before, .dark-theme .msf-register-list-aux li:before {
   color: #01abec;
@@ -3767,6 +3782,12 @@
   background-color: #ffffff;
   color: #4d4d4d;
 }
+.light-theme .msf-dashboard-panel-container-chart .msf-dashboard-panel-title-description {
+  color: #9e9e9e !important;
+}
+.light-theme .msf-dashboard-title-label-description {
+  color: #4e4e4e !important;
+}
 .light-theme .msf-dashboard-control-variables-title {
   text-align: center;
   font-size: 20px;
@@ -4945,6 +4966,15 @@
 }
 .light-theme .register-step-header {
   color: #4d4d4d;
+}
+.light-theme .register-step-header .mat-form-field-disabled .mat-form-field-label {
+  color: #b2b2b2 !important;
+}
+.light-theme .register-step-header .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow {
+  color: #b2b2b2 !important;
+}
+.light-theme .register-step-header .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+  background-color: #b2b2b2 !important;
 }
 .light-theme .msf-register-list li:before, .light-theme .msf-register-list-big li:before, .light-theme .msf-register-list-aux li:before {
   color: #eb5c1b;
@@ -8532,8 +8562,8 @@ mat-tab-group {
   border-top-left-radius: 10px;
   position: absolute;
   padding-left: 5px;
-  right: 0px;
-  bottom: 0px;
+  right: 5px;
+  bottom: 5px;
   padding: 5px;
   border-style: solid;
 }
@@ -9463,9 +9493,9 @@ mat-tab-group {
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-title-description {
   font-weight: lighter !important;
   font-size: 12px;
-  color: #595959 !important;
   line-height: 1.5;
   padding: 5px 0px;
+  padding-bottom: 0px !important;
   text-align: justify;
   max-height: 50px;
   overflow-y: auto;
@@ -9542,7 +9572,6 @@ mat-tab-group {
   padding-right: 5px;
   padding-top: initial;
   font-size: 12px;
-  position: relative;
   height: calc(100% - 35px);
 }
 
@@ -9594,7 +9623,6 @@ mat-tab-group {
 
 .msf-dashboard-child-panel-container, #msf-dashboard-child-panel-chart-display {
   width: 98%;
-  height: 82%;
 }
 
 .msf-dashboard-control-variables-dialog .mat-dialog-container {
@@ -9811,6 +9839,10 @@ mat-tab-group {
 }
 .msf-dashboard-table-container .msf-dashboard-child-panel-table {
   width: calc(100% + 10px);
+}
+
+.msf-dashboard-table-container-with-anchroed-args {
+  margin-top: 0 !important;
 }
 
 .msf-dashboard-menu-component, .msf-dashboard-menu-component-active {
@@ -10240,8 +10272,6 @@ mat-tab-group {
 
 .msf-dashboard-form-display-result-horizontal, .msf-dashboard-form-display-result-vertical {
   padding: 3px 0;
-  margin-left: -10px;
-  margin-right: -10px;
   padding-left: 10px;
 }
 
@@ -17074,6 +17104,20 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .create-user-container .msf-register-list, .create-user-container .msf-register-list-aux, .create-user-container .msf-register-list-big {
   width: 40% !important;
 }
+.create-user-container .msf-register-list-left {
+  padding: 0px !important;
+  margin-top: 0px !important;
+}
+.create-user-container .msf-register-list-right {
+  margin-top: 0px !important;
+}
+.create-user-container .msf-create-user-header {
+  width: calc(80% + 40px) !important;
+  margin-bottom: 0px !important;
+}
+.create-user-container .msf-create-user-header .msf-item {
+  width: 95% !important;
+}
 .create-user-container .mat-form-field-label {
   top: 2.6em !important;
 }
@@ -17299,7 +17343,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .msf-dashboard-form-container {
   width: 100%;
   display: table;
-  margin-top: -10px;
 }
 
 .airline-restriction-dialog .mat-dialog-container {
@@ -18031,7 +18074,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   font-size: 12px;
   text-align: left;
   margin-top: 15px !important;
-  color: #9e9e9e !important;
 }
 
 .msf-dashboard-panel-dynamic-table {
@@ -18153,6 +18195,32 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .msf-dashboard-control-variables-title-childPanel {
   padding-bottom: 0px !important;
+}
+
+.panel-with-desc {
+  height: calc(100% - 130px) !important;
+}
+
+.panel-without-desc {
+  height: 82% !important;
+}
+
+.simple-form-results-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: -10px;
+  padding-right: 0 !important;
+  margin-top: -10px;
+  width: calc(100% + 20px) !important;
+}
+
+.simple-form-results-container-with-anchored-args {
+  margin-top: 0px !important;
+}
+
+.AdminMenuSortingCheckbox {
+  overflow-y: auto;
+  max-height: 250px;
 }
 
 /*# sourceMappingURL=styles.css.map */

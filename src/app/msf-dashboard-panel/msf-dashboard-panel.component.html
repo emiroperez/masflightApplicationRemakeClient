@@ -56,16 +56,6 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-row">
-      <mat-form-field class="msf-full-width">
-        <textarea matInput 
-        cdkTextareaAutosize
-        #autosize="cdkTextareaAutosize"
-        cdkAutosizeMinRows="1"
-        cdkAutosizeMaxRows="2"
-        placeholder="Description" [(ngModel)]="values.chartDescription"></textarea>
-    </mat-form-field>
-    </div>
     <ng-container *ngIf="!isInformationPanel() && !isSimpleFormPanel() && !isPicturePanel() && !isTablePanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel() && !isDynTablePanel() && !isAdvChartPanel()">
       <div class="msf-dashboard-panel-sub-container-column">
         <div class="msf-dashboard-addmenu-icon-item msf-chart-config-label-container">
@@ -287,6 +277,11 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+                <img src="../../assets/images/additional-options.png" />
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
               <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
@@ -467,6 +462,11 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+                <img src="../../assets/images/additional-options.png" />
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
               <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
@@ -495,6 +495,11 @@
             <div class="msf-dashboard-panel-control-variable-button">
               <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToResults()" color="primary" matTooltip="Go To Map">
                 <mat-icon aria-label="Go To Map">bar_chart</mat-icon>
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+                <img src="../../assets/images/additional-options.png" />
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
@@ -623,6 +628,11 @@
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+                <img src="../../assets/images/additional-options.png" />
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
               <button mat-mini-fab (click)="savePanel(false)" color="primary" matTooltip="Save Changes">
                 <mat-icon aria-label="Save Changes">save</mat-icon>
               </button>
@@ -676,97 +686,6 @@
       </div>
     </ng-container>
     <ng-container *ngIf="isDynTablePanel()">
-      <!-- Dynamic table
-      <div class="msf-dashboard-panel-sub-container-column">
-        <div class="msf-dashboard-addmenu-icon-item">
-          <img src="../../assets/images/{{globals.theme}}-dynamicTable.png" [style.margin-left.px]="10" [style.margin-right.px]="10" [style.width.px]="20" [style.height.px]="20">
-          <span class="msf-dashboard-addmenu-item-text dynamic-table-config-label">Configuration</span>
-        </div>
-      </div>
-      <div class="msf-dynamic-table-variable-content">
-        <div class="msf-var-content">
-          <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Variables" [(ngModel)]="this.values.dynTableVariables" (ngModelChange)="orderVariable($event)" openedChange="show()">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
-                {{variable.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        <ng-container *ngFor="let variable of this.values.dynTableVariables">
-          <mat-card class="msf-var-name-content">
-            {{variable.name}}
-            <div class="msf-var-buttons">
-              <i class="material-icons" *ngIf="variable.direction === 'vertical'" (click)="changeVariableDirection(variable)">arrow_downward</i>
-              <i class="material-icons" *ngIf="variable.direction === 'horizontal'" (click)="changeVariableDirection(variable)">arrow_forward</i>
-              <i class="material-icons" (click)="deleteVariable(variable)">close</i>
-            </div>
-          </mat-card>
-        </ng-container>
-      </div>
-      <img src="../../assets/images/{{globals.theme}}-arrows.png" class="msf-var-img" alt="">
-        <div class="msf-var-content">
-          <mat-form-field class="msf-full-width">
-            <mat-select [multiple]="true" [disabled]="!values.currentOption" placeholder="Values" [(ngModel)]="this.values.dynTableValues" (ngModelChange)="orderValues($event)">
-              <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel = "Search" noEntriesFoundLabel = "Not Found"></ngx-mat-select-search>
-              <mat-option *ngFor="let value of filteredVariables | async" [value]="value">
-                {{value.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-accordion>
-            <ng-container *ngFor="let val of this.values.dynTableValues"> 
-              <mat-expansion-panel class="msf-val-name-content">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{val.name}}
-                  </mat-panel-title>
-                </mat-expansion-panel-header>   
-                <div class="msf-component-radio">
-                  <mat-radio-group [(ngModel)]="val.function" (ngModelChange)="checkPanelConfiguration()">
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.summary" (ngModelChange)="checkPanelConfiguration()">Summary</mat-checkbox>
-                      <i *ngIf="val.summary" class="material-icons alias-button" (click)="configureAlias(val, 'Summary')">more_horiz</i>
-                      <i *ngIf="!val.summary" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.average" (ngModelChange)="checkPanelConfiguration()">Average</mat-checkbox>
-                      <i *ngIf="val.average" class="material-icons alias-button" (click)="configureAlias(val, 'Average')">more_horiz</i>
-                      <i *ngIf="!val.average" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.mean" (ngModelChange)="checkPanelConfiguration()">Mean</mat-checkbox>
-                      <i *ngIf="val.mean" class="material-icons alias-button" (click)="configureAlias(val, 'Mean')">more_horiz</i>
-                      <i *ngIf="!val.mean" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.max" (ngModelChange)="checkPanelConfiguration()">Max</mat-checkbox>
-                      <i *ngIf="val.max" class="material-icons alias-button" (click)="configureAlias(val, 'Max')">more_horiz</i>
-                      <i *ngIf="!val.max" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.min" (ngModelChange)="checkPanelConfiguration()">Min</mat-checkbox>
-                      <i *ngIf="val.min" class="material-icons alias-button" (click)="configureAlias(val, 'Min')">more_horiz</i>
-                      <i *ngIf="!val.min" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.stddeviation" (ngModelChange)="checkPanelConfiguration()">Std Deviation</mat-checkbox>
-                      <i *ngIf="val.stddeviation" class="material-icons alias-button" (click)="configureAlias(val, 'Std Deviation')">more_horiz</i>
-                      <i *ngIf="!val.stddeviation" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                    <div class="alias-container">
-                      <mat-checkbox class="msf-checkbox alias-label" color="primary" [(ngModel)]="val.count" (ngModelChange)="checkPanelConfiguration()">Count</mat-checkbox>
-                      <i *ngIf="val.count" class="material-icons alias-button" (click)="configureAlias(val, 'Count')">more_horiz</i>
-                      <i *ngIf="!val.count" class="material-icons alias-button-disabled">more_horiz</i>
-                    </div>
-                  </mat-radio-group>
-                </div>
-              </mat-expansion-panel>
-            </ng-container>
-          </mat-accordion>
-        </div>
-      </div>
-      -->
       <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-dynamic-table">
         <button mat-button [disabled]="!this.values.currentOptionCategories" class="dynamic-table-config-button"
           [ngClass]="{ 'flat-button': this.values.currentOptionCategories, 'flat-button-disabled': !this.values.currentOptionCategories }" (click)="configureDynamicTable()">
@@ -785,6 +704,11 @@
             <div class="msf-dashboard-panel-control-variable-button">
               <button [disabled]="!values.chartGenerated && !values.infoGenerated && !values.formGenerated && !values.picGenerated && !values.tableGenerated && !values.mapboxGenerated && !values.dynTableGenerated" mat-mini-fab (click)="goToResults()" color="primary" matTooltip="Go To Table">
                 <mat-icon aria-label="Go To Table">bar_chart</mat-icon>
+              </button>
+            </div>
+            <div class="msf-dashboard-panel-control-variable-button">
+              <button mat-mini-fab (click)="goToAdditionalSettings()" color="primary" matTooltip="Additional Settings">
+                <img src="../../assets/images/additional-options.png"/>
               </button>
             </div>
             <div class="msf-dashboard-panel-control-variable-button">
@@ -950,7 +874,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes.length">
-        <div class="msf-dashboard-map-routelist-container" style="height: calc(100% - 71px)">
+        <div class="msf-dashboard-map-routelist-container">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
             <div class="msf-dashboard-map-item-flight">
               <span *ngIf="isArray(item.Flight)">{{item.TouchedAirports}}</span>
@@ -990,6 +914,19 @@
     </div>
     <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
     </div>
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="width: 100%; height: 100%">
         <div class="msf-dashboard-info-display">
@@ -1025,7 +962,20 @@
     </div>
     <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column">
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column simple-form-results-container" [ngClass]="{ 'simple-form-results-container-with-anchored-args': displayAnchoredArguments }">
       <div class="msf-dashboard-form-container">
         <div class="msf-media-title-container" id="msf-dashboard-form-display">
           <div class="msf-dashboard-form-display-child" [ngClass]="values.formVariables[column].valueOrientation.value ? 'msf-dashboard-form-display-result-vertical' : 'msf-dashboard-form-display-result-horizontal'" *ngFor="let formResult of values.lastestResponse; let column = index">
@@ -1065,7 +1015,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'block' : 'none'">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" [style.display]="values.displayTable ? 'flex' : 'none'">
     <div class="msf-dashboard-panel-title" [style.padding-bottom.px]="5">
       <div class="msf-dashboard-panel-title-label-icon">
       <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
@@ -1083,9 +1033,22 @@
     </div>
     <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
     </div>
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="msf-dashboard-panel-sub-container-column">
-      <div class="msf-dashboard-table-container">
-        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 77px)">
+      <div class="msf-dashboard-table-container" [ngClass]="{ 'msf-dashboard-table-container-with-anchroed-args': displayAnchoredArguments }">
+        <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table" style="height: calc(100% - 27px)">
           <app-msf-table #msfTableRef [isLoading]="values.isLoading" 
           (finishLoading)="finishLoadingTable($event)" [categoryArguments]="values.currentOptionCategories"
            [currentOption]="values.currentOption" [isPanel]="true" [thresholds]="values.thresholds"
@@ -1125,6 +1088,19 @@
     </div>
     <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
     </div>
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
         <app-msf-map #msfMapRef [isLoading]="values.isLoading" [currentOption]="values.currentOption" [useCancelButton]="false" [displayMapMenu]="2" [currentMapType]="values.style" (finishLoading)="finishMapboxLoading($event)"></app-msf-map>
@@ -1148,6 +1124,19 @@
       </ng-container>
     </div>
     <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+    </div>
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: calc(100% - 20px)">
@@ -1190,6 +1179,19 @@
       </ng-container>
     </div>
     <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+    </div>
+    <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
+      <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
+        <div class="anchored-argument-left-side">
+          <app-msf-argument [currentArgument]="anchoredArgument.argument" [currentGlobalOptionId]="values.currentOption.id" [anchoredArgument]="true" [updateURLResults]="updateURLResults" (setLoading)="setArgumentLoading(anchoredArgument, $event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+        </div>
+        <div class="anchored-argument-button">
+          <button mat-icon-button class="msf-anchor-button-pressed" matTooltip="Removed Anchored Argument"
+            (click)="removedAnchoredArgument(anchoredArgument)">
+            <div class="anchor-icon"></div>
+          </button>
+        </div>
+      </div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" style="height: calc(100% - 20px)" [style.width.%]="100" [style.margin-top.px]="5">

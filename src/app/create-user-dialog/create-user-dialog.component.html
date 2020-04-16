@@ -3,7 +3,7 @@
   <div class="create-user-title">Create User</div>
   <div class="register-step-header">
     <form name="register">
-      <ul class="msf-register-list-aux">
+      <ul class="msf-register-list-aux msf-create-user-header">
         <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
             <input matInput autocomplete="off" type="text" placeholder="Name" class="input-register" formControlName="nameValidator" name="name" [(value)]="user.name" required/>
@@ -16,6 +16,8 @@
             <mat-error *ngIf="personalInformationForm.get('lastNameValidator')?.invalid">{{getErrorLastNameMessage()}}</mat-error>
           </mat-form-field>
         </li>
+      </ul>
+      <ul class="msf-register-list msf-register-list-left">
         <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
             <input matInput autocomplete="off" type="password" placeholder="Password" class="input-register" formControlName="passwordValidator" name="password" [(value)]="user.password" />
@@ -42,6 +44,8 @@
             </mat-error>
           </mat-form-field>
         </li>
+      </ul>
+      <ul class="msf-register-list msf-register-list-right">
         <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
             <mat-select placeholder="Customer" autocomplete="off" class="input-register" formControlName="customerValidator" [(value)]="user.customer" name="customer" required>
@@ -53,14 +57,12 @@
             <mat-error *ngIf="personalInformationForm.get('customerValidator')?.invalid">{{getErrorCustomerMessage()}}</mat-error>
           </mat-form-field>
         </li>
-      </ul>
-      <ul class="msf-register-list">
-        <li>
+        <!-- <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
             <input matInput autocomplete="off" type="text" placeholder="Address" class="input-register" formControlName="addressValidator" name="Address" [(value)]="user.address" />
             <mat-error *ngIf="personalInformationForm.get('addressValidator')?.invalid">{{getErrorAddressMessage()}}</mat-error>
           </mat-form-field>
-        </li>
+        </li> -->
         <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
             <mat-select placeholder="Country" autocomplete="off" class="input-register" formControlName="countryValidator" [(value)]="user.country" (selectionChange)="CountryChangeEvent($event)" name="country" required>
@@ -74,7 +76,8 @@
         </li>
         <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
-            <mat-select placeholder="State" autocomplete="off" class="input-register" formControlName="stateValidator" name="state">
+            <mat-select
+            placeholder="State" autocomplete="off" class="input-register" formControlName="stateValidator" name="state">
               <ngx-mat-select-search [formControl]="stateFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
               <mat-option *ngFor="let state of filteredStates | async" [value]="state">
                 {{state.fullName}}
@@ -83,7 +86,7 @@
             <mat-error *ngIf="personalInformationForm.get('stateValidator')?.invalid">{{getErrorStateMessage()}}</mat-error>
           </mat-form-field>
         </li>
-        <li>
+        <!-- <li>
           <mat-form-field [formGroup]="personalInformationForm" class="msf-item">
             <input matInput autocomplete="off" type="text" placeholder="Postal Code" class="input-register" formControlName="postalCodeValidator" name="postalCode" [(value)]="user.postalCode" />
             <mat-error *ngIf="personalInformationForm.get('postalCodeValidator')?.invalid">{{getErrorPostalCodeMessage()}}</mat-error>
@@ -94,7 +97,7 @@
             <input matInput autocomplete="off" type="text" mask="(000) 000-0000" placeholder="Phone Number" class="input-register" formControlName="phoneNumberValidator" name="phoneNumber" [(value)]="user.phoneNumber" />
             <mat-error *ngIf="personalInformationForm.get('phoneNumberValidator')?.invalid">{{getErrorPhoneNumberMessage()}}</mat-error>
           </mat-form-field>
-        </li>
+        </li> -->
       </ul>
       <div>
         <button mat-button (click)="insertUser()" class="msf-big-button">Save</button>

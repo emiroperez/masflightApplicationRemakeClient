@@ -316,6 +316,11 @@
                         </ng-container>
                     </div>
                 </ng-container>
+                <div [style.width.%]="100" class="AdminMenuSortingCheckbox" *ngIf="isSortingCheckboxes(item)">
+                    <div [style.padding-bottom.px]="10">Select Default Value</div>
+                    <app-msf-sorting-checkboxes [argument]="item" [show]="false"
+                     [currentOptionId]="data.optionId" (setLoading)="setLoading($event)"></app-msf-sorting-checkboxes>
+                </div>
                 <div [style.width.%]="100" *ngIf="isSelectBoxSingleOption(item)">
                     <div [style.padding-bottom.px]="10">Select Default Value</div>
                     <ng-select

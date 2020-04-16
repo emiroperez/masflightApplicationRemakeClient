@@ -362,6 +362,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-panel-container-chart
             background-color: $dashboard-panel-chart-background-color
             color: $font-color
+            .msf-dashboard-panel-title-description
+                color: $dashboard-input-underline-color !important
+        .msf-dashboard-title-label-description
+            color: $admin-menu-input-underline !important
         .msf-dashboard-control-variables-title
             @include msf-dashboard-dialog-title(20px, 10px, $font-color)
         .msf-dashboard-info-function-title
@@ -1082,7 +1086,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-card, .login-card
             background: rgba($background-color, 0.5)
         .register-step-header
-            color: $font-color
+            color: $font-color            
+            .mat-form-field-disabled
+                .mat-form-field-label
+                        color: $tertiary-disabled-color !important
+            .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow
+                color: $tertiary-disabled-color !important
+            .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
+                background-color: $tertiary-disabled-color !important
         .msf-register-list
             li
                 &:before
@@ -4017,8 +4028,8 @@ mat-tab-group
     border-top-left-radius: 10px
     position: absolute
     padding-left: 5px
-    right: 0px
-    bottom: 0px
+    right: 5px
+    bottom: 5px
     padding: 5px
     border-style: solid
     .msf-dashboard-map-panelinfo-container
@@ -4702,9 +4713,9 @@ mat-tab-group
     .msf-dashboard-panel-title-description
         font-weight: lighter !important
         font-size: 12px
-        color: #595959!important
         line-height: 1.5
         padding: 5px 0px
+        padding-bottom: 0px !important
         text-align: justify
         max-height: 50px
         overflow-y: auto
@@ -4762,7 +4773,6 @@ mat-tab-group
             background-position: center
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
-        position: relative
         height: calc(100% - 35px)
 
 .msf-dashboard-panel-pic-button
@@ -4794,7 +4804,6 @@ mat-tab-group
 
 .msf-dashboard-child-panel-container
     width: 98%
-    height: 82%
 
 #msf-dashboard-child-panel-chart-display
     @extend .msf-dashboard-child-panel-container
@@ -4977,6 +4986,9 @@ mat-tab-group
     margin-left: -10px
     .msf-dashboard-child-panel-table
         width: calc(100% + 10px)
+
+.msf-dashboard-table-container-with-anchroed-args
+    margin-top: 0 !important
 
 .msf-dashboard-menu-component
     @include disable-text-selection
@@ -5345,8 +5357,6 @@ mat-tab-group
 
 .msf-dashboard-form-display-result-horizontal
     padding: 3px 0
-    margin-left: -10px
-    margin-right: -10px
     padding-left: 10px
 
 .msf-dashboard-form-display-result-vertical
@@ -11073,6 +11083,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 40% !important
     .msf-register-list
         width: 40% !important
+    .msf-register-list-left
+        padding: 0px !important
+        margin-top: 0px !important
+    .msf-register-list-right
+        margin-top: 0px !important
+    .msf-create-user-header
+        width: calc(80% + 40px) !important
+        margin-bottom: 0px !important
+        .msf-item
+            width: 95% !important
     .mat-form-field-label
         top: 2.6em !important
     .msf-item input[type=text], .msf-item input[type=password], .msf-item input[type=number], .msf-item input[type=email]
@@ -11255,7 +11275,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-form-container
     width: 100%
     display: table
-    margin-top: -10px
 
 .airline-restriction-dialog
     .mat-dialog-container
@@ -11850,7 +11869,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     font-size: 12px
     text-align: left
     margin-top: 15px !important
-    color: #9e9e9e !important
 
 .msf-dashboard-panel-dynamic-table
     height: 100%
@@ -11950,3 +11968,23 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-control-variables-title-childPanel
     padding-bottom: 0px !important
 
+.panel-with-desc
+    height: calc(100% - 130px) !important
+
+.panel-without-desc
+    height: 82% !important
+
+.simple-form-results-container
+    overflow-y: auto
+    overflow-x: hidden
+    margin-left: -10px
+    padding-right: 0 !important
+    margin-top: -10px
+    width: calc(100% + 20px) !important
+
+.simple-form-results-container-with-anchored-args
+    margin-top: 0px !important
+
+.AdminMenuSortingCheckbox
+    overflow-y: auto
+    max-height: 250px
