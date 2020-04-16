@@ -888,7 +888,7 @@ export class ApplicationService {
 
     });
   }
-
+  
   getAirlinesRecords(_this,search, handlerSuccess, handlerError): void
   {
     let url = _this.globals.baseUrl + "/SearchAirlines?search=" + (search != null ? search : '');  

@@ -1,4 +1,4 @@
-<div class="center" *ngIf="argument.title || isDashboardPanel">
+<div class="center" *ngIf="(argument.title || isDashboardPanel) && show">
     <div class="msf-component-airport-title">
         {{argument.title}}
         <button mat-icon-button *ngIf="isDashboardPanel" [ngClass]="{ 'msf-anchor-button': !argument.anchored, 'msf-anchor-button-pressed': argument.anchored }"
@@ -7,7 +7,7 @@
         </button>
     </div>
 </div>
-<div class="center">
+<div *ngIf="show" class="center">
     <div class="msf-component-airport-title msf-component-checkbox-title">
         <mat-checkbox class="msf-component-airport-title" [value]="all" [(ngModel)]="all.checked" (change)="checkBoxAllChange()" >
             Select/De-Select All

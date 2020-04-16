@@ -1086,7 +1086,14 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-card, .login-card
             background: rgba($background-color, 0.5)
         .register-step-header
-            color: $font-color
+            color: $font-color            
+            .mat-form-field-disabled
+                .mat-form-field-label
+                        color: $tertiary-disabled-color !important
+            .mat-form-field .mat-select.mat-select-disabled .mat-select-arrow
+                color: $tertiary-disabled-color !important
+            .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline
+                background-color: $tertiary-disabled-color !important
         .msf-register-list
             li
                 &:before
@@ -11076,6 +11083,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 40% !important
     .msf-register-list
         width: 40% !important
+    .msf-register-list-left
+        padding: 0px !important
+        margin-top: 0px !important
+    .msf-register-list-right
+        margin-top: 0px !important
+    .msf-create-user-header
+        width: calc(80% + 40px) !important
+        margin-bottom: 0px !important
+        .msf-item
+            width: 95% !important
     .mat-form-field-label
         top: 2.6em !important
     .msf-item input[type=text], .msf-item input[type=password], .msf-item input[type=number], .msf-item input[type=email]
@@ -11967,3 +11984,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .simple-form-results-container-with-anchored-args
     margin-top: 0px !important
+
+.AdminMenuSortingCheckbox
+    overflow-y: auto
+    max-height: 250px
