@@ -889,16 +889,8 @@ export class MsfDateRangeComponent implements OnInit {
         break;
     }
 
-    if (!option.startsWith ("PLUSONE"))
-    {
-      if (this.argument.maxDate == null || today < this.argument.maxDate)
-      {
-          if (this.argument.value2 > today)
-            this.argument.value2 = today;
-      }
-      else
-        this.argument.value2 = this.argument.maxDate;
-    }
+    if (!(this.argument.maxDate == null || today < this.argument.maxDate))
+      this.argument.value2 = this.argument.maxDate;
 
     this.minDate = this.argument.value1;
     this.maxDate = this.argument.value2;
