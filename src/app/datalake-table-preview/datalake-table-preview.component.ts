@@ -33,7 +33,7 @@ export class DatalakeTablePreviewComponent {
   RowsDeletedSend : any[] = [];
   lengthpag: any;
   pageI: any = 0;
-  pageSize: any = 50;
+  pageSize: any = 10;
   TABLEPREVIEWLIMIT: number;
   firstTime: boolean = true;
   schemaName: any;
