@@ -3388,7 +3388,7 @@
   background-color: #eb5c1b !important;
 }
 .light-theme .mat-tab-group.mat-primary .mat-ink-bar, .light-theme .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .mat-tab-labels {
   background-color: #ffffff;
@@ -3407,10 +3407,10 @@
   border-color: #4d4d4d !important;
 }
 .light-theme .msf-secondary-bg-color, .light-theme .msf-menu-hide-button, .light-theme .msf-menu-hide-button-open, .light-theme .msf-menu-hide-button-close {
-  background-color: #eb5c1b;
+  background-color: #00263E;
 }
 .light-theme .msf-menu-hide-button:hover, .light-theme .msf-menu-hide-button-open:hover, .light-theme .msf-menu-hide-button-close:hover {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .msf-menu-components-container-hide {
   background-color: rgba(255, 255, 255, 0.3);
@@ -3419,58 +3419,58 @@
   background-color: #ffffff;
 }
 .light-theme .msf-menu-header-image-container {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-menu-header {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .msf-menu-op-1 {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-menu-op-2 {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-menu-op-3 {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-menu-op-1-selected {
-  background-color: #d53502;
+  background-color: #001e2d;
 }
 .light-theme .msf-menu-op-1:disabled, .light-theme .msf-menu-op-2:disabled, .light-theme .msf-menu-op-3:disabled, .light-theme .msf-menu-op-1-selected:disabled {
-  background-color: rgba(235, 92, 27, 0.3);
+  background-color: rgba(0, 61, 91, 0.3);
 }
 .light-theme .msf-menu-op-1:disabled:hover, .light-theme .msf-menu-op-2:disabled:hover, .light-theme .msf-menu-op-3:disabled:hover, .light-theme .msf-menu-op-1-selected:disabled:hover {
-  background-color: rgba(235, 92, 27, 0.3);
+  background-color: rgba(0, 61, 91, 0.3);
 }
 .light-theme .msf-menu-op-1:disabled .mat-button-wrapper, .light-theme .msf-menu-op-2:disabled .mat-button-wrapper, .light-theme .msf-menu-op-3:disabled .mat-button-wrapper, .light-theme .msf-menu-op-1-selected:disabled .mat-button-wrapper {
   color: rgba(255, 255, 255, 0.3);
 }
 .light-theme .mat-menu-panel {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .mat-menu-item {
-  border-bottom: 1px solid #fb6c2b !important;
+  border-bottom: 1px solid #001e2d !important;
 }
 .light-theme .mat-menu-item-highlighted:not([disabled]), .light-theme .mat-menu-item.cdk-keyboard-focused:not([disabled]), .light-theme .mat-menu-item.cdk-program-focused:not([disabled]), .light-theme .mat-menu-item:hover:not([disabled]) {
-  background-color: #d53502;
+  background-color: #001e2d;
 }
 .light-theme .msf-menu-option:hover, .light-theme .msf-menu-op-3:hover, .light-theme .msf-menu-op-2:hover, .light-theme .msf-menu-op-1:hover, .light-theme .msf-menu-op-1-selected:hover {
-  background-color: #d53502;
+  background-color: #001e2d;
 }
 .light-theme .msf-header-icons .mat-button[aria-expanded=true], .light-theme .msf-header-icons .mat-icon-button[aria-expanded=true] {
-  background-color: #d53502;
+  background-color: #001e2d;
 }
 .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container, .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-results-context-menu-container {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item, .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-results-context-menu-container .msf-dashboard-panel-context-menu-item {
-  border-bottom: 1px solid #fb6c2b !important;
+  border-bottom: 1px solid #001e2d !important;
 }
 .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-item:hover, .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-results-context-menu-container .msf-dashboard-panel-context-menu-item:hover {
-  background-color: #d53502;
+  background-color: #001e2d;
 }
 .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .msf-dashboard-panel-context-menu-top-bound, .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-results-context-menu-container .msf-dashboard-panel-context-menu-top-bound {
-  border-bottom: 1px solid #fb6c2b !important;
+  border-bottom: 1px solid #001e2d !important;
 }
 .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-context-menu-container .anchor-icon, .light-theme .msf-dashboard-panel-context-menu #msf-dashboard-panel-results-context-menu-container .anchor-icon {
   background-image: url(assets/images/dark-theme-anchor-icon.png);
@@ -3485,16 +3485,16 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-menu-component .msf-menu-mat-icon, .light-theme .msf-dashboard-menu-component-active .msf-menu-mat-icon {
-  color: #ff6131;
+  color: #00263e;
 }
 .light-theme .msf-dashboard-menu-component .msf-menu-mat-icon-open, .light-theme .msf-dashboard-menu-component-active .msf-menu-mat-icon-open {
   color: #ffffff !important;
 }
 .light-theme .msf-dashboard-menu-component .msf-menu-image-border, .light-theme .msf-dashboard-menu-component-active .msf-menu-image-border {
-  border-right: 1px solid #ff6131;
+  border-right: 1px solid #00263e;
 }
 .light-theme .msf-dashboard-menu-component:hover, .light-theme .msf-dashboard-menu-component-active:hover {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-dashboard-menu-component:hover .msf-menu-mat-icon, .light-theme .msf-dashboard-menu-component-active:hover .msf-menu-mat-icon {
   color: #ffffff;
@@ -3506,7 +3506,7 @@
   border-right: 1px solid #ffffff;
 }
 .light-theme .msf-dashboard-menu-component-active {
-  background-color: #eb5c1b !important;
+  background-color: #003d5b !important;
 }
 .light-theme .msf-dashboard-menu-component-active .msf-menu-component-text, .light-theme .msf-dashboard-menu-component-active .msf-menu-cmpte-row {
   color: #ffffff;
@@ -3538,7 +3538,7 @@
 }
 .light-theme .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button {
   display: flex;
-  border: 1px solid #eb5c1b;
+  border: 1px solid #01abec;
   color: #eb5c1b;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button .mat-icon {
@@ -3546,7 +3546,7 @@
 }
 .light-theme .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button:hover {
   color: #ffffff;
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button:hover .mat-icon {
   color: #ffffff;
@@ -3557,8 +3557,8 @@
 .light-theme .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button-open {
   display: flex;
   color: #ffffff;
-  border: 1px solid #eb5c1b;
-  background-color: #eb5c1b;
+  border: 1px solid #01abec;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-header .msf-dashboard-control-panel-button-open .mat-icon {
   color: #ffffff;
@@ -3567,7 +3567,7 @@
   background-image: url(assets/images/dark-theme-control-panel-icon.png) !important;
 }
 .light-theme .msf-dashboard-container .msf-dashboard-addmenu .msf-dashboard-addmenu-item:hover {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
   display: table-row;
   vertical-align: middle;
@@ -3595,10 +3595,10 @@
   padding: 10px 60px;
 }
 .light-theme .msf-dashboard-control-panel-tab-icon {
-  color: #ff6131;
+  color: #00263e;
 }
 .light-theme .msf-dashboard-button .msf-dashboard-button-close-icon:hover {
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
   font-size: 16px;
   padding-right: 5px;
@@ -3608,7 +3608,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-button .msf-dashboard-button-icon:hover {
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
   font-size: 16px;
   padding-right: 5px;
@@ -3625,7 +3625,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
   font-size: 16px;
   padding-right: 5px;
@@ -3636,7 +3636,7 @@
 }
 .light-theme .msf-dashboard-panel-button .msf-dashboard-button-move-icon:hover {
   background-image: url(assets/images/light-theme-drag-icon-hover.png);
-  color: #eb5c1b;
+  color: #01abec;
   cursor: move;
   font-size: 16px;
   padding-right: 5px;
@@ -3700,7 +3700,7 @@
   background-size: 95%;
 }
 .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-closed .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
-  color: #eb5c1b;
+  color: #01abec;
   cursor: move;
   font-size: 16px;
   padding-right: 5px;
@@ -3762,7 +3762,7 @@
   background-size: 95%;
 }
 .light-theme .msf-dashboard-chartbox-column .msf-dashboard-chartbox-items .msf-dashboard-panel-size-properties-open .msf-dashboard-columns-move-button .msf-dashboard-button-move-icon:hover {
-  color: #eb5c1b;
+  color: #01abec;
   cursor: move;
   font-size: 16px;
   padding-right: 5px;
@@ -3770,7 +3770,7 @@
   background-image: url(assets/images/light-theme-vert-move-hover.png);
 }
 .light-theme #msf-dashboard-form-button .mat-icon-button .msf-dashboard-chart-icon:hover {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .mat-icon-drag-button .msf-dashboard-chart-move-icon {
   background-image: url(assets/images/light-theme-vert-move.png);
@@ -3907,11 +3907,11 @@
   font-size: 16px;
   margin-top: -10px;
   margin-right: -9px;
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
 }
 .light-theme #msf-dashboard-panel-picture-container .msf-dashboard-panel-picture-label-container {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
 }
 .light-theme .msf-dashboard-child-panel-container-chart {
@@ -3962,8 +3962,8 @@
 }
 .light-theme .msf-dashboard-panel-loading .cancel-button:hover {
   color: #ffffff !important;
-  background-color: #eb5c1b !important;
-  border-color: #eb5c1b !important;
+  background-color: #01abec !important;
+  border-color: #01abec !important;
 }
 .light-theme .msf-dashboard-assistant-loading {
   z-index: 99998;
@@ -4187,19 +4187,19 @@
   border-color: #4d4d4d;
 }
 .light-theme .msf-shared-dashboard-container .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
 }
 .light-theme #msf-share-dashboard-container .mat-radio-outer-circle, .light-theme #msf-add-shared-dashboard-content .mat-radio-outer-circle, .light-theme .dashboard-browser-item-selector .mat-radio-outer-circle {
   border-color: #4d4d4d;
 }
 .light-theme #msf-share-dashboard-container .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle, .light-theme #msf-add-shared-dashboard-content .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle, .light-theme .dashboard-browser-item-selector .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
 }
 .light-theme .msf-dashboard-info-dialog-container {
   color: #4d4d4d !important;
 }
 .light-theme .msf-dashboard-assistant-tab-group .mat-tab-label-active {
-  color: #eb5c1b !important;
+  color: #01abec !important;
   background-color: #f0f0f0 !important;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container, .light-theme .msf-dashboard-control-panel-category-tabs-container, .light-theme .msf-dashboard-assistant-tab-group, .light-theme .msf-dashboard-control-panel-interval-container {
@@ -4218,7 +4218,7 @@
   border-bottom: 1px solid #e6e6e6;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument .ng-select .ng-select-container, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument input.mat-input-element, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-argument textarea.mat-input-element {
-  border: 1px solid #eb5c1b;
+  border: 1px solid #01abec;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button-disabled, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .flat-button-disabled, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button-disabled, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .flat-button-disabled, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .flat-button-disabled, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .flat-button-disabled, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .flat-button-disabled, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .flat-button-disabled {
   border-color: #4d4d4d !important;
@@ -4230,16 +4230,16 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .flat-button, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .flat-button, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .flat-button, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .flat-button, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .flat-button, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .flat-button {
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
   border-style: solid;
   border-width: 1px;
   background-color: #f0f0f0 !important;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .flat-button .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .flat-button .mat-button-wrapper {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button:hover, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .flat-button:hover, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button:hover, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .flat-button:hover, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .flat-button:hover, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .flat-button:hover, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .flat-button:hover, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .flat-button:hover {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-tabs-container .msf-dashboard-assistant-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-control-panel-variable-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-category-tabs-container .msf-dashboard-assistant-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-control-panel-variable-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-assistant-tab-group .msf-dashboard-assistant-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-control-panel-variable-tab-container .flat-button:hover .mat-button-wrapper, .light-theme .msf-dashboard-control-panel-interval-container .msf-dashboard-assistant-tab-container .flat-button:hover .mat-button-wrapper {
   color: #ffffff;
@@ -4254,13 +4254,13 @@
   background-color: #c0c0c0;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable .msf-menu-mat-icon {
-  color: #ff6131;
+  color: #00263e;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable:hover {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable:hover .msf-dashboard-control-panel-variable-icon {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable:hover .msf-menu-mat-icon {
   color: #ffffff;
@@ -4269,10 +4269,10 @@
   color: #ffffff;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable-selected {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable-selected .msf-dashboard-control-panel-variable-icon {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .msf-dashboard-control-panel-container .msf-dashboard-control-panel-variable-container .msf-dashboard-control-panel-variable-selected .msf-menu-mat-icon {
   color: #ffffff;
@@ -4339,8 +4339,8 @@
   background-image: url(assets/images/light-theme-anchor-icon.png);
 }
 .light-theme .msf-anchor-button-pressed, .light-theme .msf-anchor-button:hover {
-  border-color: #eb5c1b;
-  background-color: #eb5c1b;
+  border-color: #01abec;
+  background-color: #01abec;
 }
 .light-theme .msf-anchor-button-pressed .anchor-icon, .light-theme .msf-anchor-button:hover .anchor-icon {
   background-image: url(assets/images/dark-theme-anchor-icon.png);
@@ -4349,41 +4349,41 @@
   color: #4d4d4d;
 }
 .light-theme .mat-radio-button.mat-accent .mat-radio-inner-circle {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: #eb5c1b;
+  border-color: #01abec;
 }
 .light-theme .mat-checkbox-frame {
   border-color: #4d4d4d !important;
 }
 .light-theme .arrow-theme-button {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .mat-badge-content {
   background-color: #ededed !important;
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .mat-checkbox-checked.mat-accent .mat-checkbox-background, .light-theme .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-secondary-color, .light-theme .msf-menu-arg-right-row, .light-theme .msf-menu-more-button {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-menu-search-button {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-menu-search-button:hover {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .msf-menu-search-button:disabled {
   background-color: #b2b2b2;
 }
 .light-theme .ng-select .ng-spinner-loader {
-  border-top: 2px solid rgba(235, 92, 27, 0.2) !important;
-  border-right: 2px solid rgba(235, 92, 27, 0.2) !important;
-  border-bottom: 2px solid rgba(235, 92, 27, 0.2) !important;
-  border-left: 2px solid #eb5c1b !important;
+  border-top: 2px solid rgba(1, 171, 236, 0.2) !important;
+  border-right: 2px solid rgba(1, 171, 236, 0.2) !important;
+  border-bottom: 2px solid rgba(1, 171, 236, 0.2) !important;
+  border-left: 2px solid #01abec !important;
 }
 .light-theme .ng-select .ng-select-container {
   color: #4d4d4d !important;
@@ -4414,18 +4414,18 @@
   color: #4d4d4d !important;
 }
 .light-theme .ng-select.ng-select-focused .ng-select-container:after {
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
   color: #ffffff !important;
-  background: #eb5c1b;
+  background: #003d5b;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
   color: #ffffff !important;
-  background: #d54505;
+  background: #00263E;
 }
 .light-theme .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-  background-color: #eb5c1b;
+  background-color: #00263E;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
   color: #b2b2b2 !important;
@@ -4437,26 +4437,26 @@
   color: #4d4d4d;
 }
 .light-theme .mat-calendar-body-selected {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .timepicker__header {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .clock-face__clock-hand {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .clock-face__clock-hand::after {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .clock-face__clock-hand::before {
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
 }
 .light-theme .clock-face__number span {
   color: #4d4d4d !important;
 }
 .light-theme .clock-face__number span.active {
   color: #ffffff !important;
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .clock-face, .light-theme .timepicker__actions {
   background-color: #e6e6e6 !important;
@@ -4465,10 +4465,10 @@
   background-color: #ffffff !important;
 }
 .light-theme .timepicker-button {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .mat-form-field.mat-focused .mat-form-field-ripple, .light-theme .mat-form-field-ripple {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #4d4d4d !important;
@@ -4481,57 +4481,57 @@
   color: #4d4d4d;
 }
 .light-theme .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .close-icon {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .flat-button {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .msf-dashboard-assistant-edit-button .mat-button {
   color: #ffffff;
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .msf-dashboard-assistant-edit-button .mat-button .mat-icon {
   color: #ffffff;
 }
 .light-theme .mat-fab.mat-primary, .light-theme .mat-flat-button.mat-primary, .light-theme .mat-mini-fab.mat-primary, .light-theme .mat-raised-button.mat-primary {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .mat-mini-fab.mat-primary[disabled], .light-theme .mat-mini-fab[disabled][disabled] {
   background-color: #c6c6c6;
 }
 .light-theme .mapbox-text {
   justify-content: center;
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme input[role=combobox] {
   color: #4d4d4d;
 }
 .light-theme .msf-no-results-email {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .msf-no-results {
-  background: #eb5c1b;
+  background: #01abec;
 }
 .light-theme .msf-summary-title {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-summary-category-label {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-summary-category-container {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-summary-ok-icon {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .msf-search-title {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-summary-arg-title {
   color: #4d4d4d;
@@ -4546,7 +4546,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-border-passenger {
-  border-bottom: 1px solid #eb5c1b;
+  border-bottom: 1px solid #01abec;
 }
 .light-theme .msf-passenger-chart-title {
   color: #4d4d4d;
@@ -4561,33 +4561,33 @@
   color: #4d4d4d;
 }
 .light-theme .mat-primary .mat-pseudo-checkbox-checked, .light-theme .mat-primary .mat-pseudo-checkbox-indeterminate {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .drillDown-decoration {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-drill-down-info-close-icon {
   color: #4d4d4d !important;
 }
 .light-theme .msf-drill-down-info-image-close-icon {
-  background-color: rgba(235, 92, 27, 0.5);
+  background-color: rgba(1, 171, 236, 0.5);
   border-radius: 25px;
   color: #ffffff !important;
 }
 .light-theme .msf-media-title {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-media-title-value {
   color: #4d4d4d;
 }
 .light-theme .msf-media-info {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-media-info-value {
   color: #4d4d4d;
 }
 .light-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element, .light-theme .mat-radio-button.mat-accent .mat-radio-inner-circle, .light-theme .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .light-theme .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .light-theme .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme mat-dialog-container {
   background-color: #ffffff !important;
@@ -4602,10 +4602,10 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dynamic-table-variable-fotter .msf-cancel-button {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dynamic-table-variable-fotter .msf-ok-button {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-var-name-content {
   color: #4d4d4d;
@@ -4631,13 +4631,13 @@
   background-color: #e6e6e6;
 }
 .light-theme .mat-checkbox-checked.mat-primary .mat-checkbox-background, .light-theme .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .light-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .mat-checkbox:not(.mat-checkbox-disabled).mat-primary .mat-checkbox-ripple .mat-ripple-element {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame {
   border-color: #c6c6c6 !important;
@@ -4689,10 +4689,10 @@
 }
 .light-theme .msf-header-image {
   background-image: url(assets/images/light-theme-pulse_welc.png);
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .msf-header {
-  background-color: #d54505;
+  background-color: #00263E;
 }
 .light-theme .msf-content {
   background-color: #c0c0c0;
@@ -4741,18 +4741,18 @@
 }
 .light-theme .loading-panel .mat-button:hover {
   color: #ffffff !important;
-  background: #eb5c1b;
-  border-color: #eb5c1b;
+  background: #01abec;
+  border-color: #01abec;
 }
 .light-theme .footer-hover {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
 }
 .light-theme .two-factor-auth-container {
   color: #4d4d4d;
 }
 .light-theme .msf-schedule-panel-subs {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
   padding: 12px;
   font-size: 12px;
@@ -4763,17 +4763,17 @@
   background-color: #ffffff;
 }
 .light-theme .mat-expanded mat-expansion-panel-header {
-  border-bottom: 2px solid #eb5c1b;
+  border-bottom: 2px solid #01abec;
   padding: 20px !important;
 }
 .light-theme .panel-toolbar {
   background: #f0f0f0;
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
 }
 .light-theme .panel-toolbar2 {
   background: #f0f0f0;
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
   height: 88px;
 }
@@ -4865,7 +4865,7 @@
   color: #4d4d4d;
 }
 .light-theme .material-icon-picker-remove-icon-button:hover, .light-theme .material-icon-picker-container-selected {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .material-icon-picker-input-container {
   background-color: #eb5c1b;
@@ -4874,7 +4874,7 @@
   background-color: #eb5c1b;
 }
 .light-theme .config-background {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .text-item-category-argument {
   color: #4d4d4d !important;
@@ -4889,7 +4889,7 @@
   color: #4d4d4d !important;
 }
 .light-theme .img-item-category-argument {
-  color: #ff6131;
+  color: #00263e;
 }
 .light-theme .dialog-category-arguments-body {
   background-color: #e6e6e6;
@@ -4904,29 +4904,29 @@
   background-color: #eb5c1b;
 }
 .light-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .light-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .theme-picker {
   background: #ffffff;
   color: #4d4d4d;
 }
 .light-theme .theme-picker .theme-picker-label-container {
-  background: #eb5c1b;
+  background: #01abec;
 }
 .light-theme .theme-picker .mat-slide-toggle-thumb {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: rgba(235, 92, 27, 0.54);
+  background-color: rgba(1, 171, 236, 0.54);
 }
 .light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-ripple-element {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-header-title .theme-picker {
-  background: #d54505;
+  background: #00263E;
   color: #ffffff;
   flex: 1;
 }
@@ -4944,22 +4944,22 @@
   color: #4d4d4d !important;
 }
 .light-theme .mat-icon.input_img, .light-theme .login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .login-link-reg {
   color: #4d4d4d;
 }
 .light-theme .login-link-reg2 {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .login-font-color {
   color: #5b5b5f;
 }
 .light-theme .login-button, .light-theme .msf-medium-button, .light-theme .msf-big-button, .light-theme .msf-big-button {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .light-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-card, .light-theme .msf-register-card, .light-theme .login-card, .light-theme .login-card {
   background: rgba(255, 255, 255, 0.5);
@@ -4977,7 +4977,7 @@
   background-color: #b2b2b2 !important;
 }
 .light-theme .msf-register-list li:before, .light-theme .msf-register-list-big li:before, .light-theme .msf-register-list-aux li:before {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .mat-focused .mat-form-field-required-marker {
   color: #4d4d4d !important;
@@ -5022,7 +5022,7 @@
   color: #4d4d4d;
 }
 .light-theme .dialog-edit-argument-category-item-title-label {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .dialog-edit-argument-category-container {
   color: #4d4d4d !important;
@@ -5098,10 +5098,10 @@
   margin-bottom: -0.5em;
 }
 .light-theme .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-edit-panel .mat-form-field-empty.mat-form-field-label {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-edit-panel .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-edit-panel .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
   background-image: linear-gradient(to right, white 0, white 50%, transparent 0);
@@ -5125,7 +5125,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-edit-panel .mat-select:focus .mat-select-trigger .mat-select-arrow-wrapper .mat-select-arrow {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-customer-two-columns .msf-customer-right-container .mat-elevation-z8 .msf-customer-right-editor .msf-customer-edit-panel .mat-select.mat-select-disabled:focus .mat-select-arrow-wrapper .mat-select-arrow {
   color: #4d4d4d;
@@ -5143,22 +5143,22 @@
   background-image: url(assets/images/light-theme-login-logo.png);
 }
 .light-theme .msf-dashboard-control-panel-category-checkbox-checked-border {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-control-panel-category-checkbox-border {
   background-color: #4d4d4d;
 }
 .light-theme .msf-dashboard-control-panel-category-checkbox-checked-container {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-control-panel-category-checkbox-container {
   background-color: #ffffff;
   color: #4d4d4d;
 }
 .light-theme ::-webkit-scrollbar-thumb {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   border-radius: 10px;
-  outline: 1px solid #eb5c1b;
+  outline: 1px solid #01abec;
 }
 .light-theme ::-webkit-scrollbar-track {
   background-color: #bfbfbf;
@@ -5176,7 +5176,7 @@
   background-color: #e6e6e6;
 }
 .light-theme .menu-opened {
-  border-left: 4px solid #eb5c1b;
+  border-left: 4px solid #01abec;
   background-color: #ffffff;
 }
 .light-theme .is-active-mobile {
@@ -5195,19 +5195,19 @@
   background-color: #ffffff;
 }
 .light-theme .amcharts-amexport-item.amcharts-amexport-item-level-0 {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .amcharts-amexport-left .amcharts-amexport-item {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .amcharts-amexport-bottom .amcharts-amexport-item > ul > :first-child {
-  border-bottom: 1px solid #fb6c2b !important;
+  border-bottom: 1px solid #001e2d !important;
 }
 .light-theme .amcharts-amexport-bottom .amcharts-amexport-item > ul > :not(:first-child):not(:last-child) {
-  border-bottom: 1px solid #fb6c2b !important;
+  border-bottom: 1px solid #001e2d !important;
 }
 .light-theme .amcharts-amexport-bottom .amcharts-amexport-item > ul > .amcharts-amexport-item:hover, .light-theme .amcharts-amexport-bottom .amcharts-amexport-item > ul > .amcharts-amexport-item:active {
-  background-color: #d53502;
+  background-color: #001e2d;
 }
 .light-theme .GroupAAA-Container .GroupAAA-item .mat-radio-label .mat-radio-container .mat-radio-outer-circle {
   border-color: #4d4d4d;
@@ -5216,7 +5216,7 @@
   background-color: #e6e6e6;
 }
 .light-theme .items-rows .mat-pseudo-checkbox-checked {
-  background: #eb5c1b;
+  background: #01abec;
 }
 .light-theme .items-rows .mat-list-item .mat-list-item-content .mat-pseudo-checkbox {
   border: 2px solid #4d4d4d !important;
@@ -5231,7 +5231,7 @@
   background-color: #e6e6e6;
 }
 .light-theme .select-group .mat-radio-checked {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .select-group .mat-radio-checked .mat-radio-label .mat-radio-container .mat-radio-inner-circle {
   background-color: #4d4d4d;
@@ -5246,7 +5246,7 @@
   color: #ffffff !important;
 }
 .light-theme .msf-dashboard-assistant-stepper .mat-step-icon-selected {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .msf-dashboard-assistant-stepper .mat-stepper-vertical-line::before {
   border-left-color: #b2b2b2;
@@ -5258,13 +5258,13 @@
   color: #b2b2b2;
 }
 .light-theme .msf-dashboard-assistant-stepper .mat-step-header .mat-step-label.mat-step-label-active .msf-dashboard-assistant-label, .light-theme .msf-dashboard-assistant-stepper .mat-step-label-selected .msf-dashboard-assistant-label {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .msf-dashboard-assistant-stepper .mat-step-header .mat-step-label.mat-step-label-active .msf-dashboard-assistant-subtitle, .light-theme .msf-dashboard-assistant-stepper .mat-step-label-selected .msf-dashboard-assistant-subtitle {
   color: #4d4d4d !important;
 }
 .light-theme .msf-dashboard-assistant-argument-value {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item .chart-item-image {
   border-style: solid;
@@ -5276,18 +5276,18 @@
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item:hover .chart-item-image {
   border-style: solid;
-  border-color: #eb5c1b;
+  border-color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item:hover .chart-item-label {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected .chart-item-image {
   border-style: solid;
-  border-color: #eb5c1b;
+  border-color: #01abec;
   background-color: #f0f0f0;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected .chart-item-label {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-config-analysis-button-selected, .light-theme .msf-dashboard-assistant-chart-config-analysis-button:hover {
   background-color: #74d393 !important;
@@ -5310,10 +5310,10 @@
   color: #ffffff !important;
 }
 .light-theme .msf-dashboard-assistant-chart-preview-button {
-  border-color: #eb5c1b;
+  border-color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-preview-button:hover {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
   color: #ffffff !important;
 }
 .light-theme .distribution-chart-column-analysis-header-hover, .light-theme .distribution-chart-column-analysis-header-selected {
@@ -5376,7 +5376,7 @@
   position: relative;
 }
 .light-theme .ng-star-inserted .mat-step-icon {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .admin-menu-header-container {
   color: #4d4d4d;
@@ -5395,10 +5395,10 @@
   border-right: 1px solid #4d4d4d;
 }
 .light-theme .primary-font-color {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .title-text {
-  color: #eb5c1b;
+  color: #01abec;
   font-size: 17px;
   font-weight: 550;
 }
@@ -5406,7 +5406,7 @@
   background-color: #e6e6e6;
 }
 .light-theme .select-data-header .close-button:hover .mat-icon {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .select-data-menu-category:not(:last-child) {
   border-right: 1px solid #ffffff;
@@ -5421,7 +5421,7 @@
   background-color: #e6e6e6 !important;
 }
 .light-theme .msf-dashboard-assistant-header .close-button:hover {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode {
   border-color: #4d4d4d;
@@ -5431,8 +5431,8 @@
   transition: none;
 }
 .light-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode:hover, .light-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode.mat-radio-checked {
-  border-color: #eb5c1b !important;
-  background-color: #eb5c1b !important;
+  border-color: #01abec !important;
+  background-color: #01abec !important;
   color: #ffffff !important;
   cursor: pointer;
 }
@@ -5440,13 +5440,13 @@
   border-color: #ffffff !important;
 }
 .light-theme .mat-row-highlighted .btn-actions-partition .edit-icon.mat-icon {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .btn-actions-partition .mat-icon {
   color: #4d4d4d !important;
 }
 .light-theme .btn-actions-partition .mat-icon:hover {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .btn-actions-partition .mat-icon-button[disabled] .mat-button-wrapper .mat-icon {
   color: #2d2d2d !important;
@@ -5470,7 +5470,7 @@
   color: #d0d0d0;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-header .mat-form-field-appearance-outline .mat-form-field-outline-thick {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-header .mat-form-field-label {
   color: #4d4d4d;
@@ -5479,7 +5479,7 @@
   color: #d0d0d0 !important;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-header .mat-form-field.mat-focused .mat-form-field-label {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-header .datalake-explorer-search-input {
   border-color: #d0d0d0;
@@ -5498,8 +5498,8 @@
   color: #eb5c1b;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-buttons .datalake-explorer-button:hover {
-  border: 1px solid #eb5c1b;
-  background-color: #eb5c1b;
+  border: 1px solid #01abec;
+  background-color: #01abec;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-buttons .datalake-explorer-button:hover .mat-button-wrapper {
   color: #ffffff;
@@ -5520,8 +5520,8 @@
   color: #2d2d2d !important;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-buttons .datalake-explorer-button-selected {
-  border: 1px solid #eb5c1b;
-  background-color: #eb5c1b;
+  border: 1px solid #01abec;
+  background-color: #01abec;
 }
 .light-theme .datalake-explorer-container .datalake-explorer-buttons .datalake-explorer-button-selected .mat-button-wrapper {
   color: inherit !important;
@@ -5533,7 +5533,7 @@
   border-bottom: 1px solid #d0d0d0;
 }
 .light-theme .datalake-table-card-container .datalake-table-card-header .datalake-table-card-subtitle, .light-theme .datalake-table-card-container .datalake-table-card-header .datalake-table-card-update-title {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .datalake-table-card-container .mat-tab-labels {
   background-color: #e6e6e6 !important;
@@ -5556,7 +5556,7 @@
   border-bottom: 1px solid #d0d0d0;
 }
 .light-theme .datalake-table-card-container .datalake-table-card-info .datalake-table-card-info-header .datalake-table-card-info-title {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .datalake-table-card-container .datalake-table-stats-container {
   background-color: #f2f2f2;
@@ -5617,7 +5617,7 @@
   background-size: 40%;
 }
 .light-theme .datalake-dialog-finish-loading .datalake-dialog-label-container {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
 }
 .light-theme .datalake-query-engine-left-panel {
@@ -5643,7 +5643,7 @@
   color: #bdbdbd !important;
 }
 .light-theme .datalake-query-engine-left-panel .datalake-schema-container .datalake-schema-tree-expander:hover .mat-icon {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-query-engine-left-panel .datalake-schema-container .datalake-schema-body {
   background-color: #eaeaea;
@@ -5676,8 +5676,8 @@
   border-color: #eb5c1b !important;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-tab .datalake-query-editor-button:hover {
-  border-color: #eb5c1b !important;
-  background-color: #eb5c1b !important;
+  border-color: #01abec !important;
+  background-color: #01abec !important;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-tab .datalake-query-editor-button[disabled] {
   border-color: #c6c6c6 !important;
@@ -5690,7 +5690,7 @@
   background-color: #ffffff;
 }
 .light-theme .datalake-query-engine-right-panel .close-icon-container:hover {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .datalake-query-engine-right-panel .add-icon-container {
   border-color: #4d4d4d;
@@ -5698,8 +5698,8 @@
   background-color: inherit;
 }
 .light-theme .datalake-query-engine-right-panel .add-icon-container:hover {
-  border-color: #eb5c1b;
-  background-color: #eb5c1b;
+  border-color: #01abec;
+  background-color: #01abec;
 }
 .light-theme .datalake-query-engine-right-panel .add-icon-container:hover .add-icon {
   color: #4d4d4d !important;
@@ -5718,7 +5718,7 @@
   background-color: #f7f7f7;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-execution-result-header .datalake-query-execution-time-sub-title {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-execution-result-header .datalake-query-cancel-button {
   border-color: #4d4d4d !important;
@@ -5727,8 +5727,8 @@
   color: #4d4d4d !important;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-execution-result-header .datalake-query-cancel-button:hover {
-  background-color: #eb5c1b !important;
-  border-color: #eb5c1b !important;
+  background-color: #01abec !important;
+  border-color: #01abec !important;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-execution-result-header .datalake-query-cancel-button:hover .close-icon {
   color: #ffffff !important;
@@ -5747,7 +5747,7 @@
   background-size: 250px;
 }
 .light-theme .datalake-query-engine-right-panel .datalake-query-execution-result-body .datalake-no-execution-label {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .datalake-create-table-loading {
   z-index: 99998;
@@ -5760,7 +5760,7 @@
   background-size: 250px;
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-header {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-body .mat-tab-label.mat-tab-disabled {
   color: #b2b2b2 !important;
@@ -5770,8 +5770,8 @@
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker .mat-radio-checked, .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker-upload .mat-radio-checked {
   color: #ffffff !important;
-  background-color: #eb5c1b;
-  border-color: #eb5c1b !important;
+  background-color: #01abec;
+  border-color: #01abec !important;
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker .mat-radio-checked .mat-radio-outer-circle, .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker-upload .mat-radio-checked .mat-radio-outer-circle {
   border-color: #ffffff !important;
@@ -5791,8 +5791,8 @@
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker .datalake-file-type-radio:hover, .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker-upload .datalake-file-type-radio:hover {
   color: #ffffff !important;
-  background-color: #eb5c1b;
-  border-color: #eb5c1b !important;
+  background-color: #01abec;
+  border-color: #01abec !important;
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker .datalake-file-type-radio:hover .mat-radio-outer-circle, .light-theme .datalake-create-table-dialog .datalake-create-table-body .datalake-file-type-picker-upload .datalake-file-type-radio:hover .mat-radio-outer-circle {
   border-color: #ffffff !important;
@@ -5822,7 +5822,7 @@
   color: #b2b2b2;
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-label, .light-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-label, .light-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-label, .light-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-label {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-subtitle, .light-theme .datalake-create-table-dialog .datalake-create-table-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-subtitle, .light-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-header .mat-step-label.mat-step-label-active .datalake-create-table-step-subtitle, .light-theme .datalake-create-table-dialog .datalake-data-upload-tab .datalake-create-table-step .mat-step-label-selected .datalake-create-table-step-subtitle {
   color: #4d4d4d !important;
@@ -5864,10 +5864,10 @@
   background-color: #f0f0f0;
 }
 .light-theme .datalake-create-table-step-content .datalake-upload-span, .light-theme .datalake-alarm-comboboxes .datalake-upload-span, .light-theme .datalake-create-alarm-hint .datalake-upload-span, .light-theme .datalake-partition-comboboxes .datalake-upload-span, .light-theme .datalake-save-query-one-column .datalake-upload-span, .light-theme .datalake-save-query-two-column .datalake-upload-span {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-create-table-step-content .datalake-upload-table-chips, .light-theme .datalake-alarm-comboboxes .datalake-upload-table-chips, .light-theme .datalake-create-alarm-hint .datalake-upload-table-chips, .light-theme .datalake-partition-comboboxes .datalake-upload-table-chips, .light-theme .datalake-save-query-one-column .datalake-upload-table-chips, .light-theme .datalake-save-query-two-column .datalake-upload-table-chips {
-  background: #eb5c1b !important;
+  background: #01abec !important;
   color: #4d4d4d !important;
 }
 .light-theme .datalake-create-table-step-content .datalake-upload-table-partitions-hint, .light-theme .datalake-alarm-comboboxes .datalake-upload-table-partitions-hint, .light-theme .datalake-create-alarm-hint .datalake-upload-table-partitions-hint, .light-theme .datalake-partition-comboboxes .datalake-upload-table-partitions-hint, .light-theme .datalake-save-query-one-column .datalake-upload-table-partitions-hint, .light-theme .datalake-save-query-two-column .datalake-upload-table-partitions-hint {
@@ -5891,7 +5891,7 @@
   background-color: #4d4d4d;
 }
 .light-theme .ng-star-inserted .mat-step-icon-state-edit {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #4d4d4d;
 }
 .light-theme .datalake-raw-data-preview {
@@ -5916,7 +5916,7 @@
   color: #4d4d4d;
 }
 .light-theme .datalake-partition-container .datalake-partition .close-button .mat-icon:hover {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-discovery-result-container {
   background-color: #e6e6e6;
@@ -5952,7 +5952,7 @@
   background-color: #cdcdcd;
 }
 .light-theme .datalake-new-alarm-button .mat-icon:hover {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
 }
 .light-theme .datalake-new-alarm-button-a .mat-icon {
@@ -5970,7 +5970,7 @@
   color: #ffffff;
 }
 .light-theme .datalake-new-alarm-button-selected .mat-icon {
-  background-color: #eb5c1b;
+  background-color: #01abec;
   color: #ffffff;
 }
 .light-theme .datalake-new-alarm-button-selected-i .mat-icon {
@@ -6011,7 +6011,7 @@
 }
 .light-theme .datalake-alarm-radio-button:hover, .light-theme .datalake-alarm-radio-button-selected {
   color: #ffffff !important;
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .datalake-alarm-radio-button:hover .mat-radio-outer-circle, .light-theme .datalake-alarm-radio-button-selected .mat-radio-outer-circle {
   border-color: #ffffff !important;
@@ -6063,10 +6063,10 @@
   color: #4d4d4d !important;
 }
 .light-theme .datalake-alarm-table-scroll .datalake-alarm-table td.mat-cell .mat-icon:hover {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-alarm-table-scroll .datalake-alarm-table td.mat-cell .status-icon.mat-icon {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .datalake-alarm-table-scroll .datalake-alarm-table td.mat-cell .status-icon2.mat-icon {
   color: #4d4d4d !important;
@@ -6120,7 +6120,7 @@
   background-color: #e0e0e0;
 }
 .light-theme .datalake-partition-table-scroll .datalake-partition-table td.datalake-partition-btn-actions.mat-cell .mat-icon-button .mat-button-wrapper span, .light-theme .datalake-partition-table-scroll-right .datalake-partition-table td.datalake-partition-btn-actions.mat-cell .mat-icon-button .mat-button-wrapper span {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .datalake-alarm-paginator .mat-paginator-outer-container .mat-paginator-container, .light-theme .datalake-partition-paginator .mat-paginator-outer-container .mat-paginator-container {
   color: #4d4d4d;
@@ -6202,14 +6202,14 @@
   background-color: #eb5c1b !important;
 }
 .light-theme .datalake-activation .mat-button-wrapper {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .datalake-requestAccess {
   background-color: #f2f2f2;
 }
 .light-theme .datalake-requestAccess .datalake-messageAccess h1 {
   font-weight: normal;
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .interval-checkbox .mat-radio-outer-circle, .light-theme .select-data-from-radio .mat-radio-outer-circle {
   border-color: #4d4d4d;
@@ -6221,17 +6221,17 @@
   border-color: #4d4d4d;
 }
 .light-theme .airline-selection-type-radio .mat-radio-label:hover, .light-theme .airport-selection-type-radio .mat-radio-label:hover, .light-theme .airport-selection-type-radio-admin .mat-radio-label:hover, .light-theme .content-type-argument-radio-group .mat-radio-label:hover, .light-theme .argument-radio-group .mat-radio-label:hover {
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
 }
 .light-theme .airline-selection-type-radio .mat-radio-outer-circle, .light-theme .airport-selection-type-radio .mat-radio-outer-circle, .light-theme .airport-selection-type-radio-admin .mat-radio-outer-circle, .light-theme .content-type-argument-radio-group .mat-radio-outer-circle, .light-theme .argument-radio-group .mat-radio-outer-circle {
   border-color: #4d4d4d;
 }
 .light-theme .airline-selection-type-radio .mat-radio-label:hover, .light-theme .airport-selection-type-radio .mat-radio-label:hover {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .airline-selection-type-radio-checked .mat-radio-label, .light-theme .airport-selection-type-radio-checked .mat-radio-label {
-  background-color: #eb5c1b;
-  border-color: #eb5c1b !important;
+  background-color: #01abec;
+  border-color: #01abec !important;
 }
 .light-theme .single-airport-argument-container, .light-theme .multiple-airport-argument-container, .light-theme .single-date-argument-container {
   background-color: #cdcdcd;
@@ -6258,7 +6258,7 @@
   background-color: #4d4d4d;
 }
 .light-theme .argument-category-type-label {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .argument-category-type-value {
   color: #4d4d4d;
@@ -6267,7 +6267,7 @@
   font-size: 16px;
   margin-top: -10px;
   margin-right: -9px;
-  color: #eb5c1b;
+  color: #01abec;
   cursor: pointer;
 }
 .light-theme .msf-category-argument-arrow-icon {
@@ -6286,7 +6286,7 @@
   color: #4d4d4d !important;
 }
 .light-theme .no-control-variables-container {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-large-container {
   color: #4d4d4d;
@@ -6298,8 +6298,8 @@
   color: #eb5c1b;
 }
 .light-theme .datalake-table-export-excel:hover {
-  border: 1px solid #eb5c1b;
-  background-color: #eb5c1b;
+  border: 1px solid #01abec;
+  background-color: #01abec;
 }
 .light-theme .datalake-table-export-excel:hover .mat-button-wrapper {
   color: #ffffff;
@@ -6323,10 +6323,10 @@
   background-image: url(assets/images/light-theme-banner_datalake.png);
 }
 .light-theme .icon-HistoryQuery-selected {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .icon-HistoryQuery:hover {
-  color: #eb5c1b !important;
+  color: #01abec !important;
 }
 .light-theme .btns-save-partitions[disabled] {
   background-color: #f2f2f2 !important;
@@ -6354,14 +6354,14 @@
 .light-theme .msf-plan-name-open .button-delete {
   background-image: url(assets/images/light-theme-trash.png) !important;
   background-color: #ffffff;
-  border-color: #eb5c1b !important;
+  border-color: #01abec !important;
 }
 .light-theme .msf-plan-name-open .button-option {
   background-image: url(assets/images/light-theme-options.png) !important;
 }
 .light-theme .msf-plan-name-open .button-delete:hover {
   background-image: url(assets/images/trash.png) !important;
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-plan-name-open .button-option:hover {
   background-image: url(assets/images/options.png) !important;
@@ -6395,7 +6395,7 @@
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-panel-results-button:hover {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .datalake-create-table-input-body .mat-form-field-disabled .mat-select-value {
   color: #2d2d2d !important;
@@ -6404,10 +6404,10 @@
   color: #2d2d2d !important;
 }
 .light-theme .msf-dashboard-column-dropdown-icon {
-  background-color: #eb5c1b;
+  background-color: #01abec;
 }
 .light-theme .msf-dashboard-column-dropdown-icon:hover {
-  background-color: #d54505;
+  background-color: #00263E;
   color: #ffffff !important;
 }
 .light-theme .msf-dashboard-control-panel-icon {
@@ -6436,7 +6436,7 @@
   background-color: #f8f8f8;
 }
 .light-theme .msf-dashboard-panel-config-button .mat-button.mat-primary, .light-theme .msf-dashboard-panel-config-button .mat-icon-button.mat-primary, .light-theme .msf-dashboard-panel-config-button .mat-stroked-button.mat-primary, .light-theme .chart-preview-buttons .mat-button.mat-primary, .light-theme .chart-preview-buttons .mat-icon-button.mat-primary, .light-theme .chart-preview-buttons .mat-stroked-button.mat-primary {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .airline-restrictions-container {
   background-color: #ffffff;
@@ -6452,7 +6452,7 @@
   color: #4d4d4d;
 }
 .light-theme .airline-restrictions-container .airline-restrictions-container-close-button:hover .mat-icon {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .airline-restrictions-option-buttons {
   text-align: center;
@@ -6491,14 +6491,14 @@
   color: #9e9e9e !important;
 }
 .light-theme .Datalake-editTableData .mat-row.mat-row-edit-highlighted td.mat-cell {
-  border-bottom: 1px solid #eb5c1b !important;
-  border-top: 1px solid #eb5c1b !important;
+  border-bottom: 1px solid #01abec !important;
+  border-top: 1px solid #01abec !important;
 }
 .light-theme .Datalake-editTableData .mat-row.mat-row-edit-highlighted td.mat-cell:last-of-type {
-  border-right: 1px solid #eb5c1b !important;
+  border-right: 1px solid #01abec !important;
 }
 .light-theme .Datalake-editTableData .mat-row.mat-row-edit-highlighted td.mat-cell:first-of-type {
-  border-left: 1px solid #eb5c1b !important;
+  border-left: 1px solid #01abec !important;
 }
 .light-theme .datalake-search-editTable .mat-form-field-appearance-outline .mat-form-field-outline-start {
   border: 1px solid #4d4d4d !important;
@@ -6531,7 +6531,7 @@
   border-color: #d7d7d7;
 }
 .light-theme .dashboard-config-location-container .dashboard-config-location-placeholder {
-  color: #eb5c1b;
+  color: #01abec;
 }
 .light-theme .dashboard-config-location-container .dashboard-config-location-value {
   color: #4d4d4d;
@@ -6569,7 +6569,7 @@
   background-color: #f6f6f6;
 }
 .light-theme .msf-mobile-menu-header {
-  background-color: #eb5c1b;
+  background-color: #003d5b;
 }
 .light-theme .partial-summaries-header, .light-theme .partial-summaries-body, .light-theme .dynamic-table-config-header, .light-theme .dynamic-table-body {
   color: #4d4d4d;
@@ -6619,13 +6619,13 @@
   border-bottom: 1px solid #d7d7d7;
 }
 .light-theme .partial-summaries-right .count-switch .mat-slide-toggle-thumb {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .partial-summaries-right .count-switch .mat-slide-toggle-bar {
   background-color: #eaeaea !important;
 }
 .light-theme .partial-summaries-right .count-switch .mat-ripple-element {
-  background-color: #eb5c1b !important;
+  background-color: #01abec !important;
 }
 .light-theme .partial-summaries-input-container .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .light-theme .partial-summaries-input-container .mat-form-field-empty.mat-form-field-label, .light-theme .partial-summaries-input-container .mat-form-field-appearance-outline .mat-form-field-outline, .light-theme .partial-summaries-aggregator-input-container .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .light-theme .partial-summaries-aggregator-input-container .mat-form-field-empty.mat-form-field-label, .light-theme .partial-summaries-aggregator-input-container .mat-form-field-appearance-outline .mat-form-field-outline {
   color: #4d4d4d;
@@ -6650,8 +6650,8 @@
 }
 .light-theme .y-axis-container .drop-here-mouseover, .light-theme .x-axis-and-values-container .drop-here-mouseover {
   color: #ffffff !important;
-  border-color: #eb5c1b !important;
-  background-color: #eb5c1b !important;
+  border-color: #01abec !important;
+  background-color: #01abec !important;
 }
 .light-theme .y-axis-container .drop-here-mouseover .mat-icon, .light-theme .x-axis-and-values-container .drop-here-mouseover .mat-icon {
   color: #ffffff !important;
