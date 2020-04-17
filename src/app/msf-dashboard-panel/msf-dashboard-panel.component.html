@@ -152,8 +152,8 @@
       <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 3">
         <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 3"></div>
         <div class="msf-dashboard-panel-step-item" *ngIf="stepLoading != 3">
-          <div class="select-data-body">
-            <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories">
+          <div class="select-data-body" id="menu-category-scroll">
+            <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories; let menuIndex = index">
               <div class="menu-category-header">
                 <div class="info-container" (click)="toggleInfo(menuCategory)">
                   <ng-container *ngIf="menuCategory.welcome.shortDescription && menuCategory.welcome.shortDescription != ''">
@@ -184,14 +184,14 @@
                 </mat-form-field>
               </div>
               <div class="menu-category-body">
-                <div class="menu-items">
+                <div class="menu-items" id="menu-{{menuIndex}}-scroll">
                   <ng-container *ngIf="menuCategory.tree">
                     <mat-tree [dataSource]="menuCategory.tree" [treeControl]="menuCategory.treeControl">
                       <mat-tree-node [ngClass]="{
                                      'msf-show' : node.show,
                                      'msf-show' : node.show == null,
                                      'msf-hide': node.show == false }"
-                                     *matTreeNodeDef="let node" matTreeNodePadding>
+                                     id="node-{{node.label}}" *matTreeNodeDef="let node" matTreeNodePadding>
                         <mat-radio-button class="cancels-checkbox select-data-from-radio" [checked]="selectedItem == node" (click)="selectItem(node)">
                           {{node.label}}
                         </mat-radio-button>
@@ -200,7 +200,7 @@
                                      'msf-show' : node.show,
                                      'msf-show' : node.show == null,
                                      'msf-hide': node.show == false }"
-                                     *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                                     id="node-{{node.label}}" *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
                         <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
                           <mat-icon class="mat-icon-rtl-mirror">
                             {{menuCategory.treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}

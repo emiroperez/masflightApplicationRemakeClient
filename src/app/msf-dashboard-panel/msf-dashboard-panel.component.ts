@@ -349,6 +349,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   panelConfigRefresh: boolean = false;
   advConfigFlags: ConfigFlags = null;
   useThemeColors: boolean = false;
+  scrollToOption: any = null;
 
   @ViewChild("configTabs", { static: false })
   configTabs: MatTabGroup;
@@ -8699,6 +8700,23 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     _this.stepLoading = 0;
+
+    if (_this.scrollToOption)
+    {
+      let target, optionOffsetTop;
+
+      _this.changeDetectorRef.detectChanges();
+
+      // scroll to the selected option
+      target = document.getElementById (_this.scrollToOption.category);
+      target.parentNode.parentNode.parentNode.scrollLeft = target.offsetLeft - 400;
+
+      optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 279;
+      if (optionOffsetTop + 32 > 279)
+        target.scrollTop = optionOffsetTop;
+
+      _this.scrollToOption = null;
+    }
   }
 
   expandSelectedOption (menuCategory, selectedOptionId: number)
@@ -8710,15 +8728,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (selectedOptionId == node.id)
       {
+        let parent;
+
         menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf(node)]);
 
-        let parent = this.getParentNode (menuCategory, node);
-
+        parent = this.getParentNode (menuCategory, node);
         while (parent)
         {
           menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf (parent)]);
           parent = this.getParentNode (menuCategory, parent);
         }
+
+        // scroll here
+        this.scrollToOption = {
+          category: "menu-" + this.menuCategories.indexOf(menuCategory) + "-scroll",
+          option: "node-" + node.label
+        };
       }
     });
   }
