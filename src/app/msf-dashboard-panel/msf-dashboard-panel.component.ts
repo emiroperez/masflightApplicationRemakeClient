@@ -9137,4 +9137,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.values.goals.length)
       this.values.goals.pop ();
   }
+
+  toggleInfo(menuCategory): void
+  {
+    menuCategory.infoOpen = !menuCategory.infoOpen;
+  }
 }

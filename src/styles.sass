@@ -318,6 +318,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $control-variable-icon-color
         .msf-dashboard-button
             .msf-dashboard-button-close-icon:hover
+                @include disable-text-selection
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
             .msf-dashboard-button-icon
                 color: $font-color
@@ -333,6 +334,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     @extend .msf-dashboard-form-field
         .msf-dashboard-panel-button
             .msf-dashboard-button-close-icon
+                @include disable-text-selection
                 color: $font-color
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
@@ -2435,7 +2437,11 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             &:hover
                 background-image: url(assets/images/info-hover.png) !important
         .info-image-open
-            background-image: url(assets/images/info-open.png)
+            background-image: url(assets/images/info-hover.png)
+        .info-arrow
+            background-image: url(assets/images/info-arrow.png)
+        .menu-category-description
+            border: 1px solid $primary-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4813,6 +4819,7 @@ mat-tab-group
             .msf-dashboard-panel-title-label-public
                 width: calc(100% - 207px) !important
         .msf-dashboard-panel-results-button
+            @include disable-text-selection
             width: 20px
             font-size: 12px
             text-align: center
@@ -9294,6 +9301,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 100%
         min-width: 400px
         .menu-category-header
+            position: relative
             display: flex
             .info-container
                  margin-left: 16px
@@ -9312,12 +9320,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                 margin-top: 10px
                 margin-right: 10px
         .menu-category-description
+            position: absolute
+            top: 65px
             margin: 15px
             margin-bottom: 0
             text-align: justify
             line-height: 16px
-            height: 60px
             font-size: 11.75px
+            background-color: rgba(0, 0, 0, 0.875)
+            color: #ffffff
+            padding: 10px
         .menu-category-search
             .menu-item-search-input
                 width: 95%
@@ -12301,9 +12313,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     width: calc(100% - 160px)
 
 .info-image, .info-image-open
+    cursor: pointer
     margin-top: 20px
-    height: 54px
+    height: 43px
     width: 43px
+
+.info-arrow, .info-arrow-invisible
+    margin-left: 14px
+    margin-top: 4px
+    width: 14px
+    height: 7px
 
 .datasource-selected
     padding-left: 15px

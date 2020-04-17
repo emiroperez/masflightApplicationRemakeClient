@@ -155,20 +155,24 @@
           <div class="select-data-body">
             <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories">
               <div class="menu-category-header">
-                <div class="info-container">
-                  <div *ngIf="!menuCategory.infoOpen" class="info-image"></div>
-                  <div *ngIf="menuCategory.infoOpen" class="info-image-open"></div>
+                <div class="info-container" (click)="toggleInfo(menuCategory)">
+                  <ng-container *ngIf="!menuCategory.infoOpen">
+                    <div class="info-image"></div>
+                    <div class="info-arrow-invisible"></div>
+                  </ng-container>
+                  <ng-container *ngIf="menuCategory.infoOpen">
+                    <div class="info-image-open"></div>
+                    <div class="info-arrow"></div>
+                  </ng-container>
                   <span class="menu-category-title">{{menuCategory.label}}</span>
                 </div>
-                <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}" />
+                <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}"/>
+                <div class="menu-category-description" *ngIf="menuCategory.infoOpen">
+                  <ng-container *ngIf="menuCategory.welcome.shortDescription">
+                    {{menuCategory.welcome.shortDescription}}
+                  </ng-container>
+                </div>
               </div>
-              <!--
-              <div class="menu-category-description">
-                <ng-container *ngIf="menuCategory.welcome.shortDescription">
-                  {{menuCategory.welcome.shortDescription}}
-                </ng-container>
-              </div>
-              -->
               <div class="menu-category-search">
                 <mat-form-field class="menu-item-search-input">
                   <input matInput autocomplete="off" [(ngModel)]="menuCategory.searchLabel" (ngModelChange)="filterMenuOptions(menuCategory)">
