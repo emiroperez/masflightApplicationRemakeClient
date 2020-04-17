@@ -44,30 +44,34 @@
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
               <span class="step-label">Control Variables</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel() && !isMapPanel() && !isHeatMapPanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
-              <span class="step-label">Distribution Chart</span>
+              <span class="step-label">Basic Configuration</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel() || isTablePanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
-              <span class="step-label">Distribution Table</span>
+              <span class="step-label">Configuration</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isTablePanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
+              <span class="step-label">Basic Configuration</span>
             </div>
             <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(7)" *ngIf="isInformationPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 7 }"><mat-icon *ngIf="selectedStep == 7">edit</mat-icon></div>
-              <span class="step-label">Configuration Infomation</span>
+              <span class="step-label">Configuration</span>
             </div>
             <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(8)" *ngIf="isSimpleFormPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 8">edit</mat-icon></div>
-              <span class="step-label">Distribution Form</span>
+              <span class="step-label">Basic Configuration</span>
             </div>
             <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isHeatMapPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 9 }"><mat-icon *ngIf="selectedStep == 9">edit</mat-icon></div>
-              <span class="step-label">Distribution Map</span>
+              <span class="step-label">Basic Configuration</span>
             </div>
           </ng-container>
           <div class="msf-dashboard-panel-step-selector" (click)="selectStep(10)" *ngIf="isPicturePanel()">
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 10 }"><mat-icon *ngIf="selectedStep == 10">edit</mat-icon></div>
-            <span class="step-label">Image URL</span>
+            <span class="step-label">Configuration</span>
           </div>
           <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(11)" *ngIf="hasAdditinalSettings()">
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 11 }"><mat-icon *ngIf="selectedStep == 11">edit</mat-icon></div>
@@ -607,13 +611,14 @@
                     </mat-form-field>
                   </div>
                 </div>
-                <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-selector info-selector" *ngIf="values.infoNumVariables >= 1">
                   <div class="msf-dashboard-chart-analysis-title">
                     <mat-icon class="msf-dashboard-chart-icon">filter_1</mat-icon>
                   </div>
-                  <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field class="msf-full-width">
-                      <mat-select [disabled]="!values.infoNumVariables" placeholder="Variable #1" [(ngModel)]="values.infoVar1">
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Variable #1</mat-label>
+                      <mat-select [disabled]="!values.infoNumVariables" [(ngModel)]="values.infoVar1">
                         <ngx-mat-select-search [formControl]="infoVar1FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                         <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                           {{variable.name}}
@@ -625,13 +630,14 @@
                     <mat-icon aria-label="Functions for Variable #1">more_horiz</mat-icon>
                   </button>
                 </div>
-                <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-selector info-selector" *ngIf="values.infoNumVariables >= 2">
                   <div class="msf-dashboard-chart-analysis-title">
                     <mat-icon class="msf-dashboard-chart-icon">filter_2</mat-icon>
                   </div>
-                  <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field class="msf-full-width">
-                      <mat-select [disabled]="values.infoNumVariables < 2" placeholder="Variable #2" [(ngModel)]="values.infoVar2">
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Variable #2</mat-label>
+                      <mat-select [disabled]="values.infoNumVariables < 2" [(ngModel)]="values.infoVar2">
                         <ngx-mat-select-search [formControl]="infoVar2FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                         <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                           {{variable.name}}
@@ -643,13 +649,14 @@
                     <mat-icon aria-label="Functions for Variable #2">more_horiz</mat-icon>
                   </button>
                 </div>
-                <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-selector info-selector" *ngIf="values.infoNumVariables >= 3">
                   <div class="msf-dashboard-chart-analysis-title">
                     <mat-icon class="msf-dashboard-chart-icon">filter_3</mat-icon>
                   </div>
-                  <div class="msf-dashboard-chart-op-container">
-                    <mat-form-field class="msf-full-width">
-                      <mat-select [disabled]="values.infoNumVariables < 3" placeholder="Variable #3" [(ngModel)]="values.infoVar3">
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Variable #3</mat-label>
+                      <mat-select [disabled]="values.infoNumVariables < 3" [(ngModel)]="values.infoVar3">
                         <ngx-mat-select-search [formControl]="infoVar3FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                         <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                           {{variable.name}}
@@ -799,12 +806,13 @@
         <div class="msf-dashboard-panel-step-item heatmap-panel-step" *ngIf="isHeatMapPanel()">
           <div class="msf-dashboard-panel-sub-container-column">
             <div class="msf-dashboard-chart-options-container">
-              <div class="msf-dashboard-chart-selector">
+              <div class="msf-dashboard-chart-selector heatmap-selector">
                 <div class="msf-dashboard-chart-analysis-title">
                   <mat-icon class="msf-dashboard-chart-icon">place</mat-icon>
                 </div>
-                <div class="msf-dashboard-chart-op-container">
-                  <mat-form-field class="msf-full-width">
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Geography Data</mat-label>
                     <mat-select placeholder="Geography Data" [(ngModel)]="values.geodata">
                       <mat-option *ngFor="let geodata of geodatas" [value]="geodata">
                         {{geodata.name}}
@@ -813,13 +821,14 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div class="msf-dashboard-chart-selector">
+              <div class="msf-dashboard-chart-selector heatmap-selector">
                 <div class="msf-dashboard-chart-analysis-title">
                   <mat-icon class="msf-dashboard-chart-icon">vpn_key</mat-icon>
                 </div>
-                <div class="msf-dashboard-chart-op-container">
-                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-                    <mat-select formControlName="geodataKeyCtrl" placeholder="Geography Data Key" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Geography Data Key</mat-label>
+                    <mat-select formControlName="geodataKeyCtrl" [(value)]="values.valueColumn" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}
@@ -828,13 +837,14 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div class="msf-dashboard-chart-selector">
+              <div class="msf-dashboard-chart-selector heatmap-selector">
                 <div class="msf-dashboard-chart-analysis-title">
                   <mat-icon class="msf-dashboard-chart-icon">data_usage</mat-icon>
                 </div>
-                <div class="msf-dashboard-chart-op-container">
-                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
-                    <mat-select formControlName="geodataValueCtrl" placeholder="Value To Display" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Value To Display</mat-label>
+                    <mat-select formControlName="geodataValueCtrl" [(value)]="values.variable" (selectionChange)="checkPanelConfiguration()">
                       <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
                         {{variable.name}}

@@ -2420,7 +2420,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
         .msf-dashboard-addmenu-icon-item
             color: $font-color !important
         .content-panel-img
-            border-color: $font-color
+            border-color: $dashboard-panel-background-color
         .no-image
             background-color: $primary-color
         .goals-thresholds-tab, .limit-results-tab, .color-picker-tab
@@ -12192,13 +12192,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .msf-dashboard-assistant-chart-mode
                 margin-top: 10px
             .table-config-label
-                margin-top: 5px
+                margin-top: 10px
+                margin-bottom: -10px
                 align-self: baseline
             .table-column-list
                 margin-top: 15px
                 margin-bottom: 0px !important
-                height: 100%
-                overflow-y: auto
+                height: 100% !important
+                overflow-y: auto !important
         .msf-dashboard-info-step
             display: flex
             justify-content: center
@@ -12335,3 +12336,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .datasource-selected
     padding-left: 15px
+
+.info-selector, .heatmap-selector
+    margin-bottom: 15px !important
+    .mat-form-field
+        margin-bottom: -15px

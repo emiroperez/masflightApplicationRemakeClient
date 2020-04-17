@@ -101,7 +101,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
     { name: 'Table', flags: ChartFlags.TABLE, image: 'table.png', allowedInAdvancedMode: false },
     { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false },
-
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
@@ -9186,7 +9185,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   hasAdditinalSettings(): boolean
   {
-    if (!this.isDynTablePanel() && !this.isTablePanel() && !this.isInformationPanel() && !this.isSimpleFormPanel() && !this.isMapPanel() && !this.isHeatMapPanel())
+    if (!this.isDynTablePanel () && !this.isTablePanel () && !this.isInformationPanel () && !this.isSimpleFormPanel ()
+      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ())
       return true;
 
     return (this.isHeatMapPanel () || this.isSimpleFormPanel () || this.isTablePanel ()) ? true : false;
