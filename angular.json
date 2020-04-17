@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "C:\\Software\\workspace-spring-tool-suite-4-4.2.0.RELEASE\\masflightApplicationRemake\\src\\main\\resources\\static",
+            "outputPath": "D:\\Software\\workspace-spring-tool-suite-4-4.2.0.RELEASE\\masflightApplicationRemake\\src\\main\\resources\\static",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -28,15 +28,19 @@
               },
               "src/styles.css",
               "node_modules/snazzy-info-window/dist/snazzy-info-window.css",
-              "node_modules/mapbox-gl/dist/mapbox-gl.css",
-              "node_modules/gridstack/dist/gridstack.css"
+              "src/libs/mapbox-gl-js/v0.52.0/mapbox-gl.css",
+              "src/libs/gridstack.js/0.4.0/gridstack.css"
             ],
             "scripts": [
-              "node_modules/lodash/lodash.min.js",
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/jquery-ui-dist/jquery-ui.js",
-              "node_modules/gridstack/dist/gridstack.js",
-              "node_modules/gridstack/dist/gridstack.jQueryUI.js"
+              "src/libs/hammer.js/2.0.8/hammer.min.js",
+              "src/libs/mapbox-gl-js/v0.52.0/mapbox-gl.js",
+              "src/libs/mapbox.js/plugins/turf/v3.0.11/turf.min.js",
+              "src/libs/lodash.js/4.17.14/lodash.min.js",
+              "src/libs/jquery/3.4.1/jquery.min.js",
+              "src/libs/jqueryui/1.12.1/jquery-ui.min.js",
+              "src/libs/gridstack.js/0.4.0/gridstack.js",
+              "src/libs/gridstack.js/0.4.0/gridstack.jQueryUI.js",
+              "src/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.js"
             ]
           },
           "configurations": {
@@ -89,7 +93,8 @@
               },
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

@@ -902,7 +902,7 @@ toggle(){
               excelItem[column.columnLabel] = "";
               continue;
             }
-    
+
             if (column.columnType === "date")
             {
               let date: Date = new Date (curitem);
@@ -1004,7 +1004,7 @@ toggle(){
       });
     }
 
-    this.excelService.exportAsExcelFile(excelData, this.globals.currentOption.label, tableColumnFormats);
+    this.excelService.exportAsExcelFile (excelData, this.globals.currentOption.label, tableColumnFormats);
   }
 
   exportToCSV(): void

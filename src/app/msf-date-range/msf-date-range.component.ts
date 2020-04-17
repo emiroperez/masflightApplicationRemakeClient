@@ -174,7 +174,8 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 16, name: 'Until Last Week', value: "UNTILLASTWEEK" },
     { id: 17, name: 'Until Last Month', value: "UNTILLASTMONTH" },
     { id: 18, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 19, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 19, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 20, name: '+1 Year', value: "PLUSONEYEAR"}
   ];
 
   dateValueByMonth: any[] = [
@@ -191,7 +192,8 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 5, name: 'Last Year', value: "LASTYEAR" },
     { id: 6, name: 'Until Last Month', value: "UNTILLASTMONTH" },
     { id: 7, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 8, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 9, name: '+1 Year', value: "PLUSONEYEAR" }
   ];
 
   dateValueByQuarter: any[] = [
@@ -205,7 +207,8 @@ export class MsfDateRangeComponent implements OnInit {
     { id: 2, name: 'Last Quarter', value: "LASTQUARTER" },
     { id: 3, name: 'Last Year', value: "LASTYEAR" },
     { id: 4, name: 'Until Last Quarter', value: "UNTILLASTQUARTER" },
-    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 5, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 6, name: '+1 Year', value: "PLUSONEYEAR" }
   ];
 
   dateValueByYear: any[] = [
@@ -216,7 +219,8 @@ export class MsfDateRangeComponent implements OnInit {
   dateRangeByYear: any[] = [
     { id: 0, name: 'Current Year', value: "CURRENTYEAR" },
     { id: 1, name: 'Last Year', value: "LASTYEAR" },
-    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" }
+    { id: 2, name: 'Until Last Year', value: "UNTILLASTYEAR" },
+    { id: 3, name: '+1 Year', value: "PLUSONEYEAR" }
   ];
 
   quarters: any[] = [
@@ -353,6 +357,20 @@ export class MsfDateRangeComponent implements OnInit {
         else
           this.currentDateRange = this.dateValueByFullDate;
         break;
+    }
+
+    // ignore maximum date if a +1 date range is selected
+    for (let dateRange of this.currentDateRange)
+    {
+      if (dateRange.id === this.argument.currentDateRangeValue && dateRange.value.startsWith ("PLUSONE"))
+      {
+        if (this.globals.dateRestrictionInfo.endDate)
+          this.argument.maxDate = this.globals.dateRestrictionInfo.endDate;
+        else
+          this.argument.maxDate = null;
+
+        break;
+      }
     }
 
     if (!this.argument.dateLoaded)
@@ -863,15 +881,15 @@ export class MsfDateRangeComponent implements OnInit {
       case 'LASTYEAR':
         this.argument.value1 = moment ().subtract (1, "years").startOf ("year").toDate ();
         this.argument.value2 = moment ().subtract (1, "years").endOf ("year").toDate ();
-        break;   
+        break;
+
+      case 'PLUSONEYEAR':
+        this.argument.value1 = today;
+        this.argument.value2 = moment ().add (1, "years").toDate ();
+        break;
     }
 
-    if (this.argument.maxDate == null || today < this.argument.maxDate)
-    {
-      if (this.argument.value2 > today)
-        this.argument.value2 = today;
-    }
-    else
+    if (!(this.argument.maxDate == null || today < this.argument.maxDate))
       this.argument.value2 = this.argument.maxDate;
 
     this.minDate = this.argument.value1;
@@ -925,7 +943,7 @@ export class MsfDateRangeComponent implements OnInit {
       case 'UNTILLASTYEAR':
         newDate = moment ().subtract (1, "years").endOf ("year").toDate ();
         break;
-    
+
       case 'UNTILTODAY':
         newDate = moment ().toDate ();
         break;

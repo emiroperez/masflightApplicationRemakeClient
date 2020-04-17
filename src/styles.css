@@ -1387,16 +1387,16 @@
 .dark-theme .cancel-button.mat-button {
   border: 1px solid #ffffff;
 }
-.dark-theme .loading-panel .close-icon {
+.dark-theme .loading-panel .close-icon, .dark-theme .datalake-dialog-loading .close-icon {
   color: inherit;
 }
-.dark-theme .loading-panel .mat-button-wrapper {
+.dark-theme .loading-panel .mat-button-wrapper, .dark-theme .datalake-dialog-loading .mat-button-wrapper {
   color: inherit;
 }
-.dark-theme .loading-panel .mat-button {
+.dark-theme .loading-panel .mat-button, .dark-theme .datalake-dialog-loading .mat-button {
   color: #ffffff !important;
 }
-.dark-theme .loading-panel .mat-button:hover {
+.dark-theme .loading-panel .mat-button:hover, .dark-theme .datalake-dialog-loading .mat-button:hover {
   color: #ffffff !important;
   background: #01abec;
   border-color: #01abec;
@@ -4730,16 +4730,16 @@
 .light-theme .cancel-button.mat-button {
   border: 1px solid #4d4d4d;
 }
-.light-theme .loading-panel .close-icon {
+.light-theme .loading-panel .close-icon, .light-theme .datalake-dialog-loading .close-icon {
   color: inherit;
 }
-.light-theme .loading-panel .mat-button-wrapper {
+.light-theme .loading-panel .mat-button-wrapper, .light-theme .datalake-dialog-loading .mat-button-wrapper {
   color: inherit;
 }
-.light-theme .loading-panel .mat-button {
+.light-theme .loading-panel .mat-button, .light-theme .datalake-dialog-loading .mat-button {
   color: #4d4d4d !important;
 }
-.light-theme .loading-panel .mat-button:hover {
+.light-theme .loading-panel .mat-button:hover, .light-theme .datalake-dialog-loading .mat-button:hover {
   color: #ffffff !important;
   background: #01abec;
   border-color: #01abec;
@@ -15254,6 +15254,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   justify-content: center;
   align-items: center;
 }
+.datalake-dialog-loading .cancel-button, .datalake-dialog-finish-loading .cancel-button {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
 .datalake-dialog-loading .datalake-dialog-label-container, .datalake-dialog-finish-loading .datalake-dialog-label-container {
   width: 250px;
   height: 60px;
@@ -18221,6 +18225,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .AdminMenuSortingCheckbox {
   overflow-y: auto;
   max-height: 250px;
+}
+
+.datalake-table-show-table-dialog .datalake-dialog-loading {
+  display: block !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

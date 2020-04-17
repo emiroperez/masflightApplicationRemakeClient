@@ -162,10 +162,10 @@ export class MsfContainerComponent implements OnInit {
         if(this.globals.currentOption.tabType != "legacy"){
           //si es de los nuevos
           if(this.showMoreResult){
-            //si tiene total rows muestro el paginador
             this.globals.showPaginator = false;
             this.moreResult.emit(true);
           }else{
+            //si tiene total rows no muestro more result muestro el paginador
             this.globals.showPaginator = true;
             this.moreResult.emit(false);
           }
@@ -176,15 +176,21 @@ export class MsfContainerComponent implements OnInit {
       }else{
         // si no trae mas dato verifico que tenga algo en la tabla
         if(this.msfTableRef && this.msfTableRef.dataSource && this.msfTableRef.dataSource.data.length > 0){
-          //si es de los nuevos
           if(this.showMoreResult){
+            //es de los viejos
             this.moreResult.emit(true);
             this.globals.showPaginator = false;
           }else{
+            //si es de los nuevos, oculto el paginador si es la primera pagina y no hay mas datos.
             this.moreResult.emit(false);
-            this.globals.showPaginator = true;
+            if(this.pageIndex != 0){
+              this.globals.showPaginator = true;
+            }else{
+              this.globals.showPaginator = false;
+            }
           }
         }else{
+          //no muestro el paginador ni moreresult porque no hay datos y es de los viejos
           this.globals.showPaginator = false;
           this.moreResult.emit(false);
         }

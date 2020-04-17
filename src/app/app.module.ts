@@ -215,6 +215,7 @@ import { MsfPartialSummariesComponent } from './msf-partial-summaries/msf-partia
 import { PublicDashboardComponent } from './public-dashboard/public-dashboard.component';
 import { PublicizeDashboardDialogComponent } from './publicize-dashboard-dialog/publicize-dashboard-dialog.component';
 import { UrlMessageComponent } from './url-message/url-message.component';
+import { MsfConfirmationDialogDatalakeComponent } from './msf-confirmation-dialog-datalake/msf-confirmation-dialog-datalake.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -405,7 +406,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfPartialSummariesComponent,
     PublicDashboardComponent,
     PublicizeDashboardDialogComponent,
-    UrlMessageComponent
+    UrlMessageComponent,
+    MsfConfirmationDialogDatalakeComponent
   ],
   imports: [
     BrowserModule,
@@ -476,6 +478,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DrillDownDialog,
     MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
+    MsfConfirmationDialogDatalakeComponent,
     MsfDashboardInfoFunctionsComponent,
     MsfDashboardAdditionalSettingsComponent,
     MsfEditDashboardComponent,
