@@ -8561,8 +8561,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.stepLoading = 0;
   }
 
-  recursiveMenuCategory(menuCategory): void
+  recursiveMenuCategory(menuCategory): boolean
   {
+    let hasOptionSelected = false;
+
     if (menuCategory.children && menuCategory.children.length)
     {
       // the submenu must have the items with children first
@@ -8580,9 +8582,23 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (child.typeOption == '1')
           menuCategory.children.splice (i, 1);
         else if (child.children && child.children.length)
-          this.recursiveMenuCategory (child);
+        {
+          hasOptionSelected = this.recursiveMenuCategory (child);
+
+          if (hasOptionSelected)
+            child.show = true;
+        }
+        else if (this.values.currentOption && this.values.currentOption.id == child.id)
+        {
+          hasOptionSelected = true;
+          child.show = true;
+        }
+        else if (hasOptionSelected)
+          child.show = true;
       }
     }
+
+    return hasOptionSelected;
   }
 
   selectDataSuccess(_this, data): void
@@ -8654,6 +8670,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       // remove options that are exclusive to the main menu
       if (menuCategory.children && menuCategory.children.length)
       {
+        let hasOptionSelected = false;
+
         // the submenu must have the items with children first
         menuCategory.children.sort (function(e1, e2) {
           if (e1.children.length && e2.children.length)
@@ -8675,9 +8693,54 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       menuCategory.tree = new MatTreeFlatDataSource (menuCategory.treeControl, menuCategory.treeFlattener);
       menuCategory.tree.data = menuCategory.children;
+
+      if (_this.values.currentOption)
+        _this.expandSelectedOption (menuCategory, _this.values.currentOption.id);
     }
 
     _this.stepLoading = 0;
+  }
+
+  expandSelectedOption (menuCategory, selectedOptionId: number)
+  {
+    if (!menuCategory.treeControl.dataNodes || menuCategory.treeControl.dataNodes.length === 0)
+      return;
+
+    return menuCategory.treeControl.dataNodes.forEach(node =>
+    {
+      if (selectedOptionId == node.id)
+      {
+        menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf(node)]);
+
+        let parent = this.getParentNode (menuCategory, node);
+
+        while (parent)
+        {
+          menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf (parent)]);
+          parent = this.getParentNode (menuCategory, parent);
+        }
+      }
+    });
+  }
+
+  getParentNode(menuCategory, node: ExampleFlatNode): ExampleFlatNode | null
+  {
+    const currentLevel = node.level;
+
+    if (currentLevel < 1)
+      return null;
+
+    const startIndex = menuCategory.treeControl.dataNodes.indexOf(node) - 1;
+
+    for (let i = startIndex; i >= 0; i--)
+    {
+      const currentNode = menuCategory.treeControl.dataNodes[i];
+
+      if (currentNode.level < currentLevel)
+        return currentNode;
+    }
+
+    return null;
   }
 
   selectDataError(_this): void
