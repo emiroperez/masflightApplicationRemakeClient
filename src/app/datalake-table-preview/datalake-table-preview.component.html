@@ -1,5 +1,10 @@
 <ng-container *ngIf="(!displayedColumns.length && firstTime) || (!firstTime && globals.popupLoading)">
-  <div *ngIf="globals.popupLoading" class="datalake-dialog-loading"></div>
+  <div *ngIf="globals.popupLoading" class="datalake-dialog-loading">
+    <button mat-button class="cancel-button" (click)="cancelLoading()">
+      Cancel
+    <mat-icon  class="close-icon">close</mat-icon> 
+  </button>
+  </div>
   <div *ngIf="!globals.popupLoading" class="datalake-dialog-finish-loading">
     <div class="datalake-dialog-label-container">
       <div class="datalake-dialog-label">

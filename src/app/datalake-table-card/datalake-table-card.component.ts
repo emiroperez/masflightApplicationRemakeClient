@@ -177,6 +177,12 @@ export class DatalakeTableCardComponent implements OnInit {
       data: { values: this.values, edit: true }
     });
 
+    dialogRef.backdropClick().subscribe(() => {
+      this.globals.popupLoading = false;
+      // Close the dialog
+      dialogRef.close();
+    })
+
     dialogRef.afterClosed ().subscribe (() => {
       this.globals.popupLoading = false;
     });

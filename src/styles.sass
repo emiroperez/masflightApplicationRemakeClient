@@ -916,7 +916,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-image: url(assets/images/#{$name}-loading_pulse.gif)
         .cancel-button.mat-button
             border: 1px solid $font-color
-        .loading-panel
+        .loading-panel, .datalake-dialog-loading
             .close-icon
                 color: inherit
             .mat-button-wrapper
@@ -9507,6 +9507,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     display: flex
     justify-content: center
     align-items: center
+    .cancel-button
+        margin-top: 0px !important
+        margin-bottom: 0px !important
     .datalake-dialog-label-container
         width: 250px
         height: 60px
@@ -11988,3 +11991,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .AdminMenuSortingCheckbox
     overflow-y: auto
     max-height: 250px
+
+.datalake-table-show-table-dialog
+    .datalake-dialog-loading
+        display: block !important

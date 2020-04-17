@@ -675,4 +675,8 @@ export class DatalakeTablePreviewComponent {
     this.RowsDeletedSend = [];
   }
 
+  cancelLoading(){
+    this.globals.popupLoading = false;
+  }
+
 }
