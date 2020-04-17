@@ -67,7 +67,7 @@ export class ExcelService {
         if (tableColumnFormat.suffix)
           format += "\"" + tableColumnFormat.suffix + "\"";
 
-        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n");
+        this.SheetSetColumnFormat (ws, tableColumnFormat.pos, format, "n", tableColumnFormat.suffix);
       }
       else if (tableColumnFormat.type === "date")
       {
@@ -94,7 +94,7 @@ export class ExcelService {
     XLSX.writeFile (wb, excelFileName + '.xlsx'); 
   }
 
-  private SheetSetColumnFormat(ws, C, Z, T)
+  private SheetSetColumnFormat(ws, C, Z, T, suffix?)
   {
     let range = XLSX.utils.decode_range (ws["!ref"]);
 
@@ -108,6 +108,20 @@ export class ExcelService {
 
       cell.t = T;
       cell.z = Z;
+
+      // remove decimal from formatting if the number doesn't have them
+      if (cell.v && cell.t === "n")
+      {
+        let reminder = parseFloat (cell.v) % 1;
+
+        if (!reminder)
+        {
+          cell.z = cell.z.split (".", 2)[0];
+
+          if (suffix)
+            cell.z += "\"" + suffix + "\"";
+        }
+      }
     }
   }
 }
