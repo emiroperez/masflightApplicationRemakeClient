@@ -348,7 +348,8 @@ export class EditCategoryArgumentDialog {
     { id: 16, name: 'Until Last Week' },
     { id: 17, name: 'Until Last Month' },
     { id: 18, name: 'Until Last Quarter' },
-    { id: 19, name: 'Until Last Year' }
+    { id: 19, name: 'Until Last Year' },
+    { id: 20, name: '+1 Year' }
   ];
 
   dateValueByMonth: any[] = [
@@ -365,7 +366,8 @@ export class EditCategoryArgumentDialog {
     { id: 5, name: 'Last Year' },
     { id: 6, name: 'Until Last Month' },
     { id: 7, name: 'Until Last Quarter' },
-    { id: 8, name: 'Until Last Year' }
+    { id: 8, name: 'Until Last Year' },
+    { id: 9, name: '+1 Year' }
   ];
 
   dateValueByQuarter: any[] = [
@@ -379,7 +381,8 @@ export class EditCategoryArgumentDialog {
     { id: 2, name: 'Last Quarter' },
     { id: 3, name: 'Last Year' },
     { id: 4, name: 'Until Last Quarter' },
-    { id: 5, name: 'Until Last Year' }
+    { id: 5, name: 'Until Last Year' },
+    { id: 6, name: '+1 Year' }
   ];
 
   dateValueByYear: any[] = [
@@ -390,7 +393,8 @@ export class EditCategoryArgumentDialog {
   dateRangeByYear: any[] = [
     { id: 0, name: 'Current Year' },
     { id: 1, name: 'Last Year' },
-    { id: 2, name: 'Until Last Year' }
+    { id: 2, name: 'Until Last Year' },
+    { id: 3, name: '+1 Year' }
   ];
 
   contentTypes: any[] = [
