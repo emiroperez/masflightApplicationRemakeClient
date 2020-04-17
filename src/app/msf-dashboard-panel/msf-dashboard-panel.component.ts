@@ -416,6 +416,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.variableCtrlBtnEnabled = this.dialogData.variableCtrlBtnEnabled;
       this.generateBtnEnabled = this.dialogData.generateBtnEnabled;
+
+      this.controlVariablesSet = this.dialogData.controlVariablesSet;
     }
   }
 
@@ -3249,7 +3251,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.dialogData)
     {
-      this.dialogRef.close ({ generateChart: true });
+      this.dialogRef.close ({ generateChart: true, controlVariableSet: this.controlVariablesSet });
       return;
     }
 
@@ -5688,7 +5690,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         if (_this.dialogData)
         {
-          _this.dialogRef.close ({ savePanel: true });
+          _this.dialogRef.close ({ savePanel: true, controlVariableSet: this.controlVariablesSet });
           return;
         }
 
@@ -7662,7 +7664,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let dialogRef;
 
     dialogRef = this.dialog.open (MsfDashboardPanelComponent, {
-      width: '900px',
+      width: '930px',
       height: '595px',
       panelClass: 'msf-dashboard-panel-dialog',
       data: {
@@ -7690,11 +7692,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         filteredVariables: this.filteredVariables,
         filteredOptions: this.filteredOptions,
         variableCtrlBtnEnabled: this.variableCtrlBtnEnabled,
-        generateBtnEnabled: this.generateBtnEnabled
+        generateBtnEnabled: this.generateBtnEnabled,
+        controlVariablesSet: this.controlVariablesSet
       }
     });
 
     dialogRef.afterClosed ().subscribe ((result) => {
+      if (result.controlVariablesSet)
+      this.controlVariablesSet = result.controlVariableSet;
+
       if (this.values.currentOption)
         this.variableCtrlBtnEnabled = true;
 
@@ -8172,7 +8178,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let target;
 
     target = document.getElementById (this.selectedPanelType.name + "-panel");
-    target.parentNode.parentNode.scrollTop = target.offsetTop - 107;
+    target.parentNode.parentNode.scrollTop = target.offsetTop - 370;
   }
 
   setCategories(_this, data): void
@@ -8561,10 +8567,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.stepLoading = 0;
   }
 
-  recursiveMenuCategory(menuCategory): boolean
+  recursiveMenuCategory(menuCategory): void
   {
-    let hasOptionSelected = false;
-
     if (menuCategory.children && menuCategory.children.length)
     {
       // the submenu must have the items with children first
@@ -8582,23 +8586,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (child.typeOption == '1')
           menuCategory.children.splice (i, 1);
         else if (child.children && child.children.length)
-        {
-          hasOptionSelected = this.recursiveMenuCategory (child);
-
-          if (hasOptionSelected)
-            child.show = true;
-        }
-        else if (this.values.currentOption && this.values.currentOption.id == child.id)
-        {
-          hasOptionSelected = true;
-          child.show = true;
-        }
-        else if (hasOptionSelected)
-          child.show = true;
+          this.recursiveMenuCategory (child);
       }
     }
-
-    return hasOptionSelected;
   }
 
   selectDataSuccess(_this, data): void
@@ -8610,6 +8600,28 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     for (let menuCategory of _this.menuCategories)
     {
+      // remove options that are exclusive to the main menu
+      if (menuCategory.children && menuCategory.children.length)
+      {
+        // the submenu must have the items with children first
+        menuCategory.children.sort (function(e1, e2) {
+          if (e1.children.length && e2.children.length)
+            return 0;
+
+          return e2.children.length - e1.children.length;
+        });
+
+        for (let i = menuCategory.children.length - 1; i >= 0; i--)
+        {
+          let child = menuCategory.children[i];
+
+          if (child.typeOption == '1')
+            menuCategory.children.splice (i, 1);
+          else if (child.children && child.children.length)
+            _this.recursiveMenuCategory (child);
+        }
+      }
+
       menuCategory.flatNodeMap = new Map<ExampleFlatNode, any> ();
       menuCategory.nestedNodeMap = new Map<any, ExampleFlatNode> ();
 
@@ -8667,30 +8679,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         node => node.children
       );
 
-      // remove options that are exclusive to the main menu
-      if (menuCategory.children && menuCategory.children.length)
-      {
-        let hasOptionSelected = false;
-
-        // the submenu must have the items with children first
-        menuCategory.children.sort (function(e1, e2) {
-          if (e1.children.length && e2.children.length)
-            return 0;
-
-          return e2.children.length - e1.children.length;
-        });
-
-        for (let i = menuCategory.children.length - 1; i >= 0; i--)
-        {
-          let child = menuCategory.children[i];
-
-          if (child.typeOption == '1')
-            menuCategory.children.splice (i, 1);
-          else if (child.children && child.children.length)
-            _this.recursiveMenuCategory (child);
-        }
-      }
-
       menuCategory.tree = new MatTreeFlatDataSource (menuCategory.treeControl, menuCategory.treeFlattener);
       menuCategory.tree.data = menuCategory.children;
 
@@ -8708,10 +8696,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       // scroll to the selected option
       target = document.getElementById (_this.scrollToOption.category);
-      target.parentNode.parentNode.parentNode.scrollLeft = target.offsetLeft - 400;
+      target.parentNode.parentNode.parentNode.scrollLeft = 401 * _this.scrollToOption.categoryIndex;
 
-      optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 279;
-      if (optionOffsetTop + 32 > 279)
+      optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 527;
+      if (optionOffsetTop + 32 > 294)
         target.scrollTop = optionOffsetTop;
 
       _this.scrollToOption = null;
@@ -8740,8 +8728,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // scroll here
         this.scrollToOption = {
-          category: "menu-" + this.menuCategories.indexOf(menuCategory) + "-scroll",
-          option: "node-" + node.label
+          category: "menu-" + this.menuCategories.indexOf (menuCategory) + "-scroll",
+          option: "node-" + node.label,
+          categoryIndex: this.menuCategories.indexOf (menuCategory)
         };
       }
     });

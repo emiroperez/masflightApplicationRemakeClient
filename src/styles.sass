@@ -2427,7 +2427,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $dashboard-threshold-background-color
         .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
             border-bottom: 1px solid $dashboard-panel-background-color
-        .msf-dashboard-color-picker-grid-layout
+        .msf-dashboard-color-picker-grid-layout, .msf-dashboard-color-picker-layout
             .msf-dashboard-color-picker-selector-container
                 background-color: $dashboard-panel-background-color
         .datasource-selected
@@ -4905,6 +4905,7 @@ mat-tab-group
     border-radius: 10px !important
     .msf-dashboard-panel-container
         height: 575px !important
+        font-size: 14px
 
 .msf-dashboard-child-panel-dialog .mat-dialog-container
     padding: 12px
@@ -5213,7 +5214,7 @@ mat-tab-group
     display: flex
     justify-content: center
 
-.msf-dashboard-color-picker-grid-layout
+.msf-dashboard-color-picker-grid-layout, .msf-dashboard-color-picker-layout
     display: grid
     grid-template-columns: repeat(auto-fill, 210px)
     grid-row-gap: 10px
@@ -9185,14 +9186,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         color: #ffffff
 
 .msf-dashboard-panel-chart-config-container
-    flex-direction: column
     display: flex
     .msf-dashboard-assistant-chart-config-button
         font-size: 82.5%
         height: 15px
     .msf-dashboard-assistant-min-value-at-zero
-        flex-direction: row !important
-        margin-top: -10px
         margin-bottom: 5px
     .msf-dashboard-assistant-interval-mode
         margin-top: -7px !important
@@ -9205,7 +9203,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-select-distribution-chart-table-container
     margin-left: -10px
-    height: calc(100% - 71px)
+    height: calc(100% - 51px)
     width: calc(100% + 20px)
     .msf-dashboard-select-distribution-chart-table
         height: 100%
@@ -12159,6 +12157,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     font-size: 15px !important
                     width: 15px !important
                     height: 15px !important
+                    margin-left: 2px
         .msf-dashboard-panel-step-button-container
             display: flex
             flex-direction: row

@@ -8,12 +8,10 @@
       </div>
     </div>
   </div>
-  <!--
   <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && !dialogData">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
-  -->
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack" *ngIf="!values.displayChart && !values.displayInfo && !values.displayForm && !values.displayPic && !values.displayTable && !values.displayMapbox && !values.displayDynTable && !globals.readOnlyDashboard && dialogData">
     <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
       <span *ngIf="values.chartName">
         <span *ngIf="!values.currentOption">{{values.chartName}}</span>
@@ -115,16 +113,6 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
             <span>Panel Type Selection</span>
-            <!--
-            <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
-              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
-                Basic
-              </mat-radio-button>
-              <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'advanced'">
-                Advanced
-              </mat-radio-button>
-            </mat-radio-group>
-            -->
             <div class="datalake-search-input">
               <mat-form-field class="msf-full-width panel-type-combobox config-panel-form-field" appearance="outline">
                 <mat-select [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
