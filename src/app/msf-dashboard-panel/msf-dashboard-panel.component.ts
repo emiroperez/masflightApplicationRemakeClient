@@ -392,7 +392,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values = this.dialogData.values;
       this.panelWidth = this.dialogData.panelWidth;
       this.panelHeight = this.dialogData.panelHeight;
-      this.toggleControlVariableDialogOpen = this.dialogData.toggleControlVariableDialogOpen;
       this.functions = this.dialogData.functions;
       this.chartTypes = this.dialogData.chartTypes;
       this.nciles = this.dialogData.nciles;
@@ -4274,8 +4273,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let dialogRef;
 
-    this.toggleControlVariableDialogOpen.emit (true);
-
     dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
       width: '400px',
       panelClass: 'msf-dashboard-arguments-dialog',
@@ -4287,8 +4284,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     });
 
     dialogRef.afterClosed ().subscribe ((result) => {
-      this.toggleControlVariableDialogOpen.emit (false);
-
       if (result)
       {
         if (result.error)
@@ -6699,8 +6694,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let dialogRef;
 
-    this.toggleControlVariableDialogOpen.emit (true);
-
     dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       panelClass: 'msf-dashboard-assistant-dialog',
       autoFocus: false,
@@ -6716,8 +6709,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     dialogRef.afterClosed ().subscribe (
       (values) => {
-        this.toggleControlVariableDialogOpen.emit (false);
-
         if (values)
         {
           if (values.panelMode === "advanced")
@@ -6902,8 +6893,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let dialogRef;
 
-    this.toggleControlVariableDialogOpen.emit (true);
-
     dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
       panelClass: 'msf-select-data-dialog',
       autoFocus: false,
@@ -6916,8 +6905,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     dialogRef.afterClosed ().subscribe ((selectedItem) => {
       let selectedOption = null;
-
-      this.toggleControlVariableDialogOpen.emit (false);
 
       if (!selectedItem)
         return;
@@ -7663,6 +7650,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let dialogRef;
 
+    this.toggleControlVariableDialogOpen.emit (true);
+
     dialogRef = this.dialog.open (MsfDashboardPanelComponent, {
       width: '930px',
       height: '595px',
@@ -7671,7 +7660,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         values: this.values,
         panelWidth: 12,           // random width and height panel values
         panelHeight: 7,
-        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen,
         functions: this.functions,
         chartTypes: this.chartTypes,
         nciles: this.nciles,
@@ -7693,13 +7681,16 @@ export class MsfDashboardPanelComponent implements OnInit {
         filteredOptions: this.filteredOptions,
         variableCtrlBtnEnabled: this.variableCtrlBtnEnabled,
         generateBtnEnabled: this.generateBtnEnabled,
-        controlVariablesSet: this.controlVariablesSet
+        controlVariablesSet: this.controlVariablesSet,
+        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen
       }
     });
 
     dialogRef.afterClosed ().subscribe ((result) => {
-      if (result.controlVariablesSet)
-      this.controlVariablesSet = result.controlVariableSet;
+      this.toggleControlVariableDialogOpen.emit (false);
+
+      if (result.controlVariablesSet != null)
+        this.controlVariablesSet = result.controlVariableSet;
 
       if (this.values.currentOption)
         this.variableCtrlBtnEnabled = true;
