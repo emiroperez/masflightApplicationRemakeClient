@@ -210,7 +210,6 @@ import { MsfDashboardCategoryAdminComponent } from './msf-dashboard-category-adm
 import { MsfPartialSummariesComponent } from './msf-partial-summaries/msf-partial-summaries.component';
 import { PublicDashboardComponent } from './public-dashboard/public-dashboard.component';
 import { PublicizeDashboardDialogComponent } from './publicize-dashboard-dialog/publicize-dashboard-dialog.component';
-import { MsfDashboardPanelValueSelectorComponent } from './msf-dashboard-panel-value-selector/msf-dashboard-panel-value-selector.component';
 import { UrlMessageComponent } from './url-message/url-message.component';
 import { MsfConfirmationDialogDatalakeComponent } from './msf-confirmation-dialog-datalake/msf-confirmation-dialog-datalake.component';
 
@@ -399,7 +398,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfPartialSummariesComponent,
     PublicDashboardComponent,
     PublicizeDashboardDialogComponent,
-    MsfDashboardPanelValueSelectorComponent,
     PublicizeDashboardDialogComponent,
     UrlMessageComponent,
     MsfConfirmationDialogDatalakeComponent
@@ -508,8 +506,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfPartialSummariesComponent,
     PublicizeDashboardDialogComponent,
     UrlMessageComponent,
-    PublicizeDashboardDialogComponent,
-    MsfDashboardPanelValueSelectorComponent
+    PublicizeDashboardDialogComponent
   ]
 })
 export class AppModule { }
