@@ -2423,7 +2423,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             border-color: $dashboard-panel-background-color
         .no-image
             background-color: $primary-color
-        .goals-thresholds-tab, .limit-results-tab, .color-picker-tab
+        .goals-thresholds-tab, .limit-results-tab, .color-picker-tab, .axis-names-tab
             background-color: $dashboard-threshold-background-color
         .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
             border-bottom: 1px solid $dashboard-panel-background-color
@@ -5680,6 +5680,7 @@ mat-tab-group
                     background: inherit !important
                     font-weight: bold
                     text-align: left
+                    height: 11px
                 .msf-component-checkbox-title
                     margin-bottom: 0 !important
                     margin-top: -7px
@@ -12230,6 +12231,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .msf-dashboard-assistant-step-button
                 width: 100px
                 height: 40px
+            .msf-dashboard-assistant-paste-button
+                width: 200px !important
+                margin-right: 10px
         .msf-dashboard-assistant-cancel-button
             margin-left: 7px
         .msf-dashboard-name-step
@@ -12283,6 +12287,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     display: flex
     flex-direction: column
     height: 100%
+
+.axis-names-tab
+    display: flex
+    flex-direction: column
+    padding-top: 15px
+    height: calc(100% - 15px)
 
 .limit-results-label
     padding-bottom: 0 !important

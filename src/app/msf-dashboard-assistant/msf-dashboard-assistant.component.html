@@ -1,200 +1,324 @@
-<div class="msf-dashboard-assistant-loading" *ngIf="isLoading"></div>
-<div [ngStyle]="{ 'display': checkVisibility() }" [style.height.%]="100">
-  <div class="msf-dashboard-assistant-header">
-    <span class="msf-dashboard-assistant-title">
-      <span *ngIf="!selectDataPreview">Chart Configuration Wizard</span>
-      <span *ngIf="selectDataPreview">Preview Data Configuration</span>
-    </span>
-    <div class="msf-dashboard-assistant-buttons">
-      <button *ngIf="stepper.selectedIndex" class="msf-dashboard-assistant-step-button flat-button" mat-button
-        (click)="goBack(stepper)">
-        <mat-icon>arrow_back_ios</mat-icon>
-        BACK
-      </button>
-      <button *ngIf="stepper.selectedIndex != 2 && tablePreview && !selectDataPreview"
-        class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button
-        (click)="goForward(stepper)">
-        NEXT
-        <mat-icon>arrow_forward_ios</mat-icon>
-      </button>
-      <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview"
-        class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button
-        (click)="cancelEdit()">
-        CANCEL
-      </button>
-      <button *ngIf="!tablePreview"
-        class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button
-        (click)="refreshTable()">
-        REFRESH
-      </button>
-      <button *ngIf="stepper.selectedIndex == 2" [disabled]="!isChartConfigured()"
-        class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button"
-        [ngClass]="isChartConfigured() ? 'flat-button' : 'assistant-button-disabled'" mat-button (click)="done()">
-        FINISH
-        <mat-icon>flag</mat-icon>
-      </button>
+<div style="height: calc(100% - 20px)">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-config-gridstack msf-dashboard-panel-gridstack">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-header msf-dashboard-panel-config-name">
+      <span *ngIf="values.chartName">
+        <span *ngIf="!values.currentOption">{{values.chartName}}</span>
+        <span *ngIf="values.currentOption">{{values.chartName}}<span class="datasource-selected">Data Source Selected:</span> {{values.currentOption.label}}</span>
+      </span>
+      <span *ngIf="!values.chartName">
+        <span *ngIf="!values.currentOption">Untitled</span>
+        <span *ngIf="values.currentOption">Untitled<span class="datasource-selected">Data Source Selected:</span> {{values.currentOption.label}}</span>
+      </span>
     </div>
-    <div class="close-button" (click)="closeWindow()">
-      <mat-icon>close</mat-icon>
-    </div>
-  </div>
-  <div class="msf-dashboard-assistant-body">
-    <div class="msf-dashboard-assistant-stepper" [ngStyle]="{ 'display': checkAssistantVisibility() }">
-      <mat-vertical-stepper [linear]="true" (selectionChange)="indexChanged()" #stepper>
-        <ng-template matStepperIcon="edit">
-          <mat-icon>check</mat-icon>
-        </ng-template>
-        <ng-template matStepperIcon="number" let-index="index" let-active="active">
-          <span *ngIf="active">
-            <mat-icon>edit</mat-icon>
-          </span>
-          <span *ngIf="!active">{{index + 1}}</span>
-        </ng-template>
-        <mat-step>
-          <ng-template matStepLabel>
-            <div class="msf-dashboard-assistant-step-container">
-              <span class="msf-dashboard-assistant-label">STEP 1</span>
-              <span class="msf-dashboard-assistant-subtitle">TABLE CONFIGURATION</span>
-            </div>
-          </ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>
-            <div class="msf-dashboard-assistant-step-container">
-              <span class="msf-dashboard-assistant-label">STEP 2</span>
-              <span class="msf-dashboard-assistant-subtitle">CHART TYPE</span>
-            </div>
-          </ng-template>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>
-            <div class="msf-dashboard-assistant-step-container">
-              <span class="msf-dashboard-assistant-label">STEP 3</span>
-              <span class="msf-dashboard-assistant-subtitle">DISTRIBUTION CHART</span>
-            </div>
-          </ng-template>
-        </mat-step>
-      </mat-vertical-stepper>
-    </div>
-    <div *ngIf="selectDataPreview" [style.margin-left.px]="17.5"></div>
-    <span class="msf-dashboard-assistant-step1-right" [ngStyle]="{ 'display': checkStep1Visibility(stepper) }">
-      <span [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
-        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()" [style.height.%]="100">
-          <div class="msf-dashboard-assistant-tab-group">
-            <div class="no-control-variables-container" *ngIf="!currentOptionCategories">
-              No Control Variables For This Option
-            </div>
-            <ng-container *ngIf="currentOptionCategories">
-              <mat-tab-group #tabs>
-                <mat-tab *ngFor="let controlVariable of currentOptionCategories">
-                  <ng-template mat-tab-label>
-                    <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)"
-                      class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
-                    <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)"
-                      src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
-                    {{controlVariable.label}}
-                  </ng-template>
-                  <div class="msf-dashboard-assistant-tab-container">
-                    <div class="msf-dashboard-assistant-tab-info">
-                      <div class="msf-dashboard-assistant-edit-button">
-                        <button mat-button (click)="goToEditor()">
-                          <mat-icon>create</mat-icon>
-                          Edit
-                        </button>
-                      </div>
-                      <div class="msf-dashboard-assistant-argument">
-                        <span class="msf-dashboard-assistant-argument-container"
-                          *ngFor="let argument of controlVariable.arguments">
-                          <div class="msf-block" *ngIf="argument.name1">
-                            <div class="msf-inline">
-                              {{ getArgumentLabel1(argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="!valueIsEmpty(argument.value1) && argument">
-                              {{utils.getValueFormatView(argument.type, argument.value1,argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="valueIsEmpty(argument.value1) && argument">
-                              all
-                            </div>
-                          </div>
-                          <div class="msf-block" *ngIf="argument.name2">
-                            <div class="msf-inline">
-                              {{ getArgumentLabel2(argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="!valueIsEmpty(argument.value2) && argument">
-                              {{utils.getValueFormatView(argument.type, argument.value2,argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="valueIsEmpty(argument.value2) && argument">
-                              all
-                            </div>
-                          </div>
-                          <div class="msf-block" *ngIf="argument.name3">
-                            <div class="msf-inline">
-                              {{ getArgumentLabel3(argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="!valueIsEmpty(argument.value3) && argument">
-                              {{utils.getValueFormatView(argument.type, argument.value3,argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="valueIsEmpty(argument.value3) && argument">
-                              all
-                            </div>
-                          </div>
-                          <div class="msf-block" *ngIf="argument.name4">
-                            <div class="msf-inline">
-                              {{ getArgumentLabel4(argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="!valueIsEmpty(argument.value4) && argument">
-                              {{utils.getValueFormatView(argument.type, argument.value4,argument)}}
-                            </div>
-                            <div class="msf-inline msf-dashboard-assistant-argument-value"
-                              *ngIf="valueIsEmpty(argument.value4) && argument">
-                              all
-                            </div>
-                          </div>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </mat-tab>
-              </mat-tab-group>
-            </ng-container>
+    <div class="msf-dashboard-panel-config-container">
+      <div class="msf-dashboard-panel-steps">
+        <div class="msf-dashboard-panel-steps-container">
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(1)">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 1 }"><mat-icon *ngIf="selectedStep == 1">edit</mat-icon></div>
+            <span class="step-label">Panel Name</span>
           </div>
-          <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table mat-elevation-z8">
-            <app-msf-table #msfTableRef [isLoading]="isLoading" (finishLoading)="finishLoadingTable($event)"
-              [categoryArguments]="currentOptionCategories" [currentOption]="currentOption" [isPanel]="false">
-            </app-msf-table>
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(2)">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
+            <span class="step-label">Panel Type</span>
+          </div>
+          <ng-container *ngIf="!isPicturePanel()">
+            <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
+              <span class="step-label">Select Source</span>
+            </div>
+            <div [ngClass]="values.currentOption ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(4)">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
+              <span class="step-label">Control Variables</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
+              <span class="step-label">Basic Configuration</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
+              <span class="step-label">Configuration</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isTablePanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
+              <span class="step-label">Basic Configuration</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(7)" *ngIf="isInformationPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 7 }"><mat-icon *ngIf="selectedStep == 7">edit</mat-icon></div>
+              <span class="step-label">Configuration</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(8)" *ngIf="isSimpleFormPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 8">edit</mat-icon></div>
+              <span class="step-label">Basic Configuration</span>
+            </div>
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isHeatMapPanel()">
+              <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 9 }"><mat-icon *ngIf="selectedStep == 9">edit</mat-icon></div>
+              <span class="step-label">Basic Configuration</span>
+            </div>
+          </ng-container>
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(10)" *ngIf="isPicturePanel()">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 10 }"><mat-icon *ngIf="selectedStep == 10">edit</mat-icon></div>
+            <span class="step-label">Configuration</span>
+          </div>
+          <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(11)" *ngIf="hasAdditinalSettings()">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 11 }"><mat-icon *ngIf="selectedStep == 11">edit</mat-icon></div>
+            <span class="step-label">Advanced Configuration</span>
           </div>
         </div>
-      </span>
-      <span class="msf-dashboard-assistant-step1-edit-right" [ngStyle]="{ 'display': checkEditVisibility() }">
-        <div class="msf-dashboard-assistant-content" [style.width.px]="getConfigWidth()" [style.height.%]="100">
-          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
+        <div class="msf-dashboard-panel-step-button-container">
+          <ng-container *ngIf="resultsGenerated()">
+            <button mat-button class="msf-dashboard-panel-generate-button2" [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" [disabled]="!generateBtnEnabled" (click)="loadData()">
+              Generate
+            </button>
+            <div class="msf-dashboard-panel-button-separator"></div>
+            <button mat-button class="msf-dashboard-panel-cancel-button flat-button" (click)="goToResults()">
+              Cancel
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!resultsGenerated()">
+            <button mat-button class="msf-dashboard-panel-generate-button" [ngClass]="generateBtnEnabled ? 'flat-button' : 'flat-button-disabled'" [disabled]="!generateBtnEnabled" (click)="loadData()">
+              Generate
+            </button>
+          </ng-container>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 1">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-name-step">
+          <div class="datalake-search-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+              <mat-label>Panel Name</mat-label>
+              <input matInput autocomplete="off" type="text" [(ngModel)]="values.chartName" />
+            </mat-form-field>
+          </div>
+          <div class="datalake-search-input panel-description-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput [(ngModel)]="values.chartDescription"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 2">
+        <div class="msf-dashboard-panel-step-item">
+          <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
+            <span>Panel Type Selection</span>
+            <div class="datalake-search-input">
+              <mat-form-field class="msf-full-width panel-type-combobox config-panel-form-field" appearance="outline">
+                <mat-select [(ngModel)]="panelMode" (ngModelChange)="checkPanelTypeSelection()">
+                  <mat-option [value]="'basic'">Basic</mat-option>
+                  <mat-option [value]="'advanced'">Advanced</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="msf-dashboard-assistant-chart-picker-scroll">
+            <div class="msf-dashboard-assistant-chart-picker">
+              <ng-container *ngFor="let panelType of panelTypes">
+                <div id="{{panelType.name}}-panel" *ngIf="checkPanelType(panelType)" (click)="selectPanelType(panelType)"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedPanelType !== panelType, 'msf-dashboard-assistant-chart-item-selected' : selectedPanelType === panelType }">
+                  <span class="chart-item-image">
+                    <img src="../../assets/images/{{globals.theme}}-{{panelType.image}}" />
+                  </span>
+                  <div class="chart-item-label">
+                    <div class="label-align">
+                      {{panelType.name}}
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 3">
+        <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 3"></div>
+        <div class="msf-dashboard-panel-step-item" *ngIf="stepLoading != 3">
+          <div class="select-data-body" id="menu-category-scroll">
+            <div class="select-data-menu-category" *ngFor="let menuCategory of menuCategories; let menuIndex = index">
+              <div class="menu-category-header">
+                <div class="info-container" (click)="toggleInfo(menuCategory)">
+                  <ng-container *ngIf="menuCategory.welcome.shortDescription && menuCategory.welcome.shortDescription != ''">
+                    <ng-container *ngIf="!menuCategory.infoOpen">
+                      <div class="info-image"></div>
+                      <div class="info-arrow-invisible"></div>
+                    </ng-container>
+                    <ng-container *ngIf="menuCategory.infoOpen">
+                      <div class="info-image-open"></div>
+                      <div class="info-arrow"></div>
+                    </ng-container>
+                    <span class="info-label">Information</span>
+                  </ng-container>
+                  <div class="no-info" *ngIf="!(menuCategory.welcome.shortDescription && menuCategory.welcome.shortDescription != '')"></div>
+                  <span class="menu-category-title">{{menuCategory.label}}</span>
+                </div>
+                <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}" />
+                <div class="menu-category-description" *ngIf="menuCategory.infoOpen">
+                  <ng-container *ngIf="menuCategory.welcome.shortDescription">
+                    {{menuCategory.welcome.shortDescription}}
+                  </ng-container>
+                </div>
+              </div>
+              <div class="menu-category-search">
+                <mat-form-field class="menu-item-search-input">
+                  <input matInput autocomplete="off" [(ngModel)]="menuCategory.searchLabel" (ngModelChange)="filterMenuOptions(menuCategory)">
+                  <mat-icon class="search-icon" aria-label="search">search</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="menu-category-body">
+                <div class="menu-items" id="menu-{{menuIndex}}-scroll">
+                  <ng-container *ngIf="menuCategory.tree">
+                    <mat-tree [dataSource]="menuCategory.tree" [treeControl]="menuCategory.treeControl">
+                      <mat-tree-node [ngClass]="{
+                                     'msf-show' : node.show,
+                                     'msf-show' : node.show == null,
+                                     'msf-hide': node.show == false }"
+                                     id="node-{{node.label}}" *matTreeNodeDef="let node" matTreeNodePadding>
+                        <mat-radio-button class="cancels-checkbox select-data-from-radio" [checked]="selectedItem == node" (click)="selectItem(node)">
+                          {{node.label}}
+                        </mat-radio-button>
+                      </mat-tree-node>
+                      <mat-tree-node [ngClass]="{
+                                     'msf-show' : node.show,
+                                     'msf-show' : node.show == null,
+                                     'msf-hide': node.show == false }"
+                                     id="node-{{node.label}}" *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.label">
+                          <mat-icon class="mat-icon-rtl-mirror">
+                            {{menuCategory.treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                          </mat-icon>
+                        </button>
+                        {{node.label}}
+                      </mat-tree-node>
+                    </mat-tree>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="{ 'msf-dashboard-panel-container-invisible': selectedStep != 4, 'msf-dashboard-panel-step-content': selectedStep == 4 }">
+        <div [ngClass]="{ 'msf-dashboard-panel-container-invisible': stepLoading != 4, 'msf-dashboard-panel-step-loading': stepLoading == 4 }"></div>
+        <div [ngClass]="{ 'msf-dashboard-panel-container-invisible': stepLoading == 4, 'msf-dashboard-panel-step-item': stepLoading != 4 }">
+          <div [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
+            <div class="msf-dashboard-assistant-content">
+              <div class="msf-dashboard-assistant-tab-group">
+                <div class="no-control-variables-container" *ngIf="!values.currentOptionCategories && stepLoading != 4 && tablePreview">
+                  No Control Variables For This Option
+                </div>
+                <ng-container *ngIf="values.currentOptionCategories && stepLoading != 4 && tablePreview">
+                  <mat-tab-group #configTabs>
+                    <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
+                      <ng-template mat-tab-label>
+                        <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)"
+                                  class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+                        <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)"
+                             src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+                        {{controlVariable.label}}
+                      </ng-template>
+                      <div class="msf-dashboard-assistant-tab-container">
+                        <div class="msf-dashboard-assistant-tab-info">
+                          <div class="msf-dashboard-assistant-edit-button">
+                            <button mat-button (click)="goToEditor()">
+                              <mat-icon>create</mat-icon>
+                              Edit
+                            </button>
+                          </div>
+                          <div class="msf-dashboard-assistant-argument msf-dashboard-assistant-argument-scroll">
+                            <div class="msf-dashboard-assistant-argument-container"
+                                 *ngFor="let argument of controlVariable.arguments">
+                              <div class="msf-block" *ngIf="argument.name1">
+                                <div class="msf-inline">
+                                  {{ getArgumentLabel1(argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="!valueIsEmpty(argument.value1) && argument">
+                                  {{utils.getValueFormatView(argument.type, argument.value1,argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="valueIsEmpty(argument.value1) && argument">
+                                  all
+                                </div>
+                              </div>
+                              <div class="msf-block" *ngIf="argument.name2">
+                                <div class="msf-inline">
+                                  {{ getArgumentLabel2(argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="!valueIsEmpty(argument.value2) && argument">
+                                  {{utils.getValueFormatView(argument.type, argument.value2,argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="valueIsEmpty(argument.value2) && argument">
+                                  all
+                                </div>
+                              </div>
+                              <div class="msf-block" *ngIf="argument.name3">
+                                <div class="msf-inline">
+                                  {{ getArgumentLabel3(argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="!valueIsEmpty(argument.value3) && argument">
+                                  {{utils.getValueFormatView(argument.type, argument.value3,argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="valueIsEmpty(argument.value3) && argument">
+                                  all
+                                </div>
+                              </div>
+                              <div class="msf-block" *ngIf="argument.name4">
+                                <div class="msf-inline">
+                                  {{ getArgumentLabel4(argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="!valueIsEmpty(argument.value4) && argument">
+                                  {{utils.getValueFormatView(argument.type, argument.value4,argument)}}
+                                </div>
+                                <div class="msf-inline msf-dashboard-assistant-argument-value"
+                                     *ngIf="valueIsEmpty(argument.value4) && argument">
+                                  all
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                  </mat-tab-group>
+                </ng-container>
+              </div>
+              <div class="msf-dashboard-assistant-table msf-dashboard-child-panel-table mat-elevation-z8">
+                <app-msf-table #msfConfigTableRef [isLoading]="configTableLoading" (finishLoading)="finishLoadingConfigTable($event)" [categoryArguments]="values.currentOptionCategories" [currentOption]="values.currentOption" [isPanel]="false"></app-msf-table>
+              </div>
+            </div>
+          </div>
+          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit msf-control-variables-overlay" *ngIf="!tablePreview">
             <mat-tab-group #editTabs>
-              <mat-tab *ngFor="let controlVariable of currentOptionCategories">
+              <mat-tab *ngFor="let controlVariable of tempOptionCategories">
                 <ng-template mat-tab-label>
-                  <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)"
-                    class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
-                  <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)"
-                    src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
+                  <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
+                  <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
                   {{controlVariable.label}}
                 </ng-template>
+                <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-buttons" [ngStyle]="{ 'display': checkEditVisibility() }">
+                  <div class="edit-label"><mat-icon>edit</mat-icon><div class="edit-text">Edit Control Variable</div></div>
+                  <button [disabled]="!this.globals.copiedPanelInfo" mat-button class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button msf-dashboard-assistant-paste-button" [ngClass]="this.globals.copiedPanelInfo ? 'flat-button' : 'flat-control-variable-button-disabled'" (click)="pasteControlVariables()">
+                    Pass Copied Info
+                  </button>
+                  <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
+                    Save
+                  </button>
+                  <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                </div>
                 <div class="msf-dashboard-assistant-tab-container msf-dashboard-assistant-edit-tab-container">
-                  <div
-                    class="msf-dashboard-control-panel-variable-tab-container msf-dashboard-assistant-edit-tab-container msf-control-variables-overlay">
+                  <div class="msf-dashboard-control-panel-variable-tab-container msf-dashboard-assistant-edit-tab-container">
                     <div class="msf-dashboard-control-panel-variable-arguments">
-                      <div *ngFor="let argument of controlVariable.arguments"
-                        class="msf-dashboard-control-panel-variable-argument">
+                      <div *ngFor="let argument of controlVariable.arguments" class="msf-dashboard-control-panel-variable-argument">
                         <ng-container *ngIf="!isSingleCheckbox(argument) && !isTaxiTimesCheckbox(argument)">
                           <div class="msf-component-outer-container">
                             <div *ngIf="!isDateRange(argument)" class="msf-component-argument-container">
-                              <app-msf-argument [currentArgument]="argument"
-                                [currentGlobalOptionId]="currentOption.id" [updateURLResults]="updateURLResults" (setLoading)="setLoading($event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
+                              <app-msf-argument [currentArgument]="argument" [currentGlobalOptionId]="values.currentOption.id" [updateURLResults]="updateURLResults" [isDashboardPanel]="true" (setLoading)="setCtrlVariableLoading($event)" (startURLUpdate)="startURLUpdate()"></app-msf-argument>
                               <!-- Special treatment for single checkbox arguments -->
                               <ng-container *ngIf="argument.checkboxes">
                                 <ng-container *ngFor="let checkbox of argument.checkboxes">
@@ -208,8 +332,7 @@
                             </div>
                             <!-- Another special treatment for the date range argument -->
                             <ng-container *ngIf="isDateRange(argument)">
-                              <app-msf-date-range class="msf-component-date-range-container" [argument]="argument">
-                              </app-msf-date-range>
+                              <app-msf-date-range class="msf-component-date-range-container" [isDashboardPanel]="true" [argument]="argument" (startURLUpdate)="startURLUpdate()"></app-msf-date-range>
                             </ng-container>
                           </div>
                         </ng-container>
@@ -219,8 +342,7 @@
                         <div class="msf-dashboard-control-panel-variable-argument">
                           <div class="msf-component-outer-container">
                             <div class="msf-component-taxi-times-single-checkbox">
-                              <app-msf-taxi-times-checkbox [argument]="controlVariable.taxiTimesCheckbox">
-                              </app-msf-taxi-times-checkbox>
+                              <app-msf-taxi-times-checkbox [argument]="controlVariable.taxiTimesCheckbox" [isDashboardPanel]="true" (startURLUpdate)="startURLUpdate()"></app-msf-taxi-times-checkbox>
                             </div>
                           </div>
                         </div>
@@ -232,195 +354,701 @@
             </mat-tab-group>
           </div>
         </div>
-      </span>
-    </span>
-    <span *ngIf="stepper.selectedIndex == 1">
-      <div class="msf-dashboard-assistant-chart-type-label msf-dashboard-assistant-chart-mode">
-        <span>Chart Type Selection</span>
-        <mat-radio-group [(ngModel)]="chartMode" (ngModelChange)="checkChartTypeSelection()">
-          <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'basic'">
-            Basic
-          </mat-radio-button>
-          <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="'advanced'">
-            Advanced
-          </mat-radio-button>
-        </mat-radio-group>
       </div>
-      <div class="msf-dashboard-assistant-chart-picker-scroll">
-        <div class="msf-dashboard-assistant-chart-picker">
-          <ng-container *ngFor="let chartType of chartTypes">
-            <div *ngIf="checkChartMode(chartType)"
-              [ngClass]="{ 'msf-dashboard-assistant-chart-item' : selectedChartType !== chartType, 'msf-dashboard-assistant-chart-item-selected' : selectedChartType === chartType }"
-              (click)="selectChartType(chartType)">
-              <span class="chart-item-image">
-                <img src="../../assets/images/{{globals.theme}}-{{chartType.image}}" />
-              </span>
-              <div class="chart-item-label">
-                <div class="label-align">
-                  {{chartType.name}}
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 5">
+        <div class="msf-dashboard-panel-step-loading" *ngIf="stepLoading == 5 || stepLoading == 4"></div>
+        <div class="msf-dashboard-panel-step-item" *ngIf="stepLoading != 5 && stepLoading != 4">
+          <div class="msf-dashboard-panel-chart-config-container">
+            <div class="msf-dashboard-assistant-chart-config-buttons">
+              <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
+                   [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }"
+                   (click)="selectAnalysis()">
+                Analysis by
+              </div>
+              <ng-container *ngIf="panelMode === 'basic'">
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-axis-button': !xAxisSelected, 'msf-dashboard-assistant-chart-config-axis-button-selected': (xAxisSelected || (!xAxisSelected && selectingXAxis)) }"
+                     (click)="selectXAxis()" *ngIf="haveXAxis()">
+                  X - Axis
+                </div>
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
+                     (click)="selectValue()" *ngIf="!isSimpleChart()">
+                  Value
+                </div>
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="isSimpleChart()">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
+                    <mat-label>Values</mat-label>
+                    <mat-select placeholder="Values" [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
+                      <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="assistant-function-combobox datalake-search-input">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
+                    <mat-label>Function</mat-label>
+                    <mat-select [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
+                      <mat-option *ngFor="let fun of functions" [value]="fun">
+                        {{fun.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="panelMode === 'advanced'">
+                <div class="msf-dashboard-assistant-chart-config-button"
+                     [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }"
+                     (click)="selectAggregationValue()">
+                  Aggregation
+                </div>
+              </ng-container>
+              <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="panelMode === 'advanced'">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="values.intervalType === 'ncile'">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
+                    <mat-label>Ncile</mat-label>
+                    <mat-select [(ngModel)]="values.intValue">
+                      <mat-option *ngFor="let value of nciles" [value]="value">
+                        {{value}}%
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="values.intervalType === 'value'">
+                  <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
+                    <mat-label>Value</mat-label>
+                    <input matInput autocomplete="off" [(ngModel)]="values.intValue">
+                  </mat-form-field>
                 </div>
               </div>
             </div>
-          </ng-container>
-        </div>
-      </div>
-    </span>
-    <span *ngIf="stepper.selectedIndex == 2">
-      <div style="display: flex">
-        <span class="msf-dashboard-assistant-chart-type-label">Select Distributon Chart</span>
-        <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="chartMode !== 'advanced' && isLineOrBarChart()">
-          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="ordered">Ordered</mat-checkbox>
-          <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="startAtZero">Min Value At 0</mat-checkbox>
-        </div>
-        <div class="msf-dashboard-assistant-interval-mode" *ngIf="chartMode === 'advanced'">
-          <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
-          <mat-radio-group [(ngModel)]="intervalType">
-            <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'ncile'">
-              By Ncile
-            </mat-radio-button>
-            <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'value'">
-              By Value
-            </mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
-      <div class="msf-dashboard-assistant-chart-config-buttons">
-        <div *ngIf="hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-button"
-          [ngClass]="{ 'msf-dashboard-assistant-chart-config-analysis-button': !analysisSelected, 'msf-dashboard-assistant-chart-config-analysis-button-selected': (analysisSelected || (!analysisSelecetd && selectingAnalysis)) }"
-          (click)="selectAnalysis()">
-          Analysis by
-        </div>
-        <ng-container *ngIf="chartMode === 'basic'">
-          <div class="msf-dashboard-assistant-chart-config-button"
-            [ngClass]="{ 'msf-dashboard-assistant-chart-config-axis-button': !xAxisSelected, 'msf-dashboard-assistant-chart-config-axis-button-selected': (xAxisSelected || (!xAxisSelected && selectingXAxis)) }"
-            (click)="selectXAxis()" *ngIf="haveXAxis()">
-            X - Axis
+            <div class="msf-dashboard-assistant-interval-mode" *ngIf="panelMode === 'advanced'">
+              <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
+              <mat-radio-group [(ngModel)]="values.intervalType" (ngModelChange)="resetIntervalValue()">
+                <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'ncile'">
+                  By Ncile
+                </mat-radio-button>
+                <mat-radio-button class="cancels-checkbox interval-checkbox second-option" [value]="'value'">
+                  By Value
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && isLineOrBarChart()">
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
+            </div>
           </div>
-          <div class="msf-dashboard-assistant-chart-config-button"
-            [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
-            (click)="selectValue()">
-            Values
-          </div>
-          <div class="assistant-function-combobox">
-            <mat-form-field>
-              <mat-select placeholder="Function" [(ngModel)]="function">
-                <mat-option *ngFor="let fun of data.functions" [value]="fun">
-                  {{fun.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="chartMode === 'advanced'">
-          <div class="msf-dashboard-assistant-chart-config-button"
-            [ngClass]="{ 'msf-dashboard-assistant-chart-config-aggregation-button': !aggregationValueSelected, 'msf-dashboard-assistant-chart-config-aggregation-button-selected': (aggregationValueSelected || (!aggregationValueSelected && selectingAggregationValue)) }"
-            (click)="selectAggregationValue()">
-            Aggregation Value
-          </div>
-          <div *ngIf="!hasAnalysisByValue()" class="msf-dashboard-assistant-chart-config-space"></div>
-        </ng-container>
-        <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="isChartConfigured()"
-          (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()"
-          [style.margin-left.px]="calcMargin()">
-          <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
-            src="../../assets/images/{{globals.theme}}-chart-preview.png" />
-          <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
-            src="../../assets/images/dark-theme-chart-preview.png" />
-          Chart Preview
-        </div>
-        <div class="msf-dashboard-assistant-space" *ngIf="chartMode === 'advanced' && !isChartConfigured()"></div>
-        <div class="msf-dashboard-assistant-advanced-chart-value" *ngIf="chartMode === 'advanced'">
-          <div class="assistant-function-combobox" *ngIf="intervalType === 'ncile'">
-            <mat-form-field>
-              <mat-select placeholder="Ncile" [(ngModel)]="ncile">
-                <mat-option *ngFor="let value of data.nciles" [value]="value">
-                  {{value}}%
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="assistant-function-combobox" *ngIf="intervalType === 'value'">
-            <mat-form-field>
-              <input matInput placeholder="Value" autocomplete="off" [(ngModel)]="intValue">
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-      <div
-        class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
-        <div class="results-container msf-dashboard-select-distribution-chart-table">
-          <table mat-table [dataSource]="msfTableRef.dataSource" class="mat-elevation-z8 datasource results">
-            <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfTableRef.metadata; let i = index">
-              <th class="msf-show-table" [ngClass]="{
-                'distribution-chart-column-analysis-header-hover' : (lastColumn === column && selectingAnalysis),
-                'distribution-chart-column-analysis-header-selected' : analysisSelected === column,
+          <div class="msf-dashboard-select-distribution-chart-table-container msf-dashboard-child-panel-table mat-elevation-z8">
+            <div class="results-container msf-dashboard-select-distribution-chart-table">
+              <table mat-table [dataSource]="msfConfigTableRef.dataSource" class="mat-elevation-z8 datasource results">
+                <ng-container [matColumnDef]="column.columnName" *ngFor="let column of msfConfigTableRef.metadata; let i = index">
+                  <th class="msf-show-table" [ngClass]="{
+                    'distribution-chart-column-analysis-header-hover' : (lastColumn === column && selectingAnalysis),
+                    'distribution-chart-column-analysis-header-selected' : analysisSelected === column,
                 'distribution-chart-column-axis-header-hover' : (lastColumn === column && selectingXAxis),
                 'distribution-chart-column-axis-header-selected' :  xAxisSelected === column,
                 'distribution-chart-column-values-header-hover' : (lastColumn === column && selectingValue),
-                'distribution-chart-column-values-header-selected' : valueSelected === column,
+                'distribution-chart-column-values-header-selected' : ((valueSelected === column && !isSimpleChart ()) || isValueSelectedForSimpleChart (column)),
                 'distribution-chart-column-aggregation-header-hover' : (lastColumn === column && selectingAggregationValue),
                 'distribution-chart-column-aggregation-header-selected' : aggregationValueSelected === column
                 }" mat-header-cell *matHeaderCellDef (mouseover)="hoverTableColumn(column)" (click)="setChartValue()">
-                {{column.columnLabel}}
-              </th>
-              <td class="msf-show-table" [ngClass]="{
+                    {{column.columnLabel}}
+                  </th>
+                  <td class="msf-show-table" [ngClass]="{
                 'distribution-chart-column-analysis-row-hover' : (lastColumn === column && selectingAnalysis),
                 'distribution-chart-column-analysis-row-selected' : analysisSelected === column,
                 'distribution-chart-column-axis-row-hover' : (lastColumn === column && selectingXAxis),
                 'distribution-chart-column-axis-row-selected' : xAxisSelected === column,
                 'distribution-chart-column-values-row-hover' : (lastColumn === column && selectingValue),
-                'distribution-chart-column-values-row-selected' : valueSelected === column,
+                'distribution-chart-column-values-row-selected' : ((valueSelected === column && !isSimpleChart ()) || isValueSelectedForSimpleChart (column)),
                 'distribution-chart-column-aggregation-row-hover' : (lastColumn === column && selectingAggregationValue),
                 'distribution-chart-column-aggregation-row-selected' : aggregationValueSelected === column
                 }" mat-cell *matCellDef="let element; let rowNumber = dataIndex" (mouseover)="hoverTableColumn(column)"
-                (click)="setChartValue()">
-                <span *ngIf="!isArray(element['Flight'])">
-                  <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
-                    <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
-                      <span
-                        *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.outputFormat}}</span>
-                      <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
-                      <span *ngIf="column.columnType=='number'"><span
-                          *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span
-                          *ngIf="column.suffix">{{column.suffix}}</span></span>
-                    </ng-container>
-                    <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                      <span *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
-                      <span *ngIf="column.columnType=='number'"><span
-                          *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span
-                          *ngIf="column.suffix">{{column.suffix}}</span></span>
-                    </ng-container>
-                  </ng-container>
-                </span>
-                <span class="msf-table-sub-cell" *ngIf="isArray(element['Flight'])">
-                  <span class="{{getDecoration(element['Flight'],j)}}"
-                    *ngFor="let subElement of element['Flight']; let j = index">
-                    <ng-container
-                      *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
-                      <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
-                        <span
-                          *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
-                        <span *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
-                        <span *ngIf="column.columnType=='number'"><span
-                            *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.outputFormat:'en'}}<span
-                            *ngIf="column.suffix">{{column.suffix}}</span></span>
+                      (click)="setChartValue()">
+                    <span *ngIf="!isArray(element['Flight'])">
+                      <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
+                        <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                          <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.outputFormat}}</span>
+                          <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                          <span *ngIf="column.columnType=='number'">
+                            <span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
+                          </span>
+                        </ng-container>
+                        <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                          <span *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
+                          <span *ngIf="column.columnType=='number'">
+                            <span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
+                          </span>
+                        </ng-container>
                       </ng-container>
-                      <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                        <span *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
-                        <span *ngIf="column.columnType=='number'"><span
-                            *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span
-                            *ngIf="column.suffix">{{column.suffix}}</span></span>
-                      </ng-container>
-                    </ng-container>
-                  </span>
-                </span>
-              </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="msfTableRef.displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: msfTableRef.displayedColumns;" [style.height.px]="40"></tr>
-          </table>
+                    </span>
+                    <span class="msf-table-sub-cell" *ngIf="isArray(element['Flight'])">
+                      <span class="{{getDecoration(element['Flight'],j)}}"
+                            *ngFor="let subElement of element['Flight']; let j = index">
+                        <ng-container *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
+                          <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                            <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
+                            <span *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
+                            <span *ngIf="column.columnType=='number'">
+                              <span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
+                            </span>
+                          </ng-container>
+                          <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                            <span *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
+                            <span *ngIf="column.columnType=='number'">
+                              <span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
+                            </span>
+                          </ng-container>
+                        </ng-container>
+                      </span>
+                    </span>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="msfConfigTableRef.displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: msfConfigTableRef.displayedColumns;" [style.height.px]="40"></tr>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-    </span>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 6">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-panel-dyn-table-item" *ngIf="isDynTablePanel()">
+          <div class="dynamic-table-config-values-container">
+            <div class="dynamic-table-config-value">
+              X-Axis:
+              <ng-container *ngIf="dynTableHasXAxis()">
+                <ng-container *ngFor="let variable of values.dynTableVariables">
+                  <span class="value-label" *ngIf="variable.direction === 'horizontal'">{{variable.name}}</span>
+                </ng-container>
+              </ng-container>
+              <span class="value-label" *ngIf="!dynTableHasXAxis()">
+                None
+              </span>
+            </div>
+            <div class="dynamic-table-config-value">
+              Y-Axis:
+              <ng-container *ngIf="dynTableHasYAxis()">
+                <ng-container *ngFor="let variable of values.dynTableVariables">
+                  <span class="value-label" *ngIf="variable.direction === 'vertical'">{{variable.name}}</span>
+                </ng-container>
+              </ng-container>
+              <span class="value-label" *ngIf="!dynTableHasYAxis()">
+                None
+              </span>
+            </div>
+            <div class="dynamic-table-config-value">
+              Values:
+              <ng-container *ngIf="dynTableHasValues()">
+                <ng-container *ngFor="let variable of values.dynTableValues">
+                  <span class="value-label">{{variable.name}}</span>
+                </ng-container>
+              </ng-container>
+              <span class="value-label" *ngIf="!dynTableHasValues()">
+                None
+              </span>
+            </div>
+            <button mat-button class="dynamic-table-config-button flat-button" (click)="configureDynamicTable()">
+              Configure Dynamic Table
+            </button>
+          </div>
+        </div>
+        <div class="msf-dashboard-panel-step-item msf-dashboard-panel-dyn-table-item" *ngIf="isTablePanel()">
+          <div class="msf-dashboard-addmenu-icon-item table-config-label">
+            <mat-icon class="msf-dashboard-chart-icon" aria-label="Filter List">filter_list</mat-icon>
+            <span class="msf-dashboard-addmenu-item-text">Column Selector</span>
+          </div>
+          <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-form-column table-column-list" id="msf-dashboard-panel-form-container-column">
+            <div class="msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-table-container-row" *ngFor="let tableVariable of values.tableVariables">
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-table-op-container">
+                <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="tableVariable.checked">
+                  {{tableVariable.name}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 7">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-info-step">
+          <div class="msf-dashboard-panel-sub-container-column">
+            <div class="msf-dashboard-panel-sub-container-row">
+              <div class="msf-dashboard-chart-options-container msf-dashboard-info-chart-options">
+                <div class="msf-dashboard-chart-selector">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon num-variables-icon">table_chart</mat-icon>
+                  </div>
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Number of variables</mat-label>
+                      <mat-select [(ngModel)]="values.infoNumVariables" (ngModelChange)="checkNumVariables()">
+                        <mat-option *ngFor="let number of [1,2,3]" [value]="number">
+                          {{number}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="msf-dashboard-chart-selector info-selector" *ngIf="values.infoNumVariables >= 1">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">filter_1</mat-icon>
+                  </div>
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Variable #1</mat-label>
+                      <mat-select [disabled]="!values.infoNumVariables" [(ngModel)]="values.infoVar1">
+                        <ngx-mat-select-search [formControl]="infoVar1FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                        <mat-option *ngFor="let variable of filteredInfoVar1 | async" [value]="variable">
+                          {{variable.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button [disabled]="!values.infoVar1" mat-icon-button (click)="goToFunctions(0)" [ngClass]="values.infoVar1 ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon aria-label="Functions for Variable #1">more_horiz</mat-icon>
+                  </button>
+                </div>
+                <div class="msf-dashboard-chart-selector info-selector" *ngIf="values.infoNumVariables >= 2">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">filter_2</mat-icon>
+                  </div>
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Variable #2</mat-label>
+                      <mat-select [disabled]="values.infoNumVariables < 2" [(ngModel)]="values.infoVar2">
+                        <ngx-mat-select-search [formControl]="infoVar2FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                        <mat-option *ngFor="let variable of filteredInfoVar2 | async" [value]="variable">
+                          {{variable.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button [disabled]="!values.infoVar2" mat-icon-button (click)="goToFunctions(1)" [ngClass]="values.infoVar2 ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon aria-label="Functions for Variable #2">more_horiz</mat-icon>
+                  </button>
+                </div>
+                <div class="msf-dashboard-chart-selector info-selector" *ngIf="values.infoNumVariables >= 3">
+                  <div class="msf-dashboard-chart-analysis-title">
+                    <mat-icon class="msf-dashboard-chart-icon">filter_3</mat-icon>
+                  </div>
+                  <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                    <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                      <mat-label>Variable #3</mat-label>
+                      <mat-select [disabled]="values.infoNumVariables < 3" [(ngModel)]="values.infoVar3">
+                        <ngx-mat-select-search [formControl]="infoVar3FilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                        <mat-option *ngFor="let variable of filteredInfoVar3 | async" [value]="variable">
+                          {{variable.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button [disabled]="!values.infoVar3" mat-icon-button (click)="goToFunctions(2)" [ngClass]="values.infoVar3 ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon aria-label="Functions for Variable #3">more_horiz</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 8">
+        <div class="msf-dashboard-panel-step-item msf-dashboard-info-step msf-dashboard-simple-form-step">
+          <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-sub-container">
+            <div class="msf-dashboard-chart-options-container">
+              <div class="msf-dashboard-chart-selector msf-simple-form-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">list</mat-icon>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="columnCtrl" placeholder="Select Column">
+                      <ngx-mat-select-search [formControl]="columnFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredColumns | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="fontSizeCtrl" placeholder="Title Font Size">
+                      <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                        {{fontSize.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="valueFontSizeCtrl" placeholder="Value Font Size">
+                      <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                        {{fontSize.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="valueOrientationCtrl" placeholder="Value Orientation">
+                      <mat-option *ngFor="let orientation of orientations" [value]="orientation">
+                        {{orientation.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field [formGroup]="panelForm" class="msf-full-width">
+                    <mat-select formControlName="functionCtrl" placeholder="Function">
+                      <mat-option *ngFor="let fun of functions" [value]="fun">
+                        {{fun.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
+                  <button [disabled]="!isFormColumnValid()" mat-icon-button (click)="addColumnIntoForm()" [ngClass]="isFormColumnValid() ? 'func-button' : 'func-button-disabled'">
+                    <mat-icon class="msf-dashboard-chart-icon msf-dashboard-form-icon-button" aria-label="Add Column">add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div #formScrollContainer class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-sub-container-form-column" id="msf-dashboard-panel-form-container-column" *ngIf="values.formVariables.length" [ngStyle]="{'overflow-y': ((values.height.value < 6 && values.formVariables.length > 2) || (values.height.value >= 6 && values.formVariables.length > 3)) ? 'scroll' : 'hidden'}" cdkDropList [cdkDropListData]="values.formVariables" cdkDropListOrientation="vertical" (cdkDropListDropped)="swapFormVariablePositions($event)">
+            <div class="{{globals.theme}} msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let formVariable of values.formVariables; let column = index" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="formScrollContainer" cdkDrag>
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+                <mat-form-field class="msf-full-width">
+                  <mat-select [(value)]="formVariable.column" placeholder="Select Column">
+                    <ngx-mat-select-search ngModel (ngModelChange)="filterForm($event, formVariable)" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                    <mat-option *ngFor="let variable of formVariable.filteredVariables | async" [value]="variable">
+                      {{variable.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+                <mat-form-field class="msf-full-width">
+                  <mat-select [(value)]="formVariable.fontSize" placeholder="Title Font Size">
+                    <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                      {{fontSize.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+                <mat-form-field class="msf-full-width">
+                  <mat-select [(value)]="formVariable.valueFontSize" placeholder="Value Font Size">
+                    <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
+                      {{fontSize.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+                <mat-form-field class="msf-full-width">
+                  <mat-select [(value)]="formVariable.valueOrientation" placeholder="Value Orientation">
+                    <mat-option *ngFor="let orientation of orientations" [value]="orientation">
+                      {{orientation.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
+                <mat-form-field class="msf-full-width">
+                  <mat-select [(value)]="formVariable.function" placeholder="Function">
+                    <mat-option *ngFor="let fun of functions" [value]="fun">
+                      {{fun.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
+                <div class="mat-icon-drag-button">
+                  <div class="msf-dashboard-chart-move-icon" cdkDragHandle></div>
+                </div>
+              </div>
+              <div class="msf-dashboard-chart-add-button" id="msf-dashboard-form-button">
+                <button mat-icon-button (click)="deleteColumnFromForm(column)">
+                  <mat-icon class="msf-dashboard-chart-icon" aria-label="Delete Column">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-form-container-column-empty" *ngIf="!values.formVariables.length">
+            <div class="msf-no-results">
+              The form doesn't contain any columns
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 9">
+        <div class="msf-dashboard-panel-step-item heatmap-panel-step" *ngIf="isHeatMapPanel()">
+          <div class="msf-dashboard-panel-sub-container-column">
+            <div class="msf-dashboard-chart-options-container">
+              <div class="msf-dashboard-chart-selector heatmap-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">place</mat-icon>
+                </div>
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Geography Data</mat-label>
+                    <mat-select placeholder="Geography Data" [(ngModel)]="values.geodata">
+                      <mat-option *ngFor="let geodata of geodatas" [value]="geodata">
+                        {{geodata.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="msf-dashboard-chart-selector heatmap-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">vpn_key</mat-icon>
+                </div>
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Geography Data Key</mat-label>
+                    <mat-select [(ngModel)]="values.valueColumn" (ngModelChange)="checkPanelConfiguration()">
+                      <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredValues | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="msf-dashboard-chart-selector heatmap-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">data_usage</mat-icon>
+                </div>
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Value To Display</mat-label>
+                    <mat-select [(ngModel)]="values.variable" (ngModelChange)="checkPanelConfiguration()">
+                      <ngx-mat-select-search [formControl]="variableFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                        {{variable.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--
+        <div class="msf-dashboard-panel-step-item heatmap-panel-step" *ngIf="isMapboxPanel()">
+          <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
+            <div class="msf-dashboard-chart-options-container">
+              <div class="msf-dashboard-chart-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">style</mat-icon>
+                </div>
+                <div class="msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width">
+                    <mat-select placeholder="Style" [(ngModel)]="values.style">
+                      <mat-option *ngFor="let style of msfMapRef.mapTypes" [value]="style">
+                        {{style.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        -->
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 10">
+        <div class="msf-dashboard-panel-step-item">
+          <div class="datalake-search-input image-link-input">
+            <mat-form-field class="msf-full-width datalake-search-formfield panel-formfield" appearance="outline">
+              <mat-label>Image URL</mat-label>
+              <input matInput autocomplete="off" type="text" [(ngModel)]="values.urlImg" (ngModelChange)="checkChartType()" />
+            </mat-form-field>
+            <div class="image-url-container">
+              Preview
+              <div class="content-panel-img">
+                <app-image-link [url]="values.urlImg"></app-image-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 11">
+        <div class="msf-dashboard-panel-step-item">
+          <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
+            <mat-tab-group>
+              <mat-tab label="Color Picker" *ngIf="hasColorSettings()">
+                <div class="color-picker-tab">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label">
+                    <mat-icon class="msf-dashboard-chart-icon" aria-label="Color Picker">palette</mat-icon>
+                    <span class="msf-dashboard-addmenu-item-text" *ngIf="hasHeatMapColorSettings()">Select Palette Color</span>
+                    <span class="msf-dashboard-addmenu-item-text" *ngIf="!hasHeatMapColorSettings()">Select Palette Colors</span>
+                    <mat-checkbox class="theme-color-checkbox" color="primary" [(ngModel)]="useThemeColors" (click)="toggleThemeColors()">
+                      <ng-container *ngIf="hasHeatMapColorSettings()">Use Theme Color</ng-container>
+                      <ng-container *ngIf="!hasHeatMapColorSettings()">Use Theme Colors</ng-container>
+                    </mat-checkbox>
+                  </div>
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length">
+                    <div class="msf-dashboard-color-picker-layout" *ngIf="hasHeatMapColorSettings()">
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
+                      </div>
+                    </div>
+                    <div class="msf-dashboard-color-picker-grid-layout" *ngIf="!hasHeatMapColorSettings()">
+                      <div *ngFor="let color of values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Color {{i + 1}}</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[i]" [style.background]="values.paletteColors[i]" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[i]}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Axis Names" *ngIf="hasAxisNamesSettings()">
+                <div class="axis-names-tab">
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                      <mat-label>Vertical Axis Value</mat-label>
+                      <input matInput autocomplete="off" [(ngModel)]="values.vertAxisName">
+                    </mat-form-field>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                      <mat-label>Horizontal Axis Name</mat-label>
+                      <input matInput autocomplete="off" [(ngModel)]="values.horizAxisName">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Limit Results" *ngIf="hasLimitResultsSettings()">
+                <div class="limit-results-tab">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label">
+                    <mat-icon class="msf-dashboard-chart-icon" aria-label="Limit Results">show_chart</mat-icon>
+                    <span class="msf-dashboard-addmenu-item-text">Set Limit Results</span>
+                  </div>
+                  <div class="center msf-component-radio msf-dashboard-additional-settings-title msf-dashboard-assistant-chart-mode limit-radio-group">
+                    <mat-radio-group [(ngModel)]="values.limitMode" name="Limit Mode">
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="0" (click)="values.limitMode = 0">No Limit</mat-radio-button>
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="1" (click)="values.limitMode = 1">Top Values</mat-radio-button>
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="2" (click)="values.limitMode = 2">Bottom Values</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" *ngIf="values.limitMode" appearance="outline">
+                      <mat-label>Amount of results to limit</mat-label>
+                      <input matInput autocomplete="off" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="values.limitAmount">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Limit Value Range" *ngIf="hasLimitValueRangeSettings()">
+                <div class="limit-results-tab">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label">
+                    <mat-icon class="msf-dashboard-chart-icon" aria-label="Limit Results">show_chart</mat-icon>
+                    <span class="msf-dashboard-addmenu-item-text">Value Range Limit</span>
+                  </div>
+                  <div class="center msf-component-radio msf-dashboard-additional-settings-title msf-dashboard-assistant-chart-mode limit-radio-group">
+                    <mat-radio-group [(ngModel)]="values.limitMode" name="Limit Mode">
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="0" (click)="values.limitMode = 0">No Limit</mat-radio-button>
+                      <mat-radio-button class="cancels-checkbox msf-dashboard-assistant-mode" [value]="1" (click)="values.limitMode = 1">Range Limit</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" *ngIf="values.limitMode" appearance="outline">
+                      <mat-label>Min Value</mat-label>
+                      <input matInput autocomplete="off" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="values.minValueRange">
+                    </mat-form-field>
+                  </div>
+                  <div class="datalake-search-input">
+                    <mat-form-field class="msf-dashboard-limit-amount-input datalake-search-formfield config-panel-form-field panel-formfield" *ngIf="values.limitMode" appearance="outline">
+                      <mat-label>Max Value</mat-label>
+                      <input matInput autocomplete="off" maxlength="6" type="numeric" pattern="[0-9]*" [(ngModel)]="values.maxValueRange">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Threshold Values" *ngIf="hasThresholdValuesSettings()">
+                <div class="goals-thresholds-tab">
+                  <div class="msf-dashboard-color-picker-threshold-input">
+                    <div class="goal-thresholds-label"><mat-icon>assessment</mat-icon> Thresholds</div>
+                    <div class="goal-thresholds-buttons">
+                      <button mat-icon-button (click)="addThreshold()">
+                        <mat-icon aria-label="add">add_circle</mat-icon>
+                      </button>
+                      {{values.thresholds.length}}
+                      <button mat-icon-button (click)="removeThreshold()">
+                        <mat-icon aria-label="delete">remove_circle</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="msf-dashboard-color-picker-threshold-container" *ngIf="values.thresholds">
+                    <div class="msf-dashboard-color-picker-threshold-item datalake-search-input" *ngFor="let threshold of values.thresholds; trackBy: trackColor">
+                      <mat-form-field class="msf-width-40-column datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Select Column</mat-label>
+                        <mat-select [(ngModel)]="threshold.column">
+                          <ngx-mat-select-search ngModel (ngModelChange)="filterThreshold($event, threshold)" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+                          <mat-option *ngFor="let variable of threshold.filteredVariables | async" [value]="variable.item.id">
+                            {{variable.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field class="msf-width-15-min datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Min</mat-label>
+                        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="threshold.min" />
+                      </mat-form-field>
+                      <mat-form-field class="msf-width-15-max datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Max</mat-label>
+                        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="threshold.max" />
+                      </mat-form-field>
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Goals" *ngIf="hasGoalsSettings()">
+                <div class="goals-thresholds-tab">
+                  <div class="msf-dashboard-color-picker-threshold-input">
+                    <div class="goal-thresholds-label"><mat-icon>done</mat-icon> Goals</div>
+                    <div class="goal-thresholds-buttons">
+                      <button mat-icon-button (click)="addGoal()">
+                        <mat-icon aria-label="add">add_circle</mat-icon>
+                      </button>
+                      {{values.goals.length}}
+                      <button mat-icon-button (click)="removeGoal()">
+                        <mat-icon aria-label="delete">remove_circle</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="msf-dashboard-color-picker-threshold-container" *ngIf="values.goals">
+                    <div class="msf-dashboard-color-picker-goal-item datalake-search-input" *ngFor="let goal of values.goals; trackBy: trackColor">
+                      <mat-form-field class="msf-width-60 datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput autocomplete="off" [(ngModel)]="goal.name" />
+                      </mat-form-field>
+                      <mat-form-field class="msf-width-15-max datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Value</mat-label>
+                        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="goal.value" />
+                      </mat-form-field>
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="goal.color" [style.background]="goal.color" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{goal.color}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

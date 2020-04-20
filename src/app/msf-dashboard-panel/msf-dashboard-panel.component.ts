@@ -1,7 +1,5 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { FlatTreeControl } from '@angular/cdk/tree';
 import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -20,19 +18,15 @@ import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuni
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
-import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef, MatTreeFlatDataSource, MatTreeFlattener, MatTabGroup } from '@angular/material';
-import { takeUntil, take } from 'rxjs/operators';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog, PageEvent, MatPaginator } from '@angular/material';
 import * as moment from 'moment';
 
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { ApplicationService } from '../services/application.service';
-import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
-import { MsfDashboardAdditionalSettingsComponent } from '../msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
@@ -42,13 +36,6 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
-import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
-import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
-import { ConfigFlags } from './msf-dashboard-configflags';
-import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
-import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
-import { ComponentType } from '../commons/ComponentType';
-import { MsfDashboardPanelValueSelectorComponent } from '../msf-dashboard-panel-value-selector/msf-dashboard-panel-value-selector.component';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -59,55 +46,19 @@ const homeSVG = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8
 const planeSVG = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
 const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
 
-// TODO: Make the panels responsive (600px)
-
 @Component({
   selector: 'app-msf-dashboard-panel',
-  templateUrl: './msf-dashboard-panel.component.html',
-  styleUrls: ['./msf-dashboard-panel.component.css']
+  templateUrl: './msf-dashboard-panel.component.html'
 })
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
-  vertAxisDisabled: boolean = false;
-  horizAxisDisabled: boolean = false;
-
-  variableCtrlBtnEnabled: boolean = false;
-  generateBtnEnabled: boolean = false;
-
   valueAxis: any;
-  panelForm: FormGroup;
 
   chart: any;
   chartInfo: any;
 
   paletteColors: string[];
-
-  panelTypes: any[] = [
-    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', createSeries: this.createSimpleVertColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png', createSeries: this.createSimpleHorizColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries, allowedInAdvancedMode: false },
-    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createSimpleLineSeries, allowedInAdvancedMode: true },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, image: 'scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, image: 'simple-scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
-    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
-    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
-    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
-    { name: 'Table', flags: ChartFlags.TABLE, image: 'table.png', allowedInAdvancedMode: false },
-    { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false },
-    { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
-    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
-    { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
-    { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
-    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
-  ];
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -182,7 +133,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Input("values")
   values: MsfDashboardPanelValues;
-  temp: MsfDashboardPanelValues;
 
   @Input("panelWidth")
   panelWidth: number;
@@ -266,22 +216,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   lastChartName: String;
   yAxisColSpan: number = 0;
 
-  public dataFormFilterCtrl: FormControl = new FormControl ();
-  public variableFilterCtrl: FormControl = new FormControl ();
-  public xaxisFilterCtrl: FormControl = new FormControl ();
-  public valueFilterCtrl: FormControl = new FormControl ();
-
-  public infoVar1FilterCtrl: FormControl = new FormControl ();
-  public infoVar2FilterCtrl: FormControl = new FormControl ();
-  public infoVar3FilterCtrl: FormControl = new FormControl ();
-
-  public columnFilterCtrl: FormControl = new FormControl ();
-
-  public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
-  public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
-
-  private _onDestroy = new Subject<void> ();
-
   // mapbox variables
   @ViewChild('msfMapRef', { static: true })
   msfMapRef: MsfMapComponent;
@@ -326,29 +260,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   displayAnchoredArguments: boolean = false;
   updateURLResults: boolean = false;
 
-  // variables for the dialog version
-  dialogRef: any;
-  dialogData: any;
-
   // dashboard interface values
-  selectedPanelType: any = this.panelTypes[0];
   controlVariablesSet: boolean = false;
-  selectedStep: number = 1;
-  stepLoading: number = 0;
-
-  menuCategories: any[] = [];
-  selectedItem: any = null;
-
-  hasChild = (_: number, node: any) => (node.expandable);
-
-  configTableLoading: boolean = false;
-  configuredControlVariables: boolean = false;
-  tempOptionCategories: any = null;
-  panelMode: string = "basic";
-  panelConfigRefresh: boolean = false;
-  advConfigFlags: ConfigFlags = null;
-  useThemeColors: boolean = false;
-  scrollToOption: any = null;
 
   displayChart: boolean;
   displayInfo: boolean;
@@ -358,94 +271,16 @@ export class MsfDashboardPanelComponent implements OnInit {
   displayMapbox: boolean;
   displayDynTable: boolean;
 
-  @ViewChild("configTabs", { static: false })
-  configTabs: MatTabGroup;
-
-  @ViewChild("editTabs", { static: false })
-  editTabs: MatTabGroup;
-
-  @ViewChild('msfConfigTableRef', { static: false })
-  msfConfigTableRef: MsfTableComponent;
-
-  @ViewChild('autosize', { static: false })
-  autosize: CdkTextareaAutosize;
-
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
-    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder, private injector: Injector)
+    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
   {
     this.utils = new Utils ();
-
-    this.dialogRef = this.injector.get (MatDialogRef, null);
-    this.dialogData = this.injector.get (MAT_DIALOG_DATA, null);
-
-    this.panelForm = this.formBuilder.group ({
-      dataFormCtrl: new FormControl (),
-      variableCtrl: new FormControl ({ value: '', disabled: true }),
-      xaxisCtrl: new FormControl ({ value: '', disabled: true }),
-      valueCtrl: new FormControl ({ value: '', disabled: true }),
-      valueListCtrl: new FormControl ({ value: '', disabled: true }),
-      columnCtrl: new FormControl ({ value: '', disabled: true }),
-      fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
-      valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
-      valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
-      functionCtrl: new FormControl ({ value: this.functions[0], disabled: true }),
-      geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
-      geodataKeyCtrl: new FormControl ({ value: '', disabled: true })
-    });
-
-    if (this.dialogData)
-    {
-      // This is for the dialog version
-      this.values = new MsfDashboardPanelValues (this.dialogData.values.options, this.dialogData.values.chartName,
-        this.dialogData.values.chartDescription, this.dialogData.values.id, this.dialogData.values.gridId,
-        this.dialogData.values.x, this.dialogData.values.y, this.dialogData.values.width,
-        this.dialogData.values.height);
-
-      this.panelWidth = this.dialogData.panelWidth;
-      this.panelHeight = this.dialogData.panelHeight;
-      this.functions = this.dialogData.functions;
-      this.chartTypes = this.dialogData.chartTypes;
-      this.nciles = this.dialogData.nciles;
-      this.fontSizes = this.dialogData.fontSizes;
-      this.orientations = this.dialogData.orientations;
-      this.geodatas = this.dialogData.geodatas;
-      this.childPanelValues = this.dialogData.childPanelValues;
-      this.childPanelsConfigured = this.dialogData.childPanelsConfigured;
-
-      this.panelForm = this.dialogData.panelForm;
-      this.dataFormFilterCtrl = this.dialogData.dataFormFilterCtrl;
-      this.variableFilterCtrl = this.dialogData.variableFilterCtrl;
-      this.xaxisFilterCtrl = this.dialogData.xaxisFilterCtrl;
-      this.valueFilterCtrl = this.dialogData.valueFilterCtrl;
-      this.infoVar1FilterCtrl = this.dialogData.infoVar1FilterCtrl;
-      this.infoVar2FilterCtrl = this.dialogData.infoVar2FilterCtrl;
-      this.infoVar3FilterCtrl = this.dialogData.infoVar3FilterCtrl;
-      this.columnFilterCtrl = this.dialogData.columnFilterCtrl;
-      this.filteredVariables = this.dialogData.filteredVariables;
-      this.filteredOptions = this.dialogData.filteredOptions;
-
-      this.variableCtrlBtnEnabled = this.dialogData.variableCtrlBtnEnabled;
-      this.generateBtnEnabled = this.dialogData.generateBtnEnabled;
-
-      this.controlVariablesSet = this.dialogData.controlVariablesSet;
-
-      this.setPanelValues (this.dialogData.values);
-    }
-  }
-
-  triggerResize()
-  {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this.zone.onStable.pipe (take (1)).subscribe (() => this.autosize.resizeToFitContent (true));
   }
 
   ngOnInit()
   {
     this.displayLabel = this.panelWidth >= 5 ? true : false;
-
-    // prepare the data form combo box
-    this.optionSearchChange (this.dataFormFilterCtrl);
 
     // copy function list for use with the information panel
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
@@ -457,7 +292,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (this.addingOrRemovingPanels || this.dialogData)
+    if (this.addingOrRemovingPanels)
       return;
 
     if (changes['controlPanelVariables'] && this.controlPanelVariables)
@@ -2448,9 +2283,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.msfTableRef.tableOptions = this;
 
-    if (this.dialogData)
-      return; // ignore ngAfterViewInit on the dialog version
-
     if ((this.values.currentChartType.flags & ChartFlags.TABLE)
       || (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       || (this.values.currentChartType.flags & ChartFlags.DYNTABLE))
@@ -2493,15 +2325,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngAfterContentInit(): void
   {
-    if (this.dialogData)
-    {
-      if (this.values.currentOption)
-        this.variableCtrlBtnEnabled = true;
-
-      this.checkChartType ();
-      return; // ignore ngAfterContentInit on the dialog version
-    }
-
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
 
@@ -2563,44 +2386,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.startUpdateInterval ();
     }
-  }
-
-  private filterVariables(filterCtrl): void
-  {
-    if (!this.values.chartColumnOptions)
-      return;
-
-    // get the search keyword
-    let search = filterCtrl.value;
-    if (!search)
-    {
-      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-      return;
-    }
-
-    search = search.toLowerCase ();
-    this.filteredVariables.next (
-      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
-    );
-  }
-
-  private filterOptions(filterCtrl): void
-  {
-    if (!this.values.options)
-      return;
-
-    // get the search keyword
-    let search = filterCtrl.value;
-    if (!search)
-    {
-      this.filteredOptions.next (this.values.options.slice ());
-      return;
-    }
-
-    search = search.toLowerCase ();
-    this.filteredOptions.next (
-      this.values.options.filter (a => a.nameSearch.toLowerCase ().indexOf (search) > -1)
-    );
   }
 
   checkGroupingValue(categoryColumnName, values): boolean
@@ -2711,10 +2496,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let currentOptionCategories;
     let params;
 
-    if (this.tempOptionCategories)
-      currentOptionCategories = this.tempOptionCategories;
-    else
-      currentOptionCategories = this.values.currentOptionCategories;
+    currentOptionCategories = this.values.currentOptionCategories;
 
     if (currentOptionCategories)
     {
@@ -3249,25 +3031,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadData(): void
   {
-    // on advanced charts, check if the value selected is a number type
-    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-    {
-      if (this.values.valueColumn.item.columnType !== "number")
-      {
-        this.dialog.open (MessageComponent, {
-          data: { title: "Error", message: "Only numeric value types are allowed for aggregation value." }
-        });
-
-        return;
-      }
-    }
-
-    if (this.dialogData)
-    {
-      this.dialogRef.close ({ generateChart: true, controlVariablesSet: this.controlVariablesSet, values: this.values });
-      return;
-    }
-
     if (!this.values.chartName)
       this.values.chartName = "Untitled";
 
@@ -3305,12 +3068,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnDestroy()
   {
-    this._onDestroy.next ();
-    this._onDestroy.complete ();
-
-    if (this.dialogData)
-      return; // ignore the rest of ngOnDestroy on the dialog version
-
     clearInterval (this.updateInterval);
 
     this.destroyChart ();
@@ -4053,52 +3810,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
     }
 
-    // load the initial filter variables list
-    this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-
-    this.searchChange (this.variableFilterCtrl);
-    this.searchChange (this.xaxisFilterCtrl);
-    this.searchChange (this.valueFilterCtrl);
-
-    this.searchChange (this.infoVar1FilterCtrl);
-    this.searchChange (this.infoVar2FilterCtrl);
-    this.searchChange (this.infoVar3FilterCtrl);
-
-    this.searchChange (this.columnFilterCtrl);
-
-    // reset chart filter values and disable generate chart button
-    this.panelForm.get ('variableCtrl').reset ();
-    this.panelForm.get ('xaxisCtrl').reset ();
-    this.panelForm.get ('valueCtrl').reset ();
-    this.panelForm.get ('valueListCtrl').reset ();
-    this.panelForm.get ('columnCtrl').reset ();
-    this.panelForm.get ('geodataValueCtrl').reset ();
-    this.panelForm.get ('geodataKeyCtrl').reset ();
-    this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
     this.values.formVariables = [];
-    this.variableCtrlBtnEnabled = true;
-
-    if ((this.values.currentChartType.flags & ChartFlags.XYCHART
-      && this.values.currentChartType.flags & ChartFlags.ADVANCED)
-      || !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
-      this.panelForm.get ('variableCtrl').enable ();
-
-    if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-      this.panelForm.get ('xaxisCtrl').enable ();
-
-    this.panelForm.get ('valueCtrl').enable ();
-    this.panelForm.get ('valueListCtrl').enable ();
-    this.panelForm.get ('columnCtrl').enable ();
-    this.panelForm.get ('fontSizeCtrl').enable ();
-    this.panelForm.get ('valueFontSizeCtrl').enable ();
-    this.panelForm.get ('valueOrientationCtrl').enable ();
-    this.panelForm.get ('geodataValueCtrl').enable ();
-    this.panelForm.get ('geodataKeyCtrl').enable ();
-    this.panelForm.get ('functionCtrl').enable ();
 
     this.values.xaxis = null;
     this.values.variable = null;
@@ -4212,189 +3924,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
     }
 
-    // load the initial filter variables list
-    _this.filteredVariables.next (_this.values.chartColumnOptions.slice ());
-
-    _this.searchChange (_this.variableFilterCtrl);
-    _this.searchChange (_this.xaxisFilterCtrl);
-    _this.searchChange (_this.valueFilterCtrl);
-
-    _this.searchChange (_this.infoVar1FilterCtrl);
-    _this.searchChange (_this.infoVar2FilterCtrl);
-    _this.searchChange (_this.infoVar3FilterCtrl);
-
-    _this.searchChange (_this.columnFilterCtrl);
-
-    // reset chart filter values and disable generate chart button
-    _this.panelForm.get ('variableCtrl').reset ();
-    _this.panelForm.get ('xaxisCtrl').reset ();
-    _this.panelForm.get ('valueCtrl').reset ();
-    _this.panelForm.get ('valueListCtrl').reset ();
-    _this.panelForm.get ('columnCtrl').reset ();
-    _this.panelForm.get ('geodataValueCtrl').reset ();
-    _this.panelForm.get ('geodataKeyCtrl').reset ();
-    _this.panelForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
-    _this.panelForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
-    _this.panelForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
-    _this.panelForm.get ('functionCtrl').setValue (_this.functions[0]);
     _this.checkPanelConfiguration ();
 
     _this.values.formVariables = [];
-    _this.variableCtrlBtnEnabled = true;
-
-    _this.panelForm.get ('variableCtrl').enable ();
-
-    if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
-      _this.panelForm.get ('xaxisCtrl').enable ();
-
-    _this.panelForm.get ('valueCtrl').enable ();
-    _this.panelForm.get ('valueListCtrl').enable ();
-    _this.panelForm.get ('columnCtrl').enable ();
-    _this.panelForm.get ('fontSizeCtrl').enable ();
-    _this.panelForm.get ('valueFontSizeCtrl').enable ();
-    _this.panelForm.get ('valueOrientationCtrl').enable ();
-    _this.panelForm.get ('geodataValueCtrl').enable ();
-    _this.panelForm.get ('geodataKeyCtrl').enable ();
-    _this.panelForm.get ('functionCtrl').enable ();
 
     _this.values.isLoading = false;
     _this.values.currentOptionCategories = null;
   }
 
-  searchChange(filterCtrl): void
+  goToPanelConfiguration(): void
   {
-    // listen for search field value changes
-    filterCtrl.valueChanges
-      .pipe (takeUntil (this._onDestroy))
-      .subscribe (() => {
-        this.filterVariables (filterCtrl);
-      });
-  }
-
-  optionSearchChange(filterCtrl): void
-  {
-    // load the initial option list
-    this.filteredOptions.next (this.values.options.slice ());
-    // listen for search field value changes
-    filterCtrl.valueChanges
-      .pipe (takeUntil (this._onDestroy))
-      .subscribe (() => {
-        this.filterOptions (filterCtrl);
-      });
-  }
-
-  goToControlVariables(): void
-  {
-    let dialogRef;
-
-    dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
-      width: '400px',
-      panelClass: 'msf-dashboard-arguments-dialog',
-      data: {
-        currentOptionCategories: this.values.currentOptionCategories,
-        currentOptionId: this.values.currentOption.id,
-        title: this.values.chartName
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((result) => {
-      if (result)
-      {
-        if (result.error)
-        {
-          this.dialog.open (MessageComponent, {
-            data: { title: "Error", message: "Failed to load control variables." }
-          });
-        }
-        else
-          this.values.currentOptionCategories = result.currentOptionCategories;
-      }
-    });
-  }
-
-  // save chart data into a temporary value
-  storeChartValues(): void
-  {
-    if (!this.temp)
-    {
-      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,this.values.chartDescription,
-        this.values.id, this.values.gridId, this.values.x, this.values.y, this.values.width,
-        this.values.height);
-    }
-    else
-      this.temp.chartName = this.values.chartName;
-
-    this.temp.chartDescription = this.values.chartDescription;
-    this.temp.urlImg = this.values.urlImg;
-    this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
-    this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
-    this.temp.xaxis = this.values.xaxis ? this.values.xaxis.item.id : null;
-    this.temp.valueColumn = this.values.valueColumn ? this.values.valueColumn.item.id : null;
-    this.temp.function = this.values.function != -1 ? this.functions.indexOf (this.values.function) : -1;
-    this.temp.geodata = this.geodatas.indexOf (this.values.geodata);
-    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
-    this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
-    this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
-    this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
-    this.temp.goals = JSON.parse (JSON.stringify (this.values.goals));
-    this.temp.style = JSON.parse (JSON.stringify (this.values.style));
-    this.temp.vertAxisName = this.values.vertAxisName;
-    this.temp.horizAxisName = this.values.horizAxisName;
-    this.temp.dynTableValues = this.values.dynTableValues ? JSON.parse (JSON.stringify (this.values.dynTableValues)) : null;
-    this.temp.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables));
-    this.temp.intervalType = this.values.intervalType;
-    this.temp.intValue = this.values.intValue;
-    this.temp.valueList = (this.values.valueList && this.values.valueList.length ? this.generateValueList () : null);
-
-    this.temp.formVariables = [];
-    this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
-
-    if (this.values.currentChartType.flags & ChartFlags.FORM)
-    {
-      this.temp.infoVar1 = null;
-      this.temp.infoVar2 = null;
-      this.temp.infoVar3 = null;
-
-      for (let i = 0; i < this.values.formVariables.length; i++)
-      {
-        let formVariable = this.values.formVariables[i];
-
-        this.temp.formVariables.push ({
-          value: this.values.lastestResponse[i].value,
-          column: formVariable.column.item.id,
-          fontSize: this.fontSizes.indexOf (formVariable.fontSize),
-          valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize),
-          valueOrientation: this.orientations.indexOf (formVariable.valueOrientation),
-          function: this.functions.indexOf (formVariable.function)
-        });
-      }
-    }
-    else if (this.values.currentChartType.flags & ChartFlags.INFO
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE))
-    {
-      if (this.values.infoVar1 != null)
-        this.temp.infoVar1 = this.values.infoVar1;
-
-      if (this.values.infoVar2 != null)
-        this.temp.infoVar2 = this.values.infoVar2;
-
-      if (this.values.infoVar3 != null)
-        this.temp.infoVar3 = this.values.infoVar3;
-    }
-    else
-    {
-      this.temp.infoVar1 = null;
-      this.temp.infoVar2 = null;
-      this.temp.infoVar3 = null;
-    }
-
-    this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
-    this.temp.startAtZero = this.values.startAtZero;
-    this.temp.updateTimeLeft = this.values.updateTimeLeft;
-    this.temp.limitMode = this.values.limitMode;
-    this.temp.limitAmount = this.values.limitAmount;
-    this.temp.ordered = this.values.ordered;
-
     this.stopUpdateInterval ();
 
     if (this.mapboxInterval)
@@ -4402,13 +3941,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       clearInterval (this.mapboxInterval);
       this.mapboxInterval = null;
     }
-  }
-
-  goToPanelConfiguration(): void
-  {
-    this.storeChartValues ();
-    this.changeDetectorRef.detectChanges ();
-    this.selectStep (this.selectedStep);
 
     this.configurePanel ();
   }
@@ -4540,136 +4072,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToResults(): void
   {
-    let i, item;
-
-    if (this.dialogData)
-    {
-      this.dialogRef.close ({ goToResults: true, controlVariablesSet: null });
-      return;
-    }
-
-    // discard any changes
-    this.values.urlImg = this.temp.urlImg;
-    this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
-    this.values.chartName = this.temp.chartName;
-    this.values.chartDescription = this.temp.chartDescription;
-
-    if (this.temp.variable)
-      this.values.variable = this.temp.variable;
-    else
-      this.values.variable = null;
-
-    if (this.temp.xaxis)
-      this.values.xaxis = this.temp.xaxis;
-    else
-      this.values.xaxis = null;
-
-    if (this.temp.valueColumn)
-      this.values.valueColumn = this.temp.valueColumn;
-    else
-      this.values.valueColumn = null;
-
-    this.values.function = this.temp.function;
-    this.values.geodata = this.temp.geodata;
-    this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
-    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
-    this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
-    this.values.goals = JSON.parse (JSON.stringify (this.temp.goals));
-    this.values.style = JSON.parse (JSON.stringify (this.temp.style));
-    this.values.vertAxisName = this.temp.vertAxisName;
-    this.values.horizAxisName = this.temp.horizAxisName;
-    this.values.dynTableValues = this.temp.dynTableValues ? JSON.parse (JSON.stringify (this.temp.dynTableValues)) : null;
-    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.temp.dynTableVariables));
-    this.values.intervalType = this.temp.intervalType;
-    this.values.intValue = this.temp.intValue;
-    this.values.valueList = this.temp.valueList;
-
-    for (i = 0; i < this.chartTypes.length; i++)
-    {
-      item = this.chartTypes[i];
-
-      if (item.name === this.temp.currentChartType.name)
-      {
-        this.values.currentChartType = item;
-        break;
-      }
-    }
-
-    if (this.values.currentChartType.flags & ChartFlags.INFO
-      && !(this.values.currentChartType.flags & ChartFlags.FORM)
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
-      && this.values.chartColumnOptions != null)
-    {
-      if (this.temp.infoVar1 != null)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
-        {
-          item = this.values.chartColumnOptions[i];
-
-          if (this.temp.infoVar1.id === item.id)
-          {
-            this.values.variable = this.values.chartColumnOptions.indexOf (item);
-            break;
-          }
-        }
-      }
-
-      if (this.temp.infoVar2 != null)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
-        {
-          item = this.values.chartColumnOptions[i];
-
-          if (this.temp.infoVar2.id === item.id)
-          {
-            this.values.xaxis = this.values.chartColumnOptions.indexOf (item);
-            break;
-          }
-        }
-      }
-
-      if (this.temp.infoVar3 != null)
-      {
-        for (i = 0; i < this.values.chartColumnOptions.length; i++)
-        {
-          item = this.values.chartColumnOptions[i];
-
-          if (this.temp.infoVar3.id === item.id)
-          {
-            this.values.valueColumn = this.values.chartColumnOptions.indexOf (item);
-            break;
-          }
-        }
-      }
-    }
-
-    this.values.formVariables = [];
-
-    for (let i = 0; i < this.temp.formVariables.length; i++)
-    {
-      let formVariable = this.temp.formVariables[i];
-
-      this.values.formVariables.push ({
-        value: this.values.lastestResponse[i].value,
-        column: formVariable.column,
-        fontSize: this.fontSizes[formVariable.fontSize],
-        valueFontSize: this.fontSizes[formVariable.valueFontSize],
-        valueOrientation: this.orientations[formVariable.valueOrientation],
-        function: this.functions[formVariable.function]
-      });
-    }
-
-    this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
-
-    this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
-    this.values.startAtZero = this.temp.startAtZero;
-    this.values.updateTimeLeft = this.temp.updateTimeLeft;
-    this.values.limitMode = this.temp.limitMode;
-    this.values.limitAmount = this.temp.limitAmount;
-    this.values.ordered = this.temp.ordered;
-
     // re-initialize panel settings
-    this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
     this.initPanelSettings ();
 
     this.startUpdateInterval ();
@@ -4697,14 +4100,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkChartType(): void
   {
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-    {
-      if (this.values.urlImg && this.values.urlImg != "")
-        this.generateBtnEnabled = true; //kp2020Ene23
-      else
-        this.generateBtnEnabled = false;
-
       return;
-    }
     else
     {
       if (this.values.currentOption == null)
@@ -4715,28 +4111,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // disable and reset unused variables
       this.values.variable = null;
-      this.panelForm.get ('variableCtrl').reset ();
-      this.panelForm.get ('geodataValueCtrl').reset ();
 
       this.values.xaxis = null;
-      this.panelForm.get ('xaxisCtrl').reset ();
 
       this.values.valueColumn = null;
       this.values.valueList = [];
-      this.panelForm.get ('valueCtrl').reset ();
-      this.panelForm.get ('valueListCtrl').reset ();
-      this.panelForm.get ('geodataKeyCtrl').reset ();
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
-      {
-        this.panelForm.get ('columnCtrl').reset ();
-        this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-        this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-        this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-        this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
         this.values.formVariables = [];
-      }
 
       this.values.vertAxisName = null;
       this.values.horizAxisName = null;
@@ -4759,29 +4141,16 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           if (this.values.currentOption == null || ((this.values.currentOption.metaData != 2 && this.values.currentOption.metaData != 4)
             && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) || (this.values.currentOption.tabType !== 'map' && this.values.currentChartType.flags & ChartFlags.MAPBOX))
-          {
             this.values.currentOption = null;
-            this.panelForm.get ('dataFormCtrl').reset ();
-            this.variableCtrlBtnEnabled = false;
-          }
         }
 
         this.values.xaxis = null;
-        this.panelForm.get ('xaxisCtrl').reset ();
-    
-        this.panelForm.get ('valueCtrl').reset ();
-        this.panelForm.get ('valueListCtrl').reset ();
 
         if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
         {
-          this.panelForm.get ('geodataValueCtrl').reset ();
           this.values.variable = null;
-
-          this.panelForm.get ('geodataKeyCtrl').reset ();
           this.values.valueColumn = null;
         }
-
-        this.panelForm.get ('variableCtrl').reset ();
 
         this.values.vertAxisName = null;
         this.values.horizAxisName = null;
@@ -4795,17 +4164,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.values.xaxis = null;
-        this.panelForm.get ('xaxisCtrl').reset ();
-        this.panelForm.get ('xaxisCtrl').disable ();
 
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-        {
           this.values.variable = null;
-          this.panelForm.get ('variableCtrl').reset ();
-          this.panelForm.get ('variableCtrl').disable ();
-        }
-        else
-          this.panelForm.get ('variableCtrl').enable ();
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
           || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -4813,29 +4174,15 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.values.vertAxisName = null;
           this.values.horizAxisName = null;
 
-          this.vertAxisDisabled = true;
-          this.horizAxisDisabled = true;
-
           this.values.dynTableValues = null;
           this.values.dynTableVariables = [];
         }
       }
       else
       {
-        this.panelForm.get ('xaxisCtrl').enable ();
-        this.panelForm.get ('variableCtrl').enable ();
-
-        this.vertAxisDisabled = false;
-        this.horizAxisDisabled = false;
-
         this.values.dynTableValues = null;
         this.values.dynTableVariables = [];
       }
-
-      this.panelForm.get ('valueCtrl').enable ();
-      this.panelForm.get ('valueListCtrl').enable ();
-      this.panelForm.get ('geodataValueCtrl').enable ();
-      this.panelForm.get ('geodataKeyCtrl').enable ();
 
       this.values.infoVar1 = null;
 
@@ -4852,12 +4199,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       for (i = 0; i < this.values.infoFunc3.length; i++)
         this.values.infoFunc3[i].checked = false;
 
-      this.panelForm.get ('columnCtrl').reset ();
-      this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-      this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
       if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
         || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
         || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
@@ -4873,51 +4214,33 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkPanelConfiguration(): boolean
   {
     if (!this.values.currentChartType)
-    {
-      this.generateBtnEnabled = false;
       return false;
-    }
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
       if (this.values.variable != null && this.values.geodata != null)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
     {
       if (this.values.currentOption != null && this.isDynamicTableSet ())
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.TABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOption != null)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       if (this.values.urlImg && this.values.urlImg != "")
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       if (this.values.formVariables.length)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
@@ -4969,10 +4292,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         infoFunc3Ready = true;
 
       if (infoFunc1Ready && infoFunc2Ready && infoFunc3Ready)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else
     {
@@ -4981,30 +4301,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
         {
           if (this.values.valueColumn != null)
-          {
-            this.generateBtnEnabled = true;
             return true;
-          }
         }
         else
         {
           if (this.values.function.id === "count")
           {
             if (this.values.variable != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
           else
           {
             if ((this.isSimpleChart () && this.values.valueList != null && this.values.valueList.length)
              || (!this.isSimpleChart () && this.values.variable != null)
               && this.values.valueColumn != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
         }
       }
@@ -5013,34 +4324,24 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
         {
           if (this.values.variable != null && this.values.valueColumn != null)
-          {
-            this.generateBtnEnabled = true;
             return true;
-          }
         }
         else
         {
           if (this.values.function.id === "count")
           {
             if (this.values.variable != null && this.values.xaxis != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
           else
           {
             if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
         }
       }
     }
 
-    this.generateBtnEnabled = false;
     return false;
   }
 
@@ -5058,18 +4359,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
         this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
       }
-
-      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-
-      this.searchChange (this.variableFilterCtrl);
-      this.searchChange (this.xaxisFilterCtrl);
-      this.searchChange (this.valueFilterCtrl);
-
-      this.searchChange (this.infoVar1FilterCtrl);
-      this.searchChange (this.infoVar2FilterCtrl);
-      this.searchChange (this.infoVar3FilterCtrl);
-
-      this.searchChange (this.columnFilterCtrl);
     }
 
     // refresh the following two values to avoid a blank form
@@ -5098,22 +4387,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         if (option.id == this.values.currentOption.id)
         {
-          this.panelForm.get ('dataFormCtrl').setValue (option);
-          this.panelForm.get ('variableCtrl').enable ();
-          this.panelForm.get ('columnCtrl').enable ();
-          this.panelForm.get ('fontSizeCtrl').enable ();
-          this.panelForm.get ('valueFontSizeCtrl').enable ();
-          this.panelForm.get ('valueOrientationCtrl').enable ();
-          this.panelForm.get ('functionCtrl').enable ();
-
-          // only enable x axis if the chart type is not pie, donut or radar
-          if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-            this.panelForm.get ('xaxisCtrl').enable ();
-
-          this.panelForm.get ('valueCtrl').enable ();
-          this.panelForm.get ('valueListCtrl').enable ();
-          this.panelForm.get ('geodataValueCtrl').enable ();
-          this.panelForm.get ('geodataKeyCtrl').enable ();
           this.values.currentOption = option;
           break;
         }
@@ -5124,15 +4397,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.chartColumnOptions.length)
       {
-        this.variableCtrlBtnEnabled = true;
-
         if (this.values.variable != null && this.values.variable != -1)
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('geodataValueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
               break;
             }
@@ -5145,7 +4415,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('geodataKeyCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
               break;
             }
@@ -5175,54 +4444,49 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.geodata = this.geodatas[0];
 
     // picture and map panels doesn't need any data
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-      this.variableCtrlBtnEnabled = false;
-    else if (this.values.currentChartType.flags & ChartFlags.MAP)
+    if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
     {
-      if (this.values.chartColumnOptions.length)
-        this.variableCtrlBtnEnabled = true;
-
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
-        if (this.values.function == 1)
+        if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
         {
-          if (this.values.variable != null && this.values.variable != -1)
+          if (this.values.function == 1)
+          {
+            if (this.values.variable != null && this.values.variable != -1)
+            {
+              for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
+              {
+                if (i == this.values.variable)
+                {
+                  this.values.style = this.msfMapRef.mapTypes[i];
+                  this.values.variable = -1;
+                  break;
+                }
+              }
+            }
+            else
+              this.values.style = this.msfMapRef.mapTypes[1];
+          }
+          else
           {
             for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
             {
-              if (i == this.values.variable)
+              if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
               {
                 this.values.style = this.msfMapRef.mapTypes[i];
-                this.values.variable = -1;
                 break;
               }
             }
           }
-          else
-            this.values.style = this.msfMapRef.mapTypes[1];
         }
-        else
-        {
-          for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
-          {
-            if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
-            {
-              this.values.style = this.msfMapRef.mapTypes[i];
-              break;
-            }
-          }
-        }
-      }
 
-      this.checkChartType ();
-      return;
+        this.checkChartType ();
+        return;
+      }
     }
 
     if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
     {
-      if (this.values.chartColumnOptions.length)
-        this.variableCtrlBtnEnabled = true;
-
       if (this.values.lastestResponse)
       {
         this.values.dynTableVariables = [];
@@ -5328,9 +4592,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.chartColumnOptions.length)
-        this.variableCtrlBtnEnabled = true;
-
       // set table column filters settings if loaded from database
       this.values.tableVariables = [];
 
@@ -5362,13 +4623,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
-      // reset form column selection combo boxes
-      this.panelForm.get ('columnCtrl').reset ();
-      this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-      this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
       // set form variable settings if loaded from database
       if (this.values.function != null && this.values.function != -1)
       {
@@ -5577,7 +4831,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
               break;
             }
@@ -5590,7 +4843,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.xaxis = this.values.chartColumnOptions[i];
               break;
             }
@@ -5631,8 +4883,6 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
           }
-
-          this.panelForm.get ('valueListCtrl').setValue (this.values.valueList);
         }
         else if (this.values.valueColumn != null && this.values.valueColumn != -1)
         {
@@ -5640,7 +4890,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
               break;
             }
@@ -5648,9 +4897,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
     }
-
-    if (this.values.chartColumnOptions.length)
-      this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
   }
@@ -5907,93 +5153,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return new Intl.NumberFormat ('en-us', { maximumFractionDigits: 1 }).format (result);
   }
 
-  toggleThemeColors(): void
-  {
-    if (!this.values.paletteColors || !this.values.paletteColors.length)
-    {
-      if (this.hasHeatMapColorSettings ())
-        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].heatMapColor));
-      else
-        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].resultColors));
-    }
-    else
-      this.values.paletteColors = [];
-  }
-
-  hasLimitResultsSettings(): boolean
-  {
-    return (this.advConfigFlags & ConfigFlags.LIMITVALUES) ? true : false;
-  }
-
-  hasLimitValueRangeSettings(): boolean
-  {
-    return (this.advConfigFlags & ConfigFlags.LIMITAGGREGATOR) ? true : false;
-  }
-
-  hasColorSettings(): boolean
-  {
-    return (this.advConfigFlags & ConfigFlags.CHARTCOLORS) ? true : false;
-  }
-
-  hasHeatMapColorSettings(): boolean
-  {
-    return (this.advConfigFlags & ConfigFlags.HEATMAPCOLOR) ? true : false;
-  }
-
-  hasThresholdValuesSettings(): boolean
-  {
-    return (this.advConfigFlags & ConfigFlags.THRESHOLDS) ? true : false;
-  }
-
-  hasGoalsSettings(): boolean
-  {
-    return (this.advConfigFlags & ConfigFlags.GOALS) ? true : false;
-  }
-
-  configureAdditionalSettings(): void
-  {
-    this.advConfigFlags = ConfigFlags.NONE;
-
-    if (this.values.currentChartType.flags & ChartFlags.FORM ||
-      this.values.currentChartType.flags & ChartFlags.TABLE)
-      this.advConfigFlags = ConfigFlags.THRESHOLDS;
-    else if (this.values.currentChartType.flags & ChartFlags.PIECHART
-      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
-      this.advConfigFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
-    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
-    else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
-    {
-      this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
-
-      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
-      {
-        this.advConfigFlags |= ConfigFlags.LIMITVALUES;
-
-        if (this.isSimpleChart ())
-          this.advConfigFlags |= ConfigFlags.THRESHOLDS;
-      }
-    }
-
-    // don't allow the option to limit results on advanced charts
-    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-    {
-      this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
-      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR;
-    }
-
-/*    this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
-      width: '400px',
-      height: 'auto',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      autoFocus: false,
-      data: {
-        values: this.values,
-        configFlags: configFlags
-      }
-    });*/
-  }
-
   goToDrillDownSettings(): void
   {
     let childChart = {
@@ -6167,32 +5326,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   drillDownSettingsError(_this, results): void
   {
     _this.values.isLoading = false;
-  }
-
-  isFormColumnValid(): boolean
-  {
-    return (this.panelForm.get ('columnCtrl').value && this.panelForm.get ('fontSizeCtrl').value
-      && this.panelForm.get ('valueFontSizeCtrl').value && this.panelForm.get ('valueOrientationCtrl').value
-      && this.panelForm.get ('functionCtrl').value);
-  }
-
-  addColumnIntoForm(): void
-  {
-    this.values.formVariables.push ({
-      column: this.panelForm.get ('columnCtrl').value,
-      fontSize:  this.panelForm.get ('fontSizeCtrl').value,
-      valueFontSize: this.panelForm.get ('valueFontSizeCtrl').value,
-      valueOrientation: this.panelForm.get ('valueOrientationCtrl').value,
-      function: this.panelForm.get ('functionCtrl').value
-    });
-
-    // reset main column and font size values
-    this.panelForm.get ('columnCtrl').reset ();
-    this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-    this.checkPanelConfiguration ();
   }
 
   deleteColumnFromForm(index): void
@@ -6780,72 +5913,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return Array.isArray(item);
   }
 
-  openAssistant(): void
-  {
-    let dialogRef;
-
-    dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
-      panelClass: 'msf-dashboard-assistant-dialog',
-      autoFocus: false,
-      data: {
-        currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
-        currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
-        chartColumnOptions: this.values.chartColumnOptions,
-        paletteColors: this.values.paletteColors,
-        functions: this.functions,
-        nciles: this.nciles
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe (
-      (values) => {
-        if (values)
-        {
-          if (values.panelMode === "advanced")
-            values.currentChartTypeName = "Advanced " + values.currentChartTypeName;
-
-          for (let chartType of this.chartTypes)
-          {
-            if (chartType.name === values.currentChartTypeName)
-            {
-              this.values.currentChartType = chartType;
-              break;
-            }
-          }
-
-          if (values.variable)
-            this.panelForm.get ('variableCtrl').setValue (values.variable);
-
-          if (values.xaxis)
-            this.panelForm.get ('xaxisCtrl').setValue (values.xaxis);
-
-          if (values.valueColumn)
-          {
-            if (this.isSimpleChart ())
-            {
-              this.values.valueList = [ values.valueColumn ];
-              this.panelForm.get ('valueListCtrl').setValue (this.values.valueList);
-            }
-            else
-              this.panelForm.get ('valueCtrl').setValue (values.valueColumn);
-          }
-
-          this.values.currentOptionCategories = values.currentOptionCategories;
-          this.values.variable = values.variable;
-          this.values.xaxis = values.xaxis;
-          this.values.valueColumn = values.valueColumn;
-          this.values.function = values.function;
-          this.values.intervalType = values.intervalType;
-          this.values.intValue = values.intValue;
-          this.values.startAtZero =  values.startAtZero;
-          this.values.ordered = values.ordered;
-
-          this.checkChartType ();
-        }
-      }
-    );
-  }
-
   isDynamicTableSet(): boolean
   {
     if (!this.isDynamicTableVariablesSet () || !this.dynamicTableHasFunctions ())
@@ -6892,142 +5959,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return true;
-  }
-
-  configureAlias(value, name): void
-  {
-    let dialogRef, alias;
-
-    switch (name)
-    {
-      case 'Summary':
-        alias = value.sumAlias;
-        break;
-
-      case 'Average':
-        alias = value.avgAlias;
-        break;
-
-      case 'Mean':
-        alias = value.meanAlias;
-        break;
-
-      case 'Max':
-        alias = value.maxAlias;
-        break;
-
-      case 'Min':
-        alias = value.minAlias;
-        break;
-
-      case 'Std Deviation':
-        alias = value.stdDevAlias;
-        break;
-
-      case 'Count':
-        alias = value.cntAlias;
-        break;
-    }
-
-    dialogRef = this.dialog.open (MsfDynamicTableAliasComponent, {
-      height: '180px',
-      width: '300px',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      autoFocus: false,
-      data: {
-        alias: alias,
-        valueName: value.name,
-        name: name
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((result: any) =>
-    {
-      if (result)
-      {
-        switch (name)
-        {
-          case 'Summary':
-            value.sumAlias = result;
-            break;
-
-          case 'Average':
-            value.avgAlias = result;
-            break;
-
-          case 'Mean':
-            value.meanAlias = result;
-            break;
-
-          case 'Max':
-            value.maxAlias = result;
-            break;
-
-          case 'Min':
-            value.minAlias = result;
-            break;
-
-          case 'Std Deviation':
-            value.stdDevAlias = result;
-            break;
-
-          case 'Count':
-            value.cntAlias = result;
-            break;
-        }
-      }
-    });
-  }
-
-  openDiscoveryDialog(): void
-  {
-    let dialogRef;
-
-    dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
-      panelClass: 'msf-select-data-dialog',
-      autoFocus: false,
-      data: {
-        options: this.values.options,
-        functions: this.functions,
-        nciles: this.nciles
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((selectedItem) => {
-      let selectedOption = null;
-
-      if (!selectedItem)
-        return;
-
-      for (let option of this.values.options)
-      {
-        if (option.id == selectedItem.id)
-        {
-          selectedOption = option;
-          break;
-        }
-      }
-
-      if (!selectedOption)
-        return;
-
-      if (this.values.currentOption)
-      {
-        if (this.values.currentOption.id == selectedOption.id)
-          return; // do not reset the dashboard settings if the option id is the same
-      }
-
-      this.values.currentOption = selectedOption;
-      this.loadChartFilterValues (selectedOption);
-    });
-  }
-
-  resetIntervalValue(): void
-  {
-    if (this.values.intervalType === "value")
-      this.values.intValue = null;
-    else
-      this.values.intValue = 5;
   }
 
   addUpIntervals(): void
@@ -7742,14 +6673,12 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.toggleControlVariableDialogOpen.emit (true);
 
-    dialogRef = this.dialog.open (MsfDashboardPanelComponent, {
+    dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
       width: '930px',
       height: '595px',
       panelClass: 'msf-dashboard-panel-dialog',
       data: {
         values: this.values,
-        panelWidth: 12,           // random width and height panel values
-        panelHeight: 7,
         functions: this.functions,
         chartTypes: this.chartTypes,
         nciles: this.nciles,
@@ -7758,29 +6687,14 @@ export class MsfDashboardPanelComponent implements OnInit {
         geodatas: this.geodatas,
         childPanelValues: this.childPanelValues,
         childPanelsConfigured: this.childPanelsConfigured,
-        panelForm: this.panelForm,
-        dataFormFilterCtrl: this.dataFormFilterCtrl,
-        variableFilterCtrl: this.variableFilterCtrl,
-        xaxisFilterCtrl: this.xaxisFilterCtrl,
-        valueFilterCtrl: this.valueFilterCtrl,
-        infoVar1FilterCtrl: this.infoVar1FilterCtrl,
-        infoVar2FilterCtrl: this.infoVar2FilterCtrl,
-        infoVar3FilterCtrl: this.infoVar3FilterCtrl,
-        columnFilterCtrl: this.columnFilterCtrl,
-        filteredVariables: this.filteredVariables,
-        filteredOptions: this.filteredOptions,
-        variableCtrlBtnEnabled: this.variableCtrlBtnEnabled,
-        generateBtnEnabled: this.generateBtnEnabled,
         controlVariablesSet: this.controlVariablesSet,
-        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen
+        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen,
+        msfMapRef: this.msfMapRef
       }
     });
 
     dialogRef.afterClosed ().subscribe ((result) => {
       this.toggleControlVariableDialogOpen.emit (false);
-
-      if (this.values.currentOption)
-        this.variableCtrlBtnEnabled = true;
 
       this.checkChartType ();
 
@@ -7887,81 +6801,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
   }
 
-  configureDynamicTable(): void
-  {
-    let dynamicTableValues =
-    {
-      xaxis: [],
-      yaxis: [],
-      values: []
-    };
-
-    if (this.values.dynTableVariables)
-    {
-      for (let variable of this.values.dynTableVariables)
-      {
-        if (variable.direction === "horizontal")
-          dynamicTableValues.xaxis.push (variable);
-        else
-          dynamicTableValues.yaxis.push (variable);
-      }
-    }
-
-    if (this.values.dynTableValues)
-    {
-      for (let value of this.values.dynTableValues)
-        dynamicTableValues.values.push (value);
-    }
-
-    const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
-    {
-      width: '1100px',
-      height: '600px',
-      panelClass: 'dynamic-table-dialog',
-      autoFocus: false,
-      data: {
-        metadata: this.values.currentOption.columnOptions,
-        dynamicTableValues: dynamicTableValues,
-        dashboardPanel: this.values
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe (result =>
-    {
-      if (result != null)
-      {
-        this.values.dynTableVariables = [];
-        this.values.dynTableValues = [];
-
-        for (let variable of result.xaxis)
-        {
-          this.values.dynTableVariables.push (variable);
-          this.values.dynTableVariables[this.values.dynTableVariables.length - 1].direction = "horizontal";
-        }
-
-        for (let i = 0; i < result.yaxis.length; i++)
-        {
-          let variable = result.yaxis[i];
-          let index;
-
-          this.values.dynTableVariables.push (variable);
-          index = this.values.dynTableVariables.length - 1;
-          this.values.dynTableVariables[index].direction = "vertical";
-
-          if (i != result.yaxis.length - 1)
-            this.values.dynTableVariables[index].summary = true;
-          else
-            this.values.dynTableVariables[index].summary = false;
-        }
-
-        for (let value of result.values)
-          this.values.dynTableValues.push (value);
-
-        this.checkPanelConfiguration ();
-      }
-    });
-  }
-
   getMasFlightMobileLogoImage(): string
   {
     return "../../assets/images/dark-theme-masFlight-mobile-logo.png";
@@ -7970,1335 +6809,5 @@ export class MsfDashboardPanelComponent implements OnInit {
   getMasFlightLogoImage(): string
   {
     return "../../assets/images/dark-theme-masFlight-logo.png";
-  }
-
-  checkPanelTypeSelection(): void
-  {
-    this.selectingAnalysis = null;
-    this.analysisSelected = null;
-    this.values.variable = null;
-    this.values.xaxis = null;
-    this.values.geodata = null;
-
-    if (this.panelMode === "advanced")
-    {
-      let selectedChartType;
-
-      if (!this.selectedPanelType.allowedInAdvancedMode)
-      {
-        this.selectedPanelType = this.panelTypes[0];
-
-        if (!this.values.function)
-          this.values.function = this.functions[0];
-
-        this.scrollSelectedPanelIntoView ();
-      }
-
-      selectedChartType = "Advanced " + this.selectedPanelType.name;
-
-      for (let chart of this.chartTypes)
-      {
-        if (chart.name === selectedChartType)
-        {
-          this.values.currentChartType = chart;
-          break;
-        }
-      }
-
-      this.checkChartType ();
-
-      this.selectingXAxis = null;
-      this.xAxisSelected = null;
-      this.selectingValue = null;
-      this.valueSelected = null;
-      this.values.valueColumn = null;
-      this.values.valueList = [];
-      this.values.startAtZero = false;
-    }
-    else
-    {
-      this.selectingAggregationValue = null;
-      this.aggregationValueSelected = null;
-      this.values.valueColumn = null;
-      this.values.valueList = [];
-
-      for (let chart of this.chartTypes)
-      {
-        if (chart.name === this.selectedPanelType.name)
-        {
-          this.values.currentChartType = chart;
-          break;
-        }
-      }
-
-      this.checkChartType ();
-
-      if (!this.isLineOrBarChart ())
-        this.values.startAtZero = false;
-    }
-
-    if (this.values.limitMode != null)
-      this.values.limitMode = 0;
-
-    if (this.values.limitAmount != null)
-      this.values.limitAmount = 10;
-
-    if (this.values.paletteColors != null)
-      this.useThemeColors = true;
-  }
-
-  selectPanelType(panelType): void
-  {
-    let name = panelType.name;
-
-    this.selectedPanelType = panelType;
-    this.selectingXAxis = null;
-    this.selectingAnalysis = null;
-    this.selectingValue = null;
-    this.selectingAggregationValue = null;
-
-    // Remove X Axis selection if the chart type doesn't use it
-    if (!this.haveXAxis())
-    {
-      this.xAxisSelected = null;
-      this.values.xaxis = null;
-    }
-
-    // Remove analysis selection if the simple chart uses intervals
-    if (this.panelMode === "advanced" && !(this.selectedPanelType.flags & ChartFlags.XYCHART))
-      this.analysisSelected = null;
-
-    if (this.panelMode === "advanced")
-      name = "Advanced " + name;
-
-    for (let chart of this.chartTypes)
-    {
-      if (chart.name === name)
-      {
-        this.values.currentChartType = chart;
-        break;
-      }
-    }
-
-    this.checkChartType ();
-  }
-
-  checkPanelType(chartType): boolean
-  {
-    if (!chartType.allowedInAdvancedMode && this.panelMode === "advanced")
-      return false;
-
-    if (this.globals.currentApplication.name !== "masFlight")
-    {
-      // don't allow map types on applications other than masFlight
-      if ((chartType.flags & ChartFlags.MAP) || (chartType.flags & ChartFlags.HEATMAP))
-        return false;
-    }
-
-    return true;
-  }
-
-  selectStep(step: number): void
-  {
-    this.menuCategories = [];
-
-    switch (step)
-    {
-      case 3:
-        this.selectedStep = 3;
-        this.stepLoading = 3;
-        this.selectedItem = null;
-        this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
-        break;
-
-      case 4:
-        if (!this.values.currentOption)
-          return;
-
-        this.selectedStep = 4;
-        this.stepLoading = 4;
-        this.service.loadOptionCategoryArguments (this, this.values.currentOption.id, this.setCategories, this.categoriesError);
-        break;
-
-      case 5:
-        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
-          return;
-
-        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-          this.panelMode = "advanced";
-        else
-          this.panelMode = "basic";
-
-        this.selectedStep = 5;
-
-        if (!this.msfConfigTableRef.dataSource)
-        {
-          if (this.stepLoading != 4)
-          {
-            this.stepLoading = 5;
-            this.configTableLoading = true;
-            this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
-          }
-        }
-        else
-        {
-          if (this.values.variable)
-          {
-            for (let column of this.msfConfigTableRef.metadata)
-            {
-              if (this.values.variable.id == column.columnName)
-              {
-                this.analysisSelected = column;
-                break;
-              }
-            }
-          }
-
-          if (this.values.xaxis)
-          {
-            for (let column of this.msfConfigTableRef.metadata)
-            {
-              if (this.values.xaxis.id == column.columnName)
-              {
-                this.xAxisSelected = column;
-                break;
-              }
-            }
-          }
-
-          if (this.values.valueColumn)
-          {
-            for (let column of this.msfConfigTableRef.metadata)
-            {
-              if (this.values.valueColumn.id == column.columnName)
-              {
-                if (this.panelMode === "advanced")
-                  this.aggregationValueSelected = column;
-                else
-                  this.valueSelected = column;
-
-                break;
-              }
-            }
-          }
-        }
-        break;
-
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
-          return;
-
-        this.selectedStep = step;
-        this.stepLoading = 0;
-        break;
-
-      case 11:
-        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
-          return;
-
-        this.configureAdditionalSettings ();
-
-        if (this.values.limitMode == null)
-          this.values.limitMode = 0;
-
-        if (this.values.limitAmount == null)
-          this.values.limitAmount = 10;
-
-        if (!this.values.paletteColors || !this.values.paletteColors.length)
-          this.useThemeColors = true;
-
-        this.selectedStep = 11;
-        this.stepLoading = 0;
-        break;
-
-      case 2:
-        this.selectedStep = 2;
-
-        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-        {
-          this.panelMode = "advanced";
-
-          for (let type of this.panelTypes)
-          {
-            if (this.values.currentChartType.name === "Advanced " + type.name)
-            {
-              this.selectedPanelType = type;
-              break;
-            }
-          }
-        }
-        else
-        {
-          this.panelMode = "basic";
-
-          // set panel type for the interface
-          for (let type of this.panelTypes)
-          {
-            if (this.values.currentChartType.name === type.name)
-            {
-              this.selectedPanelType = type;
-              break;
-            }
-          }
-        }
-
-        this.changeDetectorRef.detectChanges ();
-        this.scrollSelectedPanelIntoView ();
-
-      default:
-        this.selectedStep = step;
-        this.stepLoading = 0;
-        break;
-    }
-  }
-
-  scrollSelectedPanelIntoView(): void
-  {
-    let target;
-
-    target = document.getElementById (this.selectedPanelType.name + "-panel");
-    target.parentNode.parentNode.scrollTop = target.offsetTop - 370;
-  }
-
-  setCategories(_this, data): void
-  {
-    let optionCategories = [];
-
-    if (_this.stepLoading != 4)
-      return;
-
-    if (!data.length)
-    {
-      // load table when there are no control variables
-      _this.configTableLoading = true;
-      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
-      return;
-    }
-
-    if (_this.values.currentOptionCategories == null || !_this.controlVariablesSet)
-      _this.tablePreview = false;
-    else
-      _this.tablePreview = true;
-
-    data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
-
-    for (let optionCategory of data)
-    {
-      for (let category of optionCategory.categoryArgumentsId)
-      {
-        for (let argument of category.arguments)
-        {
-          if (argument.value1)
-            argument.value1 = JSON.parse (argument.value1);
-
-          if (argument.value2)
-            argument.value2 = JSON.parse (argument.value2);
-
-          if (argument.value3)
-            argument.value3 = JSON.parse (argument.value3);
-
-          if (argument.value4)
-            argument.value4 = JSON.parse (argument.value4);
-
-          if (argument.dateLoaded)
-            argument.dateLoaded = JSON.parse (argument.dateLoaded);
-
-          if (argument.currentDateRangeValue)
-            argument.currentDateRangeValue = JSON.parse (argument.currentDateRangeValue);
-
-          if (argument.minDate)
-            argument.minDate = new Date (argument.minDate);
-
-          if (argument.maxDate)
-            argument.maxDate = new Date (argument.maxDate);
-
-          if (argument.filters)
-          {
-            argument.filters = JSON.parse (argument.filters);
-
-            for (let i = argument.filters.length - 1; i >= 0; i--)
-            {
-              let filter = argument.filters[i];
-              let argExists = false;
-
-              for (let option of data)
-              {
-                for (let item of option.categoryArgumentsId)
-                {
-                  if (filter.argument == item.id)
-                  {
-                    argument.filters[i].argument = item;
-                    argExists = true;
-                    break;
-                  }
-                }
-
-                if (argExists)
-                  break;
-              }
-
-              if (!argExists)
-                argument.filters.splice (i, 1);
-            }
-          }
-        }
-
-        optionCategories.push (category);
-      }
-    }
-
-    // if the category is not empty, add the categories that are missing
-    if (_this.values.currentOptionCategories != null)
-    {
-      for (let optionCategory of optionCategories)
-      {
-        for (let curOptionCategory of _this.values.currentOptionCategories)
-        {
-          for (let curCategoryArgument of curOptionCategory.arguments)
-          {
-            for (let argument of optionCategory.arguments)
-            {
-              if (curCategoryArgument.name1 == argument.name1)
-              {
-                argument.value1 = curCategoryArgument.value1;
-                argument.value2 = curCategoryArgument.value2;
-                argument.value3 = curCategoryArgument.value3;
-                argument.value4 = curCategoryArgument.value4;
-                argument.dateLoaded = curCategoryArgument.dateLoaded;
-                argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
-                argument.dateSelectionMode = curCategoryArgument.dateSelectionMode;
-                argument.anchored = curCategoryArgument.anchored;
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    _this.values.currentOptionCategories = optionCategories;
-
-    if (_this.tablePreview)
-    {
-      _this.tempOptionCategories = null;
-      _this.configureControlVariables ();
-      _this.configTableLoading = true;
-      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
-    }
-    else
-    {
-      _this.tempOptionCategories = optionCategories;
-      _this.values.currentOptionCategories = null;
-      _this.stepLoading = 0;
-      _this.controlVariablesSet = false;
-      _this.changeDetectorRef.detectChanges ();
-      _this.editTabs.realignInkBar ();
-    }
-  }
-
-  loadConfigTableData(handlerSuccess, handlerError): void
-  {
-    let url, urlBase, urlArg;
-
-    this.msfConfigTableRef.displayedColumns = [];
-
-    if (!this.actualPageNumber)
-      this.msfConfigTableRef.dataSource = null;
-
-    if (this.globals.currentApplication.name === "DataLake")
-    {
-      if (this.getParameters ())
-        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
-      else
-        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
-    }
-    else
-      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
-
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=25&page_number=0";
-    urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
-
-    if (this.globals.testingPlan != -1)
-      url += "&testPlanId=" + this.globals.testingPlan;
-
-    if (isDevMode ())
-      console.log (urlBase);
-
-    this.authService.get (this.msfConfigTableRef, url, handlerSuccess, handlerError);
-  }
-
-  categoriesError(_this): void
-  {
-    if (_this.stepLoading != 4)
-      return;
-
-    _this.stepLoading = 0;
-  }
-
-  getArgumentLabel1(argument: Arguments)
-  {
-    let value: String;
-
-    value = argument.label1;
-    if (!value)
-      value = argument.title;
-    if (!value)
-      value = argument.name1;
-
-    if (!value.endsWith (':'))
-      return value + ": ";
-
-    if (!value.endsWith (" "))
-      return value + " ";
-
-    return value;
-  }
-
-  getArgumentLabel2(argument: Arguments)
-  {
-    let value: String;
-
-    value = argument.label2;
-    if (!value)
-      value = argument.title;
-    if (!value)
-      value = argument.name2;
-
-    if (!value.endsWith (':'))
-      return value + ": ";
-
-    if (!value.endsWith (" "))
-      return value + " ";
-
-    return value;
-  }
-
-  getArgumentLabel3(argument: Arguments)
-  {
-    let value: String;
-
-    value = argument.label3;
-    if (!value)
-      value = argument.title;
-    if (!value)
-      value = argument.name3;
-
-    if (!value.endsWith (':'))
-      return value + ": ";
-
-    if (!value.endsWith (" "))
-      return value + " ";
-
-    return value;
-  }
-
-  getArgumentLabel4(argument: Arguments)
-  {
-    let value: String;
-
-    value = argument.name4;
-
-    if (!value.endsWith (':'))
-      return value + ": ";
-
-    if (!value.endsWith (" "))
-      return value + " ";
-
-    return value;
-  }
-
-  valueIsEmpty(value)
-  {
-    if (value)
-    {
-      if (Array.isArray (value) || value === typeof String)
-      {
-        if (value.length)
-          return false;
-      }
-      else
-        return false;
-    }
-
-    return true;
-  }
-
-  refreshTable(): void
-  {
-    this.stepLoading = 4;
-    this.configTableLoading = true;
-    this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
-    this.changeDetectorRef.detectChanges ();
-  }
-
-  cancelEdit(): void
-  {
-    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
-    this.tablePreview = true;
-    this.tempOptionCategories = null;
-    this.changeDetectorRef.detectChanges ();
-    this.configTabs.realignInkBar ();
-  }
-
-  goToEditor(): void
-  {
-    this.tempOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
-    this.tablePreview = false;
-    this.changeDetectorRef.detectChanges ();
-    this.editTabs.realignInkBar();
-    this.editTabs._tabHeader._alignInkBarToSelectedTab ();
-  }
-
-  isTitleOnly(argument: Arguments): boolean
-  {
-    return ComponentType.title == argument.type;
-  }
-
-  isSingleCheckbox(argument: Arguments): boolean
-  {
-    return ComponentType.singleCheckbox == argument.type;
-  }
-
-  isTaxiTimesCheckbox(argument: Arguments): boolean
-  {
-    return ComponentType.taxiTimesCheckbox == argument.type;
-  }
-
-  isDateRange(argument: Arguments): boolean
-  {
-    return ComponentType.dateRange == argument.type;
-  }
-
-  configureControlVariables(): void
-  {
-    if (!this.values.currentOptionCategories)
-      return;
-
-    for (let controlVariable of this.values.currentOptionCategories)
-    {
-      if (controlVariable.arguments)
-      {
-        for (let i = 0; i < controlVariable.arguments.length; i++)
-        {
-          let controlVariableArgument = controlVariable.arguments[i];
-          let args: any[];
-
-          controlVariableArgument.checkboxes = [];
-
-          if (this.isTaxiTimesCheckbox (controlVariable.arguments[i]) && !controlVariable.taxiTimesCheckbox)
-          {
-            // Make sure that this specific checkbox is always the last argument in a control variable
-            controlVariable.taxiTimesCheckbox = controlVariable.arguments[i];
-          }
-          else if (i + 1 < controlVariable.arguments.length
-            && (this.isSingleCheckbox (controlVariable.arguments[i + 1])))
-          {
-            // Count the number of checkboxes for a special case
-            args = controlVariable.arguments.slice (i + 1, controlVariable.arguments.length);
-
-            for (let argument of args)
-            {
-              if (!this.isSingleCheckbox (argument))
-                break;
-
-              controlVariableArgument.checkboxes.push (argument);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  isMatIcon(icon): boolean
-  {
-    return !icon.endsWith (".png");
-  }
-
-  getImageIcon(controlVariable, hover): string
-  {
-    let newurl, filename: string;
-    let path: string[];
-    let url;
-
-    url = controlVariable.icon;
-    path = url.split ('/');
-    filename = path.pop ().split ('?')[0];
-    newurl = "";
-
-    // recreate the url with the theme selected
-    for (let dir of path)
-      newurl += dir + "/";
-
-    if (hover)
-      newurl += this.globals.theme + "-hover-" + filename;
-    else
-      newurl += this.globals.theme + "-" + filename;
-
-    return newurl;
-  }
-
-  setCtrlVariableLoading(value: boolean): void
-  {
-    if (value)
-      this.stepLoading = 4;
-    else
-      this.stepLoading = 0;
-  }
-
-  recursiveMenuCategory(menuCategory): void
-  {
-    if (menuCategory.children && menuCategory.children.length)
-    {
-      // the submenu must have the items with children first
-      menuCategory.children.sort (function(e1, e2) {
-        if (e1.children.length && e2.children.length)
-          return 0;
-
-        return e2.children.length - e1.children.length;
-      });
-
-      for (let i = menuCategory.children.length - 1; i >= 0; i--)
-      {
-        let child = menuCategory.children[i];
-
-        if (child.typeOption == '1')
-          menuCategory.children.splice (i, 1);
-        else if (child.children && child.children.length)
-          this.recursiveMenuCategory (child);
-      }
-    }
-  }
-
-  selectDataSuccess(_this, data): void
-  {
-    if (_this.stepLoading != 3)
-      return;
-
-    _this.menuCategories = data;
-
-    for (let menuCategory of _this.menuCategories)
-    {
-      // remove options that are exclusive to the main menu
-      if (menuCategory.children && menuCategory.children.length)
-      {
-        // the submenu must have the items with children first
-        menuCategory.children.sort (function(e1, e2) {
-          if (e1.children.length && e2.children.length)
-            return 0;
-
-          return e2.children.length - e1.children.length;
-        });
-
-        for (let i = menuCategory.children.length - 1; i >= 0; i--)
-        {
-          let child = menuCategory.children[i];
-
-          if (child.typeOption == '1')
-            menuCategory.children.splice (i, 1);
-          else if (child.children && child.children.length)
-            _this.recursiveMenuCategory (child);
-        }
-      }
-
-      menuCategory.flatNodeMap = new Map<ExampleFlatNode, any> ();
-      menuCategory.nestedNodeMap = new Map<any, ExampleFlatNode> ();
-
-      let transformer = (node: any, level: number) =>
-      {
-        const existingNode = menuCategory.nestedNodeMap.get (node);
-        const flatNode = existingNode && existingNode.label === node.label
-          ? existingNode
-          : new ExampleFlatNode ();
-        flatNode.expandable = !!node.children && node.children.length > 0;
-        flatNode.id = node.id;
-        flatNode.uid = node.uid;
-        flatNode.label = node.label;
-        flatNode.level = level;
-        flatNode.menuOptionArgumentsAdmin = node.menuOptionArgumentsAdmin;
-        flatNode.categoryParentId = node.categoryParentId;
-        flatNode.baseUrl = node.baseUrl;
-        flatNode.icon = node.icon;
-        flatNode.tab = node.tab;
-        flatNode.tabType = node.tabType;
-        flatNode.menuParentId = node.menuParentId;
-        flatNode.toDelete = node.toDelete;
-        flatNode.dataAvailability = node.dataAvailability;
-        flatNode.metaData = node.metaData;
-        flatNode.order = node.order,
-        flatNode.selected = node.selected;
-        flatNode.applicationId = node.applicationId;
-        flatNode.isRoot = node.isRoot;
-        flatNode.children = node.children;
-        flatNode.initialRol = node.initialRol;
-        flatNode.finalRol = node.finalRol;
-        flatNode.typeOption = node.typeOption;
-        flatNode.welcome = node.welcome;
-
-        if (_this.values.currentOption && _this.values.currentOption.id == flatNode.id && !_this.selectedItem)
-          _this.selectedItem = flatNode;
-    
-        menuCategory.flatNodeMap.set (flatNode, node);
-        menuCategory.nestedNodeMap.set (node, flatNode);
-
-        return flatNode;
-      };
-
-      menuCategory.transformer = transformer;
-
-      menuCategory.treeControl = new FlatTreeControl<ExampleFlatNode> (
-        node => node.level,
-        node => node.expandable
-      );
-
-      menuCategory.treeFlattener = new MatTreeFlattener (
-        transformer,
-        node => node.level,
-        node => node.expandable,
-        node => node.children
-      );
-
-      menuCategory.tree = new MatTreeFlatDataSource (menuCategory.treeControl, menuCategory.treeFlattener);
-      menuCategory.tree.data = menuCategory.children;
-
-      if (_this.values.currentOption)
-        _this.expandSelectedOption (menuCategory, _this.values.currentOption.id);
-    }
-
-    _this.stepLoading = 0;
-
-    if (_this.scrollToOption)
-    {
-      let target, optionOffsetTop;
-
-      _this.changeDetectorRef.detectChanges();
-
-      // scroll to the selected option
-      target = document.getElementById (_this.scrollToOption.category);
-      target.parentNode.parentNode.parentNode.scrollLeft = 401 * _this.scrollToOption.categoryIndex;
-
-      optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 527;
-      if (optionOffsetTop + 32 > 294)
-        target.scrollTop = optionOffsetTop;
-
-      _this.scrollToOption = null;
-    }
-  }
-
-  expandSelectedOption (menuCategory, selectedOptionId: number)
-  {
-    if (!menuCategory.treeControl.dataNodes || menuCategory.treeControl.dataNodes.length === 0)
-      return;
-
-    return menuCategory.treeControl.dataNodes.forEach(node =>
-    {
-      if (selectedOptionId == node.id)
-      {
-        let parent;
-
-        menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf(node)]);
-
-        parent = this.getParentNode (menuCategory, node);
-        while (parent)
-        {
-          menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf (parent)]);
-          parent = this.getParentNode (menuCategory, parent);
-        }
-
-        // scroll here
-        this.scrollToOption = {
-          category: "menu-" + this.menuCategories.indexOf (menuCategory) + "-scroll",
-          option: "node-" + node.label,
-          categoryIndex: this.menuCategories.indexOf (menuCategory)
-        };
-      }
-    });
-  }
-
-  getParentNode(menuCategory, node: ExampleFlatNode): ExampleFlatNode | null
-  {
-    const currentLevel = node.level;
-
-    if (currentLevel < 1)
-      return null;
-
-    const startIndex = menuCategory.treeControl.dataNodes.indexOf(node) - 1;
-
-    for (let i = startIndex; i >= 0; i--)
-    {
-      const currentNode = menuCategory.treeControl.dataNodes[i];
-
-      if (currentNode.level < currentLevel)
-        return currentNode;
-    }
-
-    return null;
-  }
-
-  selectDataError(_this): void
-  {
-    if (_this.stepLoading != 3)
-      return;
-
-    _this.stepLoading = 0;
-  }
-
-  tablePreview: boolean = true;
-
-  checkTablePreviewVisibility(): string
-  {
-    if (this.tablePreview)
-      return "block";
-
-    return "none";
-  }
-
-  checkEditVisibility(): string
-  {
-    if (!this.tablePreview)
-      return "block";
-
-    return "none";
-  }
-
-  analysisSelected: any = null;
-  selectingAnalysis: boolean = false;
-  xAxisSelected: any = null;
-  selectingXAxis: boolean = false;
-  valueSelected: any = null;
-  selectingValue: boolean = false;
-  chartPreviewHover: boolean = false;
-  aggregationValueSelected: any = null;
-  selectingAggregationValue: boolean = false;
-  lastColumn: any;
-
-  hasAnalysisByValue(): boolean
-  {
-    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-    {
-      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-        return true;
-
-      return false;
-    }
-
-    return true;
-  }
-
-  selectAnalysis(): void
-  {
-    if (this.selectingAnalysis)
-    {
-      this.lastColumn = null;
-      this.selectingAnalysis = false;
-    }
-
-    this.selectingAnalysis = true;
-    this.selectingXAxis = false;
-    this.selectingValue = false;
-    this.selectingAggregationValue = false;
-    this.lastColumn = null;
-    this.analysisSelected = null;
-    this.values.variable = null;
-  }
-
-  selectXAxis(): void
-  {
-    if (this.selectingXAxis)
-    {
-      this.lastColumn = null;
-      this.selectingXAxis = false;
-    }
-
-    this.selectingAnalysis = false;
-    this.selectingXAxis = true;
-    this.selectingValue = false;
-    this.selectingAggregationValue = false;
-    this.lastColumn = null;
-    this.xAxisSelected = null;
-    this.values.xaxis = null;
-  }
-
-  selectValue(): void
-  {
-    if (this.selectingValue)
-    {
-      this.lastColumn = null;
-      this.selectingValue = false;
-    }
-
-    this.selectingAnalysis = false;
-    this.selectingXAxis = false;
-    this.selectingValue = true;
-    this.selectingAggregationValue = false;
-    this.lastColumn = null;
-    this.valueSelected = null;
-    this.values.valueColumn = null;
-  }
-
-  selectAggregationValue(): void
-  {
-    if (this.selectingAggregationValue)
-    {
-      this.lastColumn = false;
-      this.selectingAggregationValue = false;
-    }
-
-    this.selectingAnalysis = false;
-    this.selectingXAxis = false;
-    this.selectingValue = false;
-    this.selectingAggregationValue = true;
-    this.lastColumn = null;
-    this.aggregationValueSelected = null;
-    this.values.valueColumn = null;
-  }
-
-  finishLoadingConfigTable(error): void
-  {
-    if (this.stepLoading != 4 && this.stepLoading != 5)
-      return;
-
-    this.stepLoading = 0;
-    this.configTableLoading = false;
-
-    this.changeDetectorRef.detectChanges ();
-
-    if (this.configTabs)
-      this.configTabs.realignInkBar ();
-
-    if (error)
-    {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "Failed to generate results." }
-      });
-
-      return;
-    }
-
-    if (!this.msfConfigTableRef.tableOptions.dataSource && !this.msfConfigTableRef.tableOptions.template)
-    {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Information", message: "Results not available." }
-      });
-
-      return;
-    }
-
-    if (this.tempOptionCategories)
-    {
-      this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
-      this.tempOptionCategories = null;
-    }
-
-    this.controlVariablesSet = true;
-    this.configuredControlVariables = true;
-    this.tablePreview = true;
-    this.analysisSelected = null;
-    this.xAxisSelected = null;
-    this.valueSelected = null;
-
-    if (this.selectedStep == 5)
-    {
-      if (this.values.variable)
-      {
-        for (let column of this.msfConfigTableRef.metadata)
-        {
-          if (this.values.variable.id == column.columnName)
-          {
-            this.analysisSelected = column;
-            break;
-          }
-        }
-      }
-
-      if (this.values.xaxis)
-      {
-        for (let column of this.msfConfigTableRef.metadata)
-        {
-          if (this.values.xaxis.id == column.columnName)
-          {
-            this.xAxisSelected = column;
-            break;
-          }
-        }
-      }
-
-      if (this.values.valueColumn)
-      {
-        for (let column of this.msfConfigTableRef.metadata)
-        {
-          if (this.values.valueColumn.id == column.columnName)
-          {
-            if (this.panelMode === "advanced")
-              this.aggregationValueSelected = column;
-            else
-              this.valueSelected = column;
-
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  selectItem(item): void
-  {
-    if (item == this.selectedItem)
-      return;
-
-    this.selectedItem = item;
-
-    for (let option of this.values.options)
-    {
-      if (option.id == item.id)
-      {
-        this.values.currentOption = option;
-        break;
-      }
-    }
-
-    this.controlVariablesSet = false;
-    this.loadChartFilterValues (this.values.currentOption);
-  }
-
-  filterMenuOptions(menuCategory): void
-  {
-    for (let index = 0; index < menuCategory.treeControl.dataNodes.length; index++)
-    {
-      const option = menuCategory.treeControl.dataNodes[index];
-
-      this.setShowOption (option, menuCategory.searchLabel);
-      this.recursiveOption (option, menuCategory.searchLabel);
-    }
-
-    if (menuCategory.searchLabel)
-      menuCategory.treeControl.expandAll ();
-    else
-      menuCategory.treeControl.collapseAll ();
-  }
-
-  recursiveOption(option: any, searchLabel: string): void
-  {
-    if (option.children.length)
-    {
-      for (let index = 0; index < option.children.length; index++)
-      {
-        const element = option.children[index];
-  
-        this.setShowOption (element, searchLabel);
-        this.recursiveOption (element, searchLabel);
-      }
-    }
-    else
-      this.setShowOption (option, searchLabel);
-  }
-
-  setShowOption(option: any, searchLabel: string): void
-  {
-    if (searchLabel != "" && searchLabel != null)
-    {
-      if (option.label.toLowerCase ().indexOf (searchLabel.toLowerCase ()) != -1)
-        option.show = true;
-      else
-        option.show = false;
-    }
-    else
-      option.show = true;
-  }
-
-  resultsGenerated(): boolean
-  {
-    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated);
-  }
-
-  isValueSelectedForSimpleChart(column): boolean
-  {
-    if (!this.isSimpleChart())
-      return false;
-
-    if (!this.values.valueList)
-      return false;
-
-    for (let value of this.values.valueList)
-    {
-      if (column.columnName === value.id)
-        return true;
-    }
-
-    return false;
-  }
-
-  dynTableHasXAxis(): boolean
-  {
-    if (this.values.dynTableVariables)
-    {
-      for (let variable of this.values.dynTableVariables)
-      {
-        if (variable.direction === "horizontal")
-          return true;
-      }
-    }
-
-    return false;
-  }
-
-  dynTableHasYAxis(): boolean
-  {
-    if (this.values.dynTableVariables)
-    {
-      for (let variable of this.values.dynTableVariables)
-      {
-        if (variable.direction === "vertical")
-          return true;
-      }
-    }
-
-    return false;
-  }
-
-  dynTableHasValues(): boolean
-  {
-    if (this.values.dynTableValues && this.values.dynTableValues.length)
-      return true;
-
-    return false;
-  }
-
-  hoverTableColumn(index): void
-  {
-    if (this.lastColumn !== index)
-      this.lastColumn = index;
-  }
-
-  setChartValue(): void
-  {
-    if (this.selectingAnalysis)
-    {
-      this.analysisSelected = this.lastColumn;
-
-      for (let variable of this.values.chartColumnOptions)
-      {
-        if (variable.id == this.lastColumn.columnName)
-        {
-          this.values.variable = variable;
-          break;
-        }
-      }
-
-      this.selectingAnalysis = false;
-      this.checkPanelConfiguration ();
-    }
-
-    if (this.selectingXAxis)
-    {
-      this.xAxisSelected = this.lastColumn;
-
-      for (let variable of this.values.chartColumnOptions)
-      {
-        if (variable.id == this.lastColumn.columnName)
-        {
-          this.values.xaxis = variable;
-          break;
-        }
-      }
-
-      this.selectingXAxis = false;
-      this.checkPanelConfiguration ();
-    }
-
-    if (this.selectingValue)
-    {
-      this.valueSelected = this.lastColumn;
-
-      for (let variable of this.values.chartColumnOptions)
-      {
-        if (variable.id == this.lastColumn.columnName)
-        {
-          this.values.valueColumn = variable;
-          break;
-        }
-      }
-
-      this.selectingValue = false;
-      this.checkPanelConfiguration ();
-    }
-
-    if (this.selectingAggregationValue)
-    {
-      this.aggregationValueSelected = this.lastColumn;
-
-      for (let variable of this.values.chartColumnOptions)
-      {
-        if (variable.id == this.lastColumn.columnName)
-        {
-          this.values.valueColumn = variable;
-          break;
-        }
-      }
-
-      this.selectingAggregationValue = false;
-      this.checkPanelConfiguration ();
-    }
-
-    this.lastColumn = null;
-  }
-
-  haveXAxis(): boolean
-  {
-    if (this.selectedPanelType.flags & ChartFlags.XYCHART)
-      return true;
-
-    return false;
-  }
-
-  hasAdditinalSettings(): boolean
-  {
-    if (!this.isDynTablePanel () && !this.isTablePanel () && !this.isInformationPanel () && !this.isSimpleFormPanel ()
-      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ())
-      return true;
-
-    return (this.isHeatMapPanel () || this.isSimpleFormPanel () || this.isTablePanel ()) ? true : false;
-  }
-
-  trackColor(index): number
-  {
-    return index;
-  }
-
-  addThreshold(): void
-  {
-    this.values.thresholds.push ({
-      min: 0,
-      max: 0,
-      color: "#000000"
-    });
-  }
-
-  removeThreshold(): void
-  {
-    if (this.values.thresholds.length)
-      this.values.thresholds.pop ();
-  }
-
-  addGoal(): void
-  {
-    this.values.goals.push ({
-      value: 0,
-      color: "#000000"
-    });
-  }
-
-  removeGoal(): void
-  {
-    if (this.values.goals.length)
-      this.values.goals.pop ();
-  }
-
-  toggleInfo(menuCategory): void
-  {
-    menuCategory.infoOpen = !menuCategory.infoOpen;
   }
 }

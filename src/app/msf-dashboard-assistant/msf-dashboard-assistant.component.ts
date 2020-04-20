@@ -1,7 +1,7 @@
-import { Component, Inject, ViewChild, ChangeDetectorRef, isDevMode } from '@angular/core';
-import { MatDialogRef, MatStepper, MAT_DIALOG_DATA, MatTabGroup, MatDialog } from '@angular/material';
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4charts from "@amcharts/amcharts4/charts";
+import { Component, Inject, ViewChild, ChangeDetectorRef, isDevMode, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatTabGroup, MatDialog, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { ApplicationService } from '../services/application.service';
 import { CategoryArguments } from '../model/CategoryArguments';
@@ -12,158 +12,575 @@ import { Utils } from '../commons/utils';
 import { Globals } from '../globals/Globals';
 import { ComponentType } from '../commons/ComponentType';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
-import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 import { Themes } from '../globals/Themes';
 import { MessageComponent } from '../message/message.component';
+import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
+import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
+import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
+import { ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
+import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
-  templateUrl: './msf-dashboard-assistant.component.html'
+  templateUrl: './msf-dashboard-assistant.component.html',
+  styleUrls: ['./msf-dashboard-assistant.component.css']
 })
-export class MsfDashboardAssistantComponent {
+export class MsfDashboardAssistantComponent implements OnInit {
   utils: Utils;
-  isLoading: boolean;
+  values: MsfDashboardPanelValues;
+  panelForm: FormGroup;
+  updateURLResults: boolean = false;
 
-  chartTypes: any[] = [
-    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', createSeries: this.createSimpleVertColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png', createSeries: this.createSimpleHorizColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', createSeries: this.createVertColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', createSeries: this.createHorizColumnSeries, allowedInAdvancedMode: true },
-    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', createSeries: this.createFunnelSeries, allowedInAdvancedMode: false },
-    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', createSeries: this.createSimpleLineSeries, allowedInAdvancedMode: true },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, image: 'scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
-    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, image: 'simple-scatter-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: true },
-    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
-    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', createSeries: this.createLineSeries, allowedInAdvancedMode: false },
-    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
-    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', createSeries: this.createPieSeries, allowedInAdvancedMode: false },
+  panelTypes: any[] = [
+    { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', allowedInAdvancedMode: true },
+    { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', allowedInAdvancedMode: true },
+    { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', allowedInAdvancedMode: true },
+    { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png', allowedInAdvancedMode: true },
+    { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', allowedInAdvancedMode: true },
+    { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', allowedInAdvancedMode: true },
+    { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', allowedInAdvancedMode: false },
+    { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', allowedInAdvancedMode: true },
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', allowedInAdvancedMode: true },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: true },
+    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, image: 'simple-scatter-chart.png', allowedInAdvancedMode: true },
+    { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', allowedInAdvancedMode: false },
+    { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', allowedInAdvancedMode: false },
+    { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', allowedInAdvancedMode: false },
+    { name: 'Donut', flags: ChartFlags.DONUTCHART, image: 'donut-chart.png', allowedInAdvancedMode: false },
+    { name: 'Table', flags: ChartFlags.TABLE, image: 'table.png', allowedInAdvancedMode: false },
+    { name: 'Dynamic Table', flags: ChartFlags.DYNTABLE, image: 'dyn-table.png', allowedInAdvancedMode: false },
+    { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
+    { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
+    { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
+    { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
+    { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
+    { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
   ];
 
-  chartMode: string = "basic";
+  functions: any[];
+  chartTypes: any[];
+  nciles: number[];
+  fontSizes: any[];
+  orientations: any[];
+  geodatas: any[];
 
-  selectedChartType: any = this.chartTypes[0];
-  analysisSelected: any = null;
-  selectingAnalysis: boolean = false;
-  xAxisSelected: any = null;
-  selectingXAxis: boolean = false;
-  valueSelected: any = null;
-  selectingValue: boolean = false;
-  chartPreviewHover: boolean = false;
-  aggregationValueSelected: any = null;
-  selectingAggregationValue: boolean = false;
-  function: any;
-  intervalType: string = "ncile";
-  ncile: number = 5;
-  intValue: string;
-  lastColumn: any;
+  msfMapRef: any;
+  generateBtnEnabled: boolean = false;
 
-  currentOption: any;
-  currentOptionCategories: any[];
-  chartColumnOptions: any[];
-  tempOptionCategories: any[];
+  // dashboard interface values
+  selectedPanelType: any = this.panelTypes[0];
+  controlVariablesSet: boolean = false;
+  selectedStep: number = 1;
+  stepLoading: number = 0;
 
-  actualPageNumber: number;
-  moreResults: boolean = false;
-  moreResultsBtn: boolean = false;
-  displayedColumns;
+  menuCategories: any[] = [];
+  selectedItem: any = null;
 
-  tablePreview: boolean = true;
-  selectDataPreview: boolean = false;
+  hasChild = (_: number, node: any) => (node.expandable);
 
-  @ViewChild('msfTableRef', { static: false })
-  msfTableRef: MsfTableComponent;
-
-  @ViewChild("tabs", { static: false })
-  tabs: MatTabGroup;
-
+  configTableLoading: boolean = false;
   configuredControlVariables: boolean = false;
-  startAtZero: boolean = false;
-  ordered: boolean = true;
-  updateURLResults: boolean = false;
+  tempOptionCategories: any = null;
+  panelMode: string = "basic";
+  panelConfigRefresh: boolean = false;
+  advConfigFlags: ConfigFlags = null;
+  useThemeColors: boolean = false;
+  scrollToOption: any = null;
+
+  childPanelValues: any[] = [];
+  childPanelsConfigured: boolean[] = [];
+
+  @ViewChild("configTabs", { static: false })
+  configTabs: MatTabGroup;
+
+  @ViewChild("editTabs", { static: false })
+  editTabs: MatTabGroup;
+
+  @ViewChild('msfConfigTableRef', { static: false })
+  msfConfigTableRef: MsfTableComponent;
+
+  filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  filteredValues: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  filteredInfoVar1: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  filteredInfoVar2: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  filteredInfoVar3: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+  filteredColumns: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
+
+  variableFilterCtrl: FormControl = new FormControl ();
+  valueFilterCtrl: FormControl = new FormControl ();
+  infoVar1FilterCtrl: FormControl = new FormControl ();
+  infoVar2FilterCtrl: FormControl = new FormControl ();
+  infoVar3FilterCtrl: FormControl = new FormControl ();
+  columnFilterCtrl: FormControl = new FormControl ();
+
+  formFilterCtrl: FormControl[] = [];
+
+  _onDestroy = new Subject<void> ();
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
     private service: ApplicationService,
     private authService: AuthService,
+    private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
     this.utils = new Utils ();
 
-    this.isLoading = true;
-    this.currentOption = data.currentOption;
-    this.currentOptionCategories = data.currentOptionCategories;
-    this.chartColumnOptions = data.chartColumnOptions;
-    this.function = data.functions[0];
-    this.selectDataPreview = data.selectDataPreview;
+    // This is for the dialog version
+    this.values = new MsfDashboardPanelValues (this.data.values.options, this.data.values.chartName,
+      this.data.values.chartDescription, this.data.values.id, this.data.values.gridId,
+      this.data.values.x, this.data.values.y, this.data.values.width,
+      this.data.values.height);
 
-    this.configureControlVariables ();
+    this.values.chartGenerated = this.data.values.chartGenerated;
+    this.values.infoGenerated = this.data.values.infoGenerated;
+    this.values.formGenerated = this.data.values.formGenerated;
+    this.values.picGenerated = this.data.values.picGenerated;
+    this.values.tableGenerated = this.data.values.tableGenerated;
+    this.values.mapboxGenerated = this.data.values.mapboxGenerated;
+    this.values.dynTableGenerated = this.data.values.dynTableGenerated;
+
+    this.functions = this.data.functions;
+    this.chartTypes = this.data.chartTypes;
+    this.nciles = this.data.nciles;
+    this.fontSizes = this.data.fontSizes;
+    this.orientations = this.data.orientations;
+    this.geodatas = this.data.geodatas;
+    this.childPanelValues = this.data.childPanelValues;
+    this.childPanelsConfigured = this.data.childPanelsConfigured;
+
+    this.panelForm = this.formBuilder.group ({
+      columnCtrl: new FormControl (''),
+      fontSizeCtrl: new FormControl (this.fontSizes[1]),
+      valueFontSizeCtrl: new FormControl (this.fontSizes[1]),
+      valueOrientationCtrl: new FormControl (this.orientations[0]),
+      functionCtrl: new FormControl (this.functions[0])
+    });
+
+    this.msfMapRef = this.data.msfMapRef;
+
+    this.generateBtnEnabled = this.data.generateBtnEnabled;
+
+    this.controlVariablesSet = this.data.controlVariablesSet;
   }
 
-  ngAfterViewInit(): void
+  ngOnInit()
   {
-    this.msfTableRef.tableOptions = this;
+    let i, item;
 
-    if (!this.currentOptionCategories)
-      this.service.loadOptionCategoryArguments (this, this.currentOption.id, this.setCategories, this.handlerError);
+    // copy function list for use with the information panel
+    this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
+    this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
+    this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
+
+    // discard any changes
+    this.values.urlImg = this.data.values.urlImg;
+    this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
+    this.values.chartName = this.data.values.chartName;
+    this.values.chartDescription = this.data.values.chartDescription;
+
+    this.values.function = this.data.values.function;
+    this.values.geodata = this.data.values.geodata;
+    this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.data.values.chartColumnOptions));
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.data.values.currentOptionCategories));
+    this.values.thresholds = JSON.parse (JSON.stringify (this.data.values.thresholds));
+    this.values.goals = JSON.parse (JSON.stringify (this.data.values.goals));
+    this.values.style = JSON.parse (JSON.stringify (this.data.values.style));
+    this.values.vertAxisName = this.data.values.vertAxisName;
+    this.values.horizAxisName = this.data.values.horizAxisName;
+    this.values.dynTableValues = this.data.values.dynTableValues ? JSON.parse (JSON.stringify (this.data.values.dynTableValues)) : null;
+    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.data.values.dynTableVariables));
+    this.values.intervalType = this.data.values.intervalType;
+    this.values.intValue = this.data.values.intValue;
+    this.values.valueList = this.data.values.valueList;
+
+    if (this.values.currentOption)
+    {
+      // prepare the data form combo box
+      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
+      this.filteredValues.next (this.values.chartColumnOptions.slice ());
+
+      this.filteredInfoVar1.next (this.values.chartColumnOptions.slice ());
+      this.filteredInfoVar2.next (this.values.chartColumnOptions.slice ());
+      this.filteredInfoVar3.next (this.values.chartColumnOptions.slice ());
+
+      this.filteredColumns.next (this.values.chartColumnOptions.slice ());
+
+      this.variableSearchChange (this.variableFilterCtrl);
+      this.valueSearchChange (this.valueFilterCtrl);
+
+      this.searchChange (this.infoVar1FilterCtrl, this.filterInfoVar1);
+      this.searchChange (this.infoVar2FilterCtrl, this.filterInfoVar2);
+      this.searchChange (this.infoVar3FilterCtrl, this.filterInfoVar3);
+
+      this.columnSearchChange (this.columnFilterCtrl);
+    }
+
+    if (this.data.values.variable && this.values.chartColumnOptions != null)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        item = this.values.chartColumnOptions[i];
+
+        if (this.data.values.variable.id === item.id)
+        {
+          this.values.variable = item;
+          break;
+        }
+      }
+    }
     else
-      this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
+      this.values.variable = null;
 
-    this.changeDetectorRef.detectChanges ();
+    if (this.data.values.xaxis && this.values.chartColumnOptions != null)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        item = this.values.chartColumnOptions[i];
+
+        if (this.data.values.xaxis.id === item.id)
+        {
+          this.values.xaxis = item;
+          break;
+        }
+      }
+    }
+    else
+      this.values.xaxis = null;
+
+    if (this.data.values.valueColumn && this.values.chartColumnOptions != null)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        item = this.values.chartColumnOptions[i];
+
+        if (this.data.values.valueColumn.id === item.id)
+        {
+          this.values.valueColumn = item;
+          break;
+        }
+      }
+    }
+    else
+      this.values.valueColumn = null;
+
+    for (i = 0; i < this.chartTypes.length; i++)
+    {
+      item = this.chartTypes[i];
+
+      if (item.name === this.data.values.currentChartType.name)
+      {
+        this.values.currentChartType = item;
+        break;
+      }
+    }
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO
+      && !(this.values.currentChartType.flags & ChartFlags.FORM)
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && this.values.chartColumnOptions != null)
+    {
+      if (this.data.values.infoVar1 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.data.values.infoVar1.id === item.id)
+          {
+            this.values.variable = item;
+            break;
+          }
+        }
+      }
+
+      if (this.data.values.infoVar2 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.data.values.infoVar2.id === item.id)
+          {
+            this.values.xaxis = item;
+            break;
+          }
+        }
+      }
+
+      if (this.data.values.infoVar3 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (this.data.values.infoVar3.id === item.id)
+          {
+            this.values.valueColumn = item;
+            break;
+          }
+        }
+      }
+    }
+
+    this.values.formVariables = [];
+
+    for (let i = 0; i < this.data.values.formVariables.length; i++)
+    {
+      let formVariable = this.data.values.formVariables[i];
+      let filteredVariables = new ReplaySubject<any[]> (1);
+
+      filteredVariables.next (this.values.chartColumnOptions.slice ());
+
+      this.values.formVariables.push ({
+        value: this.values.lastestResponse[i].value,
+        column: formVariable.column,
+        fontSize: this.fontSizes[formVariable.fontSize],
+        valueFontSize: this.fontSizes[formVariable.valueFontSize],
+        valueOrientation: this.orientations[formVariable.valueOrientation],
+        function: this.functions[formVariable.function],
+        filteredVariables: filteredVariables
+      });
+    }
+
+    if (this.values.thresholds && this.values.thresholds.length)
+    {
+      for (let threshold of this.values.thresholds)
+      {
+        threshold.filteredVariables = new ReplaySubject<any[]> (1);
+        threshold.filteredVariables.next (this.values.chartColumnOptions.slice ());
+      }
+    }
+
+    this.values.tableVariables = JSON.parse (JSON.stringify (this.data.values.tableVariables));
+
+    this.values.updateIntervalSwitch = this.data.values.updateIntervalSwitch;
+    this.values.startAtZero = this.data.values.startAtZero;
+    this.values.updateTimeLeft = this.data. values.updateTimeLeft;
+    this.values.limitMode = this.data.values.limitMode;
+    this.values.limitAmount = this.data.values.limitAmount;
+    this.values.ordered = this.data.values.ordered;
+
+    this.values.style = this.msfMapRef.mapTypes[1];
   }
 
-  closeWindow(): void
+  ngAfterContentInit(): void
   {
-    this.dialogRef.close ();
+    this.checkChartType ();
   }
 
-  checkVisibility(): string
+  ngOnDestroy(): void
   {
-    if (this.isLoading)
-      return "none";
-
-    return "block";
+    this._onDestroy.next ();
+    this._onDestroy.complete ();
   }
 
-  checkStep1Visibility(stepper: MatStepper): string
+  filterValues(filterCtrl): void
   {
-    if (!stepper.selectedIndex)
-      return "block";
+    if (!this.values.chartColumnOptions)
+      return;
 
-    return "none";
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredValues.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredValues.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
   }
 
-  checkAssistantVisibility(): string
+  filterVariables(filterCtrl): void
   {
-    if (this.selectDataPreview)
-      return "none";
+    if (!this.values.chartColumnOptions)
+      return;
 
-    return "block";
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredVariables.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
   }
 
-  goBack(stepper: MatStepper): void
+  filterInfoVar1(filterCtrl): void
   {
-    stepper.previous ();
+    if (!this.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredInfoVar1.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredInfoVar1.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
   }
 
-  goForward(stepper: MatStepper): void
+  filterInfoVar2(filterCtrl): void
   {
-    stepper.next ();
+    if (!this.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredInfoVar2.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredInfoVar2.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
   }
 
-  isArray(item): boolean
+  filterInfoVar3(filterCtrl): void
   {
-    return Array.isArray (item);
+    if (!this.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredInfoVar3.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredInfoVar3.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  filterColumn(filterCtrl): void
+  {
+    if (!this.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = filterCtrl.value;
+    if (!search)
+    {
+      this.filteredColumns.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredColumns.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  filterThreshold(value, threshold): void
+  {
+    if (!this.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = value;
+    if (!search)
+    {
+      threshold.filteredVariables.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    threshold.filteredVariables.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  filterForm(value, formVariable): void
+  {
+    if (!this.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = value;
+    if (!search)
+    {
+      formVariable.filteredVariables.next (this.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    formVariable.filteredVariables.next (
+      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
+  }
+
+  variableSearchChange(filterCtrl): void
+  {
+    // listen for search field value changes
+    filterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterVariables (filterCtrl);
+      });
+  }
+
+  valueSearchChange(filterCtrl): void
+  {
+    // listen for search field value changes
+    filterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterValues (filterCtrl);
+      });
+  }
+
+  searchChange(filterCtrl, filterFunc): void
+  {
+    // listen for search field value changes
+    filterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        filterFunc (filterCtrl);
+      });
+  }
+
+  columnSearchChange(filterCtrl): void
+  {
+    // listen for search field value changes
+    filterCtrl.valueChanges
+      .pipe (takeUntil (this._onDestroy))
+      .subscribe (() => {
+        this.filterColumn (filterCtrl);
+      });
   }
 
   getParameters()
   {
-    let currentOptionCategories = this.currentOptionCategories;
+    let currentOptionCategories;
     let params;
+
+    if (this.tempOptionCategories)
+      currentOptionCategories = this.tempOptionCategories;
+    else
+      currentOptionCategories = this.values.currentOptionCategories;
 
     if (currentOptionCategories)
     {
@@ -194,94 +611,463 @@ export class MsfDashboardAssistantComponent {
     return params;
   }
 
-  loadTableData(moreResults, handlerSuccess, handlerError): void
+  hasLimitResultsSettings(): boolean
   {
-    let url, urlBase, urlArg;
-
-    this.msfTableRef.displayedColumns = [];
-  
-    if (moreResults)
-    {
-      this.actualPageNumber++;
-      this.moreResults = true;
-    }
-    else
-      this.actualPageNumber = 0;
-
-    if (!this.actualPageNumber)
-      this.msfTableRef.dataSource = null;
-
-    this.isLoading = true;
-    if (this.globals.currentApplication.name === "DataLake")
-    {
-      if (this.getParameters ())
-        urlBase = this.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
-      else
-        urlBase = this.currentOption.baseUrl + "?uName=" + this.globals.userName;
-    }
-    else
-      urlBase = this.currentOption.baseUrl + "?" + this.getParameters ();
-
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=100&page_number=" + this.actualPageNumber;
-    urlArg = encodeURIComponent (urlBase);
-    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.currentOption.id;
-
-    if (this.globals.testingPlan != -1)
-      url += "&testPlanId=" + this.globals.testingPlan;
-
-    if (isDevMode ())
-      console.log (urlBase);
-
-    this.authService.get (this.msfTableRef, url, handlerSuccess, handlerError);
+    return (this.advConfigFlags & ConfigFlags.LIMITVALUES) ? true : false;
   }
 
-  finishLoadingTable(error): void
+  hasLimitValueRangeSettings(): boolean
   {
-    if (this.currentOptionCategories)
-      this.tabs.realignInkBar ();
+    return (this.advConfigFlags & ConfigFlags.LIMITAGGREGATOR) ? true : false;
+  }
 
-    this.isLoading = false;
+  hasColorSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.CHARTCOLORS) ? true : false;
+  }
 
-    if (error)
+  hasHeatMapColorSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.HEATMAPCOLOR) ? true : false;
+  }
+
+  hasThresholdValuesSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.THRESHOLDS) ? true : false;
+  }
+
+  hasGoalsSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.GOALS) ? true : false;
+  }
+
+  hasAxisNamesSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.AXISNAMES) ? true : false;
+  }
+
+  configureAdditionalSettings(): void
+  {
+    this.advConfigFlags = ConfigFlags.NONE;
+
+    if (this.values.currentChartType.flags & ChartFlags.FORM ||
+      this.values.currentChartType.flags & ChartFlags.TABLE)
+      this.advConfigFlags = ConfigFlags.THRESHOLDS;
+    else if (this.values.currentChartType.flags & ChartFlags.PIECHART
+      || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+      this.advConfigFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
+    else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
+    else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Error", message: "Failed to generate results." }
-      });
+      this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
 
-      return;
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      {
+        this.advConfigFlags |= ConfigFlags.LIMITVALUES;
+
+        if (this.isSimpleChart ())
+          this.advConfigFlags |= ConfigFlags.THRESHOLDS;
+      }
     }
 
-    if (!this.msfTableRef.tableOptions.dataSource && !this.msfTableRef.tableOptions.template)
+    // don't allow the option to limit results on advanced charts
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
-      this.dialog.open (MessageComponent, {
-        data: { title: "Information", message: "Results not available." }
-      });
-
-      return;
+      this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
+      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR;
     }
+  }
 
-    this.configuredControlVariables = true;
-    this.tablePreview = true;
+  isInformationPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.INFO
+      && !(this.values.currentChartType.flags & ChartFlags.FORM)
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)) ? true : false;
+  }
+
+  isSimpleChart(): boolean
+  {
+    return !(this.values.currentChartType.flags & ChartFlags.XYCHART)
+      && !(this.values.currentChartType.flags & ChartFlags.ADVANCED)
+      && !(this.values.currentChartType.flags & ChartFlags.PIECHART)
+      && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART);
+  }
+
+  isLineOrBarChart(): boolean
+  {
+    if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
+      return true;
+
+    return false;
+  }
+
+  isSimpleFormPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.FORM) ? true : false;
+  }
+
+  isPicturePanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
+  }
+
+  isTablePanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.TABLE) ? true : false;
+  }
+
+  isDynTablePanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.DYNTABLE) ? true : false;
+  }
+
+  isAdvChartPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.ADVANCED) ? true : false;
+  }
+
+  isMapPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.MAP
+      && !(this.values.currentChartType.flags & ChartFlags.HEATMAP)
+      && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) ? true : false;
+  }
+
+  isHeatMapPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.HEATMAP) ? true : false;
+  }
+
+  isMapboxPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.MAPBOX) ? true : false;
+  }
+
+  toggleThemeColors(): void
+  {
+    if (!this.values.paletteColors || !this.values.paletteColors.length)
+    {
+      if (this.hasHeatMapColorSettings ())
+        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].heatMapColor));
+      else
+        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].resultColors));
+    }
+    else
+      this.values.paletteColors = [];
+  }
+
+
+  checkPanelTypeSelection(): void
+  {
+    this.selectingAnalysis = null;
     this.analysisSelected = null;
-    this.xAxisSelected = null;
-    this.valueSelected = null;
+    this.values.variable = null;
+    this.values.xaxis = null;
+    this.values.geodata = null;
+
+    if (this.panelMode === "advanced")
+    {
+      let selectedChartType;
+
+      if (!this.selectedPanelType.allowedInAdvancedMode)
+      {
+        this.selectedPanelType = this.panelTypes[0];
+
+        if (!this.values.function)
+          this.values.function = this.functions[0];
+
+        this.scrollSelectedPanelIntoView ();
+      }
+
+      selectedChartType = "Advanced " + this.selectedPanelType.name;
+
+      for (let chart of this.chartTypes)
+      {
+        if (chart.name === selectedChartType)
+        {
+          this.values.currentChartType = chart;
+          break;
+        }
+      }
+
+      this.checkChartType ();
+
+      this.selectingXAxis = null;
+      this.xAxisSelected = null;
+      this.selectingValue = null;
+      this.valueSelected = null;
+      this.values.valueColumn = null;
+      this.values.valueList = [];
+      this.values.startAtZero = false;
+    }
+    else
+    {
+      this.selectingAggregationValue = null;
+      this.aggregationValueSelected = null;
+      this.values.valueColumn = null;
+      this.values.valueList = [];
+
+      for (let chart of this.chartTypes)
+      {
+        if (chart.name === this.selectedPanelType.name)
+        {
+          this.values.currentChartType = chart;
+          break;
+        }
+      }
+
+      this.checkChartType ();
+
+      if (!this.isLineOrBarChart ())
+        this.values.startAtZero = false;
+    }
+
+    if (this.values.limitMode != null)
+      this.values.limitMode = 0;
+
+    if (this.values.limitAmount != null)
+      this.values.limitAmount = 10;
+
+    if (this.values.paletteColors != null)
+      this.useThemeColors = true;
+  }
+
+  selectPanelType(panelType): void
+  {
+    let name = panelType.name;
+
+    this.selectedPanelType = panelType;
+    this.selectingXAxis = null;
+    this.selectingAnalysis = null;
+    this.selectingValue = null;
+    this.selectingAggregationValue = null;
+
+    // Remove X Axis selection if the chart type doesn't use it
+    if (!this.haveXAxis())
+    {
+      this.xAxisSelected = null;
+      this.values.xaxis = null;
+    }
+
+    // Remove analysis selection if the simple chart uses intervals
+    if (this.panelMode === "advanced" && !(this.selectedPanelType.flags & ChartFlags.XYCHART))
+      this.analysisSelected = null;
+
+    if (this.panelMode === "advanced")
+      name = "Advanced " + name;
+
+    for (let chart of this.chartTypes)
+    {
+      if (chart.name === name)
+      {
+        this.values.currentChartType = chart;
+        break;
+      }
+    }
+
+    this.checkChartType ();
+  }
+
+  checkPanelType(chartType): boolean
+  {
+    if (!chartType.allowedInAdvancedMode && this.panelMode === "advanced")
+      return false;
+
+    if (this.globals.currentApplication.name !== "masFlight")
+    {
+      // don't allow map types on applications other than masFlight
+      if ((chartType.flags & ChartFlags.MAP) || (chartType.flags & ChartFlags.HEATMAP))
+        return false;
+    }
+
+    return true;
+  }
+
+  selectStep(step: number): void
+  {
+    this.menuCategories = [];
+
+    switch (step)
+    {
+      case 3:
+        this.selectedStep = 3;
+        this.stepLoading = 3;
+        this.selectedItem = null;
+        this.service.loadMenuOptionsForDashboard (this, this.selectDataSuccess, this.selectDataError);
+        break;
+
+      case 4:
+        if (!this.values.currentOption)
+          return;
+
+        this.selectedStep = 4;
+        this.stepLoading = 4;
+        this.service.loadOptionCategoryArguments (this, this.values.currentOption.id, this.setCategories, this.categoriesError);
+        break;
+
+      case 5:
+        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
+          return;
+
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+          this.panelMode = "advanced";
+        else
+          this.panelMode = "basic";
+
+        this.selectedStep = 5;
+
+        if (!this.msfConfigTableRef.dataSource)
+        {
+          if (this.stepLoading != 4)
+          {
+            this.stepLoading = 5;
+            this.configTableLoading = true;
+            this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
+          }
+        }
+        else
+        {
+          if (this.values.variable)
+          {
+            for (let column of this.msfConfigTableRef.metadata)
+            {
+              if (this.values.variable.id == column.columnName)
+              {
+                this.analysisSelected = column;
+                break;
+              }
+            }
+          }
+
+          if (this.values.xaxis)
+          {
+            for (let column of this.msfConfigTableRef.metadata)
+            {
+              if (this.values.xaxis.id == column.columnName)
+              {
+                this.xAxisSelected = column;
+                break;
+              }
+            }
+          }
+
+          if (this.values.valueColumn)
+          {
+            for (let column of this.msfConfigTableRef.metadata)
+            {
+              if (this.values.valueColumn.id == column.columnName)
+              {
+                if (this.panelMode === "advanced")
+                  this.aggregationValueSelected = column;
+                else
+                  this.valueSelected = column;
+
+                break;
+              }
+            }
+          }
+        }
+        break;
+
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
+          return;
+
+        this.selectedStep = step;
+        this.stepLoading = 0;
+        break;
+
+      case 11:
+        if (!(this.values.currentOption && this.values.currentOptionCategories && this.controlVariablesSet))
+          return;
+
+        this.configureAdditionalSettings ();
+
+        if (this.values.limitMode == null)
+          this.values.limitMode = 0;
+
+        if (this.values.limitAmount == null)
+          this.values.limitAmount = 10;
+
+        if (!this.values.paletteColors || !this.values.paletteColors.length)
+          this.useThemeColors = true;
+
+        this.selectedStep = 11;
+        this.stepLoading = 0;
+        break;
+
+      case 2:
+        this.selectedStep = 2;
+
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+        {
+          this.panelMode = "advanced";
+
+          for (let type of this.panelTypes)
+          {
+            if (this.values.currentChartType.name === "Advanced " + type.name)
+            {
+              this.selectedPanelType = type;
+              break;
+            }
+          }
+        }
+        else
+        {
+          this.panelMode = "basic";
+
+          // set panel type for the interface
+          for (let type of this.panelTypes)
+          {
+            if (this.values.currentChartType.name === type.name)
+            {
+              this.selectedPanelType = type;
+              break;
+            }
+          }
+        }
+
+        this.changeDetectorRef.detectChanges ();
+        this.scrollSelectedPanelIntoView ();
+
+      default:
+        this.selectedStep = step;
+        this.stepLoading = 0;
+        break;
+    }
+  }
+
+  scrollSelectedPanelIntoView(): void
+  {
+    let target;
+
+    target = document.getElementById (this.selectedPanelType.name + "-panel");
+    target.parentNode.parentNode.scrollTop = target.offsetTop - 370;
   }
 
   setCategories(_this, data): void
   {
     let optionCategories = [];
 
+    if (_this.stepLoading != 4)
+      return;
+
     if (!data.length)
     {
       // load table when there are no control variables
-      _this.loadTableData (false, _this.msfTableRef.handlerSuccess, _this.msfTableRef.handlerError);
+      _this.configTableLoading = true;
+      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
       return;
     }
 
-    if (_this.tabs)
-      _this.tabs.realignInkBar();
-
-    _this.tablePreview = false;
+    if (_this.values.currentOptionCategories == null || !_this.controlVariablesSet)
+      _this.tablePreview = false;
+    else
+      _this.tablePreview = true;
 
     data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
 
@@ -311,7 +1097,7 @@ export class MsfDashboardAssistantComponent {
 
           if (argument.minDate)
             argument.minDate = new Date (argument.minDate);
-    
+
           if (argument.maxDate)
             argument.maxDate = new Date (argument.maxDate);
 
@@ -323,14 +1109,14 @@ export class MsfDashboardAssistantComponent {
             {
               let filter = argument.filters[i];
               let argExists = false;
-      
+
               for (let option of data)
               {
                 for (let item of option.categoryArgumentsId)
                 {
                   if (filter.argument == item.id)
                   {
-                    argument.filters[i].argument = item;        
+                    argument.filters[i].argument = item;
                     argExists = true;
                     break;
                   }
@@ -350,87 +1136,91 @@ export class MsfDashboardAssistantComponent {
       }
     }
 
-    _this.currentOptionCategories = optionCategories;
+    // if the category is not empty, add the categories that are missing
+    if (_this.values.currentOptionCategories != null)
+    {
+      for (let optionCategory of optionCategories)
+      {
+        for (let curOptionCategory of _this.values.currentOptionCategories)
+        {
+          for (let curCategoryArgument of curOptionCategory.arguments)
+          {
+            for (let argument of optionCategory.arguments)
+            {
+              if (curCategoryArgument.name1 == argument.name1)
+              {
+                argument.value1 = curCategoryArgument.value1;
+                argument.value2 = curCategoryArgument.value2;
+                argument.value3 = curCategoryArgument.value3;
+                argument.value4 = curCategoryArgument.value4;
+                argument.dateLoaded = curCategoryArgument.dateLoaded;
+                argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                argument.dateSelectionMode = curCategoryArgument.dateSelectionMode;
+                argument.anchored = curCategoryArgument.anchored;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
 
-    _this.configureControlVariables ();
-    _this.isLoading = false;
-    _this.changeDetectorRef.detectChanges ();
-  }
+    _this.values.currentOptionCategories = optionCategories;
 
-  handlerError(_this): void
-  {
-    _this.isLoading = false;
-  }
-
-  isMatIcon(icon): boolean
-  {
-    return !icon.endsWith (".png");
-  }
-
-  getImageIcon(controlVariable, hover): string
-  {
-    let newurl, filename: string;
-    let path: string[];
-    let url;
-
-    url = controlVariable.icon;
-    path = url.split ('/');
-    filename = path.pop ().split ('?')[0];
-    newurl = "";
-
-    // recreate the url with the theme selected
-    for (let dir of path)
-      newurl += dir + "/";
-
-    if (hover)
-      newurl += this.globals.theme + "-hover-" + filename;
+    if (_this.tablePreview)
+    {
+      _this.tempOptionCategories = null;
+      _this.configureControlVariables ();
+      _this.configTableLoading = true;
+      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
+    }
     else
-      newurl += this.globals.theme + "-" + filename;
-
-    return newurl;
+    {
+      _this.tempOptionCategories = optionCategories;
+      _this.values.currentOptionCategories = null;
+      _this.stepLoading = 0;
+      _this.controlVariablesSet = false;
+      _this.changeDetectorRef.detectChanges ();
+      _this.editTabs.realignInkBar ();
+    }
   }
 
-  indexChanged(): void
+  loadConfigTableData(handlerSuccess, handlerError): void
   {
-    // cancel changes in the control variables if they are
-    // currently being edited
-    if (!this.tablePreview)
-      this.cancelEdit ();
+    let url, urlBase, urlArg;
+
+    this.msfConfigTableRef.displayedColumns = [];
+    this.msfConfigTableRef.dataSource = null;
+
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
+    }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=25&page_number=0";
+    urlArg = encodeURIComponent (urlBase);
+    url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    if (isDevMode ())
+      console.log (urlBase);
+
+    this.authService.get (this.msfConfigTableRef, url, handlerSuccess, handlerError);
   }
 
-  checkTablePreviewVisibility(): string
+  categoriesError(_this): void
   {
-    if (this.tablePreview)
-      return "block";
+    if (_this.stepLoading != 4)
+      return;
 
-    return "none";
-  }
-
-  checkEditVisibility(): string
-  {
-    if (!this.tablePreview)
-      return "block";
-
-    return "none";
-  }
-
-  cancelEdit(): void
-  {
-    this.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
-    this.tablePreview = true;
-  }
-
-  refreshTable(): void
-  {
-    this.isLoading = true;
-    this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
-    this.changeDetectorRef.detectChanges ();
-  }
-
-  goToEditor(): void
-  {
-    this.tempOptionCategories = JSON.parse (JSON.stringify (this.currentOptionCategories));
-    this.tablePreview = false;
+    _this.stepLoading = 0;
   }
 
   getArgumentLabel1(argument: Arguments)
@@ -521,40 +1311,58 @@ export class MsfDashboardAssistantComponent {
     return true;
   }
 
-  parseDate(date): string
+  refreshTable(): void
   {
-    let day, month;
-    let d: Date;
+    this.stepLoading = 4;
+    this.configTableLoading = true;
+    this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
+    this.changeDetectorRef.detectChanges ();
+  }
 
-    if (date == null)
-      return "";
+  cancelEdit(): void
+  {
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
+    this.tablePreview = true;
+    this.tempOptionCategories = null;
+    this.changeDetectorRef.detectChanges ();
+    this.configTabs.realignInkBar ();
+  }
 
-    d = new Date (date);
-    if (Object.prototype.toString.call (d) === "[object Date]")
-    {
-      if (isNaN (d.getTime()))
-        return "";
-    }
-    else
-      return "";
+  goToEditor(): void
+  {
+    this.tempOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
+    this.tablePreview = false;
+    this.changeDetectorRef.detectChanges ();
+    this.editTabs.realignInkBar();
+    this.editTabs._tabHeader._alignInkBarToSelectedTab ();
+  }
 
-    month = (d.getMonth () + 1);
-    if (month < 10)
-      month = "0" + month;
+  isTitleOnly(argument: Arguments): boolean
+  {
+    return ComponentType.title == argument.type;
+  }
 
-    day = d.getDate ();
-    if (day < 10)
-      day = "0" + day;
+  isSingleCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.singleCheckbox == argument.type;
+  }
 
-    return month + "/" + day + "/" + d.getFullYear ();
+  isTaxiTimesCheckbox(argument: Arguments): boolean
+  {
+    return ComponentType.taxiTimesCheckbox == argument.type;
+  }
+
+  isDateRange(argument: Arguments): boolean
+  {
+    return ComponentType.dateRange == argument.type;
   }
 
   configureControlVariables(): void
   {
-    if (!this.currentOptionCategories)
+    if (!this.values.currentOptionCategories)
       return;
 
-    for (let controlVariable of this.currentOptionCategories)
+    for (let controlVariable of this.values.currentOptionCategories)
     {
       if (controlVariable.arguments)
       {
@@ -578,7 +1386,7 @@ export class MsfDashboardAssistantComponent {
 
             for (let argument of args)
             {
-              if (!this.isSingleCheckbox(argument))
+              if (!this.isSingleCheckbox (argument))
                 break;
 
               controlVariableArgument.checkboxes.push (argument);
@@ -589,49 +1397,279 @@ export class MsfDashboardAssistantComponent {
     }
   }
 
-  selectChartType(chartType): void
+  isMatIcon(icon): boolean
   {
-    this.selectedChartType = chartType;
-    this.selectingXAxis = null;
-    this.selectingAnalysis = null;
-    this.selectingValue = null;
-    this.selectingAggregationValue = null;
-
-    // Remove X Axis selection if the chart type doesn't use it
-    if (!this.haveXAxis ())
-      this.xAxisSelected = null;
-
-    // Remove analysis selection if the simple chart uses intervals
-    if (this.chartMode === "advanced" && !(this.selectedChartType.flags & ChartFlags.XYCHART))
-      this.analysisSelected = null;
+    return !icon.endsWith (".png");
   }
 
-  isTitleOnly(argument: Arguments): boolean
+  getImageIcon(controlVariable, hover): string
   {
-    return ComponentType.title == argument.type;
+    let newurl, filename: string;
+    let path: string[];
+    let url;
+
+    url = controlVariable.icon;
+    path = url.split ('/');
+    filename = path.pop ().split ('?')[0];
+    newurl = "";
+
+    // recreate the url with the theme selected
+    for (let dir of path)
+      newurl += dir + "/";
+
+    if (hover)
+      newurl += this.globals.theme + "-hover-" + filename;
+    else
+      newurl += this.globals.theme + "-" + filename;
+
+    return newurl;
   }
 
-  isSingleCheckbox(argument: Arguments): boolean
+  setCtrlVariableLoading(value: boolean): void
   {
-    return ComponentType.singleCheckbox == argument.type;
+    if (value)
+      this.stepLoading = 4;
+    else
+      this.stepLoading = 0;
   }
 
-  isTaxiTimesCheckbox(argument: Arguments): boolean
+  recursiveMenuCategory(menuCategory): void
   {
-    return ComponentType.taxiTimesCheckbox == argument.type;
+    if (menuCategory.children && menuCategory.children.length)
+    {
+      // the submenu must have the items with children first
+      menuCategory.children.sort (function(e1, e2) {
+        if (e1.children.length && e2.children.length)
+          return 0;
+
+        return e2.children.length - e1.children.length;
+      });
+
+      for (let i = menuCategory.children.length - 1; i >= 0; i--)
+      {
+        let child = menuCategory.children[i];
+
+        if (child.typeOption == '1')
+          menuCategory.children.splice (i, 1);
+        else if (child.children && child.children.length)
+          this.recursiveMenuCategory (child);
+      }
+    }
   }
 
-  isDateRange(argument: Arguments): boolean
+  selectDataSuccess(_this, data): void
   {
-    return ComponentType.dateRange == argument.type;
+    if (_this.stepLoading != 3)
+      return;
+
+    _this.menuCategories = data;
+
+    for (let menuCategory of _this.menuCategories)
+    {
+      // remove options that are exclusive to the main menu
+      if (menuCategory.children && menuCategory.children.length)
+      {
+        // the submenu must have the items with children first
+        menuCategory.children.sort (function(e1, e2) {
+          if (e1.children.length && e2.children.length)
+            return 0;
+
+          return e2.children.length - e1.children.length;
+        });
+
+        for (let i = menuCategory.children.length - 1; i >= 0; i--)
+        {
+          let child = menuCategory.children[i];
+
+          if (child.typeOption == '1')
+            menuCategory.children.splice (i, 1);
+          else if (child.children && child.children.length)
+            _this.recursiveMenuCategory (child);
+        }
+      }
+
+      menuCategory.flatNodeMap = new Map<ExampleFlatNode, any> ();
+      menuCategory.nestedNodeMap = new Map<any, ExampleFlatNode> ();
+
+      let transformer = (node: any, level: number) =>
+      {
+        const existingNode = menuCategory.nestedNodeMap.get (node);
+        const flatNode = existingNode && existingNode.label === node.label
+          ? existingNode
+          : new ExampleFlatNode ();
+        flatNode.expandable = !!node.children && node.children.length > 0;
+        flatNode.id = node.id;
+        flatNode.uid = node.uid;
+        flatNode.label = node.label;
+        flatNode.level = level;
+        flatNode.menuOptionArgumentsAdmin = node.menuOptionArgumentsAdmin;
+        flatNode.categoryParentId = node.categoryParentId;
+        flatNode.baseUrl = node.baseUrl;
+        flatNode.icon = node.icon;
+        flatNode.tab = node.tab;
+        flatNode.tabType = node.tabType;
+        flatNode.menuParentId = node.menuParentId;
+        flatNode.toDelete = node.toDelete;
+        flatNode.dataAvailability = node.dataAvailability;
+        flatNode.metaData = node.metaData;
+        flatNode.order = node.order,
+        flatNode.selected = node.selected;
+        flatNode.applicationId = node.applicationId;
+        flatNode.isRoot = node.isRoot;
+        flatNode.children = node.children;
+        flatNode.initialRol = node.initialRol;
+        flatNode.finalRol = node.finalRol;
+        flatNode.typeOption = node.typeOption;
+        flatNode.welcome = node.welcome;
+
+        if (_this.values.currentOption && _this.values.currentOption.id == flatNode.id && !_this.selectedItem)
+          _this.selectedItem = flatNode;
+    
+        menuCategory.flatNodeMap.set (flatNode, node);
+        menuCategory.nestedNodeMap.set (node, flatNode);
+
+        return flatNode;
+      };
+
+      menuCategory.transformer = transformer;
+
+      menuCategory.treeControl = new FlatTreeControl<ExampleFlatNode> (
+        node => node.level,
+        node => node.expandable
+      );
+
+      menuCategory.treeFlattener = new MatTreeFlattener (
+        transformer,
+        node => node.level,
+        node => node.expandable,
+        node => node.children
+      );
+
+      menuCategory.tree = new MatTreeFlatDataSource (menuCategory.treeControl, menuCategory.treeFlattener);
+      menuCategory.tree.data = menuCategory.children;
+
+      if (_this.values.currentOption)
+        _this.expandSelectedOption (menuCategory, _this.values.currentOption.id);
+    }
+
+    _this.stepLoading = 0;
+
+    if (_this.scrollToOption)
+    {
+      let target, optionOffsetTop;
+
+      _this.changeDetectorRef.detectChanges();
+
+      // scroll to the selected option
+      target = document.getElementById (_this.scrollToOption.category);
+      target.parentNode.parentNode.parentNode.scrollLeft = 401 * _this.scrollToOption.categoryIndex;
+
+      optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 527;
+      if (optionOffsetTop + 32 > 294)
+        target.scrollTop = optionOffsetTop;
+
+      _this.scrollToOption = null;
+    }
   }
 
-  haveXAxis(): boolean
+  expandSelectedOption (menuCategory, selectedOptionId: number)
   {
-    if (this.selectedChartType.flags & ChartFlags.XYCHART)
-      return true;
+    if (!menuCategory.treeControl.dataNodes || menuCategory.treeControl.dataNodes.length === 0)
+      return;
 
-    return false;
+    return menuCategory.treeControl.dataNodes.forEach(node =>
+    {
+      if (selectedOptionId == node.id)
+      {
+        let parent;
+
+        menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf(node)]);
+
+        parent = this.getParentNode (menuCategory, node);
+        while (parent)
+        {
+          menuCategory.treeControl.expand (menuCategory.treeControl.dataNodes[menuCategory.treeControl.dataNodes.indexOf (parent)]);
+          parent = this.getParentNode (menuCategory, parent);
+        }
+
+        // scroll here
+        this.scrollToOption = {
+          category: "menu-" + this.menuCategories.indexOf (menuCategory) + "-scroll",
+          option: "node-" + node.label,
+          categoryIndex: this.menuCategories.indexOf (menuCategory)
+        };
+      }
+    });
+  }
+
+  getParentNode(menuCategory, node: ExampleFlatNode): ExampleFlatNode | null
+  {
+    const currentLevel = node.level;
+
+    if (currentLevel < 1)
+      return null;
+
+    const startIndex = menuCategory.treeControl.dataNodes.indexOf(node) - 1;
+
+    for (let i = startIndex; i >= 0; i--)
+    {
+      const currentNode = menuCategory.treeControl.dataNodes[i];
+
+      if (currentNode.level < currentLevel)
+        return currentNode;
+    }
+
+    return null;
+  }
+
+  selectDataError(_this): void
+  {
+    if (_this.stepLoading != 3)
+      return;
+
+    _this.stepLoading = 0;
+  }
+
+  tablePreview: boolean = true;
+
+  checkTablePreviewVisibility(): string
+  {
+    if (this.tablePreview)
+      return "block";
+
+    return "none";
+  }
+
+  checkEditVisibility(): string
+  {
+    if (!this.tablePreview)
+      return "block";
+
+    return "none";
+  }
+
+  analysisSelected: any = null;
+  selectingAnalysis: boolean = false;
+  xAxisSelected: any = null;
+  selectingXAxis: boolean = false;
+  valueSelected: any = null;
+  selectingValue: boolean = false;
+  chartPreviewHover: boolean = false;
+  aggregationValueSelected: any = null;
+  selectingAggregationValue: boolean = false;
+  lastColumn: any;
+
+  hasAnalysisByValue(): boolean
+  {
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        return true;
+
+      return false;
+    }
+
+    return true;
   }
 
   selectAnalysis(): void
@@ -648,6 +1686,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.analysisSelected = null;
+    this.values.variable = null;
   }
 
   selectXAxis(): void
@@ -664,6 +1703,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.xAxisSelected = null;
+    this.values.xaxis = null;
   }
 
   selectValue(): void
@@ -680,6 +1720,7 @@ export class MsfDashboardAssistantComponent {
     this.selectingAggregationValue = false;
     this.lastColumn = null;
     this.valueSelected = null;
+    this.values.valueColumn = null;
   }
 
   selectAggregationValue(): void
@@ -696,6 +1737,218 @@ export class MsfDashboardAssistantComponent {
     this.selectingAggregationValue = true;
     this.lastColumn = null;
     this.aggregationValueSelected = null;
+    this.values.valueColumn = null;
+  }
+
+  finishLoadingConfigTable(error): void
+  {
+    if (this.stepLoading != 4 && this.stepLoading != 5)
+      return;
+
+    this.stepLoading = 0;
+    this.configTableLoading = false;
+
+    this.changeDetectorRef.detectChanges ();
+
+    if (this.configTabs)
+      this.configTabs.realignInkBar ();
+
+    if (error)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "Failed to generate results." }
+      });
+
+      return;
+    }
+
+    if (!this.msfConfigTableRef.tableOptions.dataSource && !this.msfConfigTableRef.tableOptions.template)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "Results not available." }
+      });
+
+      return;
+    }
+
+    if (this.tempOptionCategories)
+    {
+      this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
+      this.tempOptionCategories = null;
+    }
+
+    this.controlVariablesSet = true;
+    this.configuredControlVariables = true;
+    this.tablePreview = true;
+    this.analysisSelected = null;
+    this.xAxisSelected = null;
+    this.valueSelected = null;
+
+    if (this.selectedStep == 5)
+    {
+      if (this.values.variable)
+      {
+        for (let column of this.msfConfigTableRef.metadata)
+        {
+          if (this.values.variable.id == column.columnName)
+          {
+            this.analysisSelected = column;
+            break;
+          }
+        }
+      }
+
+      if (this.values.xaxis)
+      {
+        for (let column of this.msfConfigTableRef.metadata)
+        {
+          if (this.values.xaxis.id == column.columnName)
+          {
+            this.xAxisSelected = column;
+            break;
+          }
+        }
+      }
+
+      if (this.values.valueColumn)
+      {
+        for (let column of this.msfConfigTableRef.metadata)
+        {
+          if (this.values.valueColumn.id == column.columnName)
+          {
+            if (this.panelMode === "advanced")
+              this.aggregationValueSelected = column;
+            else
+              this.valueSelected = column;
+
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  selectItem(item): void
+  {
+    if (item == this.selectedItem)
+      return;
+
+    this.selectedItem = item;
+
+    for (let option of this.values.options)
+    {
+      if (option.id == item.id)
+      {
+        this.values.currentOption = option;
+        break;
+      }
+    }
+
+    this.controlVariablesSet = false;
+    this.loadChartFilterValues (this.values.currentOption);
+  }
+
+  filterMenuOptions(menuCategory): void
+  {
+    for (let index = 0; index < menuCategory.treeControl.dataNodes.length; index++)
+    {
+      const option = menuCategory.treeControl.dataNodes[index];
+
+      this.setShowOption (option, menuCategory.searchLabel);
+      this.recursiveOption (option, menuCategory.searchLabel);
+    }
+
+    if (menuCategory.searchLabel)
+      menuCategory.treeControl.expandAll ();
+    else
+      menuCategory.treeControl.collapseAll ();
+  }
+
+  recursiveOption(option: any, searchLabel: string): void
+  {
+    if (option.children.length)
+    {
+      for (let index = 0; index < option.children.length; index++)
+      {
+        const element = option.children[index];
+  
+        this.setShowOption (element, searchLabel);
+        this.recursiveOption (element, searchLabel);
+      }
+    }
+    else
+      this.setShowOption (option, searchLabel);
+  }
+
+  setShowOption(option: any, searchLabel: string): void
+  {
+    if (searchLabel != "" && searchLabel != null)
+    {
+      if (option.label.toLowerCase ().indexOf (searchLabel.toLowerCase ()) != -1)
+        option.show = true;
+      else
+        option.show = false;
+    }
+    else
+      option.show = true;
+  }
+
+  resultsGenerated(): boolean
+  {
+    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated);
+  }
+
+  isValueSelectedForSimpleChart(column): boolean
+  {
+    if (!this.isSimpleChart ())
+      return false;
+
+    if (!this.values.valueList)
+      return false;
+
+    for (let value of this.values.valueList)
+    {
+      if (column.columnName === value.id)
+        return true;
+    }
+
+    return false;
+  }
+
+  dynTableHasXAxis(): boolean
+  {
+    if (this.values.dynTableVariables)
+    {
+      for (let variable of this.values.dynTableVariables)
+      {
+        if (variable.direction === "horizontal")
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  dynTableHasYAxis(): boolean
+  {
+    if (this.values.dynTableVariables)
+    {
+      for (let variable of this.values.dynTableVariables)
+      {
+        if (variable.direction === "vertical")
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  dynTableHasValues(): boolean
+  {
+    if (this.values.dynTableValues && this.values.dynTableValues.length)
+      return true;
+
+    return false;
   }
 
   hoverTableColumn(index): void
@@ -709,69 +1962,552 @@ export class MsfDashboardAssistantComponent {
     if (this.selectingAnalysis)
     {
       this.analysisSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.variable = variable;
+          break;
+        }
+      }
+
       this.selectingAnalysis = false;
+      this.checkPanelConfiguration ();
     }
 
     if (this.selectingXAxis)
     {
       this.xAxisSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.xaxis = variable;
+          break;
+        }
+      }
+
       this.selectingXAxis = false;
+      this.checkPanelConfiguration ();
     }
 
     if (this.selectingValue)
     {
       this.valueSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.valueColumn = variable;
+          break;
+        }
+      }
+
       this.selectingValue = false;
+      this.checkPanelConfiguration ();
     }
 
     if (this.selectingAggregationValue)
     {
       this.aggregationValueSelected = this.lastColumn;
+
+      for (let variable of this.values.chartColumnOptions)
+      {
+        if (variable.id == this.lastColumn.columnName)
+        {
+          this.values.valueColumn = variable;
+          break;
+        }
+      }
+
       this.selectingAggregationValue = false;
+      this.checkPanelConfiguration ();
     }
 
     this.lastColumn = null;
   }
 
-  isChartConfigured(): boolean
+  haveXAxis(): boolean
   {
-    if (this.chartMode === "advanced")
-    {
-      if (this.intervalType === "value")
-      {
-        if (!(this.selectedChartType.flags & ChartFlags.XYCHART))
-          return this.aggregationValueSelected && this.intValue != null && this.intValue != "";
+    if (this.selectedPanelType.flags & ChartFlags.XYCHART)
+      return true;
 
-        return this.analysisSelected && this.aggregationValueSelected && this.intValue != null && this.intValue != "";
-      }
-
-      if (!(this.selectedChartType.flags & ChartFlags.XYCHART))
-        return this.aggregationValueSelected;
-
-      return this.analysisSelected && this.aggregationValueSelected;
-    }
-
-    if (!this.haveXAxis ())
-    {
-      if (this.function.id === "count")
-        return this.analysisSelected;
-
-      return this.analysisSelected && this.valueSelected;
-    }
-
-    if (this.function.id === "count")
-      return this.analysisSelected && this.xAxisSelected;
-
-    return this.analysisSelected && this.xAxisSelected && this.valueSelected;
+    return false;
   }
 
-  previewChart(): void
+  hasAdditinalSettings(): boolean
   {
-    let i, variable, xaxis, valueColumn;
+    if (!this.isDynTablePanel () && !this.isTablePanel () && !this.isInformationPanel () && !this.isSimpleFormPanel ()
+      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ())
+      return true;
 
-    if (this.chartMode === "advanced")
+    return (this.isHeatMapPanel () || this.isSimpleFormPanel () || this.isTablePanel ()) ? true : false;
+  }
+
+  trackColor(index): number
+  {
+    return index;
+  }
+
+  addThreshold(): void
+  {
+    let filteredVariables = new ReplaySubject<any[]> (1);
+
+    filteredVariables.next (this.values.chartColumnOptions.slice ());
+
+    this.values.thresholds.push ({
+      min: 0,
+      max: 0,
+      color: "#000000",
+      filteredVariables: filteredVariables
+    });
+  }
+
+  removeThreshold(): void
+  {
+    if (this.values.thresholds.length)
+      this.values.thresholds.pop ();
+  }
+
+  addGoal(): void
+  {
+    this.values.goals.push ({
+      value: 0,
+      color: "#000000"
+    });
+  }
+
+  removeGoal(): void
+  {
+    if (this.values.goals.length)
+      this.values.goals.pop ();
+  }
+
+  toggleInfo(menuCategory): void
+  {
+    menuCategory.infoOpen = !menuCategory.infoOpen;
+  }
+
+  loadChartFilterValues(component): void
+  {
+    let i;
+
+    this.values.chartColumnOptions = [];
+    this.values.tableVariables = [];
+    this.values.dynTableValues = null;
+    this.values.dynTableVariables = [];
+    this.values.thresholds = [];
+    this.values.goals = [];
+
+    for (let columnConfig of component.columnOptions)
     {
-      if (this.aggregationValueSelected.columnType !== "number")
+      this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
+      this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
+    }
+
+    this._onDestroy.next ();
+    this._onDestroy.complete();
+    this._onDestroy = new Subject<void> ();
+
+    // load the initial filter variables list
+    this.filteredVariables.next (this.values.chartColumnOptions.slice ());
+    this.filteredValues.next (this.values.chartColumnOptions.slice ());
+
+    this.filteredInfoVar1.next (this.values.chartColumnOptions.slice ());
+    this.filteredInfoVar2.next (this.values.chartColumnOptions.slice ());
+    this.filteredInfoVar3.next (this.values.chartColumnOptions.slice ());
+
+    this.filteredColumns.next (this.values.chartColumnOptions.slice ());
+
+    this.variableSearchChange (this.variableFilterCtrl);
+    this.valueSearchChange (this.valueFilterCtrl);
+
+    this.searchChange (this.infoVar1FilterCtrl, this.filterInfoVar1);
+    this.searchChange (this.infoVar2FilterCtrl, this.filterInfoVar2);
+    this.searchChange (this.infoVar3FilterCtrl, this.filterInfoVar3);
+
+    this.columnSearchChange (this.columnFilterCtrl);
+
+    this.values.formVariables = [];
+
+    this.values.xaxis = null;
+    this.values.variable = null;
+    this.values.valueColumn = null;
+    this.values.infoVar1 = null;
+    this.values.infoVar2 = null;
+    this.values.infoVar3 = null;
+    this.values.geodata = null;
+    this.values.currentOptionCategories = null;
+
+    for (i = 0; i < this.values.infoFunc1.length; i++)
+      this.values.infoFunc1[i].checked = false;
+
+    for (i = 0; i < this.values.infoFunc2.length; i++)
+      this.values.infoFunc2[i].checked = false;
+
+    for (i = 0; i < this.values.infoFunc3.length; i++)
+      this.values.infoFunc3[i].checked = false;
+
+    this.checkPanelConfiguration ();
+  }
+
+  checkPanelConfiguration(): boolean
+  {
+    if (!this.values.currentChartType)
+    {
+      this.generateBtnEnabled = false;
+      return false;
+    }
+
+    if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
+    {
+      if (this.values.variable != null && this.values.geodata != null)
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+    {
+      if (this.values.currentOption != null && this.isDynamicTableSet ())
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.TABLE
+      || this.values.currentChartType.flags & ChartFlags.MAP)
+    {
+      if (this.values.currentOption != null)
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    {
+      if (this.values.urlImg && this.values.urlImg != "")
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.FORM)
+    {
+      if (this.values.formVariables.length)
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      // Make sure that al least one function is checked when using the information "chart" type
+      let i, infoFunc1Ready, infoFunc2Ready, infoFunc3Ready;
+
+      infoFunc1Ready = false;
+      infoFunc2Ready = false;
+      infoFunc3Ready = false;
+
+      if (this.values.infoNumVariables >= 1)
+      {
+        for (i = 0; i < this.values.infoFunc1.length; i++)
+        {
+          if (this.values.infoFunc1[i].checked)
+          {
+            infoFunc1Ready = true;
+            break;
+          }
+        }
+      }
+
+      if (this.values.infoNumVariables >= 2)
+      {
+        for (i = 0; i < this.values.infoFunc2.length; i++)
+        {
+          if (this.values.infoFunc2[i].checked)
+          {
+            infoFunc2Ready = true;
+            break;
+          }
+        }
+      }
+      else
+        infoFunc2Ready = true; // This is to simplify the final condition
+
+      if (this.values.infoNumVariables == 3)
+      {
+        for (i = 0; i < this.values.infoFunc3.length; i++)
+        {
+          if (this.values.infoFunc3[i].checked)
+          {
+            infoFunc3Ready = true;
+            break;
+          }
+        }
+      }
+      else
+        infoFunc3Ready = true;
+
+      if (infoFunc1Ready && infoFunc2Ready && infoFunc3Ready)
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
+    else
+    {
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      {
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+        {
+          if (this.values.valueColumn != null)
+          {
+            this.generateBtnEnabled = true;
+            return true;
+          }
+        }
+        else
+        {
+          if (this.values.function.id === "count")
+          {
+            if (this.values.variable != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
+          }
+          else
+          {
+            if ((this.isSimpleChart () && this.values.valueList != null && this.values.valueList.length)
+             || (!this.isSimpleChart () && this.values.variable != null)
+              && this.values.valueColumn != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
+          }
+        }
+      }
+      else
+      {
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+        {
+          if (this.values.variable != null && this.values.valueColumn != null)
+          {
+            this.generateBtnEnabled = true;
+            return true;
+          }
+        }
+        else
+        {
+          if (this.values.function.id === "count")
+          {
+            if (this.values.variable != null && this.values.xaxis != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
+          }
+          else
+          {
+            if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
+            {
+              this.generateBtnEnabled = true;
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    this.generateBtnEnabled = false;
+    return false;
+  }
+
+  isArray(item): boolean
+  {
+    return Array.isArray(item);
+  }
+
+  isDynamicTableSet(): boolean
+  {
+    if (!this.isDynamicTableVariablesSet () || !this.dynamicTableHasFunctions ())
+      return false;
+
+    return true;
+  }
+
+  // check if there are any horizontal and vertical variables
+  isDynamicTableVariablesSet(): boolean
+  {
+    let hasVerticalVariables: boolean;
+
+    if (!this.values.dynTableVariables || this.values.dynTableVariables.length < 1)
+      return false;
+
+    hasVerticalVariables = false;
+
+    for (let value of this.values.dynTableVariables)
+    {
+      if (value.direction === "vertical")
+      {
+        hasVerticalVariables = true;
+        break;
+      }
+    }
+
+    if (!hasVerticalVariables)
+      return false;
+
+    return true;
+  }
+
+  dynamicTableHasFunctions(): boolean
+  {
+    if (!this.values.dynTableValues || this.values.dynTableValues.length < 1)
+      return false;
+
+    for (let value of this.values.dynTableValues)
+    {
+      if (!value.average && !value.summary && !value.min && !value.max 
+        && !value.count && !value.mean && !value.stddeviation)
+        return false;
+    }
+
+    return true;
+  }
+
+  checkChartType(): void
+  {
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    {
+      if (this.values.urlImg && this.values.urlImg != "")
+        this.generateBtnEnabled = true; //kp2020Ene23
+      else
+        this.generateBtnEnabled = false;
+
+      return;
+    }
+    else
+    {
+      if (this.values.currentOption == null)
+        return;
+    }
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO)
+    {
+      // disable and reset unused variables
+      this.values.variable = null;
+
+      this.values.xaxis = null;
+
+      this.values.valueColumn = null;
+      this.values.valueList = [];
+
+      if (!(this.values.currentChartType.flags & ChartFlags.FORM))
+        this.values.formVariables = [];
+
+      this.values.vertAxisName = null;
+      this.values.horizAxisName = null;
+
+      this.values.dynTableValues = null;
+      this.values.dynTableVariables = [];
+    }
+    else
+    {
+      let i;
+
+      this.values.infoNumVariables = 0;
+
+      if (this.values.currentChartType.flags & ChartFlags.TABLE
+        || this.values.currentChartType.flags & ChartFlags.MAP
+        || this.values.currentChartType.flags & ChartFlags.HEATMAP
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE)
+      {
+        if (this.values.currentChartType.flags & ChartFlags.MAP)
+        {
+          if (this.values.currentOption == null || ((this.values.currentOption.metaData != 2 && this.values.currentOption.metaData != 4)
+            && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) || (this.values.currentOption.tabType !== 'map' && this.values.currentChartType.flags & ChartFlags.MAPBOX))
+            this.values.currentOption = null;
+        }
+
+        this.values.xaxis = null;
+
+        if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
+        {
+          this.values.variable = null;
+          this.values.valueColumn = null;
+        }
+
+        this.values.vertAxisName = null;
+        this.values.horizAxisName = null;
+
+        if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
+        {
+          this.values.dynTableValues = null;
+          this.values.dynTableVariables = [];
+        }
+      }
+      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      {
+        this.values.xaxis = null;
+
+        if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+          this.values.variable = null;
+
+        if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
+          || this.values.currentChartType.flags & ChartFlags.PIECHART)
+        {
+          this.values.vertAxisName = null;
+          this.values.horizAxisName = null;
+
+          this.values.dynTableValues = null;
+          this.values.dynTableVariables = [];
+        }
+      }
+      else
+      {
+        this.values.dynTableValues = null;
+        this.values.dynTableVariables = [];
+      }
+
+      this.values.infoVar1 = null;
+
+      for (i = 0; i < this.values.infoFunc1.length; i++)
+        this.values.infoFunc1[i].checked = false;
+
+      this.values.infoVar2 = null;
+
+      for (i = 0; i < this.values.infoFunc2.length; i++)
+        this.values.infoFunc2[i].checked = false;
+
+      this.values.infoVar3 = null;
+
+      for (i = 0; i < this.values.infoFunc3.length; i++)
+        this.values.infoFunc3[i].checked = false;
+
+      if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
+        || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
+        this.values.function = this.functions[0];
+
+      this.values.formVariables = [];
+    }
+
+    // check the chart filters to see if the chart generation is to be enabled or not
+    this.checkPanelConfiguration ();
+  }
+
+  loadData(): void
+  {
+    // on advanced charts, check if the value selected is a number type
+    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      if (this.values.valueColumn.item.columnType !== "number")
       {
         this.dialog.open (MessageComponent, {
           data: { title: "Error", message: "Only numeric value types are allowed for aggregation value." }
@@ -781,631 +2517,209 @@ export class MsfDashboardAssistantComponent {
       }
     }
 
-    if ((this.chartMode === "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART
-      || this.chartMode === "basic")
-      && this.analysisSelected)
-    {
-      for (i = 0; i < this.currentOption.columnOptions.length; i++)
-      {
-        if (this.currentOption.columnOptions[i].id == this.analysisSelected.id)
-        {
-          variable = this.currentOption.columnOptions[i];
-          break;
-        }
-      }
-    }
-    else
-      variable = null;
+    // remove filters from simple form columns and thresholds
+    for (let formVariable of this.values.formVariables)
+      formVariable.filteredVariables = null;
 
-    if (this.selectedChartType.flags & ChartFlags.XYCHART && this.xAxisSelected)
-    {
-      for (i = 0; i < this.currentOption.columnOptions.length; i++)
-      {
-        if (this.currentOption.columnOptions[i].id == this.xAxisSelected.id)
-        {
-          xaxis = this.currentOption.columnOptions[i];
-          break;
-        }
-      }
-    }
-    else
-      xaxis = null;
+    for (let threshold of this.values.thresholds)
+      threshold.filteredVariables = null;
 
-    if (this.chartMode === "advanced")
+    this.dialogRef.close ({ generateChart: true, controlVariablesSet: this.controlVariablesSet, values: this.values });
+  }
+
+  goToResults(): void
+  {
+    this.dialogRef.close ({ goToResults: true, controlVariablesSet: null });
+  }
+
+  isFormColumnValid(): boolean
+  {
+    return (this.panelForm.get ('columnCtrl').value && this.panelForm.get ('fontSizeCtrl').value
+      && this.panelForm.get ('valueFontSizeCtrl').value && this.panelForm.get ('valueOrientationCtrl').value
+      && this.panelForm.get ('functionCtrl').value);
+  }
+
+  addColumnIntoForm(): void
+  {
+    let filteredVariables = new ReplaySubject<any[]> (1);
+
+    filteredVariables.next (this.values.chartColumnOptions.slice ());
+
+    this.values.formVariables.push ({
+      column: this.panelForm.get ('columnCtrl').value,
+      fontSize:  this.panelForm.get ('fontSizeCtrl').value,
+      valueFontSize: this.panelForm.get ('valueFontSizeCtrl').value,
+      valueOrientation: this.panelForm.get ('valueOrientationCtrl').value,
+      function: this.panelForm.get ('functionCtrl').value,
+      filteredVariables: filteredVariables
+    });
+
+    // reset main column and font size values
+    this.panelForm.get ('columnCtrl').reset ();
+    this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
+    this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
+    this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
+    this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
+    this.checkPanelConfiguration ();
+  }
+
+  deleteColumnFromForm(index): void
+  {
+    this.values.formVariables.splice (index, 1);
+    this.checkPanelConfiguration ();
+  }
+
+  swapFormVariablePositions(event: CdkDragDrop<MsfDashboardPanelValues[]>): void
+  {
+    // move items
+    moveItemInArray (this.values.formVariables, event.previousIndex, event.currentIndex);
+  }
+
+  getFormFontSize(column): number
+  {
+    return this.values.formVariables[column].fontSize.value;
+  }
+
+  getValueFormFontSize(column): number
+  {
+    return this.values.formVariables[column].valueFontSize.value;
+  }
+
+  checkNumVariables(): void
+  {
+    let i;
+
+    if (this.values.infoNumVariables < 2)
     {
-      for (i = 0; i < this.currentOption.columnOptions.length; i++)
-      {
-        if (this.currentOption.columnOptions[i].id == this.aggregationValueSelected.id)
-        {
-          valueColumn = this.currentOption.columnOptions[i];
-          break;
-        }
-      }
-    }
-    else if (this.valueSelected)
-    {
-      for (i = 0; i < this.currentOption.columnOptions.length; i++)
-      {
-        if (this.currentOption.columnOptions[i].id == this.valueSelected.id)
-        {
-          valueColumn = this.currentOption.columnOptions[i];
-          break;
-        }
-      }
+      this.values.infoVar2 = null;
+
+      for (i = 0; i < this.values.infoFunc2.length; i++)
+        this.values.infoFunc2[i].checked = false;
     }
 
-    this.dialog.open (MsfChartPreviewComponent, {
-      panelClass: 'msf-dashboard-assistant-dialog',
+    if (this.values.infoNumVariables != 3)
+    {
+      this.values.infoVar3 = null;
+
+      for (i = 0; i < this.values.infoFunc3.length; i++)
+        this.values.infoFunc3[i].checked = false;
+    }
+
+    this.checkPanelConfiguration ();
+  }
+
+  goToFunctions(infoVarNum): void
+  {
+    let infoVar, infoFunc;
+
+    switch (infoVarNum)
+    {
+      case 2:
+        infoVar = this.values.infoVar3;
+        infoFunc = this.values.infoFunc3;
+        break;
+
+      case 1:
+        infoVar = this.values.infoVar2;
+        infoFunc = this.values.infoFunc2;
+        break;
+
+      default:
+        infoVar = this.values.infoVar1;
+        infoFunc = this.values.infoFunc1;
+        break;
+    }
+
+    const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
+      height: '382px',
+      width: '600px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
       data: {
-        currentChartType: this.selectedChartType,
-        currentOption: this.currentOption,
-        currentOptionCategories: this.currentOptionCategories,
-        function: this.function,
-        variable: variable,
-        xaxis: xaxis,
-        valueColumn: valueColumn,
-        chartMode: this.chartMode,
-        intervalType: this.intervalType,
-        intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
-        startAtZero: this.startAtZero,
-        ordered: this.ordered
+        title: this.values.chartName,
+        subTitle: "Variable #" + (infoVarNum + 1) + ": " + infoVar.name,
+        functions: infoFunc
       }
     });
+
+    dialogRef.afterClosed ().subscribe (
+      () => this.checkPanelConfiguration ()
+    );
   }
 
-  // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
+  configureDynamicTable(): void
   {
-    // Set up series
-    let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.name = item.valueAxis;
-    series.dataFields.valueX = item.valueField;
-    series.sequencedInterpolation = true;
-
-    // Parse date if available
-    if (parseDate)
+    let dynamicTableValues =
     {
-      series.dataFields.dateY = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = outputFormat;
+      xaxis: [],
+      yaxis: [],
+      values: []
+    };
 
-      if (values.valueColumn.columnType === "number")
-        series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-      else
-        series.columns.template.tooltipText = "{dateY}: {valueX}";
-    }
-    else
+    if (this.values.dynTableVariables)
     {
-      if (values.chartMode === "advanced")
+      for (let variable of this.values.dynTableVariables)
       {
-        series.dataFields.categoryY = "Interval";
-        series.columns.template.tooltipText = item.valueAxis + ": {valueX}";
-      }
-      else
-      {
-        series.dataFields.categoryY = values.xaxis.columnName;
-
-        if (values.valueColumn.columnType === "number")
-          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.item.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
+        if (variable.direction === "horizontal")
+          dynamicTableValues.xaxis.push (variable);
         else
-          series.columns.template.tooltipText = "{categoryY}: {valueX}";
+          dynamicTableValues.yaxis.push (variable);
       }
     }
 
-    // Configure columns
-    series.stacked = stacked;
-    series.columns.template.strokeWidth = 0;
-    series.columns.template.width = am4core.percent (60);
-
-    return series;
-  }
-
-  // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.name = item.valueAxis;
-    series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
-
-    if (parseDate)
+    if (this.values.dynTableValues)
     {
-      series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = outputFormat;
-
-      if (values.valueColumn.columnType === "number")
-        series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-      else
-        series.columns.template.tooltipText = "{dateX}: {valueY}";
+      for (let value of this.values.dynTableValues)
+        dynamicTableValues.values.push (value);
     }
-    else
+
+    const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
     {
-      if (values.chartMode === "advanced")
-      {
-        series.dataFields.categoryX = "Interval";
-        series.columns.template.tooltipText = item.valueAxis + ": {valueY}";
+      width: '1100px',
+      height: '600px',
+      panelClass: 'dynamic-table-dialog',
+      autoFocus: false,
+      data: {
+        metadata: this.values.currentOption.columnOptions,
+        dynamicTableValues: dynamicTableValues,
+        dashboardPanel: this.values
       }
-      else
-      {
-        series.dataFields.categoryX = values.xaxis.columnName;
-
-        if (values.valueColumn.columnType === "number")
-          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.columns.template.tooltipText = "{categoryX}: {valueY}";
-      }
-    }
-
-    series.stacked = stacked;
-    series.columns.template.strokeWidth = 0;
-    series.columns.template.width = am4core.percent (60);
-
-    return series;
-  }
-
-  // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    // Set up series
-    let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueAxis;
-    series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
-    series.strokeWidth = 2;
-    series.minBulletDistance = 10;
-    series.tooltip.pointerOrientation = "horizontal";
-    series.tooltip.background.cornerRadius = 20;
-    series.tooltip.background.fillOpacity = 0.5;
-    series.tooltip.label.padding (12, 12, 12, 12);
-    series.tensionX = 0.8;
-
-    if (values.currentChartType.flags & ChartFlags.BULLET)
-    {
-      let bullet, circle;
-
-      series.strokeOpacity = 0;
-
-      // add circle bullet for scatter chart
-      bullet = series.bullets.push (new am4charts.Bullet ());
-
-      circle = bullet.createChild (am4core.Circle);
-      circle.horizontalCenter = "middle";
-      circle.verticalCenter = "middle";
-      circle.strokeWidth = 0;
-      circle.width = 12;
-      circle.height = 12;
-    }
-
-    if (parseDate)
-    {
-      series.dataFields.dateX = values.xaxis.columnName;
-      series.dateFormatter.dateFormat = outputFormat;
-
-      if (values.valueColumn.columnType === "number")
-        series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-      else
-        series.tooltipText = "{dateX}: {valueY}";
-    }
-    else
-    {
-      if (values.chartMode === "advanced")
-      {
-        series.dataFields.categoryX = "Interval";
-        series.tooltipText = item.valueAxis + ": {valueY}";
-      }
-      else
-      {
-        series.dataFields.categoryX = values.xaxis.columnName;
-
-        if (values.valueColumn.columnType === "number")
-          series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.tooltipText = "{categoryX}: {valueY}";
-      }
-    }
-
-    // Fill area below line for area chart types
-    if (values.currentChartType.flags & ChartFlags.AREAFILL)
-      series.fillOpacity = 0.3;
-
-    series.stacked = stacked;
-
-    return series;
-  }
-
-  // Function to create simple line chart series
-  createSimpleLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    // Set up series
-    let series = chart.series.push (new am4charts.LineSeries ());
-    series.name = item.valueField;
-    series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
-    series.strokeWidth = 2;
-    series.minBulletDistance = 10;
-    series.tooltip.pointerOrientation = "horizontal";
-    series.tooltip.background.cornerRadius = 20;
-    series.tooltip.background.fillOpacity = 0.5;
-    series.tooltip.label.padding (12, 12, 12, 12);
-    series.tensionX = 0.8;
-
-    if (values.currentChartType.flags & ChartFlags.BULLET)
-    {
-      let bullet, circle;
-
-      series.strokeOpacity = 0;
-
-      // add circle bullet for scatter chart
-      bullet = series.bullets.push (new am4charts.Bullet ());
-
-      circle = bullet.createChild (am4core.Circle);
-      circle.horizontalCenter = "middle";
-      circle.verticalCenter = "middle";
-      circle.strokeWidth = 0;
-      circle.width = 12;
-      circle.height = 12;
-    }
-
-    if (parseDate)
-    {
-      series.dataFields.dateX = item.titleField;
-      series.dateFormatter.dateFormat = outputFormat;
-
-      if (values.valueColumn && values.valueColumn.columnType === "number")
-        series.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-      else
-        series.tooltipText = "{dateX}: {valueY}";
-    }
-    else
-    {
-      if (values.chartMode === "advanced")
-      {
-        series.dataFields.categoryX = item.titleField;
-        series.tooltipText = item.valueField + ": {valueY}";
-      }
-      else
-      {
-        series.dataFields.categoryX = item.titleField;
-
-        if (values.valueColumn && values.valueColumn.columnType === "number")
-          series.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.tooltipText = "{categoryX}: {valueY}";
-      }
-    }
-
-    series.stacked = stacked;
-
-    // Set color
-    series.segments.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (paletteColors[0]);
     });
 
-    series.adapter.add ("stroke", (stroke, target) => {
-      return am4core.color (paletteColors[0]);
-    });
-
-    return series;
-  }
-
-  // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.dataFields.valueY = item.valueField;
-    series.name = item.valueField;
-
-    if (values.chartMode === "advanced")
+    dialogRef.afterClosed ().subscribe (result =>
     {
-      series.dataFields.categoryX = item.titleField;
-      series.columns.template.tooltipText = "{valueY}";
-    }
-    else
-    {
-      if (parseDate)
+      if (result != null)
       {
-        series.dataFields.dateX = item.titleField;
-        series.dateFormatter.dateFormat = outputFormat;
+        this.values.dynTableVariables = [];
+        this.values.dynTableValues = [];
 
-        if (values.valueColumn && values.valueColumn.columnType === "number")
-          series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.columns.template.tooltipText = "{dateX}: {valueY}";
-      }
-      else
-      {
-        series.dataFields.categoryX = item.titleField;
-
-        if (values.valueColumn && values.valueColumn.columnType === "number")
-          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueY}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.columns.template.tooltipText = "{categoryX}: {valueY}";
-      }
-    }
-
-    series.columns.template.strokeWidth = 0;
-
-    series.stacked = stacked;
-
-    // Set colors
-    series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (paletteColors[0]);
-    });
-
-    return series;
-  }
-
-  // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    let series = chart.series.push (new am4charts.ColumnSeries ());
-    series.dataFields.valueX = item.valueField;
-    series.name = item.valueField;
-
-    if (values.chartMode === "advanced")
-    {
-      series.dataFields.categoryY = item.titleField;
-      series.columns.template.tooltipText = "{valueX}";
-    }
-    else
-    {
-      if (parseDate)
-      {
-        series.dataFields.dateY = item.titleField;
-        series.dateFormatter.dateFormat = outputFormat;
-
-        if (values.valueColumn && values.valueColumn.columnType === "number")
-          series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.columns.template.tooltipText = "{dateY}: {valueX}";
-      }
-      else
-      {
-        series.dataFields.categoryY = item.titleField;
-
-        if (values.valueColumn && values.valueColumn.columnType === "number")
-          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.prefix ? values.valueColumn.prefix : "") + "{valueX}" + (values.valueColumn.suffix ? values.valueColumn.suffix : "");
-        else
-          series.columns.template.tooltipText = "{categoryY}: {valueX}";
-      }
-    }
-
-    series.columns.template.strokeWidth = 0;
-
-    series.stacked = stacked;
-
-    series.columns.template.adapter.add ("fill", (fill, target) => {
-      return am4core.color (paletteColors[0]);
-    });
-
-    return series;
-  }
-
-  // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    let series, colorSet;
-
-    // Set inner radius for donut chart
-    if (values.currentChartType.flags & ChartFlags.PIEHOLE)
-      chart.innerRadius = am4core.percent (60);
-
-    // Configure Pie Chart
-    series = chart.series.push (new am4charts.PieSeries ());
-    series.dataFields.value = item.valueField;
-    series.dataFields.category = item.titleField;
-
-    if (values.valueColumn.columnType === "number")
-      series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
-    else
-      series.slices.template.tooltipText = "{category}: {value.value}";
-
-    // This creates initial animation
-    series.hiddenState.properties.opacity = 1;
-    series.hiddenState.properties.endAngle = -90;
-    series.hiddenState.properties.startAngle = -90;
-
-    // Set ticks color
-    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
-    series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
-    series.ticks.template.strokeWidth = 1;
-
-    // Set the color for the chart to display
-    colorSet = new am4core.ColorSet ();
-    colorSet.list = paletteColors.map (function (color) {
-      return am4core.color (color);
-    });
-    series.colors = colorSet;
-
-    return series;
-  }
-
-  // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
-  {
-    let series, colorSet;
-
-    series = chart.series.push (new am4charts.FunnelSeries ());
-    series.dataFields.value = item.valueField;
-    series.dataFields.category = item.titleField;
-
-    if (values.valueColumn.columnType === "number")
-      series.slices.template.tooltipText = "{category}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{value.value}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
-    else
-      series.slices.template.tooltipText = "{category}: {value.value}";
-
-    // Set chart apparence
-    series.sliceLinks.template.fillOpacity = 0;
-    series.labels.template.fill = Themes.AmCharts[theme].fontColor;
-    series.ticks.template.strokeOpacity = 1;
-    series.ticks.template.stroke = Themes.AmCharts[theme].ticks;
-    series.ticks.template.strokeWidth = 1;
-    series.alignLabels = true;
-
-    // Set the color for the chart to display
-    colorSet = new am4core.ColorSet ();
-    colorSet.list = paletteColors.map (function (color) {
-      return am4core.color (color);
-    });
-    series.colors = colorSet;
-
-    return series;
-  }
-
-  done(): void
-  {
-    let variable, xaxis, valueColumn;
-
-    if ((this.chartMode === "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART)
-      || this.chartMode !== "advanced")
-    {
-      for (let columnOption of this.data.chartColumnOptions)
-      {
-        if (columnOption.item.id == this.analysisSelected.id)
+        for (let variable of result.xaxis)
         {
-          variable = columnOption;
-          break;
+          this.values.dynTableVariables.push (variable);
+          this.values.dynTableVariables[this.values.dynTableVariables.length - 1].direction = "horizontal";
         }
-      }
-    }
-    else
-      variable = null;
 
-    if (this.chartMode !== "advanced" && this.selectedChartType.flags & ChartFlags.XYCHART)
-    {
-      for (let columnOption of this.data.chartColumnOptions)
-      {
-        if (columnOption.item.id == this.xAxisSelected.id)
+        for (let i = 0; i < result.yaxis.length; i++)
         {
-          xaxis = columnOption;
-          break;
-        }
-      }
-    }
-    else
-      xaxis = null;
+          let variable = result.yaxis[i];
+          let index;
 
-    if (this.chartMode === "advanced")
-    {
-      for (let columnOption of this.data.chartColumnOptions)
-      {
-        if (columnOption.item.id == this.aggregationValueSelected.id)
-        {
-          valueColumn = columnOption;
-          break;
-        }
-      }
-    }
-    else
-    {
-      for (let columnOption of this.data.chartColumnOptions)
-      {
-        if (columnOption.item.id == this.valueSelected.id)
-        {
-          valueColumn = columnOption;
-          break;
-        }
-      }
-    }
+          this.values.dynTableVariables.push (variable);
+          index = this.values.dynTableVariables.length - 1;
+          this.values.dynTableVariables[index].direction = "vertical";
 
-    this.dialogRef.close ({
-      currentChartTypeName: this.selectedChartType.name,
-      currentOptionCategories: this.currentOptionCategories,
-      function: this.function,
-      variable: variable,
-      xaxis: xaxis,
-      valueColumn: valueColumn,
-      chartMode: this.chartMode,
-      intervalType: this.intervalType,
-      intValue: (this.intervalType === "ncile" ? this.ncile : this.intValue),
-      startAtZero: this.startAtZero,
-      ordered: this.ordered
+          if (i != result.yaxis.length - 1)
+            this.values.dynTableVariables[index].summary = true;
+          else
+            this.values.dynTableVariables[index].summary = false;
+        }
+
+        for (let value of result.values)
+          this.values.dynTableValues.push (value);
+
+        this.checkPanelConfiguration ();
+      }
     });
-  }
-
-  getConfigWidth(): number
-  {
-    if (this.selectDataPreview)
-      return 1015;
-
-    return 730;
-  }
-
-  checkChartTypeSelection(): void
-  {
-    this.selectingAnalysis = null;
-    this.analysisSelected = null;
-
-    if (this.chartMode === "advanced")
-    {
-      if (!this.selectedChartType.allowedInAdvancedMode)
-        this.selectedChartType = this.chartTypes[0];
-
-      this.selectingXAxis = null;
-      this.xAxisSelected = null;
-      this.selectingValue = null;
-      this.valueSelected = null;
-      this.startAtZero = false;
-    }
-    else
-    {
-      this.selectingAggregationValue = null;
-      this.aggregationValueSelected = null;
-
-      if (!this.isLineOrBarChart ())
-        this.startAtZero = false;
-    }
-  }
-
-  checkChartMode(chartType): boolean
-  {
-    if (!chartType.allowedInAdvancedMode && this.chartMode === "advanced")
-      return false;
-
-    return true;
-  }
-
-  calcMargin(): number
-  {
-    if (this.chartMode === "advanced")
-      return 143;
-
-    return 0;
-  }
-
-  getAdvancedValueWidth(): string
-  {
-    if (this.isChartConfigured ())
-      return "calc(100% - 580px)";
-
-    return "calc(100% - 267px)";
-  }
-
-  hasAnalysisByValue(): boolean
-  {
-    if (this.chartMode === "advanced")
-    {
-      if (this.selectedChartType.flags & ChartFlags.XYCHART)
-        return true;
-
-      return false;
-    }
-
-    return true;
-  }
-
-  isLineOrBarChart(): boolean
-  {
-    if (!(this.selectedChartType.flags & ChartFlags.PIECHART) && !(this.selectedChartType.flags & ChartFlags.FUNNELCHART))
-      return true;
-
-    return false;
-  }
-
-  setLoading(value: boolean): void
-  {
-    this.isLoading = value;
   }
 
   startURLUpdate(): void
@@ -1415,5 +2729,52 @@ export class MsfDashboardAssistantComponent {
     setTimeout (() => {
       this.updateURLResults = false;
     }, 100);
+  }
+
+  resetIntervalValue(): void
+  {
+    if (this.values.intervalType === "value")
+      this.values.intValue = null;
+    else
+      this.values.intValue = 5;
+  }
+
+  pasteControlVariables(): void
+  {
+    let optionCategories = JSON.parse (this.globals.copiedPanelInfo);
+
+    // pass the arguments values
+    for (let optionCategory of this.data.currentOptionCategories)
+    {
+      for (let curOptionCategory of optionCategories)
+      {
+        if (curOptionCategory.id == optionCategory.id)
+        {
+          for (let curCategoryArgument of curOptionCategory.arguments)
+          {
+            for (let argument of optionCategory.arguments)
+            {
+              if (curCategoryArgument.id == argument.id && curCategoryArgument.selectionMode == argument.selectionMode)
+              {
+                argument.value1 = curCategoryArgument.value1;
+                argument.value2 = curCategoryArgument.value2;
+                argument.value3 = curCategoryArgument.value3;
+                argument.value4 = curCategoryArgument.value4;
+                argument.dateLoaded = curCategoryArgument.dateLoaded;
+                argument.currentDateRangeValue = curCategoryArgument.currentDateRangeValue;
+                argument.anchored = false;
+
+                if (argument.type == ComponentType.dateRange)
+                  argument.refreshDate = true;
+
+                break;
+              }
+            }
+          }
+
+          break;
+        }
+      }
+    }
   }
 }

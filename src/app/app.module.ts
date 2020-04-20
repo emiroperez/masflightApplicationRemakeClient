@@ -22,7 +22,7 @@ import { MsfComponentComponent } from './msf-component/msf-component.component';
 import { Globals } from './globals/Globals';
 import { MsfAirportComponent } from './msf-airport/msf-airport.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { MatFormFieldModule, MatSelectModule ,MatChipsModule} from '@angular/material';
+import { MatFormFieldModule, MatSelectModule, MatChipsModule } from '@angular/material';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MsfContainerComponent } from './msf-container/msf-container.component';
 import { MsfTableComponent } from './msf-table/msf-table.component';
@@ -109,7 +109,6 @@ import { MsfConnectonTimeComponent } from './msf-connecton-time/msf-connecton-ti
 import { MsfStopsComponent } from './msf-stops/msf-stops.component';
 import { MsfCircuityTypeComponent } from './msf-circuity-type/msf-circuity-type.component';
 import { MsfCircuityComponent } from './msf-circuity/msf-circuity.component';
-import { MsfDashboardControlVariablesComponent } from './msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfSummaryRevenueBuildsComponent } from './msf-summary-revenue-builds/msf-summary-revenue-builds.component';
 import { UserActivationComponent } from './user-activation/user-activation.component';
 import { MsfFareIncrementsMarketHistogramsComponent } from './msf-fare-increments-market-histograms/msf-fare-increments-market-histograms.component';
@@ -127,7 +126,6 @@ import { MsfDashboardInfoFunctionsComponent } from './msf-dashboard-info-functio
 import { MsfGroupingMariadbComponent } from './msf-grouping-mariadb/msf-grouping-mariadb.component';
 import { MsfContentTypeComponent } from './msf-content-type/msf-content-type.component';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { MsfDashboardAdditionalSettingsComponent } from './msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { MsfEditDashboardComponent } from './msf-edit-dashboard/msf-edit-dashboard.component';
 import { MsfAddDashboardComponent } from './msf-add-dashboard/msf-add-dashboard.component';
 import { MsfDashboardDrillDownComponent } from './msf-dashboard-drill-down/msf-dashboard-drill-down.component';
@@ -172,9 +170,7 @@ import { AdminArgumentsGroupComponent } from './admin-arguments-group/admin-argu
 import { FilterPipeGroupArg } from './admin-arguments-group/pipe-filter-group';
 import { AdminShareGroupsArgumentsComponent } from './admin-share-groups-arguments/admin-share-groups-arguments.component';
 import { MsfDashboardAssistantComponent } from './msf-dashboard-assistant/msf-dashboard-assistant.component';
-import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { MsfSelectDataFromComponent } from './msf-select-data-from/msf-select-data-from.component';
 import { DatalakeComponent } from './datalake/datalake.component';
 import { DatalakeExplorerComponent } from './datalake-explorer/datalake-explorer.component';
 import { DatalakeTableCardComponent } from './datalake-table-card/datalake-table-card.component';
@@ -314,7 +310,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfStopsComponent,
     MsfCircuityTypeComponent,
     MsfCircuityComponent,
-    MsfDashboardControlVariablesComponent,
     MsfSummaryRevenueBuildsComponent,
     UserActivationComponent,
     MsfFareIncrementsMarketHistogramsComponent,
@@ -330,7 +325,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfDashboardInfoFunctionsComponent,
     MsfGroupingMariadbComponent,
     MsfContentTypeComponent,
-    MsfDashboardAdditionalSettingsComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
     MsfDashboardDrillDownComponent,
@@ -368,8 +362,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AdminArgumentsGroupComponent,
     AdminShareGroupsArgumentsComponent,
     MsfDashboardAssistantComponent,
-    MsfChartPreviewComponent,
-    MsfSelectDataFromComponent,
     DatalakeComponent,
     DatalakeExplorerComponent,
     DatalakeTableCardComponent,
@@ -477,10 +469,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     EditCategoryArgumentDialog,
     EditOptionsDialog,
     DrillDownDialog,
-    MsfDashboardControlVariablesComponent,
     MsfConfirmationDialogComponent,
     MsfDashboardInfoFunctionsComponent,
-    MsfDashboardAdditionalSettingsComponent,
     MsfEditDashboardComponent,
     MsfAddDashboardComponent,
     MsfDashboardDrillDownComponent,
@@ -496,8 +486,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     TwoFactorLoginDialogComponent,
     MsfDynamicTableAliasComponent,
     MsfDashboardAssistantComponent,
-    MsfChartPreviewComponent,
-    MsfSelectDataFromComponent,
     DatalakeTableShowColumnsComponent,
     DatalakeTablePreviewComponent,
     DatalakeCreateTableComponent,
