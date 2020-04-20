@@ -401,7 +401,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PublicizeDashboardDialogComponent,
     MsfDashboardPanelValueSelectorComponent,
     PublicizeDashboardDialogComponent,
-    UrlMessageComponent
+    UrlMessageComponent,
+    MsfConfirmationDialogDatalakeComponent
   ],
   imports: [
     BrowserModule,
