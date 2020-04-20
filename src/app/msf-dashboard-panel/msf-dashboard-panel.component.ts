@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef, Injector } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DatePipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4maps from "@amcharts/amcharts4/maps";
@@ -17,20 +18,15 @@ import am4geodata_colombiaMuniLow from "@amcharts/amcharts4-geodata/colombiaMuni
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
 import { Themes } from '../globals/Themes';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { ReplaySubject, Subject } from 'rxjs';
-import { MatDialog, PageEvent, MatPaginator, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { takeUntil, take } from 'rxjs/operators';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog, PageEvent, MatPaginator } from '@angular/material';
 import * as moment from 'moment';
-import { DatePipe } from '@angular/common';
 
 import { ApiClient } from '../api/api-client';
 import { Arguments } from '../model/Arguments';
 import { Utils } from '../commons/utils';
 import { ApplicationService } from '../services/application.service';
-import { MsfDashboardControlVariablesComponent } from '../msf-dashboard-control-variables/msf-dashboard-control-variables.component';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
-import { MsfDashboardAdditionalSettingsComponent } from '../msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { MsfDashboardDrillDownComponent } from  '../msf-dashboard-drill-down/msf-dashboard-drill-down.component';
 import { MsfShareDashboardComponent } from '../msf-share-dashboard/msf-share-dashboard.component';
 import { MsfTableComponent } from '../msf-table/msf-table.component';
@@ -40,11 +36,6 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { AuthService } from '../services/auth.service';
 import { MsfMapComponent } from '../msf-map/msf-map.component';
 import { MsfDashboardAssistantComponent } from '../msf-dashboard-assistant/msf-dashboard-assistant.component';
-import { MsfDynamicTableAliasComponent } from '../msf-dynamic-table-alias/msf-dynamic-table-alias.component';
-import { MsfSelectDataFromComponent } from '../msf-select-data-from/msf-select-data-from.component';
-import { ConfigFlags } from './msf-dashboard-configflags';
-import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 // AmCharts colors
 const black = am4core.color ("#000000");
@@ -57,20 +48,12 @@ const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0
 
 @Component({
   selector: 'app-msf-dashboard-panel',
-  templateUrl: './msf-dashboard-panel.component.html',
-  styleUrls: ['./msf-dashboard-panel.component.css']
+  templateUrl: './msf-dashboard-panel.component.html'
 })
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
-  vertAxisDisabled: boolean = false;
-  horizAxisDisabled: boolean = false;
-
-  variableCtrlBtnEnabled: boolean = false;
-  generateBtnEnabled: boolean = false;
-
   valueAxis: any;
-  panelForm: FormGroup;
 
   chart: any;
   chartInfo: any;
@@ -150,7 +133,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   @Input("values")
   values: MsfDashboardPanelValues;
-  temp: MsfDashboardPanelValues;
 
   @Input("panelWidth")
   panelWidth: number;
@@ -234,22 +216,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   lastChartName: String;
   yAxisColSpan: number = 0;
 
-  public dataFormFilterCtrl: FormControl = new FormControl ();
-  public variableFilterCtrl: FormControl = new FormControl ();
-  public xaxisFilterCtrl: FormControl = new FormControl ();
-  public valueFilterCtrl: FormControl = new FormControl ();
-
-  public infoVar1FilterCtrl: FormControl = new FormControl ();
-  public infoVar2FilterCtrl: FormControl = new FormControl ();
-  public infoVar3FilterCtrl: FormControl = new FormControl ();
-
-  public columnFilterCtrl: FormControl = new FormControl ();
-
-  public filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
-  public filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]> (1);
-
-  private _onDestroy = new Subject<void> ();
-
   // mapbox variables
   @ViewChild('msfMapRef', { static: true })
   msfMapRef: MsfMapComponent;
@@ -294,85 +260,27 @@ export class MsfDashboardPanelComponent implements OnInit {
   displayAnchoredArguments: boolean = false;
   updateURLResults: boolean = false;
 
-  // variables for the dialog version
-  dialogRef: any;
-  dialogData: any;
+  // dashboard interface values
+  controlVariablesSet: boolean = false;
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  displayChart: boolean;
+  displayInfo: boolean;
+  displayForm: boolean;
+  displayPic: boolean;
+  displayTable: boolean;
+  displayMapbox: boolean;
+  displayDynTable: boolean;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
-    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder, private injector: Injector)
+    private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
   {
     this.utils = new Utils ();
-
-    this.dialogRef = this.injector.get (MatDialogRef, null);
-    this.dialogData = this.injector.get (MAT_DIALOG_DATA, null);
-
-    this.panelForm = this.formBuilder.group ({
-      dataFormCtrl: new FormControl (),
-      variableCtrl: new FormControl ({ value: '', disabled: true }),
-      xaxisCtrl: new FormControl ({ value: '', disabled: true }),
-      valueCtrl: new FormControl ({ value: '', disabled: true }),
-      valueListCtrl: new FormControl ({ value: '', disabled: true }),
-      infoNumVarCtrl: new FormControl ({ value: '', disabled: true }),
-      infoVar1Ctrl: new FormControl ({ value: '', disabled: true }),
-      infoVar2Ctrl: new FormControl ({ value: '', disabled: true }),
-      infoVar3Ctrl: new FormControl ({ value: '', disabled: true }),
-      columnCtrl: new FormControl ({ value: '', disabled: true }),
-      fontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
-      valueFontSizeCtrl: new FormControl ({ value: this.fontSizes[1], disabled: true }),
-      valueOrientationCtrl: new FormControl ({ value: this.orientations[0], disabled: true }),
-      functionCtrl: new FormControl ({ value: this.functions[0], disabled: true }),
-      geodataValueCtrl: new FormControl ({ value: '', disabled: true }),
-      geodataKeyCtrl: new FormControl ({ value: '', disabled: true })
-    });
-
-    if (this.dialogData)
-    {
-      // This is for the dialog version
-      this.values = this.dialogData.values;
-      this.panelWidth = this.dialogData.panelWidth;
-      this.panelHeight = this.dialogData.panelHeight;
-      this.toggleControlVariableDialogOpen = this.dialogData.toggleControlVariableDialogOpen;
-      this.functions = this.dialogData.functions;
-      this.chartTypes = this.dialogData.chartTypes;
-      this.nciles = this.dialogData.nciles;
-      this.fontSizes = this.dialogData.fontSizes;
-      this.orientations = this.dialogData.orientations;
-      this.geodatas = this.dialogData.geodatas;
-      this.childPanelValues = this.dialogData.childPanelValues;
-      this.childPanelsConfigured = this.dialogData.childPanelsConfigured;
-
-      this.panelForm = this.dialogData.panelForm;
-      this.dataFormFilterCtrl = this.dialogData.dataFormFilterCtrl;
-      this.variableFilterCtrl = this.dialogData.variableFilterCtrl;
-      this.xaxisFilterCtrl = this.dialogData.xaxisFilterCtrl;
-      this.valueFilterCtrl = this.dialogData.valueFilterCtrl;
-      this.infoVar1FilterCtrl = this.dialogData.infoVar1FilterCtrl;
-      this.infoVar2FilterCtrl = this.dialogData.infoVar2FilterCtrl;
-      this.infoVar3FilterCtrl = this.dialogData.infoVar3FilterCtrl;
-      this.columnFilterCtrl = this.dialogData.columnFilterCtrl;
-      this.filteredVariables = this.dialogData.filteredVariables;
-      this.filteredOptions = this.dialogData.filteredOptions;
-
-      this.variableCtrlBtnEnabled = this.dialogData.variableCtrlBtnEnabled;
-      this.generateBtnEnabled = this.dialogData.generateBtnEnabled;
-    }
-  }
-
-  triggerResize() {
-    // Wait for changes to be applied, then trigger textarea resize.
-    this.zone.onStable.pipe(take(1))
-        .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
   ngOnInit()
   {
     this.displayLabel = this.panelWidth >= 5 ? true : false;
-
-    // prepare the data form combo box
-    this.optionSearchChange (this.dataFormFilterCtrl);
 
     // copy function list for use with the information panel
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
@@ -384,7 +292,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void
   {
-    if (this.addingOrRemovingPanels || this.dialogData)
+    if (this.addingOrRemovingPanels)
       return;
 
     if (changes['controlPanelVariables'] && this.controlPanelVariables)
@@ -466,12 +374,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.displayLabel = this.panelWidth >= 5 ? true : false;
 
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.values.displayMapbox)
-        this.msfMapRef.resizeMap ();
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.displayMapbox)
+        this.msfMapRef.resizeMap();
+
     }
     else if (changes['panelHeight'])
     {
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.values.displayMapbox)
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.displayMapbox)
         this.msfMapRef.resizeMap ();
     }
     else if (changes['currentHiddenCategories'])
@@ -2374,9 +2283,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     this.msfTableRef.tableOptions = this;
 
-    if (this.dialogData)
-      return; // ignore ngAfterViewInit on the dialog version
-
     if ((this.values.currentChartType.flags & ChartFlags.TABLE)
       || (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       || (this.values.currentChartType.flags & ChartFlags.DYNTABLE))
@@ -2419,15 +2325,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngAfterContentInit(): void
   {
-    if (this.dialogData)
-    {
-      if (this.values.currentOption)
-        this.variableCtrlBtnEnabled = true;
-
-      this.checkChartType ();
-      return; // ignore ngAfterContentInit on the dialog version
-    }
-
     // these parts must be here because it generate an error if inserted on ngAfterViewInit
     this.initPanelSettings ();
 
@@ -2439,6 +2336,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         setTimeout (() =>
         {
+          this.controlVariablesSet = true;
           this.loadData ();
         }, 100);
       }
@@ -2470,57 +2368,24 @@ export class MsfDashboardPanelComponent implements OnInit {
             this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
           }, 100);
 
+          this.controlVariablesSet = true;
+
           if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-            this.values.displayPic = true;
+            this.displayPic = true;
           else if (this.values.currentChartType.flags & ChartFlags.FORM)
-            this.values.displayForm = true;
+            this.displayForm = true;
           else
-            this.values.displayInfo = true;
+            this.displayInfo = true;
         }
       }
       else
-        this.values.displayChart = true;
+      {
+        this.controlVariablesSet = true;
+        this.displayChart = true;
+      }
 
       this.startUpdateInterval ();
     }
-  }
-
-  private filterVariables(filterCtrl): void
-  {
-    if (!this.values.chartColumnOptions)
-      return;
-
-    // get the search keyword
-    let search = filterCtrl.value;
-    if (!search)
-    {
-      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-      return;
-    }
-
-    search = search.toLowerCase ();
-    this.filteredVariables.next (
-      this.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
-    );
-  }
-
-  private filterOptions(filterCtrl): void
-  {
-    if (!this.values.options)
-      return;
-
-    // get the search keyword
-    let search = filterCtrl.value;
-    if (!search)
-    {
-      this.filteredOptions.next (this.values.options.slice ());
-      return;
-    }
-
-    search = search.toLowerCase ();
-    this.filteredOptions.next (
-      this.values.options.filter (a => a.nameSearch.toLowerCase ().indexOf (search) > -1)
-    );
   }
 
   checkGroupingValue(categoryColumnName, values): boolean
@@ -2628,8 +2493,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   getParameters()
   {
-    let currentOptionCategories = this.values.currentOptionCategories;
+    let currentOptionCategories;
     let params;
+
+    currentOptionCategories = this.values.currentOptionCategories;
 
     if (currentOptionCategories)
     {
@@ -2876,13 +2743,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       for (let j = 0; j < 5; j++)
       {
+        let funcShortName = ['Avg ', 'Sum ', 'Min ', 'Max ', 'Count '];
+
         if (!infoFunc[j].checked)
           continue;
 
         variables.push ({
           id : i,
           function : infoFunc[j].id,
-          title : infoFunc[j].title,
+          title : (infoFunc[j].title && infoFunc[j].title != "") ? infoFunc[j].title : (funcShortName[j] + infoVar.name),
           measure : infoFunc[j].measure,
           column : infoVar.id
         });
@@ -2998,7 +2867,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let params, url, urlArg;
 
     this.values.isLoading = true;
-    this.values.displayMapbox = true;
+    this.displayMapbox = true;
     this.msfMapRef.data = [];
     this.msfMapRef.coordinates = [];
  
@@ -3162,24 +3031,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   loadData(): void
   {
-    // on advanced charts, check if the value selected is a number type
-    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-    {
-      if (this.values.valueColumn.item.columnType !== "number")
-      {
-        this.dialog.open (MessageComponent, {
-          data: { title: "Error", message: "Only numeric value types are allowed for aggregation value." }
-        });
-
-        return;
-      }
-    }
-
-    if (this.dialogData)
-    {
-      this.dialogRef.close ({ generateChart: true });
-      return;
-    }
+    if (!this.values.chartName)
+      this.values.chartName = "Untitled";
 
     this.globals.startTimestamp = new Date ();
 
@@ -3215,12 +3068,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnDestroy()
   {
-    this._onDestroy.next ();
-    this._onDestroy.complete ();
-
-    if (this.dialogData)
-      return; // ignore the rest of ngOnDestroy on the dialog version
-
     clearInterval (this.updateInterval);
 
     this.destroyChart ();
@@ -3500,7 +3347,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
     _this.destroyChart ();
 
-    _this.values.displayPic = true;
+    _this.displayPic = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3512,7 +3359,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.removeDeadVariablesAndCategories.emit ({
       type: _this.chartTypes.indexOf (_this.oldChartType),
       analysisName: _this.oldVariableName,
-      chartSeries: this.values.chartSeries,
+      chartSeries: _this.values.chartSeries,
       controlVariables: _this.oldOptionCategories
     });
 
@@ -3608,7 +3455,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.destroyChart ();
 
     _this.values.isLoading = false;
-    _this.values.displayForm = true;
+    _this.displayForm = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = true;
@@ -3654,7 +3501,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.values.displayTable = true;
+    _this.displayTable = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3700,7 +3547,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.values.displayDynTable = true;
+    _this.displayDynTable = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3801,7 +3648,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.destroyChart ();
 
-    _this.values.displayChart = true;
+    _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3830,7 +3677,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
-    _this.values.displayChart = true;
+    _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3867,7 +3714,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.values.displayInfo = true;
+    _this.displayInfo = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = true;
     _this.values.formGenerated = false;
@@ -3925,7 +3772,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
-    _this.values.displayChart = true;
+    _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3963,54 +3810,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
     }
 
-    // load the initial filter variables list
-    this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-
-    this.searchChange (this.variableFilterCtrl);
-    this.searchChange (this.xaxisFilterCtrl);
-    this.searchChange (this.valueFilterCtrl);
-
-    this.searchChange (this.infoVar1FilterCtrl);
-    this.searchChange (this.infoVar2FilterCtrl);
-    this.searchChange (this.infoVar3FilterCtrl);
-
-    this.searchChange (this.columnFilterCtrl);
-
-    // reset chart filter values and disable generate chart button
-    this.panelForm.get ('variableCtrl').reset ();
-    this.panelForm.get ('xaxisCtrl').reset ();
-    this.panelForm.get ('valueCtrl').reset ();
-    this.panelForm.get ('valueListCtrl').reset ();
-    this.panelForm.get ('columnCtrl').reset ();
-    this.panelForm.get ('geodataValueCtrl').reset ();
-    this.panelForm.get ('geodataKeyCtrl').reset ();
-    this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
     this.values.formVariables = [];
-    this.variableCtrlBtnEnabled = true;
-
-    if ((this.values.currentChartType.flags & ChartFlags.XYCHART
-      && this.values.currentChartType.flags & ChartFlags.ADVANCED)
-      || !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
-      this.panelForm.get ('variableCtrl').enable ();
-
-    this.panelForm.get ('infoNumVarCtrl').enable ();
-
-    if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-      this.panelForm.get ('xaxisCtrl').enable ();
-
-    this.panelForm.get ('valueCtrl').enable ();
-    this.panelForm.get ('valueListCtrl').enable ();
-    this.panelForm.get ('columnCtrl').enable ();
-    this.panelForm.get ('fontSizeCtrl').enable ();
-    this.panelForm.get ('valueFontSizeCtrl').enable ();
-    this.panelForm.get ('valueOrientationCtrl').enable ();
-    this.panelForm.get ('geodataValueCtrl').enable ();
-    this.panelForm.get ('geodataKeyCtrl').enable ();
-    this.panelForm.get ('functionCtrl').enable ();
 
     this.values.xaxis = null;
     this.values.variable = null;
@@ -4124,194 +3924,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       _this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
     }
 
-    // load the initial filter variables list
-    _this.filteredVariables.next (_this.values.chartColumnOptions.slice ());
-
-    _this.searchChange (_this.variableFilterCtrl);
-    _this.searchChange (_this.xaxisFilterCtrl);
-    _this.searchChange (_this.valueFilterCtrl);
-
-    _this.searchChange (_this.infoVar1FilterCtrl);
-    _this.searchChange (_this.infoVar2FilterCtrl);
-    _this.searchChange (_this.infoVar3FilterCtrl);
-
-    _this.searchChange (_this.columnFilterCtrl);
-
-    // reset chart filter values and disable generate chart button
-    _this.panelForm.get ('variableCtrl').reset ();
-    _this.panelForm.get ('xaxisCtrl').reset ();
-    _this.panelForm.get ('valueCtrl').reset ();
-    _this.panelForm.get ('valueListCtrl').reset ();
-    _this.panelForm.get ('columnCtrl').reset ();
-    _this.panelForm.get ('geodataValueCtrl').reset ();
-    _this.panelForm.get ('geodataKeyCtrl').reset ();
-    _this.panelForm.get ('fontSizeCtrl').setValue (_this.fontSizes[1]);
-    _this.panelForm.get ('valueFontSizeCtrl').setValue (_this.fontSizes[1]);
-    _this.panelForm.get ('valueOrientationCtrl').setValue (_this.orientations[0]);
-    _this.panelForm.get ('functionCtrl').setValue (_this.functions[0]);
     _this.checkPanelConfiguration ();
 
     _this.values.formVariables = [];
-    _this.variableCtrlBtnEnabled = true;
-
-    _this.panelForm.get ('variableCtrl').enable ();
-    _this.panelForm.get ('infoNumVarCtrl').enable ();
-
-    if (_this.values.currentChartType.flags & ChartFlags.XYCHART)
-      _this.panelForm.get ('xaxisCtrl').enable ();
-
-    _this.panelForm.get ('valueCtrl').enable ();
-    _this.panelForm.get ('valueListCtrl').enable ();
-    _this.panelForm.get ('columnCtrl').enable ();
-    _this.panelForm.get ('fontSizeCtrl').enable ();
-    _this.panelForm.get ('valueFontSizeCtrl').enable ();
-    _this.panelForm.get ('valueOrientationCtrl').enable ();
-    _this.panelForm.get ('geodataValueCtrl').enable ();
-    _this.panelForm.get ('geodataKeyCtrl').enable ();
-    _this.panelForm.get ('functionCtrl').enable ();
 
     _this.values.isLoading = false;
     _this.values.currentOptionCategories = null;
   }
 
-  searchChange(filterCtrl): void
+  goToPanelConfiguration(): void
   {
-    // listen for search field value changes
-    filterCtrl.valueChanges
-      .pipe (takeUntil (this._onDestroy))
-      .subscribe (() => {
-        this.filterVariables (filterCtrl);
-      });
-  }
-
-  optionSearchChange(filterCtrl): void
-  {
-    // load the initial option list
-    this.filteredOptions.next (this.values.options.slice ());
-    // listen for search field value changes
-    filterCtrl.valueChanges
-      .pipe (takeUntil (this._onDestroy))
-      .subscribe (() => {
-        this.filterOptions (filterCtrl);
-      });
-  }
-
-  goToControlVariables(): void
-  {
-    let dialogRef;
-
-    this.toggleControlVariableDialogOpen.emit (true);
-
-    dialogRef = this.dialog.open (MsfDashboardControlVariablesComponent, {
-      width: '400px',
-      panelClass: 'msf-dashboard-arguments-dialog',
-      data: {
-        currentOptionCategories: this.values.currentOptionCategories,
-        currentOptionId: this.values.currentOption.id,
-        title: this.values.chartName
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((result) => {
-      this.toggleControlVariableDialogOpen.emit (false);
-
-      if (result)
-      {
-        if (result.error)
-        {
-          this.dialog.open (MessageComponent, {
-            data: { title: "Error", message: "Failed to load control variables." }
-          });
-        }
-        else
-          this.values.currentOptionCategories = result.currentOptionCategories;
-      }
-    });
-  }
-
-  // save chart data into a temporary value
-  storeChartValues(): void
-  {
-    if (!this.temp)
-    {
-      this.temp = new MsfDashboardPanelValues (this.values.options, this.values.chartName,this.values.chartDescription,
-        this.values.id, this.values.gridId, this.values.x, this.values.y, this.values.width,
-        this.values.height);
-    }
-    else
-      this.temp.chartName = this.values.chartName;
-
-    this.temp.chartDescription = this.values.chartDescription;
-    this.temp.urlImg = this.values.urlImg;
-    this.temp.currentOption = JSON.parse (JSON.stringify (this.values.currentOption));
-    this.temp.variable = this.values.variable ? this.values.variable.item.id : null;
-    this.temp.xaxis = this.values.xaxis ? this.values.xaxis.item.id : null;
-    this.temp.valueColumn = this.values.valueColumn ? this.values.valueColumn.item.id : null;
-    this.temp.function = this.values.function != -1 ? this.functions.indexOf (this.values.function) : -1;
-    this.temp.geodata = this.geodatas.indexOf (this.values.geodata);
-    this.temp.currentChartType = JSON.parse (JSON.stringify (this.values.currentChartType));
-    this.temp.chartColumnOptions = JSON.parse (JSON.stringify (this.values.chartColumnOptions));
-    this.temp.currentOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
-    this.temp.thresholds = JSON.parse (JSON.stringify (this.values.thresholds));
-    this.temp.goals = JSON.parse (JSON.stringify (this.values.goals));
-    this.temp.style = JSON.parse (JSON.stringify (this.values.style));
-    this.temp.vertAxisName = this.values.vertAxisName;
-    this.temp.horizAxisName = this.values.horizAxisName;
-    this.temp.dynTableValues = this.values.dynTableValues ? JSON.parse (JSON.stringify (this.values.dynTableValues)) : null;
-    this.temp.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables));
-    this.temp.intervalType = this.values.intervalType;
-    this.temp.intValue = this.values.intValue;
-    this.temp.valueList = (this.values.valueList && this.values.valueList.length ? this.generateValueList () : null);
-
-    this.temp.formVariables = [];
-    this.temp.tableVariables = JSON.parse (JSON.stringify (this.values.tableVariables));
-
-    if (this.values.currentChartType.flags & ChartFlags.FORM)
-    {
-      this.temp.infoVar1 = null;
-      this.temp.infoVar2 = null;
-      this.temp.infoVar3 = null;
-
-      for (let i = 0; i < this.values.formVariables.length; i++)
-      {
-        let formVariable = this.values.formVariables[i];
-
-        this.temp.formVariables.push ({
-          value: this.values.lastestResponse[i].value,
-          column: formVariable.column.item.id,
-          fontSize: this.fontSizes.indexOf (formVariable.fontSize),
-          valueFontSize: this.fontSizes.indexOf (formVariable.valueFontSize),
-          valueOrientation: this.orientations.indexOf (formVariable.valueOrientation),
-          function: this.functions.indexOf (formVariable.function)
-        });
-      }
-    }
-    else if (this.values.currentChartType.flags & ChartFlags.INFO
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE))
-    {
-      if (this.values.infoVar1 != null)
-        this.temp.infoVar1 = this.values.infoVar1;
-
-      if (this.values.infoVar2 != null)
-        this.temp.infoVar2 = this.values.infoVar2;
-
-      if (this.values.infoVar3 != null)
-        this.temp.infoVar3 = this.values.infoVar3;
-    }
-    else
-    {
-      this.temp.infoVar1 = null;
-      this.temp.infoVar2 = null;
-      this.temp.infoVar3 = null;
-    }
-
-    this.temp.updateIntervalSwitch = this.values.updateIntervalSwitch;
-    this.temp.startAtZero = this.values.startAtZero;
-    this.temp.updateTimeLeft = this.values.updateTimeLeft;
-    this.temp.limitMode = this.values.limitMode;
-    this.temp.limitAmount = this.values.limitAmount;
-    this.temp.ordered = this.values.ordered;
-
     this.stopUpdateInterval ();
 
     if (this.mapboxInterval)
@@ -4319,94 +3941,55 @@ export class MsfDashboardPanelComponent implements OnInit {
       clearInterval (this.mapboxInterval);
       this.mapboxInterval = null;
     }
+
+    this.configurePanel ();
   }
 
-  goToPanelConfiguration(): void
-  {
-    if (this.values.displayChart)
-      this.values.displayChart = false;
-    else if (this.values.displayInfo)
-      this.values.displayInfo = false;
-    else if (this.values.displayForm)
-      this.values.displayForm = false;
-    else if (this.values.displayPic)
-      this.values.displayPic = false;
-    else if (this.values.displayTable)
-      this.values.displayTable = false;
-    else if (this.values.displayMapbox)
-      this.values.displayMapbox = false;
-    else if (this.values.displayDynTable)
-      this.values.displayDynTable = false;
-
-    this.storeChartValues ();
-  }
-
-  goToResults(): void
+  setPanelValues(values): void
   {
     let i, item;
 
-    if (this.dialogData)
-    {
-      this.dialogRef.close ({ goToResults: true });
-      return;
-    }
-
-    if (this.values.picGenerated)
-      this.values.displayPic = true;
-    else if (this.values.formGenerated)
-      this.values.displayForm = true;
-    else if (this.values.infoGenerated)
-      this.values.displayInfo = true;
-    else if (this.values.tableGenerated)
-      this.values.displayTable = true;
-    else if (this.values.mapboxGenerated)
-      this.values.displayMapbox = true;
-    else if (this.values.dynTableGenerated)
-      this.values.displayDynTable = true;
-    else
-      this.values.displayChart = true;
-
     // discard any changes
-    this.values.urlImg = this.temp.urlImg;
-    this.values.currentOption = JSON.parse (JSON.stringify (this.temp.currentOption));
-    this.values.chartName = this.temp.chartName;
-    this.values.chartDescription = this.temp.chartDescription;
+    this.values.urlImg = values.urlImg;
+    this.values.currentOption = JSON.parse (JSON.stringify (values.currentOption));
+    this.values.chartName = values.chartName;
+    this.values.chartDescription = values.chartDescription;
 
-    if (this.temp.variable)
-      this.values.variable = this.temp.variable;
+    if (values.variable)
+      this.values.variable = values.variable;
     else
       this.values.variable = null;
 
-    if (this.temp.xaxis)
-      this.values.xaxis = this.temp.xaxis;
+    if (values.xaxis)
+      this.values.xaxis = values.xaxis;
     else
       this.values.xaxis = null;
 
-    if (this.temp.valueColumn)
-      this.values.valueColumn = this.temp.valueColumn;
+    if (values.valueColumn)
+      this.values.valueColumn = values.valueColumn;
     else
       this.values.valueColumn = null;
 
-    this.values.function = this.temp.function;
-    this.values.geodata = this.temp.geodata;
-    this.values.chartColumnOptions = JSON.parse (JSON.stringify (this.temp.chartColumnOptions));
-    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.temp.currentOptionCategories));
-    this.values.thresholds = JSON.parse (JSON.stringify (this.temp.thresholds));
-    this.values.goals = JSON.parse (JSON.stringify (this.temp.goals));
-    this.values.style = JSON.parse (JSON.stringify (this.temp.style));
-    this.values.vertAxisName = this.temp.vertAxisName;
-    this.values.horizAxisName = this.temp.horizAxisName;
-    this.values.dynTableValues = this.temp.dynTableValues ? JSON.parse (JSON.stringify (this.temp.dynTableValues)) : null;
-    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.temp.dynTableVariables));
-    this.values.intervalType = this.temp.intervalType;
-    this.values.intValue = this.temp.intValue;
-    this.values.valueList = this.temp.valueList;
+    this.values.function = values.function;
+    this.values.geodata = values.geodata;
+    this.values.chartColumnOptions = JSON.parse (JSON.stringify (values.chartColumnOptions));
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (values.currentOptionCategories));
+    this.values.thresholds = JSON.parse (JSON.stringify (values.thresholds));
+    this.values.goals = JSON.parse (JSON.stringify (values.goals));
+    this.values.style = JSON.parse (JSON.stringify (values.style));
+    this.values.vertAxisName = values.vertAxisName;
+    this.values.horizAxisName = values.horizAxisName;
+    this.values.dynTableValues = values.dynTableValues ? JSON.parse (JSON.stringify (values.dynTableValues)) : null;
+    this.values.dynTableVariables = JSON.parse (JSON.stringify (values.dynTableVariables));
+    this.values.intervalType = values.intervalType;
+    this.values.intValue = values.intValue;
+    this.values.valueList = values.valueList;
 
     for (i = 0; i < this.chartTypes.length; i++)
     {
       item = this.chartTypes[i];
 
-      if (item.name === this.temp.currentChartType.name)
+      if (item.name === values.currentChartType.name)
       {
         this.values.currentChartType = item;
         break;
@@ -4418,43 +4001,43 @@ export class MsfDashboardPanelComponent implements OnInit {
       && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
       && this.values.chartColumnOptions != null)
     {
-      if (this.temp.infoVar1 != null)
+      if (values.infoVar1 != null)
       {
         for (i = 0; i < this.values.chartColumnOptions.length; i++)
         {
           item = this.values.chartColumnOptions[i];
 
-          if (this.temp.infoVar1.id === item.id)
+          if (values.infoVar1.id === item.id)
           {
-            this.values.variable = this.values.chartColumnOptions.indexOf (item);
+            this.values.variable = item;
             break;
           }
         }
       }
 
-      if (this.temp.infoVar2 != null)
+      if (values.infoVar2 != null)
       {
         for (i = 0; i < this.values.chartColumnOptions.length; i++)
         {
           item = this.values.chartColumnOptions[i];
 
-          if (this.temp.infoVar2.id === item.id)
+          if (values.infoVar2.id === item.id)
           {
-            this.values.xaxis = this.values.chartColumnOptions.indexOf (item);
+            this.values.xaxis = item;
             break;
           }
         }
       }
 
-      if (this.temp.infoVar3 != null)
+      if (values.infoVar3 != null)
       {
         for (i = 0; i < this.values.chartColumnOptions.length; i++)
         {
           item = this.values.chartColumnOptions[i];
 
-          if (this.temp.infoVar3.id === item.id)
+          if (values.infoVar3.id === item.id)
           {
-            this.values.valueColumn = this.values.chartColumnOptions.indexOf (item);
+            this.values.valueColumn = item;
             break;
           }
         }
@@ -4463,9 +4046,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.formVariables = [];
 
-    for (let i = 0; i < this.temp.formVariables.length; i++)
+    for (let i = 0; i < values.formVariables.length; i++)
     {
-      let formVariable = this.temp.formVariables[i];
+      let formVariable = values.formVariables[i];
 
       this.values.formVariables.push ({
         value: this.values.lastestResponse[i].value,
@@ -4477,17 +4060,19 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
-    this.values.tableVariables = JSON.parse (JSON.stringify (this.temp.tableVariables));
+    this.values.tableVariables = JSON.parse (JSON.stringify (values.tableVariables));
 
-    this.values.updateIntervalSwitch = this.temp.updateIntervalSwitch;
-    this.values.startAtZero = this.temp.startAtZero;
-    this.values.updateTimeLeft = this.temp.updateTimeLeft;
-    this.values.limitMode = this.temp.limitMode;
-    this.values.limitAmount = this.temp.limitAmount;
-    this.values.ordered = this.temp.ordered;
+    this.values.updateIntervalSwitch = values.updateIntervalSwitch;
+    this.values.startAtZero = values.startAtZero;
+    this.values.updateTimeLeft = values.updateTimeLeft;
+    this.values.limitMode = values.limitMode;
+    this.values.limitAmount = values.limitAmount;
+    this.values.ordered = values.ordered;
+  }
 
+  goToResults(): void
+  {
     // re-initialize panel settings
-    this.values.currentChartType = this.chartTypes.indexOf (this.values.currentChartType);
     this.initPanelSettings ();
 
     this.startUpdateInterval ();
@@ -4515,14 +4100,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkChartType(): void
   {
     if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-    {
-      if (this.values.urlImg && this.values.urlImg != "")
-        this.generateBtnEnabled = true; //kp2020Ene23
-      else
-        this.generateBtnEnabled = false;
-
       return;
-    }
     else
     {
       if (this.values.currentOption == null)
@@ -4533,28 +4111,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       // disable and reset unused variables
       this.values.variable = null;
-      this.panelForm.get ('variableCtrl').reset ();
-      this.panelForm.get ('geodataValueCtrl').reset ();
 
       this.values.xaxis = null;
-      this.panelForm.get ('xaxisCtrl').reset ();
 
       this.values.valueColumn = null;
       this.values.valueList = [];
-      this.panelForm.get ('valueCtrl').reset ();
-      this.panelForm.get ('valueListCtrl').reset ();
-      this.panelForm.get ('geodataKeyCtrl').reset ();
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
-      {
-        this.panelForm.get ('columnCtrl').reset ();
-        this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-        this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-        this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-        this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
         this.values.formVariables = [];
-      }
 
       this.values.vertAxisName = null;
       this.values.horizAxisName = null;
@@ -4567,7 +4131,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       let i;
 
       this.values.infoNumVariables = 0;
-      this.panelForm.get ('infoNumVarCtrl').setValue (0);
 
       if (this.values.currentChartType.flags & ChartFlags.TABLE
         || this.values.currentChartType.flags & ChartFlags.MAP
@@ -4578,29 +4141,16 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           if (this.values.currentOption == null || ((this.values.currentOption.metaData != 2 && this.values.currentOption.metaData != 4)
             && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) || (this.values.currentOption.tabType !== 'map' && this.values.currentChartType.flags & ChartFlags.MAPBOX))
-          {
             this.values.currentOption = null;
-            this.panelForm.get ('dataFormCtrl').reset ();
-            this.variableCtrlBtnEnabled = false;
-          }
         }
 
         this.values.xaxis = null;
-        this.panelForm.get ('xaxisCtrl').reset ();
-    
-        this.panelForm.get ('valueCtrl').reset ();
-        this.panelForm.get ('valueListCtrl').reset ();
 
         if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
         {
-          this.panelForm.get ('geodataValueCtrl').reset ();
           this.values.variable = null;
-
-          this.panelForm.get ('geodataKeyCtrl').reset ();
           this.values.valueColumn = null;
         }
-
-        this.panelForm.get ('variableCtrl').reset ();
 
         this.values.vertAxisName = null;
         this.values.horizAxisName = null;
@@ -4614,17 +4164,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.values.xaxis = null;
-        this.panelForm.get ('xaxisCtrl').reset ();
-        this.panelForm.get ('xaxisCtrl').disable ();
 
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-        {
           this.values.variable = null;
-          this.panelForm.get ('variableCtrl').reset ();
-          this.panelForm.get ('variableCtrl').disable ();
-        }
-        else
-          this.panelForm.get ('variableCtrl').enable ();
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
           || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -4632,59 +4174,35 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.values.vertAxisName = null;
           this.values.horizAxisName = null;
 
-          this.vertAxisDisabled = true;
-          this.horizAxisDisabled = true;
-
           this.values.dynTableValues = null;
           this.values.dynTableVariables = [];
         }
       }
       else
       {
-        this.panelForm.get ('xaxisCtrl').enable ();
-        this.panelForm.get ('variableCtrl').enable ();
-
-        this.vertAxisDisabled = false;
-        this.horizAxisDisabled = false;
-
         this.values.dynTableValues = null;
         this.values.dynTableVariables = [];
       }
-
-      this.panelForm.get ('valueCtrl').enable ();
-      this.panelForm.get ('valueListCtrl').enable ();
-      this.panelForm.get ('geodataValueCtrl').enable ();
-      this.panelForm.get ('geodataKeyCtrl').enable ();
 
       this.values.infoVar1 = null;
 
       for (i = 0; i < this.values.infoFunc1.length; i++)
         this.values.infoFunc1[i].checked = false;
 
-      this.panelForm.get ('infoVar1Ctrl').reset ();
-      this.panelForm.get ('infoVar1Ctrl').disable ();
-
       this.values.infoVar2 = null;
 
       for (i = 0; i < this.values.infoFunc2.length; i++)
         this.values.infoFunc2[i].checked = false;
-
-      this.panelForm.get ('infoVar2Ctrl').reset ();
-      this.panelForm.get ('infoVar2Ctrl').disable ();
 
       this.values.infoVar3 = null;
 
       for (i = 0; i < this.values.infoFunc3.length; i++)
         this.values.infoFunc3[i].checked = false;
 
-      this.panelForm.get ('infoVar3Ctrl').reset ();
-      this.panelForm.get ('infoVar3Ctrl').disable ();
-
-      this.panelForm.get ('columnCtrl').reset ();
-      this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-      this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
+      if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
+        || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
+        this.values.function = this.functions[0];
 
       this.values.formVariables = [];
     }
@@ -4696,51 +4214,33 @@ export class MsfDashboardPanelComponent implements OnInit {
   checkPanelConfiguration(): boolean
   {
     if (!this.values.currentChartType)
-    {
-      this.generateBtnEnabled = false;
       return false;
-    }
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
       if (this.values.variable != null && this.values.geodata != null)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
     {
       if (this.values.currentOption != null && this.isDynamicTableSet ())
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.TABLE
       || this.values.currentChartType.flags & ChartFlags.MAP)
     {
       if (this.values.currentOption != null)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       if (this.values.urlImg && this.values.urlImg != "")
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       if (this.values.formVariables.length)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
     {
@@ -4792,10 +4292,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         infoFunc3Ready = true;
 
       if (infoFunc1Ready && infoFunc2Ready && infoFunc3Ready)
-      {
-        this.generateBtnEnabled = true;
         return true;
-      }
     }
     else
     {
@@ -4804,30 +4301,21 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
         {
           if (this.values.valueColumn != null)
-          {
-            this.generateBtnEnabled = true;
             return true;
-          }
         }
         else
         {
           if (this.values.function.id === "count")
           {
             if (this.values.variable != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
           else
           {
             if ((this.isSimpleChart () && this.values.valueList != null && this.values.valueList.length)
              || (!this.isSimpleChart () && this.values.variable != null)
               && this.values.valueColumn != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
         }
       }
@@ -4836,34 +4324,24 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
         {
           if (this.values.variable != null && this.values.valueColumn != null)
-          {
-            this.generateBtnEnabled = true;
             return true;
-          }
         }
         else
         {
           if (this.values.function.id === "count")
           {
             if (this.values.variable != null && this.values.xaxis != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
           else
           {
             if (this.values.variable != null && this.values.xaxis != null && this.values.valueColumn != null)
-            {
-              this.generateBtnEnabled = true;
               return true;
-            }
           }
         }
       }
     }
 
-    this.generateBtnEnabled = false;
     return false;
   }
 
@@ -4881,18 +4359,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.values.chartColumnOptions.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, item: columnConfig } );
         this.values.tableVariables.push ( { id: columnConfig.columnName, name: columnConfig.columnLabel, itemId: columnConfig.id, grouping: columnConfig.grouping, checked: true } );
       }
-
-      this.filteredVariables.next (this.values.chartColumnOptions.slice ());
-
-      this.searchChange (this.variableFilterCtrl);
-      this.searchChange (this.xaxisFilterCtrl);
-      this.searchChange (this.valueFilterCtrl);
-
-      this.searchChange (this.infoVar1FilterCtrl);
-      this.searchChange (this.infoVar2FilterCtrl);
-      this.searchChange (this.infoVar3FilterCtrl);
-
-      this.searchChange (this.columnFilterCtrl);
     }
 
     // refresh the following two values to avoid a blank form
@@ -4921,23 +4387,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         if (option.id == this.values.currentOption.id)
         {
-          this.panelForm.get ('dataFormCtrl').setValue (option);
-          this.panelForm.get ('variableCtrl').enable ();
-          this.panelForm.get ('infoNumVarCtrl').enable ();
-          this.panelForm.get ('columnCtrl').enable ();
-          this.panelForm.get ('fontSizeCtrl').enable ();
-          this.panelForm.get ('valueFontSizeCtrl').enable ();
-          this.panelForm.get ('valueOrientationCtrl').enable ();
-          this.panelForm.get ('functionCtrl').enable ();
-
-          // only enable x axis if the chart type is not pie, donut or radar
-          if (this.values.currentChartType.flags & ChartFlags.XYCHART)
-            this.panelForm.get ('xaxisCtrl').enable ();
-
-          this.panelForm.get ('valueCtrl').enable ();
-          this.panelForm.get ('valueListCtrl').enable ();
-          this.panelForm.get ('geodataValueCtrl').enable ();
-          this.panelForm.get ('geodataKeyCtrl').enable ();
           this.values.currentOption = option;
           break;
         }
@@ -4948,15 +4397,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.chartColumnOptions.length)
       {
-        this.variableCtrlBtnEnabled = true;
-
         if (this.values.variable != null && this.values.variable != -1)
         {
           for (i = 0; i < this.values.chartColumnOptions.length; i++)
           {
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('geodataValueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
               break;
             }
@@ -4969,7 +4415,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('geodataKeyCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
               break;
             }
@@ -4999,54 +4444,49 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.geodata = this.geodatas[0];
 
     // picture and map panels doesn't need any data
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-      this.variableCtrlBtnEnabled = false;
-    else if (this.values.currentChartType.flags & ChartFlags.MAP)
+    if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
     {
-      if (this.values.chartColumnOptions.length)
-        this.variableCtrlBtnEnabled = true;
-
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
+      if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
-        if (this.values.function == 1)
+        if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
         {
-          if (this.values.variable != null && this.values.variable != -1)
+          if (this.values.function == 1)
+          {
+            if (this.values.variable != null && this.values.variable != -1)
+            {
+              for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
+              {
+                if (i == this.values.variable)
+                {
+                  this.values.style = this.msfMapRef.mapTypes[i];
+                  this.values.variable = -1;
+                  break;
+                }
+              }
+            }
+            else
+              this.values.style = this.msfMapRef.mapTypes[1];
+          }
+          else
           {
             for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
             {
-              if (i == this.values.variable)
+              if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
               {
                 this.values.style = this.msfMapRef.mapTypes[i];
-                this.values.variable = -1;
                 break;
               }
             }
           }
-          else
-            this.values.style = this.msfMapRef.mapTypes[1];
         }
-        else
-        {
-          for (i = 0; i < this.msfMapRef.mapTypes.length; i++)
-          {
-            if (this.msfMapRef.mapTypes[i].id == this.values.style.id)
-            {
-              this.values.style = this.msfMapRef.mapTypes[i];
-              break;
-            }
-          }
-        }
-      }
 
-      this.checkChartType ();
-      return;
+        this.checkChartType ();
+        return;
+      }
     }
 
     if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
     {
-      if (this.values.chartColumnOptions.length)
-        this.variableCtrlBtnEnabled = true;
-
       if (this.values.lastestResponse)
       {
         this.values.dynTableVariables = [];
@@ -5152,9 +4592,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.TABLE)
     {
-      if (this.values.chartColumnOptions.length)
-        this.variableCtrlBtnEnabled = true;
-
       // set table column filters settings if loaded from database
       this.values.tableVariables = [];
 
@@ -5186,13 +4623,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
-      // reset form column selection combo boxes
-      this.panelForm.get ('columnCtrl').reset ();
-      this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-      this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-      this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-
       // set form variable settings if loaded from database
       if (this.values.function != null && this.values.function != -1)
       {
@@ -5270,8 +4700,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('infoVar1Ctrl').setValue (this.values.chartColumnOptions[i]);
-              this.panelForm.get ('infoVar1Ctrl').enable ();
               this.values.infoVar1 = this.values.chartColumnOptions[i];
               this.values.variable = null;
               this.values.infoNumVariables++;
@@ -5286,8 +4714,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('infoVar2Ctrl').setValue (this.values.chartColumnOptions[i]);
-              this.panelForm.get ('infoVar2Ctrl').enable ();
               this.values.infoVar2 = this.values.chartColumnOptions[i];
               this.values.xaxis = null;
               this.values.infoNumVariables++;
@@ -5302,8 +4728,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('infoVar3Ctrl').setValue (this.values.chartColumnOptions[i]);
-              this.panelForm.get ('infoVar3Ctrl').enable ();
               this.values.infoVar3 = this.values.chartColumnOptions[i];
               this.values.valueColumn = null;
               this.values.infoNumVariables++;
@@ -5312,9 +4736,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
       }
-
-      if (this.values.infoNumVariables)
-        this.panelForm.get ('infoNumVarCtrl').setValue (this.values.infoNumVariables);
 
       // set function values
       for (i = 0; i < this.values.lastestResponse.length; i++)
@@ -5410,7 +4831,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.variable == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('variableCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.variable = this.values.chartColumnOptions[i];
               break;
             }
@@ -5423,7 +4843,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.xaxis == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('xaxisCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.xaxis = this.values.chartColumnOptions[i];
               break;
             }
@@ -5464,8 +4883,6 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
           }
-
-          this.panelForm.get ('valueListCtrl').setValue (this.values.valueList);
         }
         else if (this.values.valueColumn != null && this.values.valueColumn != -1)
         {
@@ -5473,7 +4890,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.valueColumn == this.values.chartColumnOptions[i].item.id)
             {
-              this.panelForm.get ('valueCtrl').setValue (this.values.chartColumnOptions[i]);
               this.values.valueColumn = this.values.chartColumnOptions[i];
               break;
             }
@@ -5481,9 +4897,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
       }
     }
-
-    if (this.values.chartColumnOptions.length)
-      this.variableCtrlBtnEnabled = true;
 
     this.checkChartType ();
   }
@@ -5616,27 +5029,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.service.updateDashboardPanel (this, panel, this.handlerUpdateSuccess, this.handlerError);
   }
 
-  savePanel(fromDialog: boolean): void
-  {
-    if (fromDialog)
-    {
-      this.prepareToSavePanel ();
-      return;
-    }
-
-    this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
-      function (_this)
-      {
-        if (_this.dialogData)
-        {
-          _this.dialogRef.close ({ savePanel: true });
-          return;
-        }
-
-        _this.prepareToSavePanel ();
-      });
-  }
-
   isInformationPanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
@@ -5698,33 +5090,20 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let i;
 
-    if (this.values.infoNumVariables >= 1)
-      this.panelForm.get ('infoVar1Ctrl').enable ();
-
-    if (this.values.infoNumVariables >= 2)
-      this.panelForm.get ('infoVar2Ctrl').enable ();
-    else
+    if (this.values.infoNumVariables < 2)
     {
       this.values.infoVar2 = null;
 
       for (i = 0; i < this.values.infoFunc2.length; i++)
         this.values.infoFunc2[i].checked = false;
-
-      this.panelForm.get ('infoVar2Ctrl').reset ();
-      this.panelForm.get ('infoVar2Ctrl').disable ();
     }
 
-    if (this.values.infoNumVariables == 3)
-      this.panelForm.get ('infoVar3Ctrl').enable ();
-    else
+    if (this.values.infoNumVariables != 3)
     {
       this.values.infoVar3 = null;
 
       for (i = 0; i < this.values.infoFunc3.length; i++)
         this.values.infoFunc3[i].checked = false;
-
-      this.panelForm.get ('infoVar3Ctrl').reset ();
-      this.panelForm.get ('infoVar3Ctrl').disable ();
     }
 
     this.checkPanelConfiguration ();
@@ -5753,7 +5132,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open (MsfDashboardInfoFunctionsComponent, {
-      height: '362px',
+      height: '382px',
       width: '600px',
       panelClass: 'msf-dashboard-control-variables-dialog',
       autoFocus: false,
@@ -5772,57 +5151,6 @@ export class MsfDashboardPanelComponent implements OnInit {
   getResultValue(result): string
   {
     return new Intl.NumberFormat ('en-us', { maximumFractionDigits: 1 }).format (result);
-  }
-
-  goToAdditionalSettings(): void
-  {
-    let configFlags = ConfigFlags.NONE;
-
-    if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.MAP
-      || this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.PICTURE))
-    {
-      if (this.values.currentChartType.flags & ChartFlags.FORM ||
-        this.values.currentChartType.flags & ChartFlags.TABLE)
-        configFlags = ConfigFlags.THRESHOLDS;
-      else if (this.values.currentChartType.flags & ChartFlags.PIECHART
-        || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
-        configFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
-      else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-        configFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
-      else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
-      {
-        configFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS;
-
-        if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
-        {
-          configFlags |= ConfigFlags.LIMITVALUES;
-
-          if (this.isSimpleChart ())
-            configFlags |= ConfigFlags.THRESHOLDS;
-        }
-      }
-    }
-
-    // don't allow the option to limit results on advanced charts
-    if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
-    {
-      configFlags &= ~ConfigFlags.LIMITVALUES;
-      configFlags |= ConfigFlags.LIMITAGGREGATOR;
-    }
-
-    // alwaws display the description
-    configFlags |= ConfigFlags.DESCRIPTION;
-
-    this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
-      width: '400px',
-      height: 'auto',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      autoFocus: false,
-      data: {
-        values: this.values,
-        configFlags: configFlags
-      }
-    });
   }
 
   goToDrillDownSettings(): void
@@ -6000,32 +5328,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
   }
 
-  isFormColumnValid(): boolean
-  {
-    return (this.panelForm.get ('columnCtrl').value && this.panelForm.get ('fontSizeCtrl').value
-      && this.panelForm.get ('valueFontSizeCtrl').value && this.panelForm.get ('valueOrientationCtrl').value
-      && this.panelForm.get ('functionCtrl').value);
-  }
-
-  addColumnIntoForm(): void
-  {
-    this.values.formVariables.push ({
-      column: this.panelForm.get ('columnCtrl').value,
-      fontSize:  this.panelForm.get ('fontSizeCtrl').value,
-      valueFontSize: this.panelForm.get ('valueFontSizeCtrl').value,
-      valueOrientation: this.panelForm.get ('valueOrientationCtrl').value,
-      function: this.panelForm.get ('functionCtrl').value
-    });
-
-    // reset main column and font size values
-    this.panelForm.get ('columnCtrl').reset ();
-    this.panelForm.get ('fontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueFontSizeCtrl').setValue (this.fontSizes[1]);
-    this.panelForm.get ('valueOrientationCtrl').setValue (this.orientations[0]);
-    this.panelForm.get ('functionCtrl').setValue (this.functions[0]);
-    this.checkPanelConfiguration ();
-  }
-
   deleteColumnFromForm(index): void
   {
     this.values.formVariables.splice (index, 1);
@@ -6136,7 +5438,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.values.isLoading = false;
 
-      this.values.displayTable = true;
+      this.displayTable = true;
       this.values.chartGenerated = false;
       this.values.infoGenerated = false;
       this.values.formGenerated = false;
@@ -6611,138 +5913,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     return Array.isArray(item);
   }
 
-  openAssistant(): void
-  {
-    let dialogRef;
-
-    this.toggleControlVariableDialogOpen.emit (true);
-
-    dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
-      panelClass: 'msf-dashboard-assistant-dialog',
-      autoFocus: false,
-      data: {
-        currentOption: JSON.parse (JSON.stringify (this.values.currentOption)),
-        currentOptionCategories: JSON.parse (JSON.stringify (this.values.currentOptionCategories)),
-        chartColumnOptions: this.values.chartColumnOptions,
-        paletteColors: this.values.paletteColors,
-        functions: this.functions,
-        nciles: this.nciles
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe (
-      (values) => {
-        this.toggleControlVariableDialogOpen.emit (false);
-
-        if (values)
-        {
-          if (values.chartMode === "advanced")
-            values.currentChartTypeName = "Advanced " + values.currentChartTypeName;
-
-          for (let chartType of this.chartTypes)
-          {
-            if (chartType.name === values.currentChartTypeName)
-            {
-              this.values.currentChartType = chartType;
-              break;
-            }
-          }
-
-          if (values.variable)
-            this.panelForm.get ('variableCtrl').setValue (values.variable);
-
-          if (values.xaxis)
-            this.panelForm.get ('xaxisCtrl').setValue (values.xaxis);
-
-          if (values.valueColumn)
-          {
-            if (this.isSimpleChart ())
-            {
-              this.values.valueList = [ values.valueColumn ];
-              this.panelForm.get ('valueListCtrl').setValue (this.values.valueList);
-            }
-            else
-              this.panelForm.get ('valueCtrl').setValue (values.valueColumn);
-          }
-
-          this.values.currentOptionCategories = values.currentOptionCategories;
-          this.values.variable = values.variable;
-          this.values.xaxis = values.xaxis;
-          this.values.valueColumn = values.valueColumn;
-          this.values.function = values.function;
-          this.values.intervalType = values.intervalType;
-          this.values.intValue = values.intValue;
-          this.values.startAtZero =  values.startAtZero;
-          this.values.ordered = values.ordered;
-
-          this.checkChartType ();
-        }
-      }
-    );
-  }
-
-  orderVariable(elements)
-  {
-    if (elements)
-    {
-      let elementsOrdered;
-
-      for (let element of elements)
-      {
-        if (!element.direction)
-          element.direction = "vertical";
-
-        if(element.order == null)
-        {
-          element.order = this.dynTableOrder;  
-          this.dynTableOrder++;  
-        }      
-      }
-
-      elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
-      this.values.dynTableVariables = elementsOrdered;
-    }
-
-    this.checkPanelConfiguration ();
-  }
-
-  orderValues(elements)
-  {
-    if (elements)
-    {
-      let elementsOrdered;
-
-      for (let element of elements)
-      {
-        if (element.order == null)
-        {
-          element.order = this.dynTableOrderValue;  
-          this.dynTableOrderValue++;  
-        }      
-      }
-
-      elementsOrdered = elements.sort ((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0));
-      this.values.dynTableValues = elementsOrdered;
-    }
-
-    this.checkPanelConfiguration ();
-  }
-
-  deleteVariable(variable): void
-  {
-    variable.order = null;
-    this.values.dynTableVariables.splice (this.values.dynTableVariables.indexOf (variable), 1);
-    this.values.dynTableVariables = JSON.parse (JSON.stringify (this.values.dynTableVariables)); // force update on the variables combo box
-  }
-
-  changeVariableDirection(variable): void
-  {
-    if (variable.direction === "vertical")
-      variable.direction = "horizontal";
-    else
-      variable.direction = "vertical";
-  }
-
   isDynamicTableSet(): boolean
   {
     if (!this.isDynamicTableVariablesSet () || !this.dynamicTableHasFunctions ())
@@ -6789,146 +5959,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return true;
-  }
-
-  configureAlias(value, name): void
-  {
-    let dialogRef, alias;
-
-    switch (name)
-    {
-      case 'Summary':
-        alias = value.sumAlias;
-        break;
-
-      case 'Average':
-        alias = value.avgAlias;
-        break;
-
-      case 'Mean':
-        alias = value.meanAlias;
-        break;
-
-      case 'Max':
-        alias = value.maxAlias;
-        break;
-
-      case 'Min':
-        alias = value.minAlias;
-        break;
-
-      case 'Std Deviation':
-        alias = value.stdDevAlias;
-        break;
-
-      case 'Count':
-        alias = value.cntAlias;
-        break;
-    }
-
-    dialogRef = this.dialog.open (MsfDynamicTableAliasComponent, {
-      height: '180px',
-      width: '300px',
-      panelClass: 'msf-dashboard-control-variables-dialog',
-      autoFocus: false,
-      data: {
-        alias: alias,
-        valueName: value.name,
-        name: name
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((result: any) =>
-    {
-      if (result)
-      {
-        switch (name)
-        {
-          case 'Summary':
-            value.sumAlias = result;
-            break;
-
-          case 'Average':
-            value.avgAlias = result;
-            break;
-
-          case 'Mean':
-            value.meanAlias = result;
-            break;
-
-          case 'Max':
-            value.maxAlias = result;
-            break;
-
-          case 'Min':
-            value.minAlias = result;
-            break;
-
-          case 'Std Deviation':
-            value.stdDevAlias = result;
-            break;
-
-          case 'Count':
-            value.cntAlias = result;
-            break;
-        }
-      }
-    });
-  }
-
-  openDiscoveryDialog(): void
-  {
-    let dialogRef;
-
-    this.toggleControlVariableDialogOpen.emit (true);
-
-    dialogRef = this.dialog.open (MsfSelectDataFromComponent, {
-      panelClass: 'msf-select-data-dialog',
-      autoFocus: false,
-      data: {
-        options: this.values.options,
-        functions: this.functions,
-        nciles: this.nciles
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe ((selectedItem) => {
-      let selectedOption = null;
-
-      this.toggleControlVariableDialogOpen.emit (false);
-
-      if (!selectedItem)
-        return;
-
-      for (let option of this.values.options)
-      {
-        if (option.id == selectedItem.id)
-        {
-          selectedOption = option;
-          break;
-        }
-      }
-
-      if (!selectedOption)
-        return;
-
-      if (this.values.currentOption)
-      {
-        if (this.values.currentOption.id == selectedOption.id)
-          return; // do not reset the dashboard settings if the option id is the same
-      }
-
-      this.values.currentOption = selectedOption;
-      this.loadChartFilterValues (selectedOption);
-    });
-  }
-
-  resetIntervalValue(): void
-  {
-    if (this.values.intervalType === "value")
-      this.values.intValue = null;
-    else
-      this.values.intValue = 5;
   }
 
   addUpIntervals(): void
@@ -7373,13 +6403,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   saveAnchoredChanges(): void
   {
     // don't display results when loading new changes
-    this.values.displayChart = false;
-    this.values.displayInfo = false;
-    this.values.displayForm = false;
-    this.values.displayMapbox = false;
-    this.values.displayPic = false;
-    this.values.displayTable = false;
-    this.values.displayDynTable = false;
+    this.displayChart = false;
+    this.displayInfo = false;
+    this.displayForm = false;
+    this.displayMapbox = false;
+    this.displayPic = false;
+    this.displayTable = false;
+    this.displayDynTable = false;
 
     // set new argument values
     for (let categoryArgument of this.values.currentOptionCategories)
@@ -7641,15 +6671,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     let dialogRef;
 
-    dialogRef = this.dialog.open (MsfDashboardPanelComponent, {
-      width: '750px',
-      height: '395px',
+    this.toggleControlVariableDialogOpen.emit (true);
+
+    dialogRef = this.dialog.open (MsfDashboardAssistantComponent, {
+      width: '930px',
+      height: '595px',
       panelClass: 'msf-dashboard-panel-dialog',
       data: {
         values: this.values,
-        panelWidth: 12,           // random width and height panel values
-        panelHeight: 7,
-        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen,
         functions: this.functions,
         chartTypes: this.chartTypes,
         nciles: this.nciles,
@@ -7658,34 +6687,27 @@ export class MsfDashboardPanelComponent implements OnInit {
         geodatas: this.geodatas,
         childPanelValues: this.childPanelValues,
         childPanelsConfigured: this.childPanelsConfigured,
-        panelForm: this.panelForm,
-        dataFormFilterCtrl: this.dataFormFilterCtrl,
-        variableFilterCtrl: this.variableFilterCtrl,
-        xaxisFilterCtrl: this.xaxisFilterCtrl,
-        valueFilterCtrl: this.valueFilterCtrl,
-        infoVar1FilterCtrl: this.infoVar1FilterCtrl,
-        infoVar2FilterCtrl: this.infoVar2FilterCtrl,
-        infoVar3FilterCtrl: this.infoVar3FilterCtrl,
-        columnFilterCtrl: this.columnFilterCtrl,
-        filteredVariables: this.filteredVariables,
-        filteredOptions: this.filteredOptions,
-        variableCtrlBtnEnabled: this.variableCtrlBtnEnabled,
-        generateBtnEnabled: this.generateBtnEnabled
+        controlVariablesSet: this.controlVariablesSet,
+        toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen,
+        msfMapRef: this.msfMapRef
       }
     });
 
     dialogRef.afterClosed ().subscribe ((result) => {
-      if (this.values.currentOption)
-        this.variableCtrlBtnEnabled = true;
+      this.toggleControlVariableDialogOpen.emit (false);
 
       this.checkChartType ();
 
       if (result)
       {
+        if (result.controlVariablesSet != null)
+          this.controlVariablesSet = result.controlVariablesSet;
+
         if (result.generateChart)
+        {
+          this.setPanelValues (result.values);
           this.loadData ();
-        else if (result.savePanel)
-          this.savePanel (true);
+        }
         else if (result.goToResults)
           this.goToResults ();
       }
@@ -7777,81 +6799,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.moreResults = false;
       this.msfTableRef.sort.sort({ id: '', start: 'asc', disableClear: false });
     }
-  }
-
-  configureDynamicTable(): void
-  {
-    let dynamicTableValues =
-    {
-      xaxis: [],
-      yaxis: [],
-      values: []
-    };
-
-    if (this.values.dynTableVariables)
-    {
-      for (let variable of this.values.dynTableVariables)
-      {
-        if (variable.direction === "horizontal")
-          dynamicTableValues.xaxis.push (variable);
-        else
-          dynamicTableValues.yaxis.push (variable);
-      }
-    }
-
-    if (this.values.dynTableValues)
-    {
-      for (let value of this.values.dynTableValues)
-        dynamicTableValues.values.push (value);
-    }
-
-    const dialogRef = this.dialog.open (MsfDynamicTableVariablesComponent,
-    {
-      width: '1100px',
-      height: '600px',
-      panelClass: 'dynamic-table-dialog',
-      autoFocus: false,
-      data: {
-        metadata: this.values.currentOption.columnOptions,
-        dynamicTableValues: dynamicTableValues,
-        dashboardPanel: this.values
-      }
-    });
-
-    dialogRef.afterClosed ().subscribe (result =>
-    {
-      if (result != null)
-      {
-        this.values.dynTableVariables = [];
-        this.values.dynTableValues = [];
-
-        for (let variable of result.xaxis)
-        {
-          this.values.dynTableVariables.push (variable);
-          this.values.dynTableVariables[this.values.dynTableVariables.length - 1].direction = "horizontal";
-        }
-
-        for (let i = 0; i < result.yaxis.length; i++)
-        {
-          let variable = result.yaxis[i];
-          let index;
-
-          this.values.dynTableVariables.push (variable);
-          index = this.values.dynTableVariables.length - 1;
-          this.values.dynTableVariables[index].direction = "vertical";
-
-          if (i != result.yaxis.length - 1)
-            this.values.dynTableVariables[index].summary = true;
-          else
-            this.values.dynTableVariables[index].summary = false;
-        }
-
-        for (let value of result.values)
-          this.values.dynTableValues.push (value);
-
-        this.checkPanelConfiguration ();
-      }
-    });
   }
 
   getMasFlightMobileLogoImage(): string

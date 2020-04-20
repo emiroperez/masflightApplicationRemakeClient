@@ -1,3 +1,4 @@
 <div class="content-image">
-  <img src="{{url}}">
+  <img *ngIf="validUrl" src="{{url}}" (error)="invalidUrl()">
+  <div *ngIf="!validUrl" class="no-image">No Image</div>
 </div>

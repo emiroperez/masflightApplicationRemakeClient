@@ -123,8 +123,8 @@ export class Globals {
 
     if (isDevMode ())
     {
-      this.baseUrl = "http://localhost:8887";
-      // this.baseUrl = "http://pulse.globaleagle.com:8887";
+      // this.baseUrl = "http://localhost:8887";
+      this.baseUrl = "http://pulse.globaleagle.com:8887";
       this.baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
       this.popupUrl = "http://pulse.globaleagle.com:8881";
     }

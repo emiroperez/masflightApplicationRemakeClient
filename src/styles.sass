@@ -318,6 +318,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             color: $control-variable-icon-color
         .msf-dashboard-button
             .msf-dashboard-button-close-icon:hover
+                @include disable-text-selection
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
             .msf-dashboard-button-icon
                 color: $font-color
@@ -325,7 +326,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
         .msf-dashboard-column-properties-align
             color: $font-color
-        .msf-dashboard-panel-container
+        .msf-dashboard-panel-container, .msf-dashboard-arguments-container
             background-color: $dashboard-panel-background-color
             color: $font-color
             .msf-dashboard-panel-sub-container-column, .msf-var-content
@@ -333,6 +334,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                     @extend .msf-dashboard-form-field
         .msf-dashboard-panel-button
             .msf-dashboard-button-close-icon
+                @include disable-text-selection
                 color: $font-color
             .msf-dashboard-button-close-icon:hover
                 @include msf-dashboard-icon(5px, $primary-color, pointer)
@@ -416,6 +418,8 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             @include msf-dashboard-dialog-loading(40%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
         .msf-dashboard-drill-down-loading
             @include msf-dashboard-dialog-loading(50%, $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif))
+        .msf-dashboard-panel-step-loading
+            @include msf-dashboard-dialog-loading(min(50%, 250px), $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
         .msf-dashboard-panel-loading
             border: 1px solid $quaternary-background-color
             @include msf-dashboard-dialog-loading(min(50%, 250px), $quaternary-background-color, url(assets/images/#{$name}-loading_pulse.gif), 1000)
@@ -457,9 +461,6 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             background-color: $quaternary-background-color !important
         #msf-dashboard-drill-down-container, .msf-dashboard-drill-down-container-withoutBtn
             color: $font-color
-        .msf-dashboard-color-picker-threshold-container
-            background-color: $dashboard-threshold-background-color
-            border-color: $dashboard-border-color
         .msf-dashboard-color-picker-container
             color: $font-color
         .msf-dashboard-color-picker-threshold-input
@@ -1325,10 +1326,10 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
             .msf-dashboard-assistant-chart-item
                 .chart-item-image
                     border-style: solid
-                    border-color: $dashboard-assistant-sub-background-color
-                    background-color: $dashboard-assistant-sub-background-color
+                    border-color: $admin-menu-background
+                    background-color: $admin-menu-background
                 .chart-item-label
-                    background-color: $dashboard-assistant-sub-background-color
+                    background-color: $admin-menu-background
                 &:hover
                     .chart-item-image
                         border-style: solid
@@ -1339,7 +1340,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 .chart-item-image
                     border-style: solid
                     border-color: $primary-color
-                    background-color: $dashboard-assistant-sub-background-color
+                    background-color: $admin-menu-background
                 .chart-item-label
                     background-color: $primary-color
         .msf-dashboard-assistant-chart-config-analysis-button-selected, .msf-dashboard-assistant-chart-config-analysis-button:hover
@@ -1452,7 +1453,7 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 color: $primary-color
         .msf-dashboard-assistant-chart-mode
             .msf-dashboard-assistant-mode
-                border-color: $font-color
+                border-color: $dashboard-panel-background-color
                 .mat-radio-outer-circle
                     border-color: $font-color
                     transition: none
@@ -2374,6 +2375,80 @@ $color-scheme: ((dark-theme, $dark-font-color, $dark-little-font-color, $dark-di
                 background-color: $dynamic-table-preview-color
         .publicize-dashboard-container
             color: $font-color
+        .msf-dashboard-panel-steps
+            background-color: $dashboard-assistant-sub-background-color
+            .msf-dashboard-panel-step-selector, .msf-dashboard-panel-step-selector-disabled
+                border-bottom: 2px solid $background-color
+                .msf-dashboard-panel-step-circle
+                    background-color: $background-color
+                    border: 3px solid $tertiary-background-color
+                .msf-dashboard-panel-step-circle-selected
+                    background-color: $primary-color
+                    border: 3px solid #ffffff
+                    .mat-icon
+                        color: $dashboard-assistant-analysis-font-color !important
+            .msf-dashboard-panel-step-selector:hover
+                background-color: $primary-color
+                color: #ffffff
+                .msf-dashboard-panel-step-circle
+                    background-color: $primary-color
+                    border: 3px solid #ffffff
+                    .mat-icon
+                        color: $dashboard-assistant-analysis-font-color !important
+        .msf-dashboard-panel-step-item
+            background-color: $dashboard-assistant-sub-background-color
+            .mat-form-field-label
+                color: $font-color
+            .mat-form-field-appearance-outline .mat-form-field-outline
+                color: $dashboard-panel-background-color
+            .mat-form-field-appearance-outline .mat-form-field-outline-thick
+                color: $dashboard-panel-background-color !important
+        .msf-dashboard-panel-dyn-table-item
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            .dynamic-table-config-values-container
+                display: grid
+                grid-row-gap: 20px
+                .dynamic-table-config-value
+                    display: flex
+                    align-items: center
+                    border-radius: 5px
+                    padding: 15px
+                    box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06) !important
+                    .value-label
+                        margin-left: 5px
+                        margin-right: 5px
+        .msf-dashboard-panel-button-separator
+            background-color: $background-color
+        .dynamic-table-config-value
+            background-color: $background-color
+        .msf-dashboard-addmenu-icon-item
+            color: $font-color !important
+        .content-panel-img
+            border-color: $dashboard-panel-background-color
+        .no-image
+            background-color: $primary-color
+        .goals-thresholds-tab, .limit-results-tab, .color-picker-tab, .axis-names-tab
+            background-color: $dashboard-threshold-background-color
+        .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
+            border-bottom: 1px solid $dashboard-panel-background-color
+        .msf-dashboard-color-picker-grid-layout, .msf-dashboard-color-picker-layout
+            .msf-dashboard-color-picker-selector-container
+                background-color: $dashboard-panel-background-color
+        .datasource-selected
+            color: $primary-color
+        .info-image
+            background-image: url(assets/images/info.png)
+            &:hover
+                background-image: url(assets/images/info-hover.png) !important
+        .info-image-open
+            background-image: url(assets/images/info-hover.png)
+        .info-arrow
+            background-image: url(assets/images/info-arrow.png)
+        .menu-category-description
+            border: 1px solid $primary-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -4378,6 +4453,7 @@ mat-tab-group
             position: inherit !important
     .msf-dashboard-header
         display: flex
+        position: relative
         .msf-dashboard-title
             padding-top: 20px
             padding-bottom: 10px
@@ -4480,10 +4556,10 @@ mat-tab-group
     position: absolute
     right: 0
     .msf-dashboard-button-close-icon
-        z-index: 2
+        z-index: 1
         @include msf-dashboard-icon(5px)
     .msf-dashboard-button-move-icon
-        z-index: 2
+        z-index: 1
         background-repeat: no-repeat
         width: 12px
         height: 12px
@@ -4518,6 +4594,13 @@ mat-tab-group
     .flat-button
         margin: auto
 
+.msf-dashboard-addmenu-icon-item
+    display: flex
+    align-items: center
+    padding-bottom: 15px
+    .msf-dashboard-panel-item-text
+        vertical-align: middle
+
 .msf-dashboard-panel-container
     padding: 10px
     overflow-y: visible
@@ -4544,11 +4627,6 @@ mat-tab-group
             text-align: left
         .msf-full-width
             @extend .msf-dashboard-form-field
-        .msf-dashboard-addmenu-icon-item
-            align-items: center
-            padding-bottom: 5px
-            .msf-dashboard-panel-item-text
-                vertical-align: middle
     .dynamic-table-config-label
         vertical-align: super
     .msf-dynamic-table-variable-content
@@ -4748,6 +4826,7 @@ mat-tab-group
             .msf-dashboard-panel-title-label-public
                 width: calc(100% - 207px) !important
         .msf-dashboard-panel-results-button
+            @include disable-text-selection
             width: 20px
             font-size: 12px
             text-align: center
@@ -4774,6 +4853,8 @@ mat-tab-group
     .msf-dashboard-panel-sub-container-column
         @include msf-dashboard-panel-sub-container(row, 5px)
         height: calc(100% - 35px)
+        .content-image
+            margin-top: -7px !important
 
 .msf-dashboard-panel-pic-button
     opacity: 0 !important
@@ -4817,11 +4898,21 @@ mat-tab-group
     padding: 0px
     overflow: hidden
 
+.msf-dashboard-value-selector-dialog .mat-dialog-container
+    min-height: 441px
+    max-height: 441px
+    padding: 0px
+    overflow: hidden
+    .msf-dashboard-arguments-container
+        height: 416px !important
+
 .msf-dashboard-panel-dialog .mat-dialog-container
     padding: 0px
     overflow: hidden
+    border-radius: 10px !important
     .msf-dashboard-panel-container
-        height: 375px !important
+        height: 575px !important
+        font-size: 14px
 
 .msf-dashboard-child-panel-dialog .mat-dialog-container
     padding: 12px
@@ -5116,23 +5207,36 @@ mat-tab-group
     cursor: $cursor
     border-style: none
     border-radius: 4px
-    width: 20px
-    height: 20px
+    width: 50px
+    height: 25px
+    margin-left: 7px
+    margin-right: -10px
     color: transparent
     caret-color: transparent
 
 .msf-dashboard-color-picker-container
     text-align: center
 
-.msf-dashboard-color-picker-grid-layout
+.msf-dashboard-color-picker-grid-layout-container
+    display: flex
+    justify-content: center
+
+.msf-dashboard-color-picker-grid-layout, .msf-dashboard-color-picker-layout
     display: grid
-    grid-auto-flow: column
-    grid-template: repeat(7, 1fr) / repeat(2, 1fr)
-    padding-top: 10px
-    padding-bottom: 10px
+    grid-template-columns: repeat(auto-fill, 210px)
+    grid-row-gap: 10px
+    grid-column-gap: 10px
+    padding: 10px
+    width: 100%
+    .msf-dashboard-color-picker-selector-label
+        text-align: end !important
+        margin-left: 0 !important
+        margin-right: 10px !important
+    .msf-dashboard-color-picker-selector-container
+        padding-bottom: 10px
+        border-radius: 5px
 
 .msf-dashboard-color-picker-layout
-    margin-left: 100px
     padding-top: 10px
     padding-bottom: 10px
 
@@ -5147,6 +5251,7 @@ mat-tab-group
         width: 60px
     .msf-dashboard-color-picker-color-label
         margin-left: 20px
+        margin-right: 5px
         text-align: right
     .msf-dashboard-color-picker-selector
         @include msf-dashboard-color-picker-selector-style
@@ -5154,48 +5259,69 @@ mat-tab-group
         @include msf-dashboard-color-picker-selector-style(pointer)
 
 .msf-dashboard-color-picker-threshold-input
-    padding-top: 5px
+    display: flex
+    height: 45px
+    align-items: center
+    .goal-thresholds-label
+        display: flex
+        align-items: center
+        width: 100px
+        padding-left: 15px
+        font-weight: 550
+        .mat-icon
+            margin-right: 10px
+    .goal-thresholds-buttons
+        width: 100%
+        text-align: end
 
-.msf-dashboard-color-picker-new-threshold-container
-    height: 300px !important
+.goals-thresholds-tab
+    height: 100%
 
 .msf-dashboard-color-picker-threshold-container
     overflow-y: auto
-    height: 101px
-    padding-top: 5px
-    border-style: solid
-    border-width: 1px
+    height: calc(100% - 46px)
     display: flex
     flex-direction: column
     width: 100%
-    .msf-dashboard-color-picker-goal-item
-        padding: 10px !important
-        width: calc(100% - 20px) !important
     .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
         display: flex
         flex-direction: row
         width: calc(100% - 10px)
         padding: 5px
+        padding-top: 10px
         margin-top: -8px
         .msf-width-30-min
-            width: 30%
+            margin-top: 7px
+            width: 30% !important
             padding-right: 10px
         .msf-width-30-max
-            width: 30%
-        .msf-width-30-column
-            width: 30%
+            margin-top: 7px
+            width: 30% !important
+        .msf-width-40-column
+            margin-top: 7px
+            width: 40% !important
             padding-right: 10px
         .msf-width-15-min
-            width: 15%
+            margin-top: 7px
+            width: 15% !important
             padding-right: 10px
         .msf-width-15-max
-            width: 15%
+            margin-top: 7px
+            width: 15% !important
         .msf-width-45
-            width: 45%
+            margin-top: 7px
+            width: 45% !important
             padding-right: 10px
-        .msf-dashboard-color-picker-selector-new-container
-            width: 40%
+        .msf-width-60
+            margin-top: 7px
+            width: 60% !important
+            padding-right: 10px
+        .mat-form-field-wrapper
+            padding-bottom: 0 !important
         .msf-dashboard-color-picker-selector-container
+            justify-content: center
+            margin-top: 7px
+            width: 25%
             padding-top: 0px
             .msf-dashboard-color-picker-selector-label
                 margin-right: 0px
@@ -5501,10 +5627,11 @@ mat-tab-group
             right: 24px
 
 .msf-dashboard-assistant-edit-tab-group
-    height: 100% !important
+    margin: -10px !important
+    height: calc(100% + 20px) !important
     .msf-dashboard-assistant-edit-tab-container
         width: 100%
-        height: 100% !important
+        height: calc(100% - 25px) !important
         padding: 0 !important
         overflow-x: auto
         overflow-y: auto
@@ -5526,8 +5653,19 @@ mat-tab-group
             flex-direction: row
             padding: 0 13px
             .msf-dashboard-control-panel-variable-argument
+                .msf-component-date-range-container
+                    .msf-component-radio
+                        width: 247px !important
                 .msf-component-date-range-selector
                     margin-top: 10px !important
+                    .mat-radio-group
+                        display: flex !important
+                        flex-direction: column !important
+                        .msf-radio
+                            padding-left: 0px !important
+                            margin-top: 10px !important
+                    .center
+                        text-align: left !important
                 .msf-component-outer-container
                     display: flex
                     flex-direction: row
@@ -5549,6 +5687,7 @@ mat-tab-group
                     background: inherit !important
                     font-weight: bold
                     text-align: left
+                    height: 11px
                 .msf-component-checkbox-title
                     margin-bottom: 0 !important
                     margin-top: -7px
@@ -8865,8 +9004,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                         font-size: 15px
                         width: 15px
                         height: 15px
-                .msf-dashboard-assistant-next-button
-                    margin-left: 7px
             .close-button
                 cursor: pointer
                 position: absolute
@@ -8900,25 +9037,42 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     display: flex
                     flex-direction: column
                     font-weight: 500
-            .msf-dashboard-assistant-content
-                display: flex
-                flex-direction: column
-                .msf-dashboard-assistant-tab-group
-                    height: 143px
-                    margin-top: -3px
-                    .mat-tab-header, .mat-tab-label-container
-                        width: 100%
-                    .mat-tab-label
-                        opacity: 1 !important
-                        background-color: inherit
-                    .mat-tab-labels
-                        background-color: inherit
-                .msf-dashboard-assistant-table
-                    overflow: auto
-                    width: 100%
-                    height: 100%
-            .msf-dashboard-assistant-argument-value
-                font-weight: 550
+
+.msf-dashboard-assistant-argument-scroll
+    overflow-y: auto
+    font-size: 11px !important
+    display: flex
+    flex-direction: column
+    justify-content: center
+    height: 100%
+
+.msf-dashboard-assistant-argument-value
+    font-weight: 550
+    margin-left: 5px
+
+.msf-dashboard-assistant-content
+    display: flex
+    flex-direction: column
+    margin: -10px
+    height: calc(100% + 20px)
+    .msf-dashboard-assistant-table
+        overflow: auto
+        width: 100%
+        height: 100%
+
+.msf-dashboard-assistant-tab-group
+    display: flex
+    height: 143px
+    .mat-tab-group
+        width: 100%
+        text-align: left
+    .mat-tab-header, .mat-tab-label-container
+        width: 100%
+    .mat-tab-label
+        opacity: 1 !important
+        background-color: inherit
+    .mat-tab-labels
+        background-color: inherit
 
 .msf-dashboard-assistant-step1-right
     height: calc(100% + 15px)
@@ -8926,33 +9080,45 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-assistant-step1-edit-right
     height: calc(100% + 5px)
 
-.msf-dashboard-assistant-chart-type-label
-    font-weight: 550
-    font-size: 14px
-    margin-left: 10px
-
 .msf-dashboard-assistant-min-value-at-zero
-    margin-left: 365px
-    margin-top: -1px
-    height: 18px
+    display: flex
+    flex-direction: column
+    text-align: left
+    .cancels-checkbox
+        font-size: 11px
 
 .msf-dashboard-assistant-interval-mode
-    margin-left: 295px
-    margin-top: -1px
+    margin-top: 5px
     height: 18px
+    display: flex
+    width: 100%
+    justify-content: flex-end
+    .msf-dashboard-assistant-chart-type-label
+        font-size: 11px !important
     .mat-radio-group
-        font-weight: 550
-        font-size: 14px
+        font-size: 11px
+        display: flex
+        flex-direction: column
+        .mat-radio-container
+            width: 15px !important
+            height: 15px !important
+            .mat-radio-outer-circle, .mat-radio-inner-circle
+                width: 15px !important
+                height: 15px !important
+        .second-option
+            margin-top: 10px
 
 .msf-dashboard-assistant-chart-config-buttons
     display: flex
+    width: 100%
+    margin-top: -15px
     .msf-dashboard-assistant-chart-config-space
         margin: 20px 7px
         padding: 10px
         width: 102px
     .msf-dashboard-assistant-chart-config-button
         margin: 20px 7px
-        padding: 10px
+        padding: 10px 0px
         width: 100px
         font-weight: 550
         border-width: 1px
@@ -8996,17 +9162,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-picker
     display: grid
-    grid-template: repeat(2, 1fr) / repeat(6, 1fr)
+    grid-template-columns: repeat(auto-fill, 115px)
     grid-row-gap: 20px
-    grid-column-gap: 1px
-    width: 730px
     height: 100%
+    justify-content: center
     .msf-dashboard-assistant-chart-item, .msf-dashboard-assistant-chart-item-selected
         width: 100px
         height: 140px
         align-self: center
         text-align: center
-        margin: auto
         display: flex
         flex-direction: column
         cursor: pointer
@@ -9029,9 +9193,26 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .chart-item-label
         color: #ffffff
 
+.msf-dashboard-panel-chart-config-container
+    display: flex
+    .msf-dashboard-assistant-chart-config-button
+        font-size: 82.5%
+        height: 15px
+    .msf-dashboard-assistant-min-value-at-zero
+        margin-bottom: 5px
+    .msf-dashboard-assistant-interval-mode
+        margin-top: -7px !important
+        margin-bottom: 8px !important
+        justify-content: flex-start !important
+        .mat-radio-group
+            flex-direction: row !important
+            .second-option
+                margin-top: 0px !important
+
 .msf-dashboard-select-distribution-chart-table-container
-    width: 730px
-    height: calc(100% - 78px)
+    margin-left: -10px
+    height: calc(100% - 51px)
+    width: calc(100% + 20px)
     .msf-dashboard-select-distribution-chart-table
         height: 100%
         overflow: auto
@@ -9115,89 +9296,84 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     max-width: 1251px !important
     height: 525px !important
 
-.msf-select-data-dialog
-    .mat-dialog-container
-        padding: 0
-        overflow: hidden
-    .select-data-header
-        font-size: 14px
-        font-weight: 550
-        padding: 15px
-        position: relative
-        .close-button
-            position: absolute
-            right: 10px
-            top: 11.5px
-            cursor: pointer
-    .select-data-body
-        height: 426px
-        display: flex
-        flex-direction: row
-        overflow-x: auto
-        overflow-y: hidden
-        .select-data-menu-category
-            width: 417px
-            .menu-category-header
-                display: flex
+.select-data-body
+    height: calc(100% + 20px)
+    display: flex
+    flex-direction: row
+    overflow-x: auto
+    overflow-y: auto
+    margin: -10px
+    .select-data-menu-category
+        width: 100%
+        min-width: 400px
+        .menu-category-header
+            position: relative
+            display: flex
+            .info-container
+                margin-left: 16px
+                margin-right: 30px
                 .menu-category-title
                     display: flex
                     font-size: 20px
-                    height: 130px
+                    height: 100px
                     align-items: center
-                    margin-left: 30px
-                    margin-right: 30px
                     width: 100%
                     font-weight: 550
-                    justify-content: center
-                .menu-category-image
-                    width: 42%
-                    height: 42%
-                    margin-top: 10px
-                    margin-right: 10px
-            .menu-category-description
-                margin: 15px
-                margin-bottom: 0
-                text-align: justify
-                line-height: 16px
-                height: 60px
-                font-size: 11.75px
-            .menu-category-body
-                .menu-item-search-input
-                    width: 95%
-                    padding: 0 10px
-                    .search-icon
-                        font-size: 20px
-                        width: 20px !important
-                        height: 20px !important
-                        position: absolute
-                        right: 1px
-                        top: -1px
-                    .mat-input-element
-                        width: calc(100% - 24px)
-                .menu-items
-                    height: 157px
-                    overflow-y: auto
-                .mat-tree-node
-                    position: relative
-                    font-size: 12px !important
-                    min-height: 32px !important
-                    max-height: 32px !important
-                    .mat-button-ripple, .mat-radio-ripple
-                        display: none !important
-                    .cancels-checkbox
-                        display: flex
-                        position: absolute
-                        min-height: 32px
-                        max-height: 32px
-                        margin-top: 2px
-                        .mat-radio-label-content
-                            margin-left: 5px
-    .select-data-footer
-        display: flex
-        flex-direction: row-reverse
-        margin-top: 7px
-        margin-right: 10px
-        height: 40px
+                    text-align: left
+            .info-label
+                position: absolute
+                left: 80px
+                top: 32.5px
+            .menu-category-image
+                width: 42%
+                height: 42%
+                margin-top: 10px
+                margin-right: 10px
+        .menu-category-description
+            position: absolute
+            top: 65px
+            margin: 15px
+            margin-bottom: 0
+            text-align: justify
+            line-height: 16px
+            font-size: 11.75px
+            background-color: rgba(0, 0, 0, 0.875)
+            color: #ffffff
+            padding: 10px
+        .menu-category-search
+            .menu-item-search-input
+                width: 95%
+                padding: 0 10px
+                .search-icon
+                    font-size: 20px
+                    width: 20px !important
+                    height: 20px !important
+                    position: absolute
+                    right: 1px
+                    top: -1px
+                .mat-input-element
+                    width: calc(100% - 24px)
+        .menu-category-body
+            height: calc(100% - 231px)
+            .menu-items
+                height: 100%
+                overflow-y: auto
+                text-align: left
+            .mat-tree-node
+                position: relative
+                font-size: 12px !important
+                min-height: 32px !important
+                max-height: 32px !important
+                .mat-button-ripple, .mat-radio-ripple
+                    display: none !important
+                .cancels-checkbox
+                    display: flex
+                    position: absolute
+                    min-height: 32px
+                    max-height: 32px
+                    margin-top: 2px
+                    .mat-radio-label-content
+                        margin-left: 5px
 
 .menu-item
     margin: 8px 15px
@@ -9223,7 +9399,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .msf-dashboard-assistant-chart-mode
     display: flex
-    padding-bottom: 10px
+    .panel-type-combobox
+        margin-top: -17px
+        margin-left: 15px
+        margin-bottom: -12px
+        width: 150px !important
     .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
         border-color: #ffffff !important
     .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
@@ -9237,11 +9417,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         border-style: solid
         border-width: 1px
         border-radius: 5px
-        width: 150px
+        width: 100px
         .mat-radio-label
             width: 100%
             .mat-radio-label-content
-                padding-left: 0 !important
                 text-align: center
                 width: 100%
 
@@ -10887,7 +11066,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     grid-template-rows: repeat(auto-fill, 140px) !important
 
 .msf-dashboard-assistant-chart-picker-scroll
-    height: calc(100% - 92px)
+    height: calc(100% - 38px)
+    margin-left: -10px
+    margin-right: -10px
     overflow-y: auto
 
 .msf-chart-config-label-container
@@ -11021,7 +11202,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-bottom: 10px
     width: 100%
 
-.datalake-search-input , .datalake-search-editTable
+.datalake-search-input, .datalake-search-editTable
     .mat-form-field-label-wrapper
         top: -1.4em
     .mat-form-field-appearance-outline .mat-form-field-infix
@@ -11029,6 +11210,30 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
         transform: translateY(-1.1em) scale(.75)
         width: 133.33333%
+
+.image-link-input
+    height: 100% !important
+    .image-url-container
+        text-align: left
+        padding: 15px
+        padding-top: 0
+        height: calc(100% - 80px)
+        .content-panel-img
+            margin-top: 10px
+            height: calc(100% - 20px)
+            justify-content: center
+            align-items: center
+            border-style: solid
+            border-radius: 5px
+            border-width: 1px
+
+.no-image
+    display: flex
+    width: 100px
+    height: 50px
+    justify-content: center
+    align-items: center
+    font-weight: 550
 
 .datalake-search-formfield
     width: 100%
@@ -11052,6 +11257,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .msf-dashboard-arguments-container
     height: calc(100% - 25px)
     padding: 12px
+    #msf-dashboard-panel-form-container-column
+        height: 300px !important
+        padding: 0 !important
 
 .arrow-theme-button
     .msf-category-argument-arrow-icon
@@ -11119,13 +11327,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         padding-left: 0 !important
 
 .no-control-variables-container
-    margin-top: 45px
+    margin: auto
     text-align: center
     width: 240px
     padding: 20px
     font-weight: 550
     font-size: 14px
-    margin-left: 230px
 
 .datalake-table-export-excel
     padding: 0px !important
@@ -11162,7 +11369,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-right: 10px
 
 .msf-dashboard-limit-amount-input
-    width: 95%
+    margin-left: 5px
 
 @mixin membership-header-button
     position: absolute
@@ -11342,6 +11549,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     height: 100%
     width: auto
     justify-content: center
+    align-items: center
     flex-direction: row
     img
         object-fit: contain
@@ -11919,71 +12127,244 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         margin-bottom: 10px
         width: 200px
 
-.dialog-url-message
-    margin-top: 10px
+.msf-dashboard-panel-config-name
+    display: block !important
+    overflow: hidden
+    font-size: 16px !important
+    margin-bottom: 15px
+    width: calc(100% - 50px) !important
+    white-space: nowrap
+    text-overflow: ellipsis
+    text-align: left
 
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn
+.msf-dashboard-panel-config-gridstack
+    display: block !important
+
+.msf-dashboard-panel-config-container
     display: flex
-    flex-direction: row-reverse
-    padding-right: 10px
-    margin-top: 9px
-    .mat-flat-button
-        padding-left: 10px
-        padding-right: 10px
-        .mat-button-wrapper
-            font-size: 12px
-    .msf-dashboard-panel-control-variable-button
-        display: flex
-        width: 40px
-        flex-direction: column
-        .mat-mini-fab
-            width: 35px
-            height: 35px
-            margin-top: 2px
-            .mat-button-wrapper
-                line-height: 20px
-                img, .mat-icon
-                    width: 21px
-                    height: 21px
-                    font-size: 21px
-                    margin-top: -1px
+    flex-direction: row
+    height: calc(100% - 20px)
+    width: 100%
+    .msf-dashboard-panel-steps
+        height: inherit
+        width: 225px
+        min-width: 225px
+        margin-right: 10px
+        .msf-dashboard-panel-steps-container
+            height: calc(100% - 60px)
+            overflow-y: auto
+        .msf-dashboard-panel-step-selector
+            @include disable-text-selection
+            cursor: pointer
+        .msf-dashboard-panel-step-selector-disabled
+            @include disable-text-selection
+            cursor: not-allowed
+            .msf-dashboard-panel-step-circle
+                opacity: 0.25
+            .step-label
+                opacity: 0.25
+        .msf-dashboard-panel-step-selector, .msf-dashboard-panel-step-selector-disabled
+            display: flex
+            height: 60px
+            align-items: center
+            padding-left: 10px
+            .msf-dashboard-panel-step-circle
+                width: 20px
+                height: 20px
+                border-radius: 15px
+                margin-right: 10px
+                .mat-icon
+                    vertical-align: middle !important
+                    font-size: 15px !important
+                    width: 15px !important
+                    height: 15px !important
+                    margin-left: 2px
+        .msf-dashboard-panel-step-button-container
+            display: flex
+            flex-direction: row
+            height: 60px
+            width: 100%
+            .msf-dashboard-panel-generate-button, .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-cancel-button
+                display: flex
+                flex-direction: column
+                height: 60px
+                align-items: center
+                cursor: pointer
+                justify-content: center
+                font-weight: 500
+                border-radius: 0 !important
+            .msf-dashboard-panel-generate-button.flat-button-disabled
+                cursor: not-allowed !important
+            .msf-dashboard-panel-generate-button
+                width: 100%
+            .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-cancel-button
+                width: calc(50% - 1px)
+            .msf-dashboard-panel-button-separator
+                height: 60px
+                width: 2px
+    .msf-dashboard-panel-step-content
+        width: calc(100% - 235px)
+        height: inherit
+        .msf-dashboard-panel-step-item, .msf-dashboard-panel-step-loading
+            padding: 10px
+            height: calc(100% - 20px)
+            width: calc(100% - 20px)
+            .msf-dashboard-assistant-chart-mode
+                margin-top: 10px
+            .table-config-label
+                margin-top: 10px
+                margin-bottom: -10px
+                align-self: baseline
+            .table-column-list
+                margin-top: 15px
+                margin-bottom: 0px !important
+                height: 100% !important
+                overflow-y: auto !important
+        .msf-dashboard-info-step
+            display: flex
+            justify-content: center
+            align-items: center
+        .msf-dashboard-simple-form-step
+            flex-direction: column
+            #msf-dashboard-panel-form-sub-container
+                margin-top: 5px !important
+                margin-bottom: 10px
+            #msf-dashboard-panel-form-container-column-empty, #msf-dashboard-panel-form-container-column
+                height: 100% !important
+                margin-bottom: 0 !important
+        .msf-dashboard-panel-step-variables-edit
+            height: calc(100% + 20px) !important
+        .msf-dashboard-panel-step-variables-buttons
+            display: flex !important
+            height: 50px !important
+            padding: 20px 20px 0px 20px !important
+            .edit-label
+                display: flex
+                width: calc(100% - 100px)
+                font-size: 14px
+                font-weight: 500
+                .mat-icon
+                    margin-top: 5px
+                    margin-right: 10px
+                .edit-text
+                    margin-top: 10px
+            .msf-dashboard-assistant-step-button
+                width: 100px
+                height: 40px
+            .msf-dashboard-assistant-paste-button
+                width: 200px !important
+                margin-right: 10px
+        .msf-dashboard-assistant-cancel-button
+            margin-left: 7px
+        .msf-dashboard-name-step
+            display: flex
+            flex-direction: column
+            justify-content: center
+            .panel-description-input
+                height: 100%
+                .mat-form-field
+                    height: 100%
+                    .mat-form-field-wrapper
+                        height: 100%
+                        .mat-form-field-flex
+                            height: 100%
+                            .mat-form-field-infix
+                                height: calc(100% - 30px)
+                                .mat-input-element
+                                    overflow-y: auto
+                                    height: 100% !important
+                                    resize: none
 
-.msf-dashboard-panel-container-drillDown
-    overflow-y: auto
-    overflow-x: hidden
-    border-radius: 0px
+.values-combobox
+    margin-left: -5px
 
+.num-variables-icon
+    margin-top: -20px
 
-#msf-dashboard-drill-down-container-withoutBtn
-    height: calc(100% - 100px)
-    background-color: inherit
-    padding: inherit
+.panel-formfield
+    width: calc(100% - 20px) !important
 
-.msf-dashboard-panel-sub-container-column-drillDown
-    width: calc(100% - 5px) !important
+.config-panel-form-field
+    margin-top: -3px
+    .mat-select-trigger
+        margin-bottom: 5px
+    .mat-select-arrow-wrapper
+        transform: inherit !important
+    .mat-input-element
+        margin-top: 0.5px
+        margin-bottom: 4.5px
+    .mat-form-field-label-wrapper
+        top: -1.3em !important
 
-.msf-dashboard-childPanel-drilldown
-    flex-direction: column
+.config-panel-form-field.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label
+    transform: translateY(-1.2em) scale(.75) !important
+
+.heatmap-panel-step
+    display: flex
     align-items: center
-    .msf-dashboard-title-label-description
-        margin-top: 5px !important
 
-.msf-dashboard-control-variables-title-childPanel
-    padding-bottom: 0px !important
+.color-picker-tab, .limit-results-tab
+    display: flex
+    flex-direction: column
+    height: 100%
 
-.panel-with-desc
-    height: calc(100% - 130px) !important
+.axis-names-tab
+    display: flex
+    flex-direction: column
+    padding-top: 15px
+    height: calc(100% - 15px)
 
-.panel-without-desc
-    height: 82% !important
+.limit-results-label
+    padding-bottom: 0 !important
+    margin-left: 10px
+    height: 20px
+    span
+      font-weight: 550
 
-.simple-form-results-container
-    overflow-y: auto
-    overflow-x: hidden
-    margin-left: -10px
-    padding-right: 0 !important
-    margin-top: -10px
-    width: calc(100% + 20px) !important
+.limit-radio-group
+    margin-bottom: 20px !important
+    .mat-radio-group
+        display: flex
+        margin: 0 10px
+        width: 100%
+        .msf-dashboard-assistant-mode
+            margin-left: 0 !important
+            margin-top: 0 !important
+            padding: 14px 20px !important
+            align-items: center
+            width: 100%
+            .mat-radio-container
+                width: 20px !important
+                height: 20px !important
+                .mat-radio-outer-circle, .mat-radio-inner-circle
+                    width: 20px !important
+                    height: 20px !important
+            .mat-radio-label .mat-radio-label-content
+                font-size: 14px !important
+
+.theme-color-checkbox
+    text-align: end
+    width: calc(100% - 160px)
+
+.no-info
+    margin-top: 24px
+    height: 50px
+    width: 43px
+
+.info-image, .info-image-open
+    cursor: pointer
+    margin-top: 20px
+    height: 43px
+    width: 43px
+
+.info-arrow, .info-arrow-invisible
+    margin-left: 14px
+    margin-top: 4px
+    width: 14px
+    height: 7px
+
+.datasource-selected
+    padding-left: 15px
 
 .simple-form-results-container-with-anchored-args
     margin-top: 0px !important
@@ -11995,3 +12376,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .datalake-table-show-table-dialog
     .datalake-dialog-loading
         display: block !important
+.info-selector, .heatmap-selector
+    margin-bottom: 15px !important
+    .mat-form-field
+        margin-bottom: -15px

@@ -6,7 +6,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
-import { MsfDashboardAdditionalSettingsComponent } from '../msf-dashboard-additional-settings/msf-dashboard-additional-settings.component';
 import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { ApplicationService } from '../services/application.service';
 import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
@@ -187,7 +186,7 @@ export class MsfDashboardDrillDownComponent {
     if (this.currentValue.currentChartType.flags & ChartFlags.ADVANCED)
       configFlags &= ~ConfigFlags.LIMITVALUES;
 
-    dialogRef = this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
+    /*dialogRef = this.dialog.open (MsfDashboardAdditionalSettingsComponent, {
       width: '400px',
       height: 'auto',
       panelClass: 'msf-dashboard-control-variables-dialog',
@@ -196,7 +195,7 @@ export class MsfDashboardDrillDownComponent {
         values: this.currentValue,
         configFlags: configFlags
       }
-    });
+    });*/
 
     dialogRef.afterClosed ().subscribe (
       () => {
