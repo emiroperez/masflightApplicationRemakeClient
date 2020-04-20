@@ -3250,7 +3250,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.dialogData)
     {
-      this.dialogRef.close ({ generateChart: true, controlVariableSet: this.controlVariablesSet });
+      this.dialogRef.close ({ generateChart: true, controlVariablesSet: this.controlVariablesSet });
       return;
     }
 
@@ -4418,7 +4418,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.dialogData)
     {
-      this.dialogRef.close ({ goToResults: true });
+      this.dialogRef.close ({ goToResults: true, controlVariablesSet: null });
       return;
     }
 
@@ -5685,7 +5685,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         if (_this.dialogData)
         {
-          _this.dialogRef.close ({ savePanel: true, controlVariableSet: this.controlVariablesSet });
+          _this.dialogRef.close ({ savePanel: true, controlVariablesSet: this.controlVariablesSet });
           return;
         }
 
@@ -7689,9 +7689,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     dialogRef.afterClosed ().subscribe ((result) => {
       this.toggleControlVariableDialogOpen.emit (false);
 
-      if (result.controlVariablesSet != null)
-        this.controlVariablesSet = result.controlVariableSet;
-
       if (this.values.currentOption)
         this.variableCtrlBtnEnabled = true;
 
@@ -7699,6 +7696,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (result)
       {
+        if (result.controlVariablesSet != null)
+          this.controlVariablesSet = result.controlVariablesSet;
+
         if (result.generateChart)
           this.loadData ();
         else if (result.savePanel)
