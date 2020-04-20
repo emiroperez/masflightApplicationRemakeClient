@@ -350,6 +350,14 @@ export class MsfDashboardPanelComponent implements OnInit {
   useThemeColors: boolean = false;
   scrollToOption: any = null;
 
+  displayChart: boolean;
+  displayInfo: boolean;
+  displayForm: boolean;
+  displayPic: boolean;
+  displayTable: boolean;
+  displayMapbox: boolean;
+  displayDynTable: boolean;
+
   @ViewChild("configTabs", { static: false })
   configTabs: MatTabGroup;
 
@@ -389,7 +397,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.dialogData)
     {
       // This is for the dialog version
-      this.values = this.dialogData.values;
+      this.values = new MsfDashboardPanelValues (this.dialogData.values.options, this.dialogData.values.chartName,
+        this.dialogData.values.chartDescription, this.dialogData.values.id, this.dialogData.values.gridId,
+        this.dialogData.values.x, this.dialogData.values.y, this.dialogData.values.width,
+        this.dialogData.values.height);
+
       this.panelWidth = this.dialogData.panelWidth;
       this.panelHeight = this.dialogData.panelHeight;
       this.functions = this.dialogData.functions;
@@ -417,6 +429,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.generateBtnEnabled = this.dialogData.generateBtnEnabled;
 
       this.controlVariablesSet = this.dialogData.controlVariablesSet;
+
+      this.setPanelValues (this.dialogData.values);
     }
   }
 
@@ -525,13 +539,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.displayLabel = this.panelWidth >= 5 ? true : false;
 
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.values.displayMapbox)
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.displayMapbox)
         this.msfMapRef.resizeMap();
 
     }
     else if (changes['panelHeight'])
     {
-      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.values.displayMapbox)
+      if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.displayMapbox)
         this.msfMapRef.resizeMap ();
     }
     else if (changes['currentHiddenCategories'])
@@ -2534,17 +2548,17 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.controlVariablesSet = true;
 
           if (this.values.currentChartType.flags & ChartFlags.PICTURE)
-            this.values.displayPic = true;
+            this.displayPic = true;
           else if (this.values.currentChartType.flags & ChartFlags.FORM)
-            this.values.displayForm = true;
+            this.displayForm = true;
           else
-            this.values.displayInfo = true;
+            this.displayInfo = true;
         }
       }
       else
       {
         this.controlVariablesSet = true;
-        this.values.displayChart = true;
+        this.displayChart = true;
       }
 
       this.startUpdateInterval ();
@@ -3071,7 +3085,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     let params, url, urlArg;
 
     this.values.isLoading = true;
-    this.values.displayMapbox = true;
+    this.displayMapbox = true;
     this.msfMapRef.data = [];
     this.msfMapRef.coordinates = [];
  
@@ -3250,7 +3264,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.dialogData)
     {
-      this.dialogRef.close ({ generateChart: true, controlVariablesSet: this.controlVariablesSet });
+      this.dialogRef.close ({ generateChart: true, controlVariablesSet: this.controlVariablesSet, values: this.values });
       return;
     }
 
@@ -3576,7 +3590,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
     _this.destroyChart ();
 
-    _this.values.displayPic = true;
+    _this.displayPic = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3684,7 +3698,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.destroyChart ();
 
     _this.values.isLoading = false;
-    _this.values.displayForm = true;
+    _this.displayForm = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = true;
@@ -3730,7 +3744,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.values.displayTable = true;
+    _this.displayTable = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3776,7 +3790,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.values.displayDynTable = true;
+    _this.displayDynTable = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3877,7 +3891,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.destroyChart ();
 
-    _this.values.displayChart = true;
+    _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3906,7 +3920,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
-    _this.values.displayChart = true;
+    _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -3943,7 +3957,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
-    _this.values.displayInfo = true;
+    _this.displayInfo = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = true;
     _this.values.formGenerated = false;
@@ -4001,7 +4015,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
-    _this.values.displayChart = true;
+    _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -4392,24 +4406,136 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   goToPanelConfiguration(): void
   {
-    if (this.values.displayChart)
-      this.values.displayChart = false;
-    else if (this.values.displayInfo)
-      this.values.displayInfo = false;
-    else if (this.values.displayForm)
-      this.values.displayForm = false;
-    else if (this.values.displayPic)
-      this.values.displayPic = false;
-    else if (this.values.displayTable)
-      this.values.displayTable = false;
-    else if (this.values.displayMapbox)
-      this.values.displayMapbox = false;
-    else if (this.values.displayDynTable)
-      this.values.displayDynTable = false;
-
     this.storeChartValues ();
     this.changeDetectorRef.detectChanges ();
     this.selectStep (this.selectedStep);
+
+    this.configurePanel ();
+  }
+
+  setPanelValues(values): void
+  {
+    let i, item;
+
+    // discard any changes
+    this.values.urlImg = values.urlImg;
+    this.values.currentOption = JSON.parse (JSON.stringify (values.currentOption));
+    this.values.chartName = values.chartName;
+    this.values.chartDescription = values.chartDescription;
+
+    if (values.variable)
+      this.values.variable = values.variable;
+    else
+      this.values.variable = null;
+
+    if (values.xaxis)
+      this.values.xaxis = values.xaxis;
+    else
+      this.values.xaxis = null;
+
+    if (values.valueColumn)
+      this.values.valueColumn = values.valueColumn;
+    else
+      this.values.valueColumn = null;
+
+    this.values.function = values.function;
+    this.values.geodata = values.geodata;
+    this.values.chartColumnOptions = JSON.parse (JSON.stringify (values.chartColumnOptions));
+    this.values.currentOptionCategories = JSON.parse (JSON.stringify (values.currentOptionCategories));
+    this.values.thresholds = JSON.parse (JSON.stringify (values.thresholds));
+    this.values.goals = JSON.parse (JSON.stringify (values.goals));
+    this.values.style = JSON.parse (JSON.stringify (values.style));
+    this.values.vertAxisName = values.vertAxisName;
+    this.values.horizAxisName = values.horizAxisName;
+    this.values.dynTableValues = values.dynTableValues ? JSON.parse (JSON.stringify (values.dynTableValues)) : null;
+    this.values.dynTableVariables = JSON.parse (JSON.stringify (values.dynTableVariables));
+    this.values.intervalType = values.intervalType;
+    this.values.intValue = values.intValue;
+    this.values.valueList = values.valueList;
+
+    for (i = 0; i < this.chartTypes.length; i++)
+    {
+      item = this.chartTypes[i];
+
+      if (item.name === values.currentChartType.name)
+      {
+        this.values.currentChartType = item;
+        break;
+      }
+    }
+
+    if (this.values.currentChartType.flags & ChartFlags.INFO
+      && !(this.values.currentChartType.flags & ChartFlags.FORM)
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && this.values.chartColumnOptions != null)
+    {
+      if (values.infoVar1 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (values.infoVar1.id === item.id)
+          {
+            this.values.variable = item;
+            break;
+          }
+        }
+      }
+
+      if (values.infoVar2 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (values.infoVar2.id === item.id)
+          {
+            this.values.xaxis = item;
+            break;
+          }
+        }
+      }
+
+      if (values.infoVar3 != null)
+      {
+        for (i = 0; i < this.values.chartColumnOptions.length; i++)
+        {
+          item = this.values.chartColumnOptions[i];
+
+          if (values.infoVar3.id === item.id)
+          {
+            this.values.valueColumn = item;
+            break;
+          }
+        }
+      }
+    }
+
+    this.values.formVariables = [];
+
+    for (let i = 0; i < values.formVariables.length; i++)
+    {
+      let formVariable = values.formVariables[i];
+
+      this.values.formVariables.push ({
+        value: this.values.lastestResponse[i].value,
+        column: formVariable.column,
+        fontSize: this.fontSizes[formVariable.fontSize],
+        valueFontSize: this.fontSizes[formVariable.valueFontSize],
+        valueOrientation: this.orientations[formVariable.valueOrientation],
+        function: this.functions[formVariable.function]
+      });
+    }
+
+    this.values.tableVariables = JSON.parse (JSON.stringify (values.tableVariables));
+
+    this.values.updateIntervalSwitch = values.updateIntervalSwitch;
+    this.values.startAtZero = values.startAtZero;
+    this.values.updateTimeLeft = values.updateTimeLeft;
+    this.values.limitMode = values.limitMode;
+    this.values.limitAmount = values.limitAmount;
+    this.values.ordered = values.ordered;
   }
 
   goToResults(): void
@@ -4421,21 +4547,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.dialogRef.close ({ goToResults: true, controlVariablesSet: null });
       return;
     }
-
-    if (this.values.picGenerated)
-      this.values.displayPic = true;
-    else if (this.values.formGenerated)
-      this.values.displayForm = true;
-    else if (this.values.infoGenerated)
-      this.values.displayInfo = true;
-    else if (this.values.tableGenerated)
-      this.values.displayTable = true;
-    else if (this.values.mapboxGenerated)
-      this.values.displayMapbox = true;
-    else if (this.values.dynTableGenerated)
-      this.values.displayDynTable = true;
-    else
-      this.values.displayChart = true;
 
     // discard any changes
     this.values.urlImg = this.temp.urlImg;
@@ -5672,27 +5783,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.service.updateDashboardPanel (this, panel, this.handlerUpdateSuccess, this.handlerError);
   }
 
-  savePanel(fromDialog: boolean): void
-  {
-    if (fromDialog)
-    {
-      this.prepareToSavePanel ();
-      return;
-    }
-
-    this.service.confirmationDialog (this, "Are you sure you want to save the changes?",
-      function (_this)
-      {
-        if (_this.dialogData)
-        {
-          _this.dialogRef.close ({ savePanel: true, controlVariablesSet: this.controlVariablesSet });
-          return;
-        }
-
-        _this.prepareToSavePanel ();
-      });
-  }
-
   isInformationPanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
@@ -6215,7 +6305,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       this.values.isLoading = false;
 
-      this.values.displayTable = true;
+      this.displayTable = true;
       this.values.chartGenerated = false;
       this.values.infoGenerated = false;
       this.values.formGenerated = false;
@@ -7382,13 +7472,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   saveAnchoredChanges(): void
   {
     // don't display results when loading new changes
-    this.values.displayChart = false;
-    this.values.displayInfo = false;
-    this.values.displayForm = false;
-    this.values.displayMapbox = false;
-    this.values.displayPic = false;
-    this.values.displayTable = false;
-    this.values.displayDynTable = false;
+    this.displayChart = false;
+    this.displayInfo = false;
+    this.displayForm = false;
+    this.displayMapbox = false;
+    this.displayPic = false;
+    this.displayTable = false;
+    this.displayDynTable = false;
 
     // set new argument values
     for (let categoryArgument of this.values.currentOptionCategories)
@@ -7700,9 +7790,10 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.controlVariablesSet = result.controlVariablesSet;
 
         if (result.generateChart)
+        {
+          this.setPanelValues (result.values);
           this.loadData ();
-        else if (result.savePanel)
-          this.savePanel (true);
+        }
         else if (result.goToResults)
           this.goToResults ();
       }

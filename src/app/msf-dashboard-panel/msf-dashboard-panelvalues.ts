@@ -6,13 +6,6 @@ export class MsfDashboardPanelValues {
     options:any[] = [];
 
     id: number;
-    displayChart: boolean;
-    displayInfo: boolean;
-    displayForm: boolean;
-    displayPic: boolean;
-    displayTable: boolean;
-    displayMapbox: boolean;
-    displayDynTable: boolean;
     chartGenerated: boolean;
     infoGenerated: boolean;
     formGenerated: boolean;
