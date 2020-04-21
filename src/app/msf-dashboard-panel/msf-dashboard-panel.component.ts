@@ -1875,6 +1875,9 @@ export class MsfDashboardPanelComponent implements OnInit {
               let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
               let legendOutputFormat;
 
+              if (date == null)
+                continue;
+
               if (this.values.variable.item.outputFormat)
                 legendOutputFormat = this.values.variable.item.outputFormat;
               else

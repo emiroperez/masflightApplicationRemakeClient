@@ -30,27 +30,27 @@
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 4 }"><mat-icon *ngIf="selectedStep == 4">edit</mat-icon></div>
               <span class="step-label">Control Variables</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && isControlVariablesSet() ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(5)" *ngIf="!isDynTablePanel() && !isTablePanel() && !isInformationPanel() && !isSimpleFormPanel() && !isMapPanel() && !isHeatMapPanel() && !isMapboxPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 5 }"><mat-icon *ngIf="selectedStep == 5">edit</mat-icon></div>
               <span class="step-label">Basic Configuration</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && isControlVariablesSet() ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isDynTablePanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
               <span class="step-label">Configuration</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isTablePanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && isControlVariablesSet() ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(6)" *ngIf="isTablePanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 6 }"><mat-icon *ngIf="selectedStep == 6">edit</mat-icon></div>
               <span class="step-label">Basic Configuration</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(7)" *ngIf="isInformationPanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && isControlVariablesSet() ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(7)" *ngIf="isInformationPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 7 }"><mat-icon *ngIf="selectedStep == 7">edit</mat-icon></div>
               <span class="step-label">Configuration</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(8)" *ngIf="isSimpleFormPanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && isControlVariablesSet() ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(8)" *ngIf="isSimpleFormPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 8 }"><mat-icon *ngIf="selectedStep == 8">edit</mat-icon></div>
               <span class="step-label">Basic Configuration</span>
             </div>
-            <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isHeatMapPanel()">
+            <div [ngClass]="values.currentOption && values.currentOptionCategories && isControlVariablesSet() ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(9)" *ngIf="isHeatMapPanel()">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 9 }"><mat-icon *ngIf="selectedStep == 9">edit</mat-icon></div>
               <span class="step-label">Basic Configuration</span>
             </div>
@@ -293,7 +293,7 @@
           </div>
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group msf-dashboard-panel-step-variables-edit msf-control-variables-overlay" *ngIf="!tablePreview">
             <mat-tab-group #editTabs>
-              <mat-tab *ngFor="let controlVariable of tempOptionCategories">
+              <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                 <ng-template mat-tab-label>
                   <mat-icon *ngIf="controlVariable.icon && isMatIcon(controlVariable.icon)" class="msf-dashboard-control-panel-tab-icon">{{controlVariable.icon}}</mat-icon>
                   <img *ngIf="controlVariable.icon && !isMatIcon(controlVariable.icon)" src="{{getImageIcon(controlVariable)}}" class="msf-dashboard-control-panel-tab-icon">
@@ -304,11 +304,8 @@
                   <button [disabled]="!this.globals.copiedPanelInfo" mat-button class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button msf-dashboard-assistant-paste-button" [ngClass]="this.globals.copiedPanelInfo ? 'flat-button' : 'flat-control-variable-button-disabled'" (click)="pasteControlVariables()">
                     Pass Copied Info
                   </button>
-                  <button *ngIf="!tablePreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="refreshTable()">
-                    Save
-                  </button>
-                  <button *ngIf="!tablePreview && configuredControlVariables && !selectDataPreview" class="msf-dashboard-assistant-step-button msf-dashboard-assistant-cancel-button flat-button" mat-button (click)="cancelEdit()">
-                    Cancel
+                  <button class="msf-dashboard-assistant-step-button msf-dashboard-assistant-next-button flat-button" mat-button (click)="previewTable()">
+                    Preview
                   </button>
                 </div>
                 <div class="msf-dashboard-assistant-tab-container msf-dashboard-assistant-edit-tab-container">
@@ -728,7 +725,7 @@
             <div class="{{globals.theme}} msf-dashboard-panel-sub-container-row" id="msf-dashboard-panel-form-container-row" *ngFor="let formVariable of values.formVariables; let column = index" cdkDragLockAxis="y" vsDragScroll [vsDragScrollContainer]="formScrollContainer" cdkDrag>
               <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
                 <mat-form-field class="msf-full-width">
-                  <mat-select [(value)]="formVariable.column" placeholder="Select Column">
+                  <mat-select [(ngModel)]="formVariable.column" placeholder="Select Column">
                     <ngx-mat-select-search ngModel (ngModelChange)="filterForm($event, formVariable)" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                     <mat-option *ngFor="let variable of formVariable.filteredVariables | async" [value]="variable">
                       {{variable.name}}
@@ -738,7 +735,7 @@
               </div>
               <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
                 <mat-form-field class="msf-full-width">
-                  <mat-select [(value)]="formVariable.fontSize" placeholder="Title Font Size">
+                  <mat-select [(ngModel)]="formVariable.fontSize" placeholder="Title Font Size">
                     <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                       {{fontSize.name}}
                     </mat-option>
@@ -747,7 +744,7 @@
               </div>
               <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
                 <mat-form-field class="msf-full-width">
-                  <mat-select [(value)]="formVariable.valueFontSize" placeholder="Value Font Size">
+                  <mat-select [(ngModel)]="formVariable.valueFontSize" placeholder="Value Font Size">
                     <mat-option *ngFor="let fontSize of fontSizes" [value]="fontSize">
                       {{fontSize.name}}
                     </mat-option>
@@ -756,7 +753,7 @@
               </div>
               <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
                 <mat-form-field class="msf-full-width">
-                  <mat-select [(value)]="formVariable.valueOrientation" placeholder="Value Orientation">
+                  <mat-select [(ngModel)]="formVariable.valueOrientation" placeholder="Value Orientation">
                     <mat-option *ngFor="let orientation of orientations" [value]="orientation">
                       {{orientation.name}}
                     </mat-option>
@@ -765,7 +762,7 @@
               </div>
               <div class="msf-dashboard-chart-op-container" id="msf-dashboard-panel-form-op-container">
                 <mat-form-field class="msf-full-width">
-                  <mat-select [(value)]="formVariable.function" placeholder="Function">
+                  <mat-select [(ngModel)]="formVariable.function" placeholder="Function">
                     <mat-option *ngFor="let fun of functions" [value]="fun">
                       {{fun.name}}
                     </mat-option>

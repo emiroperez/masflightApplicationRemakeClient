@@ -23,6 +23,7 @@ import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
+import { AirportSelection } from '../commons/AirportSelection';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -74,7 +75,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   // dashboard interface values
   selectedPanelType: any = this.panelTypes[0];
-  controlVariablesSet: boolean = false;
   selectedStep: number = 1;
   stepLoading: number = 0;
 
@@ -85,12 +85,12 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   configTableLoading: boolean = false;
   configuredControlVariables: boolean = false;
-  tempOptionCategories: any = null;
   panelMode: string = "basic";
   panelConfigRefresh: boolean = false;
   advConfigFlags: ConfigFlags = null;
   useThemeColors: boolean = false;
   scrollToOption: any = null;
+  controlVariablesSet: boolean = false;
 
   childPanelValues: any[] = [];
   childPanelsConfigured: boolean[] = [];
@@ -167,8 +167,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.msfMapRef = this.data.msfMapRef;
 
     this.generateBtnEnabled = this.data.generateBtnEnabled;
-
-    this.controlVariablesSet = this.data.controlVariablesSet;
   }
 
   ngOnInit()
@@ -380,24 +378,40 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
     }
 
+
     this.values.formVariables = [];
 
-    for (let i = 0; i < this.data.values.formVariables.length; i++)
+    if (this.values.chartColumnOptions != null)
     {
-      let formVariable = this.data.values.formVariables[i];
-      let filteredVariables = new ReplaySubject<any[]> (1);
+      for (let i = 0; i < this.data.values.formVariables.length; i++)
+      {
+        let formVariable = this.data.values.formVariables[i];
+        let filteredVariables = new ReplaySubject<any[]>(1);
+        let column = this.values.chartColumnOptions[0];
 
-      filteredVariables.next (this.values.chartColumnOptions.slice ());
+        filteredVariables.next (this.values.chartColumnOptions.slice ());
 
-      this.values.formVariables.push ({
-        value: this.values.lastestResponse[i].value,
-        column: formVariable.column,
-        fontSize: this.fontSizes[formVariable.fontSize],
-        valueFontSize: this.fontSizes[formVariable.valueFontSize],
-        valueOrientation: this.orientations[formVariable.valueOrientation],
-        function: this.functions[formVariable.function],
-        filteredVariables: filteredVariables
-      });
+        for (let j = 0; j < this.values.chartColumnOptions.length; j++)
+        {
+          let item = this.values.chartColumnOptions[j];
+
+          if (formVariable.column.id === item.id)
+          {
+            column = item;
+            break;
+          }
+        }
+
+        this.values.formVariables.push ({
+          value: this.data.values.lastestResponse[i].value,
+          column: column,
+          fontSize: formVariable.fontSize,
+          valueFontSize: formVariable.valueFontSize,
+          valueOrientation: formVariable.valueOrientation,
+          function: formVariable.function,
+          filteredVariables: filteredVariables
+        });
+      }
     }
 
     if (this.values.thresholds && this.values.thresholds.length)
@@ -631,10 +645,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     let currentOptionCategories;
     let params;
 
-    if (this.tempOptionCategories)
-      currentOptionCategories = this.tempOptionCategories;
-    else
-      currentOptionCategories = this.values.currentOptionCategories;
+    currentOptionCategories = this.values.currentOptionCategories;
 
     if (currentOptionCategories)
     {
@@ -951,6 +962,63 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return true;
   }
 
+  isControlVariablesSet(): boolean
+  {
+    if (!this.values.currentOptionCategories)
+      return false;
+
+    for (let curOptionCategory of this.values.currentOptionCategories)
+    {
+      for (let argument of curOptionCategory.arguments)
+      {
+        if (argument.required == 1)
+        {
+          if (argument.type == ComponentType.airport)
+          {
+            if (argument.value1 == null || argument.value1.toString() == "")
+            {
+              this.controlVariablesSet = false;
+              return false;
+            }
+
+            if (argument.selectionMode)
+            {
+              let selectionMode = argument.selectionMode & ~AirportSelection.MULTIPLESELECTION;
+
+              if (selectionMode == AirportSelection.ROUTE)
+              {
+                if (argument.value2 == null || argument.value2.toString() == "")
+                {
+                  this.controlVariablesSet = false;
+                  return false;
+                }
+              }
+              else if (selectionMode == AirportSelection.ROUTEWITHCONNECTION)
+              {
+                if (argument.value3 == null || argument.value3.toString() == "")
+                {
+                  this.controlVariablesSet = false;
+                  return false;
+                }
+              }
+            }
+          }
+          else
+          {
+            if ((argument.value1 == null || argument.value1.toString() == "") || (argument.name2 && (argument.value2 == null || argument.value2.toString() == "")))
+            {
+              this.controlVariablesSet = false;
+              return false;
+            }
+          }
+        }
+      }
+    }
+
+    this.controlVariablesSet = true;
+    return true;
+  }
+
   selectStep(step: number): void
   {
     this.menuCategories = [];
@@ -1131,10 +1199,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       return;
     }
 
-    if (_this.values.currentOptionCategories == null || !_this.controlVariablesSet)
-      _this.tablePreview = false;
-    else
-      _this.tablePreview = true;
+    _this.tablePreview = false;
 
     data = data.sort ((a, b) => a["position"] > b["position"] ? 1 : a["position"] === b["position"] ? 0 : -1);
 
@@ -1234,22 +1299,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     _this.values.currentOptionCategories = optionCategories;
 
-    if (_this.tablePreview)
-    {
-      _this.tempOptionCategories = null;
-      _this.configureControlVariables ();
-      _this.configTableLoading = true;
-      _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
-    }
-    else
-    {
-      _this.tempOptionCategories = optionCategories;
-      _this.values.currentOptionCategories = null;
-      _this.stepLoading = 0;
-      _this.controlVariablesSet = false;
-      _this.changeDetectorRef.detectChanges ();
-      _this.editTabs.realignInkBar ();
-    }
+    _this.stepLoading = 0;
+    _this.changeDetectorRef.detectChanges ();
+    _this.editTabs.realignInkBar ();
   }
 
   loadConfigTableData(handlerSuccess, handlerError): void
@@ -1378,26 +1430,17 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return true;
   }
 
-  refreshTable(): void
+  previewTable(): void
   {
     this.stepLoading = 4;
+    this.tablePreview = true;
     this.configTableLoading = true;
     this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
     this.changeDetectorRef.detectChanges ();
   }
 
-  cancelEdit(): void
-  {
-    this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
-    this.tablePreview = true;
-    this.tempOptionCategories = null;
-    this.changeDetectorRef.detectChanges ();
-    this.configTabs.realignInkBar ();
-  }
-
   goToEditor(): void
   {
-    this.tempOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
     this.tablePreview = false;
     this.changeDetectorRef.detectChanges ();
     this.editTabs.realignInkBar();
@@ -1838,13 +1881,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
       return;
     }
 
-    if (this.tempOptionCategories)
-    {
-      this.values.currentOptionCategories = JSON.parse (JSON.stringify (this.tempOptionCategories));
-      this.tempOptionCategories = null;
-    }
-
-    this.controlVariablesSet = true;
     this.configuredControlVariables = true;
     this.tablePreview = true;
     this.analysisSelected = null;
@@ -1911,7 +1947,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
     }
 
-    this.controlVariablesSet = false;
     this.loadChartFilterValues (this.values.currentOption);
   }
 
@@ -2591,12 +2626,12 @@ export class MsfDashboardAssistantComponent implements OnInit {
     for (let threshold of this.values.thresholds)
       threshold.filteredVariables = null;
 
-    this.dialogRef.close ({ generateChart: true, controlVariablesSet: this.controlVariablesSet, values: this.values });
+    this.dialogRef.close ({ generateChart: true, values: this.values });
   }
 
   goToResults(): void
   {
-    this.dialogRef.close ({ goToResults: true, controlVariablesSet: null });
+    this.dialogRef.close ({ goToResults: true });
   }
 
   isFormColumnValid(): boolean

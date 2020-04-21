@@ -28,8 +28,11 @@ export class MsfMapComponent implements OnInit {
   @Input("currentOption")
   currentOption: any;
 
-  @Output('finishLoading')
-  finishLoading = new EventEmitter ();
+  @Output("finishLoading")
+  finishLoading = new EventEmitter();
+
+  @Input("displayMapbox")
+  displayMapbox: boolean = true;
 
   mapReady: boolean = false;
   showAllRoutes: boolean = true;
