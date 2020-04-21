@@ -60,6 +60,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
+    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
   ];
 
   functions: any[];
