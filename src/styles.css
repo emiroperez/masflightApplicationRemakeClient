@@ -14953,19 +14953,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .msf-dashboard-assistant-min-value-at-zero {
   display: flex;
-  flex-direction: column;
   text-align: left;
+  margin-bottom: 5px;
 }
 .msf-dashboard-assistant-min-value-at-zero .cancels-checkbox {
   font-size: 11px;
 }
 
 .msf-dashboard-assistant-interval-mode {
-  margin-top: 5px;
-  height: 18px;
   display: flex;
-  width: 100%;
-  justify-content: flex-end;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 18px;
 }
 .msf-dashboard-assistant-interval-mode .msf-dashboard-assistant-chart-type-label {
   font-size: 11px !important;
@@ -14973,18 +14972,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .msf-dashboard-assistant-interval-mode .mat-radio-group {
   font-size: 11px;
   display: flex;
-  flex-direction: column;
 }
 .msf-dashboard-assistant-interval-mode .mat-radio-group .mat-radio-container {
+  margin-top: -1px;
   width: 15px !important;
   height: 15px !important;
 }
 .msf-dashboard-assistant-interval-mode .mat-radio-group .mat-radio-container .mat-radio-outer-circle, .msf-dashboard-assistant-interval-mode .mat-radio-group .mat-radio-container .mat-radio-inner-circle {
   width: 15px !important;
   height: 15px !important;
-}
-.msf-dashboard-assistant-interval-mode .mat-radio-group .second-option {
-  margin-top: 10px;
 }
 
 .msf-dashboard-assistant-chart-config-buttons {
@@ -15026,11 +15022,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   padding: 10px;
   margin-left: 145px;
 }
-.msf-dashboard-assistant-chart-config-buttons .msf-dashboard-assistant-chart-preview-button {
+
+.msf-dashboard-assistant-chart-preview-button {
   display: flex;
-  margin: 20px 7px;
-  width: 140px;
-  height: 14px;
+  width: 110px;
+  margin-top: 5px;
+  font-size: 10px;
+  height: 13px;
   padding: 10px;
   font-weight: 550;
   border-width: 1px;
@@ -15040,7 +15038,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   justify-content: center;
   cursor: pointer;
 }
-.msf-dashboard-assistant-chart-config-buttons .msf-dashboard-assistant-chart-preview-button .msf-dashboard-assistant-chart-preview-pic {
+.msf-dashboard-assistant-chart-preview-button .msf-dashboard-assistant-chart-preview-pic {
   width: 20px;
   height: 20px;
   margin-top: -3px;
@@ -15107,9 +15105,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   margin-top: 0px !important;
 }
 
+.msf-dashboard-function-selector {
+  margin-top: -10px;
+  display: flex;
+  text-align: left;
+}
+
 .msf-dashboard-select-distribution-chart-table-container {
   margin-left: -10px;
-  height: calc(100% - 51px);
+  height: calc(100% - 71px);
   width: calc(100% + 20px);
 }
 .msf-dashboard-select-distribution-chart-table-container .msf-dashboard-select-distribution-chart-table {
@@ -15247,7 +15251,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   font-size: 20px;
   height: 100px;
   align-items: center;
-  width: 100%;
+  width: 176px;
   font-weight: 550;
   text-align: left;
 }
@@ -17228,8 +17232,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .chart-preview-buttons {
-  top: 12px !important;
-  right: 42px !important;
+  right: 12px !important;
+  bottom: 8px !important;
 }
 
 .datalake-userInfo-input {
