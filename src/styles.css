@@ -1188,6 +1188,9 @@
 .dark-theme .flat-button {
   background-color: #01abec !important;
 }
+.dark-theme .flat-button:hover {
+  background-color: #01abec !important;
+}
 .dark-theme .msf-dashboard-assistant-edit-button .mat-button {
   color: #ffffff;
   background-color: #01abec !important;
@@ -4677,6 +4680,9 @@
   color: #01abec;
 }
 .light-theme .flat-button {
+  background-color: #00263E !important;
+}
+.light-theme .flat-button:hover {
   background-color: #01abec !important;
 }
 .light-theme .msf-dashboard-assistant-edit-button .mat-button {

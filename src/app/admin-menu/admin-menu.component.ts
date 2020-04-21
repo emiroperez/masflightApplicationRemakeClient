@@ -492,10 +492,9 @@ export class EditCategoryArgumentDialog {
                 argExists = true;
                 break;
               }
-
-              if (!argExists)
-                argument.filters.splice (i, 1);
             }
+            if (!argExists)
+              argument.filters.splice (i, 1);
           }
         }
         // if (this.isSortingCheckboxes (argument))
