@@ -321,7 +321,7 @@
                                 <ng-container *ngFor="let checkbox of argument.checkboxes">
                                   <div class="msf-single-checkbox-outer-container">
                                     <div class="msf-component-argument-container">
-                                      <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
+                                      <app-msf-single-checkbox [argument]="checkbox" [isDashboardPanel]="true" (startURLUpdate)="startURLUpdate()"></app-msf-single-checkbox>
                                     </div>
                                   </div>
                                 </ng-container>

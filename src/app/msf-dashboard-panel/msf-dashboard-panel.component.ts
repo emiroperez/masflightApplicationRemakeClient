@@ -4068,6 +4068,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.limitMode = values.limitMode;
     this.values.limitAmount = values.limitAmount;
     this.values.ordered = values.ordered;
+
+    this.values.paletteColors = JSON.parse (JSON.stringify (values.paletteColors));
   }
 
   goToResults(): void

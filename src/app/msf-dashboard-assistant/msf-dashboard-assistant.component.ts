@@ -1303,6 +1303,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     }
 
     _this.values.currentOptionCategories = optionCategories;
+    _this.configureControlVariables ();
 
     _this.stepLoading = 0;
     _this.changeDetectorRef.detectChanges ();
