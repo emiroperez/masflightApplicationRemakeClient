@@ -378,24 +378,40 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
     }
 
+
     this.values.formVariables = [];
 
-    for (let i = 0; i < this.data.values.formVariables.length; i++)
+    if (this.values.chartColumnOptions != null)
     {
-      let formVariable = this.data.values.formVariables[i];
-      let filteredVariables = new ReplaySubject<any[]> (1);
+      for (let i = 0; i < this.data.values.formVariables.length; i++)
+      {
+        let formVariable = this.data.values.formVariables[i];
+        let filteredVariables = new ReplaySubject<any[]>(1);
+        let column = this.values.chartColumnOptions[0];
 
-      filteredVariables.next (this.values.chartColumnOptions.slice ());
+        filteredVariables.next (this.values.chartColumnOptions.slice ());
 
-      this.values.formVariables.push ({
-        value: this.values.lastestResponse[i].value,
-        column: formVariable.column,
-        fontSize: this.fontSizes[formVariable.fontSize],
-        valueFontSize: this.fontSizes[formVariable.valueFontSize],
-        valueOrientation: this.orientations[formVariable.valueOrientation],
-        function: this.functions[formVariable.function],
-        filteredVariables: filteredVariables
-      });
+        for (let j = 0; j < this.values.chartColumnOptions.length; j++)
+        {
+          let item = this.values.chartColumnOptions[j];
+
+          if (formVariable.column.id === item.id)
+          {
+            column = item;
+            break;
+          }
+        }
+
+        this.values.formVariables.push ({
+          value: this.data.values.lastestResponse[i].value,
+          column: column,
+          fontSize: formVariable.fontSize,
+          valueFontSize: formVariable.valueFontSize,
+          valueOrientation: formVariable.valueOrientation,
+          function: formVariable.function,
+          filteredVariables: filteredVariables
+        });
+      }
     }
 
     if (this.values.thresholds && this.values.thresholds.length)
