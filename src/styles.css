@@ -258,6 +258,11 @@
   color: #c7dcf1;
 }
 .dark-theme .msf-dashboard-button .msf-dashboard-button-close-icon:hover {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   color: #01abec;
   cursor: pointer;
   font-size: 16px;
@@ -277,11 +282,16 @@
 .dark-theme .msf-dashboard-column-properties-align {
   color: #ffffff;
 }
-.dark-theme .msf-dashboard-panel-container {
+.dark-theme .msf-dashboard-panel-container, .dark-theme .msf-dashboard-arguments-container {
   background-color: #3b3b3b;
   color: #ffffff;
 }
 .dark-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   color: #ffffff;
 }
 .dark-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
@@ -605,6 +615,16 @@
   background-position: center;
   background-size: 50%;
 }
+.dark-theme .msf-dashboard-panel-step-loading {
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: #1f1f1f;
+  background-image: url(assets/images/dark-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(50%, 250px);
+}
 .dark-theme .msf-dashboard-panel-loading {
   border: 1px solid #1f1f1f;
   z-index: 1000;
@@ -704,10 +724,6 @@
 .dark-theme #msf-dashboard-drill-down-container, .dark-theme .msf-dashboard-drill-down-container-withoutBtn {
   color: #ffffff;
 }
-.dark-theme .msf-dashboard-color-picker-threshold-container {
-  background-color: #222222;
-  border-color: #595959;
-}
 .dark-theme .msf-dashboard-color-picker-container {
   color: #ffffff;
 }
@@ -737,7 +753,7 @@
   color: #ffffff !important;
   font-size: 12px !important;
 }
-.dark-theme .msf-dashboard-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .dark-theme .msf-dashboard-field-function .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .dark-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-width-90 .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-width-80 .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .dark-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-var-content .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-var-content .msf-full-width .mat-form-field-underline {
+.dark-theme .msf-dashboard-form-field .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .dark-theme .msf-dashboard-field-function .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .dark-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .dark-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-width-90 .mat-form-field-underline, .dark-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .dark-theme .msf-width-80 .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .dark-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-var-content .dark-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-arguments-container .msf-dashboard-panel-sub-container-column .dark-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-arguments-container .msf-var-content .dark-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-var-content .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-arguments-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-arguments-container .msf-var-content .msf-full-width .mat-form-field-underline {
   background-color: #595959;
 }
 .dark-theme #msf-dashboard-form-display-title {
@@ -1954,11 +1970,11 @@
 }
 .dark-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item .chart-item-image {
   border-style: solid;
-  border-color: #282828;
-  background-color: #282828;
+  border-color: #1e1e1e;
+  background-color: #1e1e1e;
 }
 .dark-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item .chart-item-label {
-  background-color: #282828;
+  background-color: #1e1e1e;
 }
 .dark-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item:hover .chart-item-image {
   border-style: solid;
@@ -1970,7 +1986,7 @@
 .dark-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected .chart-item-image {
   border-style: solid;
   border-color: #01abec;
-  background-color: #282828;
+  background-color: #1e1e1e;
 }
 .dark-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected .chart-item-label {
   background-color: #01abec;
@@ -2110,7 +2126,7 @@
   color: #01abec;
 }
 .dark-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode {
-  border-color: #ffffff;
+  border-color: #3b3b3b;
 }
 .dark-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode .mat-radio-outer-circle {
   border-color: #ffffff;
@@ -3372,6 +3388,109 @@
 .dark-theme .publicize-dashboard-container {
   color: #ffffff;
 }
+.dark-theme .msf-dashboard-panel-steps {
+  background-color: #282828;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector, .dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled {
+  border-bottom: 2px solid #333333;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle, .dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle {
+  background-color: #333333;
+  border: 3px solid #3d3d3d;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle-selected, .dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle-selected {
+  background-color: #01abec;
+  border: 3px solid #ffffff;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle-selected .mat-icon, .dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle-selected .mat-icon {
+  color: #000000 !important;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector:hover {
+  background-color: #01abec;
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector:hover .msf-dashboard-panel-step-circle {
+  background-color: #01abec;
+  border: 3px solid #ffffff;
+}
+.dark-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector:hover .msf-dashboard-panel-step-circle .mat-icon {
+  color: #000000 !important;
+}
+.dark-theme .msf-dashboard-panel-step-item {
+  background-color: #282828;
+}
+.dark-theme .msf-dashboard-panel-step-item .mat-form-field-label {
+  color: #ffffff;
+}
+.dark-theme .msf-dashboard-panel-step-item .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #3b3b3b;
+}
+.dark-theme .msf-dashboard-panel-step-item .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #3b3b3b !important;
+}
+.dark-theme .msf-dashboard-panel-dyn-table-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.dark-theme .msf-dashboard-panel-dyn-table-item .dynamic-table-config-values-container {
+  display: grid;
+  grid-row-gap: 20px;
+}
+.dark-theme .msf-dashboard-panel-dyn-table-item .dynamic-table-config-values-container .dynamic-table-config-value {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.1), 0 8px 10px 1px rgba(0, 0, 0, 0.07), 0 3px 14px 2px rgba(0, 0, 0, 0.06) !important;
+}
+.dark-theme .msf-dashboard-panel-dyn-table-item .dynamic-table-config-values-container .dynamic-table-config-value .value-label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.dark-theme .msf-dashboard-panel-button-separator {
+  background-color: #333333;
+}
+.dark-theme .dynamic-table-config-value {
+  background-color: #333333;
+}
+.dark-theme .msf-dashboard-addmenu-icon-item {
+  color: #ffffff !important;
+}
+.dark-theme .content-panel-img {
+  border-color: #3b3b3b;
+}
+.dark-theme .no-image {
+  background-color: #01abec;
+}
+.dark-theme .goals-thresholds-tab, .dark-theme .limit-results-tab, .dark-theme .color-picker-tab, .dark-theme .axis-names-tab {
+  background-color: #222222;
+}
+.dark-theme .msf-dashboard-color-picker-threshold-input, .dark-theme .msf-dashboard-color-picker-threshold-item, .dark-theme .msf-dashboard-color-picker-goal-item {
+  border-bottom: 1px solid #3b3b3b;
+}
+.dark-theme .msf-dashboard-color-picker-grid-layout .msf-dashboard-color-picker-selector-container, .dark-theme .msf-dashboard-color-picker-layout .msf-dashboard-color-picker-selector-container {
+  background-color: #3b3b3b;
+}
+.dark-theme .datasource-selected {
+  color: #01abec;
+}
+.dark-theme .info-image {
+  background-image: url(assets/images/info.png);
+}
+.dark-theme .info-image:hover {
+  background-image: url(assets/images/info-hover.png) !important;
+}
+.dark-theme .info-image-open {
+  background-image: url(assets/images/info-hover.png);
+}
+.dark-theme .info-arrow {
+  background-image: url(assets/images/info-arrow.png);
+}
+.dark-theme .menu-category-description {
+  border: 1px solid #01abec;
+}
 
 .dark-theme.partial-summaries-item {
   border-bottom: 1px solid #3d3d3d;
@@ -3630,6 +3749,11 @@
   color: #00263e;
 }
 .light-theme .msf-dashboard-button .msf-dashboard-button-close-icon:hover {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   color: #01abec;
   cursor: pointer;
   font-size: 16px;
@@ -3649,11 +3773,16 @@
 .light-theme .msf-dashboard-column-properties-align {
   color: #4d4d4d;
 }
-.light-theme .msf-dashboard-panel-container {
+.light-theme .msf-dashboard-panel-container, .light-theme .msf-dashboard-arguments-container {
   background-color: #e6e6e6;
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-panel-button .msf-dashboard-button-close-icon:hover {
@@ -3977,6 +4106,16 @@
   background-position: center;
   background-size: 50%;
 }
+.light-theme .msf-dashboard-panel-step-loading {
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  background-image: url(assets/images/light-theme-loading_pulse.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: min(50%, 250px);
+}
 .light-theme .msf-dashboard-panel-loading {
   border: 1px solid #ffffff;
   z-index: 1000;
@@ -4076,10 +4215,6 @@
 .light-theme #msf-dashboard-drill-down-container, .light-theme .msf-dashboard-drill-down-container-withoutBtn {
   color: #4d4d4d;
 }
-.light-theme .msf-dashboard-color-picker-threshold-container {
-  background-color: #e6e6e6;
-  border-color: #bdbdbd;
-}
 .light-theme .msf-dashboard-color-picker-container {
   color: #4d4d4d;
 }
@@ -4109,7 +4244,7 @@
   color: #4d4d4d !important;
   font-size: 12px !important;
 }
-.light-theme .msf-dashboard-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-function .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-90 .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-80 .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .light-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-var-content .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-var-content .msf-full-width .mat-form-field-underline {
+.light-theme .msf-dashboard-form-field .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-function .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-function .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .msf-dashboard-field-valuectrl .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-dashboard-chart-op-container-row .light-theme .msf-dashboard-field-valuectrl .mat-form-field-underline, .light-theme .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .msf-full-width .mat-form-field-underline, .msf-dashboard-chart-selector .msf-dashboard-chart-op-container .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-90 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-90 .mat-form-field-underline, .light-theme .msf-dashboard-panel-sub-container-row .msf-width-80 .mat-form-field-underline, .msf-dashboard-panel-sub-container-row .light-theme .msf-width-80 .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .light-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-panel-container .msf-var-content .light-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-arguments-container .msf-dashboard-panel-sub-container-column .light-theme .msf-full-width .mat-form-field-underline, .dark-theme .msf-dashboard-arguments-container .msf-var-content .light-theme .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-panel-container .msf-var-content .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-arguments-container .msf-dashboard-panel-sub-container-column .msf-full-width .mat-form-field-underline, .light-theme .msf-dashboard-arguments-container .msf-var-content .msf-full-width .mat-form-field-underline {
   background-color: #9e9e9e;
 }
 .light-theme #msf-dashboard-form-display-title {
@@ -5326,11 +5461,11 @@
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item .chart-item-image {
   border-style: solid;
-  border-color: #f0f0f0;
-  background-color: #f0f0f0;
+  border-color: #ffffff;
+  background-color: #ffffff;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item .chart-item-label {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item:hover .chart-item-image {
   border-style: solid;
@@ -5342,7 +5477,7 @@
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected .chart-item-image {
   border-style: solid;
   border-color: #01abec;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
 }
 .light-theme .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected .chart-item-label {
   background-color: #01abec;
@@ -5482,7 +5617,7 @@
   color: #01abec;
 }
 .light-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode {
-  border-color: #4d4d4d;
+  border-color: #e6e6e6;
 }
 .light-theme .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode .mat-radio-outer-circle {
   border-color: #4d4d4d;
@@ -6743,6 +6878,109 @@
 }
 .light-theme .publicize-dashboard-container {
   color: #4d4d4d;
+}
+.light-theme .msf-dashboard-panel-steps {
+  background-color: #f0f0f0;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector, .light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled {
+  border-bottom: 2px solid #ffffff;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle, .light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle {
+  background-color: #ffffff;
+  border: 3px solid #e6e6e6;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle-selected, .light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle-selected {
+  background-color: #01abec;
+  border: 3px solid #ffffff;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle-selected .mat-icon, .light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle-selected .mat-icon {
+  color: #ffffff !important;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector:hover {
+  background-color: #01abec;
+  color: #ffffff;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector:hover .msf-dashboard-panel-step-circle {
+  background-color: #01abec;
+  border: 3px solid #ffffff;
+}
+.light-theme .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector:hover .msf-dashboard-panel-step-circle .mat-icon {
+  color: #ffffff !important;
+}
+.light-theme .msf-dashboard-panel-step-item {
+  background-color: #f0f0f0;
+}
+.light-theme .msf-dashboard-panel-step-item .mat-form-field-label {
+  color: #4d4d4d;
+}
+.light-theme .msf-dashboard-panel-step-item .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #e6e6e6;
+}
+.light-theme .msf-dashboard-panel-step-item .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #e6e6e6 !important;
+}
+.light-theme .msf-dashboard-panel-dyn-table-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.light-theme .msf-dashboard-panel-dyn-table-item .dynamic-table-config-values-container {
+  display: grid;
+  grid-row-gap: 20px;
+}
+.light-theme .msf-dashboard-panel-dyn-table-item .dynamic-table-config-values-container .dynamic-table-config-value {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.1), 0 8px 10px 1px rgba(0, 0, 0, 0.07), 0 3px 14px 2px rgba(0, 0, 0, 0.06) !important;
+}
+.light-theme .msf-dashboard-panel-dyn-table-item .dynamic-table-config-values-container .dynamic-table-config-value .value-label {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.light-theme .msf-dashboard-panel-button-separator {
+  background-color: #ffffff;
+}
+.light-theme .dynamic-table-config-value {
+  background-color: #ffffff;
+}
+.light-theme .msf-dashboard-addmenu-icon-item {
+  color: #4d4d4d !important;
+}
+.light-theme .content-panel-img {
+  border-color: #e6e6e6;
+}
+.light-theme .no-image {
+  background-color: #01abec;
+}
+.light-theme .goals-thresholds-tab, .light-theme .limit-results-tab, .light-theme .color-picker-tab, .light-theme .axis-names-tab {
+  background-color: #e6e6e6;
+}
+.light-theme .msf-dashboard-color-picker-threshold-input, .light-theme .msf-dashboard-color-picker-threshold-item, .light-theme .msf-dashboard-color-picker-goal-item {
+  border-bottom: 1px solid #e6e6e6;
+}
+.light-theme .msf-dashboard-color-picker-grid-layout .msf-dashboard-color-picker-selector-container, .light-theme .msf-dashboard-color-picker-layout .msf-dashboard-color-picker-selector-container {
+  background-color: #e6e6e6;
+}
+.light-theme .datasource-selected {
+  color: #01abec;
+}
+.light-theme .info-image {
+  background-image: url(assets/images/info.png);
+}
+.light-theme .info-image:hover {
+  background-image: url(assets/images/info-hover.png) !important;
+}
+.light-theme .info-image-open {
+  background-image: url(assets/images/info-hover.png);
+}
+.light-theme .info-arrow {
+  background-image: url(assets/images/info-arrow.png);
+}
+.light-theme .menu-category-description {
+  border: 1px solid #01abec;
 }
 
 .light-theme.partial-summaries-item {
@@ -9089,6 +9327,7 @@ mat-tab-group {
 }
 .msf-dashboard-container .msf-dashboard-header {
   display: flex;
+  position: relative;
 }
 .msf-dashboard-container .msf-dashboard-header .msf-dashboard-title {
   padding-top: 20px;
@@ -9257,7 +9496,7 @@ mat-tab-group {
   right: 0;
 }
 .msf-dashboard-panel-button .msf-dashboard-button-close-icon {
-  z-index: 2;
+  z-index: 1;
   color: inherit;
   cursor: default;
   font-size: 16px;
@@ -9265,7 +9504,7 @@ mat-tab-group {
   padding-top: 12px;
 }
 .msf-dashboard-panel-button .msf-dashboard-button-move-icon {
-  z-index: 2;
+  z-index: 1;
   background-repeat: no-repeat;
   width: 12px;
   height: 12px;
@@ -9297,6 +9536,15 @@ mat-tab-group {
 
 .msf-dashboard-panel-small .flat-button {
   margin: auto;
+}
+
+.msf-dashboard-addmenu-icon-item {
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+}
+.msf-dashboard-addmenu-icon-item .msf-dashboard-panel-item-text {
+  vertical-align: middle;
 }
 
 .msf-dashboard-panel-container {
@@ -9339,13 +9587,6 @@ mat-tab-group {
   text-overflow: ellipsis;
   font-size: 11px;
   text-align: left;
-}
-.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item {
-  align-items: center;
-  padding-bottom: 5px;
-}
-.msf-dashboard-panel-container .msf-dashboard-panel-sub-container-column .msf-dashboard-addmenu-icon-item .msf-dashboard-panel-item-text {
-  vertical-align: middle;
 }
 .msf-dashboard-panel-container .dynamic-table-config-label {
   vertical-align: super;
@@ -9594,6 +9835,11 @@ mat-tab-group {
   width: calc(100% - 207px) !important;
 }
 .msf-dashboard-panel-container-chart .msf-dashboard-panel-title .msf-dashboard-panel-results-button {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   width: 20px;
   font-size: 12px;
   text-align: center;
@@ -9631,6 +9877,9 @@ mat-tab-group {
   padding-top: initial;
   font-size: 12px;
   height: calc(100% - 35px);
+}
+.msf-dashboard-panel-container-chart .msf-dashboard-panel-sub-container-column .content-image {
+  margin-top: -7px !important;
 }
 
 .msf-dashboard-panel-pic-button {
@@ -9694,12 +9943,24 @@ mat-tab-group {
   overflow: hidden;
 }
 
-.msf-dashboard-panel-dialog .mat-dialog-container {
+.msf-dashboard-value-selector-dialog .mat-dialog-container {
+  min-height: 441px;
+  max-height: 441px;
   padding: 0px;
   overflow: hidden;
 }
+.msf-dashboard-value-selector-dialog .mat-dialog-container .msf-dashboard-arguments-container {
+  height: 416px !important;
+}
+
+.msf-dashboard-panel-dialog .mat-dialog-container {
+  padding: 0px;
+  overflow: hidden;
+  border-radius: 10px !important;
+}
 .msf-dashboard-panel-dialog .mat-dialog-container .msf-dashboard-panel-container {
-  height: 375px !important;
+  height: 575px !important;
+  font-size: 14px;
 }
 
 .msf-dashboard-child-panel-dialog .mat-dialog-container {
@@ -10046,16 +10307,30 @@ mat-tab-group {
   text-align: center;
 }
 
-.msf-dashboard-color-picker-grid-layout {
+.msf-dashboard-color-picker-grid-layout-container {
+  display: flex;
+  justify-content: center;
+}
+
+.msf-dashboard-color-picker-grid-layout, .msf-dashboard-color-picker-layout {
   display: grid;
-  grid-auto-flow: column;
-  grid-template: repeat(7, 1fr)/repeat(2, 1fr);
-  padding-top: 10px;
+  grid-template-columns: repeat(auto-fill, 210px);
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  padding: 10px;
+  width: 100%;
+}
+.msf-dashboard-color-picker-grid-layout .msf-dashboard-color-picker-selector-label, .msf-dashboard-color-picker-layout .msf-dashboard-color-picker-selector-label {
+  text-align: end !important;
+  margin-left: 0 !important;
+  margin-right: 10px !important;
+}
+.msf-dashboard-color-picker-grid-layout .msf-dashboard-color-picker-selector-container, .msf-dashboard-color-picker-layout .msf-dashboard-color-picker-selector-container {
   padding-bottom: 10px;
+  border-radius: 5px;
 }
 
 .msf-dashboard-color-picker-layout {
-  margin-left: 100px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -10073,14 +10348,17 @@ mat-tab-group {
 }
 .msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-color-label {
   margin-left: 20px;
+  margin-right: 5px;
   text-align: right;
 }
 .msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector {
   cursor: default;
   border-style: none;
   border-radius: 4px;
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 25px;
+  margin-left: 7px;
+  margin-right: -10px;
   color: transparent;
   caret-color: transparent;
 }
@@ -10088,67 +10366,93 @@ mat-tab-group {
   cursor: pointer;
   border-style: none;
   border-radius: 4px;
-  width: 20px;
-  height: 20px;
+  width: 50px;
+  height: 25px;
+  margin-left: 7px;
+  margin-right: -10px;
   color: transparent;
   caret-color: transparent;
 }
 
 .msf-dashboard-color-picker-threshold-input {
-  padding-top: 5px;
+  display: flex;
+  height: 45px;
+  align-items: center;
+}
+.msf-dashboard-color-picker-threshold-input .goal-thresholds-label {
+  display: flex;
+  align-items: center;
+  width: 100px;
+  padding-left: 15px;
+  font-weight: 550;
+}
+.msf-dashboard-color-picker-threshold-input .goal-thresholds-label .mat-icon {
+  margin-right: 10px;
+}
+.msf-dashboard-color-picker-threshold-input .goal-thresholds-buttons {
+  width: 100%;
+  text-align: end;
 }
 
-.msf-dashboard-color-picker-new-threshold-container {
-  height: 300px !important;
+.goals-thresholds-tab {
+  height: 100%;
 }
 
 .msf-dashboard-color-picker-threshold-container {
   overflow-y: auto;
-  height: 101px;
-  padding-top: 5px;
-  border-style: solid;
-  border-width: 1px;
+  height: calc(100% - 46px);
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-.msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item {
-  padding: 10px !important;
-  width: calc(100% - 20px) !important;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item {
   display: flex;
   flex-direction: row;
   width: calc(100% - 10px);
   padding: 5px;
+  padding-top: 10px;
   margin-top: -8px;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-30-min, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-30-min {
-  width: 30%;
+  margin-top: 7px;
+  width: 30% !important;
   padding-right: 10px;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-30-max, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-30-max {
-  width: 30%;
+  margin-top: 7px;
+  width: 30% !important;
 }
-.msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-30-column, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-30-column {
-  width: 30%;
+.msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-40-column, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-40-column {
+  margin-top: 7px;
+  width: 40% !important;
   padding-right: 10px;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-15-min, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-15-min {
-  width: 15%;
+  margin-top: 7px;
+  width: 15% !important;
   padding-right: 10px;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-15-max, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-15-max {
-  width: 15%;
+  margin-top: 7px;
+  width: 15% !important;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-45, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-45 {
-  width: 45%;
+  margin-top: 7px;
+  width: 45% !important;
   padding-right: 10px;
 }
-.msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-dashboard-color-picker-selector-new-container, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-dashboard-color-picker-selector-new-container {
-  width: 40%;
+.msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-width-60, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-width-60 {
+  margin-top: 7px;
+  width: 60% !important;
+  padding-right: 10px;
+}
+.msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .mat-form-field-wrapper, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-dashboard-color-picker-selector-container, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-dashboard-color-picker-selector-container {
+  justify-content: center;
+  margin-top: 7px;
+  width: 25%;
   padding-top: 0px;
 }
 .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-threshold-item .msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector-label, .msf-dashboard-color-picker-threshold-container .msf-dashboard-color-picker-goal-item .msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector-label {
@@ -10509,11 +10813,12 @@ mat-tab-group {
 }
 
 .msf-dashboard-assistant-edit-tab-group {
-  height: 100% !important;
+  margin: -10px !important;
+  height: calc(100% + 20px) !important;
 }
 .msf-dashboard-assistant-edit-tab-group .msf-dashboard-assistant-edit-tab-container {
   width: 100%;
-  height: 100% !important;
+  height: calc(100% - 25px) !important;
   padding: 0 !important;
   overflow-x: auto;
   overflow-y: auto;
@@ -10541,8 +10846,22 @@ mat-tab-group {
   flex-direction: row;
   padding: 0 13px;
 }
+.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-container .msf-component-radio, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-container .msf-component-radio {
+  width: 247px !important;
+}
 .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector {
   margin-top: 10px !important;
+}
+.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector .mat-radio-group, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector .mat-radio-group {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector .mat-radio-group .msf-radio, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector .mat-radio-group .msf-radio {
+  padding-left: 0px !important;
+  margin-top: 10px !important;
+}
+.msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector .center, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-date-range-selector .center {
+  text-align: left !important;
 }
 .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-outer-container, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-outer-container {
   display: flex;
@@ -10569,6 +10888,7 @@ mat-tab-group {
   background: inherit !important;
   font-weight: bold;
   text-align: left;
+  height: 11px;
 }
 .msf-dashboard-control-panel-tabs-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-checkbox-title, .msf-dashboard-assistant-tab-container .msf-dashboard-control-panel-variable-tab-container .msf-dashboard-control-panel-variable-arguments .msf-dashboard-control-panel-variable-argument .msf-component-checkbox-title {
   margin-bottom: 0 !important;
@@ -14536,9 +14856,6 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   width: 15px;
   height: 15px;
 }
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-header .msf-dashboard-assistant-buttons .msf-dashboard-assistant-next-button {
-  margin-left: 7px;
-}
 .msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-header .close-button {
   cursor: pointer;
   position: absolute;
@@ -14580,31 +14897,50 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   flex-direction: column;
   font-weight: 500;
 }
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content {
+
+.msf-dashboard-assistant-argument-scroll {
+  overflow-y: auto;
+  font-size: 11px !important;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  height: 100%;
 }
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content .msf-dashboard-assistant-tab-group {
-  height: 143px;
-  margin-top: -3px;
+
+.msf-dashboard-assistant-argument-value {
+  font-weight: 550;
+  margin-left: 5px;
 }
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content .msf-dashboard-assistant-tab-group .mat-tab-header, .msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content .msf-dashboard-assistant-tab-group .mat-tab-label-container {
-  width: 100%;
+
+.msf-dashboard-assistant-content {
+  display: flex;
+  flex-direction: column;
+  margin: -10px;
+  height: calc(100% + 20px);
 }
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content .msf-dashboard-assistant-tab-group .mat-tab-label {
-  opacity: 1 !important;
-  background-color: inherit;
-}
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content .msf-dashboard-assistant-tab-group .mat-tab-labels {
-  background-color: inherit;
-}
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-content .msf-dashboard-assistant-table {
+.msf-dashboard-assistant-content .msf-dashboard-assistant-table {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-.msf-dashboard-assistant-dialog .mat-dialog-container .msf-dashboard-assistant-body .msf-dashboard-assistant-argument-value {
-  font-weight: 550;
+
+.msf-dashboard-assistant-tab-group {
+  display: flex;
+  height: 143px;
+}
+.msf-dashboard-assistant-tab-group .mat-tab-group {
+  width: 100%;
+  text-align: left;
+}
+.msf-dashboard-assistant-tab-group .mat-tab-header, .msf-dashboard-assistant-tab-group .mat-tab-label-container {
+  width: 100%;
+}
+.msf-dashboard-assistant-tab-group .mat-tab-label {
+  opacity: 1 !important;
+  background-color: inherit;
+}
+.msf-dashboard-assistant-tab-group .mat-tab-labels {
+  background-color: inherit;
 }
 
 .msf-dashboard-assistant-step1-right {
@@ -14615,30 +14951,46 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   height: calc(100% + 5px);
 }
 
-.msf-dashboard-assistant-chart-type-label {
-  font-weight: 550;
-  font-size: 14px;
-  margin-left: 10px;
-}
-
 .msf-dashboard-assistant-min-value-at-zero {
-  margin-left: 365px;
-  margin-top: -1px;
-  height: 18px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.msf-dashboard-assistant-min-value-at-zero .cancels-checkbox {
+  font-size: 11px;
 }
 
 .msf-dashboard-assistant-interval-mode {
-  margin-left: 295px;
-  margin-top: -1px;
+  margin-top: 5px;
   height: 18px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+.msf-dashboard-assistant-interval-mode .msf-dashboard-assistant-chart-type-label {
+  font-size: 11px !important;
 }
 .msf-dashboard-assistant-interval-mode .mat-radio-group {
-  font-weight: 550;
-  font-size: 14px;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+}
+.msf-dashboard-assistant-interval-mode .mat-radio-group .mat-radio-container {
+  width: 15px !important;
+  height: 15px !important;
+}
+.msf-dashboard-assistant-interval-mode .mat-radio-group .mat-radio-container .mat-radio-outer-circle, .msf-dashboard-assistant-interval-mode .mat-radio-group .mat-radio-container .mat-radio-inner-circle {
+  width: 15px !important;
+  height: 15px !important;
+}
+.msf-dashboard-assistant-interval-mode .mat-radio-group .second-option {
+  margin-top: 10px;
 }
 
 .msf-dashboard-assistant-chart-config-buttons {
   display: flex;
+  width: 100%;
+  margin-top: -15px;
 }
 .msf-dashboard-assistant-chart-config-buttons .msf-dashboard-assistant-chart-config-space {
   margin: 20px 7px;
@@ -14647,7 +14999,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 .msf-dashboard-assistant-chart-config-buttons .msf-dashboard-assistant-chart-config-button {
   margin: 20px 7px;
-  padding: 10px;
+  padding: 10px 0px;
   width: 100px;
   font-weight: 550;
   border-width: 1px;
@@ -14697,18 +15049,16 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .msf-dashboard-assistant-chart-picker {
   display: grid;
-  grid-template: repeat(2, 1fr)/repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fill, 115px);
   grid-row-gap: 20px;
-  grid-column-gap: 1px;
-  width: 730px;
   height: 100%;
+  justify-content: center;
 }
 .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item, .msf-dashboard-assistant-chart-picker .msf-dashboard-assistant-chart-item-selected {
   width: 100px;
   height: 140px;
   align-self: center;
   text-align: center;
-  margin: auto;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -14735,9 +15085,32 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   color: #ffffff;
 }
 
+.msf-dashboard-panel-chart-config-container {
+  display: flex;
+}
+.msf-dashboard-panel-chart-config-container .msf-dashboard-assistant-chart-config-button {
+  font-size: 82.5%;
+  height: 15px;
+}
+.msf-dashboard-panel-chart-config-container .msf-dashboard-assistant-min-value-at-zero {
+  margin-bottom: 5px;
+}
+.msf-dashboard-panel-chart-config-container .msf-dashboard-assistant-interval-mode {
+  margin-top: -7px !important;
+  margin-bottom: 8px !important;
+  justify-content: flex-start !important;
+}
+.msf-dashboard-panel-chart-config-container .msf-dashboard-assistant-interval-mode .mat-radio-group {
+  flex-direction: row !important;
+}
+.msf-dashboard-panel-chart-config-container .msf-dashboard-assistant-interval-mode .mat-radio-group .second-option {
+  margin-top: 0px !important;
+}
+
 .msf-dashboard-select-distribution-chart-table-container {
-  width: 730px;
-  height: calc(100% - 78px);
+  margin-left: -10px;
+  height: calc(100% - 51px);
+  width: calc(100% + 20px);
 }
 .msf-dashboard-select-distribution-chart-table-container .msf-dashboard-select-distribution-chart-table {
   height: 100%;
@@ -14849,65 +15222,63 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   height: 525px !important;
 }
 
-.msf-select-data-dialog .mat-dialog-container {
-  padding: 0;
-  overflow: hidden;
-}
-.msf-select-data-dialog .select-data-header {
-  font-size: 14px;
-  font-weight: 550;
-  padding: 15px;
-  position: relative;
-}
-.msf-select-data-dialog .select-data-header .close-button {
-  position: absolute;
-  right: 10px;
-  top: 11.5px;
-  cursor: pointer;
-}
-.msf-select-data-dialog .select-data-body {
-  height: 426px;
+.select-data-body {
+  height: calc(100% + 20px);
   display: flex;
   flex-direction: row;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
+  margin: -10px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category {
-  width: 417px;
+.select-data-body .select-data-menu-category {
+  width: 100%;
+  min-width: 400px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-header {
+.select-data-body .select-data-menu-category .menu-category-header {
+  position: relative;
   display: flex;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-header .menu-category-title {
+.select-data-body .select-data-menu-category .menu-category-header .info-container {
+  margin-left: 16px;
+  margin-right: 30px;
+}
+.select-data-body .select-data-menu-category .menu-category-header .info-container .menu-category-title {
   display: flex;
   font-size: 20px;
-  height: 130px;
+  height: 100px;
   align-items: center;
-  margin-left: 30px;
-  margin-right: 30px;
   width: 100%;
   font-weight: 550;
-  justify-content: center;
+  text-align: left;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-header .menu-category-image {
+.select-data-body .select-data-menu-category .menu-category-header .info-label {
+  position: absolute;
+  left: 80px;
+  top: 32.5px;
+}
+.select-data-body .select-data-menu-category .menu-category-header .menu-category-image {
   width: 42%;
   height: 42%;
   margin-top: 10px;
   margin-right: 10px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-description {
+.select-data-body .select-data-menu-category .menu-category-description {
+  position: absolute;
+  top: 65px;
   margin: 15px;
   margin-bottom: 0;
   text-align: justify;
   line-height: 16px;
-  height: 60px;
   font-size: 11.75px;
+  background-color: rgba(0, 0, 0, 0.875);
+  color: #ffffff;
+  padding: 10px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .menu-item-search-input {
+.select-data-body .select-data-menu-category .menu-category-search .menu-item-search-input {
   width: 95%;
   padding: 0 10px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .menu-item-search-input .search-icon {
+.select-data-body .select-data-menu-category .menu-category-search .menu-item-search-input .search-icon {
   font-size: 20px;
   width: 20px !important;
   height: 20px !important;
@@ -14915,38 +15286,35 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   right: 1px;
   top: -1px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .menu-item-search-input .mat-input-element {
+.select-data-body .select-data-menu-category .menu-category-search .menu-item-search-input .mat-input-element {
   width: calc(100% - 24px);
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .menu-items {
-  height: 157px;
-  overflow-y: auto;
+.select-data-body .select-data-menu-category .menu-category-body {
+  height: calc(100% - 231px);
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .mat-tree-node {
+.select-data-body .select-data-menu-category .menu-category-body .menu-items {
+  height: 100%;
+  overflow-y: auto;
+  text-align: left;
+}
+.select-data-body .select-data-menu-category .menu-category-body .mat-tree-node {
   position: relative;
   font-size: 12px !important;
   min-height: 32px !important;
   max-height: 32px !important;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .mat-button-ripple, .msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .mat-radio-ripple {
+.select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .mat-button-ripple, .select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .mat-radio-ripple {
   display: none !important;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .cancels-checkbox {
+.select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .cancels-checkbox {
   display: flex;
   position: absolute;
   min-height: 32px;
   max-height: 32px;
   margin-top: 2px;
 }
-.msf-select-data-dialog .select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .cancels-checkbox .mat-radio-label-content {
+.select-data-body .select-data-menu-category .menu-category-body .mat-tree-node .cancels-checkbox .mat-radio-label-content {
   margin-left: 5px;
-}
-.msf-select-data-dialog .select-data-footer {
-  display: flex;
-  flex-direction: row-reverse;
-  margin-top: 7px;
-  margin-right: 10px;
-  height: 40px;
 }
 
 .menu-item {
@@ -14979,7 +15347,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .msf-dashboard-assistant-chart-mode {
   display: flex;
-  padding-bottom: 10px;
+}
+.msf-dashboard-assistant-chart-mode .panel-type-combobox {
+  margin-top: -17px;
+  margin-left: 15px;
+  margin-bottom: -12px;
+  width: 150px !important;
 }
 .msf-dashboard-assistant-chart-mode .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: #ffffff !important;
@@ -14997,13 +15370,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   border-style: solid;
   border-width: 1px;
   border-radius: 5px;
-  width: 150px;
+  width: 100px;
 }
 .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode .mat-radio-label {
   width: 100%;
 }
 .msf-dashboard-assistant-chart-mode .msf-dashboard-assistant-mode .mat-radio-label .mat-radio-label-content {
-  padding-left: 0 !important;
   text-align: center;
   width: 100%;
 }
@@ -16923,7 +17295,9 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .msf-dashboard-assistant-chart-picker-scroll {
-  height: calc(100% - 92px);
+  height: calc(100% - 38px);
+  margin-left: -10px;
+  margin-right: -10px;
   overflow-y: auto;
 }
 
@@ -17099,6 +17473,34 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   width: 133.33333%;
 }
 
+.image-link-input {
+  height: 100% !important;
+}
+.image-link-input .image-url-container {
+  text-align: left;
+  padding: 15px;
+  padding-top: 0;
+  height: calc(100% - 80px);
+}
+.image-link-input .image-url-container .content-panel-img {
+  margin-top: 10px;
+  height: calc(100% - 20px);
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+.no-image {
+  display: flex;
+  width: 100px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  font-weight: 550;
+}
+
 .datalake-search-formfield {
   width: 100%;
   margin-left: 10px;
@@ -17127,6 +17529,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 .msf-dashboard-arguments-container {
   height: calc(100% - 25px);
   padding: 12px;
+}
+.msf-dashboard-arguments-container #msf-dashboard-panel-form-container-column {
+  height: 300px !important;
+  padding: 0 !important;
 }
 
 .arrow-theme-button .msf-category-argument-arrow-icon {
@@ -17215,13 +17621,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .no-control-variables-container {
-  margin-top: 45px;
+  margin: auto;
   text-align: center;
   width: 240px;
   padding: 20px;
   font-weight: 550;
   font-size: 14px;
-  margin-left: 230px;
 }
 
 .datalake-table-export-excel {
@@ -17266,7 +17671,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .msf-dashboard-limit-amount-input {
-  width: 95%;
+  margin-left: 5px;
 }
 
 .membership-header {
@@ -17488,6 +17893,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   height: 100%;
   width: auto;
   justify-content: center;
+  align-items: center;
   flex-direction: row;
 }
 .content-image img {
@@ -18198,86 +18604,318 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   width: 200px;
 }
 
-.dialog-url-message {
+.msf-dashboard-panel-config-name {
+  display: block !important;
+  overflow: hidden;
+  font-size: 16px !important;
+  margin-bottom: 15px;
+  width: calc(100% - 50px) !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.msf-dashboard-panel-config-gridstack {
+  display: block !important;
+}
+
+.msf-dashboard-panel-config-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 20px);
+  width: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps {
+  height: inherit;
+  width: 225px;
+  min-width: 225px;
+  margin-right: 10px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-steps-container {
+  height: calc(100% - 60px);
+  overflow-y: auto;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: not-allowed;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle {
+  opacity: 0.25;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .step-label {
+  opacity: 0.25;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector, .msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  padding-left: 10px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle, .msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector .msf-dashboard-panel-step-circle .mat-icon, .msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-selector-disabled .msf-dashboard-panel-step-circle .mat-icon {
+  vertical-align: middle !important;
+  font-size: 15px !important;
+  width: 15px !important;
+  height: 15px !important;
+  margin-left: 2px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container {
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  width: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-generate-button, .msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-cancel-button {
+  display: flex;
+  flex-direction: column;
+  height: 60px;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  font-weight: 500;
+  border-radius: 0 !important;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-generate-button.flat-button-disabled {
+  cursor: not-allowed !important;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-generate-button {
+  width: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-generate-button2, .msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-cancel-button {
+  width: calc(50% - 1px);
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-steps .msf-dashboard-panel-step-button-container .msf-dashboard-panel-button-separator {
+  height: 60px;
+  width: 2px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content {
+  width: calc(100% - 235px);
+  height: inherit;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-item, .msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-loading {
+  padding: 10px;
+  height: calc(100% - 20px);
+  width: calc(100% - 20px);
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-item .msf-dashboard-assistant-chart-mode, .msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-loading .msf-dashboard-assistant-chart-mode {
   margin-top: 10px;
 }
-
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn {
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-item .table-config-label, .msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-loading .table-config-label {
+  margin-top: 10px;
+  margin-bottom: -10px;
+  align-self: baseline;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-item .table-column-list, .msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-loading .table-column-list {
+  margin-top: 15px;
+  margin-bottom: 0px !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-info-step {
   display: flex;
-  flex-direction: row-reverse;
-  padding-right: 10px;
-  margin-top: 9px;
-}
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .mat-flat-button {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .mat-flat-button .mat-button-wrapper {
-  font-size: 12px;
-}
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .msf-dashboard-panel-control-variable-button {
-  display: flex;
-  width: 40px;
-  flex-direction: column;
-}
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .msf-dashboard-panel-control-variable-button .mat-mini-fab {
-  width: 35px;
-  height: 35px;
-  margin-top: 2px;
-}
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .msf-dashboard-panel-control-variable-button .mat-mini-fab .mat-button-wrapper {
-  line-height: 20px;
-}
-.msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .msf-dashboard-panel-control-variable-button .mat-mini-fab .mat-button-wrapper img, .msf-dashboard-panel-sub-container-column-reverse-drillDownBtn .msf-dashboard-panel-control-variable-button .mat-mini-fab .mat-button-wrapper .mat-icon {
-  width: 21px;
-  height: 21px;
-  font-size: 21px;
-  margin-top: -1px;
-}
-
-.msf-dashboard-panel-container-drillDown {
-  overflow-y: auto;
-  overflow-x: hidden;
-  border-radius: 0px;
-}
-
-#msf-dashboard-drill-down-container-withoutBtn {
-  height: calc(100% - 100px);
-  background-color: inherit;
-  padding: inherit;
-}
-
-.msf-dashboard-panel-sub-container-column-drillDown {
-  width: calc(100% - 5px) !important;
-}
-
-.msf-dashboard-childPanel-drilldown {
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
-.msf-dashboard-childPanel-drilldown .msf-dashboard-title-label-description {
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-simple-form-step {
+  flex-direction: column;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-simple-form-step #msf-dashboard-panel-form-sub-container {
   margin-top: 5px !important;
+  margin-bottom: 10px;
 }
-
-.msf-dashboard-control-variables-title-childPanel {
-  padding-bottom: 0px !important;
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-simple-form-step #msf-dashboard-panel-form-container-column-empty, .msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-simple-form-step #msf-dashboard-panel-form-container-column {
+  height: 100% !important;
+  margin-bottom: 0 !important;
 }
-
-.panel-with-desc {
-  height: calc(100% - 130px) !important;
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-edit {
+  height: calc(100% + 20px) !important;
 }
-
-.panel-without-desc {
-  height: 82% !important;
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-buttons {
+  display: flex !important;
+  height: 50px !important;
+  padding: 20px 20px 0px 20px !important;
 }
-
-.simple-form-results-container {
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-buttons .edit-label {
+  display: flex;
+  width: calc(100% - 100px);
+  font-size: 14px;
+  font-weight: 500;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-buttons .edit-label .mat-icon {
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-buttons .edit-label .edit-text {
+  margin-top: 10px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-buttons .msf-dashboard-assistant-step-button {
+  width: 100px;
+  height: 40px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-panel-step-variables-buttons .msf-dashboard-assistant-paste-button {
+  width: 200px !important;
+  margin-right: 10px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-assistant-cancel-button {
+  margin-left: 7px;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step .panel-description-input {
+  height: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step .panel-description-input .mat-form-field {
+  height: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step .panel-description-input .mat-form-field .mat-form-field-wrapper {
+  height: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step .panel-description-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex {
+  height: 100%;
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step .panel-description-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+  height: calc(100% - 30px);
+}
+.msf-dashboard-panel-config-container .msf-dashboard-panel-step-content .msf-dashboard-name-step .panel-description-input .mat-form-field .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-input-element {
   overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: -10px;
-  padding-right: 0 !important;
-  margin-top: -10px;
-  width: calc(100% + 20px) !important;
+  height: 100% !important;
+  resize: none;
+}
+
+.values-combobox {
+  margin-left: -5px;
+}
+
+.num-variables-icon {
+  margin-top: -20px;
+}
+
+.panel-formfield {
+  width: calc(100% - 20px) !important;
+}
+
+.config-panel-form-field {
+  margin-top: -3px;
+}
+.config-panel-form-field .mat-select-trigger {
+  margin-bottom: 5px;
+}
+.config-panel-form-field .mat-select-arrow-wrapper {
+  transform: inherit !important;
+}
+.config-panel-form-field .mat-input-element {
+  margin-top: 0.5px;
+  margin-bottom: 4.5px;
+}
+.config-panel-form-field .mat-form-field-label-wrapper {
+  top: -1.3em !important;
+}
+
+.config-panel-form-field.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.2em) scale(0.75) !important;
+}
+
+.heatmap-panel-step {
+  display: flex;
+  align-items: center;
+}
+
+.color-picker-tab, .limit-results-tab {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.axis-names-tab {
+  display: flex;
+  flex-direction: column;
+  padding-top: 15px;
+  height: calc(100% - 15px);
+}
+
+.limit-results-label {
+  padding-bottom: 0 !important;
+  margin-left: 10px;
+  height: 20px;
+}
+.limit-results-label span {
+  font-weight: 550;
+}
+
+.limit-radio-group {
+  margin-bottom: 20px !important;
+}
+.limit-radio-group .mat-radio-group {
+  display: flex;
+  margin: 0 10px;
+  width: 100%;
+}
+.limit-radio-group .mat-radio-group .msf-dashboard-assistant-mode {
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  padding: 14px 20px !important;
+  align-items: center;
+  width: 100%;
+}
+.limit-radio-group .mat-radio-group .msf-dashboard-assistant-mode .mat-radio-container {
+  width: 20px !important;
+  height: 20px !important;
+}
+.limit-radio-group .mat-radio-group .msf-dashboard-assistant-mode .mat-radio-container .mat-radio-outer-circle, .limit-radio-group .mat-radio-group .msf-dashboard-assistant-mode .mat-radio-container .mat-radio-inner-circle {
+  width: 20px !important;
+  height: 20px !important;
+}
+.limit-radio-group .mat-radio-group .msf-dashboard-assistant-mode .mat-radio-label .mat-radio-label-content {
+  font-size: 14px !important;
+}
+
+.theme-color-checkbox {
+  text-align: end;
+  width: calc(100% - 160px);
+}
+
+.no-info {
+  margin-top: 24px;
+  height: 50px;
+  width: 43px;
+}
+
+.info-image, .info-image-open {
+  cursor: pointer;
+  margin-top: 20px;
+  height: 43px;
+  width: 43px;
+}
+
+.info-arrow, .info-arrow-invisible {
+  margin-left: 14px;
+  margin-top: 4px;
+  width: 14px;
+  height: 7px;
+}
+
+.datasource-selected {
+  padding-left: 15px;
 }
 
 .simple-form-results-container-with-anchored-args {
@@ -18291,6 +18929,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .datalake-table-show-table-dialog .datalake-dialog-loading {
   display: block !important;
+}
+
+.info-selector, .heatmap-selector {
+  margin-bottom: 15px !important;
+}
+.info-selector .mat-form-field, .heatmap-selector .mat-form-field {
+  margin-bottom: -15px;
 }
 
 /*# sourceMappingURL=styles.css.map */

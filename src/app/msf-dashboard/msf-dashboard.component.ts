@@ -13,8 +13,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 
 // dashboard gridstack constants
 const maxDashboardWidth = 12;
-const defaultPanelHeight = 8;
-const defaultPanelWidth = 4;
+const defaultPanelHeight = 9;
+const defaultPanelWidth = 6;
 
 @Component({
   selector: 'app-msf-dashboard',
@@ -90,20 +90,20 @@ export class MsfDashboardComponent implements OnInit {
 
   controlVariableDialogOpen: boolean = false;
   readOnlyDashboard: boolean = false;
-
   
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
   constructor(public globals: Globals, private service: ApplicationService,
-    public dialog: MatDialog, private changeDetector: ChangeDetectorRef, media: MediaMatcher)
+    public dialog: MatDialog, private changeDetector: ChangeDetectorRef,
+    public media: MediaMatcher)
   {
     this.readOnlyDashboard = this.globals.readOnlyDashboard ? true : false;
     this.globals.showPaginator = false; // hide paginator
     
-    this.mobileQuery = media.matchMedia('(max-width: 767px)');
-    this._mobileQueryListener = () => changeDetector.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery = media.matchMedia ('(max-width: 767px)');
+    this._mobileQueryListener = () => changeDetector.detectChanges ();
+    this.mobileQuery.addListener (this._mobileQueryListener);
   }
 
   ngOnInit()
@@ -204,6 +204,7 @@ export class MsfDashboardComponent implements OnInit {
         drillDownOptions: [],
         tabType: columnConfig.tabType,
         metaData: columnConfig.metaData,
+        label: columnConfig.label,
         serverSorting: parseInt (columnConfig.serverSorting),
         columnOptions: null
       });
