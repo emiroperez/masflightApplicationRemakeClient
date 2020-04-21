@@ -321,7 +321,7 @@
                                 <ng-container *ngFor="let checkbox of argument.checkboxes">
                                   <div class="msf-single-checkbox-outer-container">
                                     <div class="msf-component-argument-container">
-                                      <app-msf-single-checkbox [argument]="checkbox"></app-msf-single-checkbox>
+                                      <app-msf-single-checkbox [argument]="checkbox" [isDashboardPanel]="true" (startURLUpdate)="startURLUpdate()"></app-msf-single-checkbox>
                                     </div>
                                   </div>
                                 </ng-container>
@@ -477,15 +477,15 @@
                     <span *ngIf="!isArray(element['Flight'])">
                       <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
                         <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
-                          <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.outputFormat}}</span>
-                          <span *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
-                          <span *ngIf="column.columnType=='number'">
+                          <span class="msf-table-span" *ngIf="column.columnType=='date' || column.columnType=='time'">{{element[column.columnName] | date: column.outputFormat}}</span>
+                          <span class="msf-table-span" *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                          <span class="msf-table-span" *ngIf="column.columnType=='number'">
                             <span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
                           </span>
                         </ng-container>
                         <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                          <span *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
-                          <span *ngIf="column.columnType=='number'">
+                          <span class="msf-table-span" *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
+                          <span class="msf-table-span" *ngIf="column.columnType=='number'">
                             <span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
                           </span>
                         </ng-container>
@@ -496,15 +496,15 @@
                             *ngFor="let subElement of element['Flight']; let j = index">
                         <ng-container *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
                           <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
-                            <span *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
-                            <span *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
-                            <span *ngIf="column.columnType=='number'">
+                            <span class="msf-table-span" *ngIf="column.columnType=='date' || column.columnType=='time'">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
+                            <span class="msf-table-span" *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
+                            <span class="msf-table-span" *ngIf="column.columnType=='number'">
                               <span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
                             </span>
                           </ng-container>
                           <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                            <span *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
-                            <span *ngIf="column.columnType=='number'">
+                            <span class="msf-table-span" *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
+                            <span class="msf-table-span" *ngIf="column.columnType=='number'">
                               <span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span>
                             </span>
                           </ng-container>

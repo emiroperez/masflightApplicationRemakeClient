@@ -10330,6 +10330,7 @@ mat-tab-group {
   text-align: end !important;
   margin-left: 0 !important;
   margin-right: 10px !important;
+  width: 50px !important;
 }
 .msf-dashboard-color-picker-grid-layout .msf-dashboard-color-picker-selector-container, .msf-dashboard-color-picker-layout .msf-dashboard-color-picker-selector-container {
   padding-bottom: 10px;
@@ -10356,6 +10357,7 @@ mat-tab-group {
   margin-left: 20px;
   margin-right: 5px;
   text-align: right;
+  width: calc(100% - 80px);
 }
 .msf-dashboard-color-picker-selector-container .msf-dashboard-color-picker-selector {
   cursor: default;
@@ -18946,6 +18948,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 .info-selector .mat-form-field, .heatmap-selector .mat-form-field {
   margin-bottom: -15px;
+}
+
+.msf-table-span {
+  display: flex;
+  width: max-content;
+  margin: auto;
 }
 
 /*# sourceMappingURL=styles.css.map */

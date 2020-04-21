@@ -5255,6 +5255,7 @@ mat-tab-group
         text-align: end !important
         margin-left: 0 !important
         margin-right: 10px !important
+        width: 50px !important
     .msf-dashboard-color-picker-selector-container
         padding-bottom: 10px
         border-radius: 5px
@@ -5276,6 +5277,7 @@ mat-tab-group
         margin-left: 20px
         margin-right: 5px
         text-align: right
+        width: calc(100% - 80px)
     .msf-dashboard-color-picker-selector
         @include msf-dashboard-color-picker-selector-style
     .msf-dashboard-color-picker-selector:hover
@@ -12410,3 +12412,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     margin-bottom: 15px !important
     .mat-form-field
         margin-bottom: -15px
+
+.msf-table-span
+    display: flex
+    width: max-content
+    margin: auto
