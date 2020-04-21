@@ -902,9 +902,14 @@
                   <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length">
                     <div class="msf-dashboard-color-picker-layout" *ngIf="hasHeatMapColorSettings()">
                       <div class="msf-dashboard-color-picker-selector-container">
-                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
+                        <span class="msf-dashboard-color-picker-selector-label">Min</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
                         <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
+                      </div>
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Max</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[1]" [style.background]="values.paletteColors[1]" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[1]}}</span>
                       </div>
                     </div>
                     <div class="msf-dashboard-color-picker-grid-layout" *ngIf="!hasHeatMapColorSettings()">

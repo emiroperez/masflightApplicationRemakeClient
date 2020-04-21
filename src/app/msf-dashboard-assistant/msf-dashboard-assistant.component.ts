@@ -417,6 +417,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.limitAmount = this.data.values.limitAmount;
     this.values.ordered = this.data.values.ordered;
 
+    this.values.paletteColors = JSON.parse (JSON.stringify (this.data.values.paletteColors));
+
     this.values.style = this.msfMapRef.mapTypes[1];
   }
 
@@ -728,6 +730,17 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
       this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR;
     }
+
+    if (this.values.limitMode != null)
+      this.values.limitMode = 0;
+
+    if (this.values.limitAmount != null)
+      this.values.limitAmount = 10;
+
+    if (this.values.paletteColors == null)
+      this.useThemeColors = true;
+    else
+      this.useThemeColors = false;
   }
 
   isInformationPanel(): boolean
@@ -800,7 +813,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (!this.values.paletteColors || !this.values.paletteColors.length)
     {
       if (this.hasHeatMapColorSettings ())
-        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].heatMapColor));
+        this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].heatMapColors));
       else
         this.values.paletteColors = JSON.parse (JSON.stringify (Themes.AmCharts[this.globals.theme].resultColors));
     }
@@ -880,8 +893,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (this.values.limitAmount != null)
       this.values.limitAmount = 10;
 
-    if (this.values.paletteColors != null)
+    if (this.values.paletteColors == null)
       this.useThemeColors = true;
+    else
+      this.useThemeColors = false;
   }
 
   selectPanelType(panelType): void

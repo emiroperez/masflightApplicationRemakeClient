@@ -58,7 +58,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   chart: any;
   chartInfo: any;
 
-  paletteColors: string[];
+  paletteColors: any[];
 
   chartTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, createSeries: this.createVertColumnSeries },
@@ -1168,7 +1168,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
     {
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-        this.paletteColors = Themes.AmCharts[theme].heatMapColor;
+        this.paletteColors = Themes.AmCharts[theme].heatMapColors;
       else
         this.paletteColors = Themes.AmCharts[theme].resultColors;
     }
@@ -1189,11 +1189,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        let chartColor, polygonSeries, polygonTemplate, hoverState;
+        let polygonSeries, polygonTemplate, hoverState;
         let minRange, maxRange, heatLegend, pow, home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
-        chartColor = am4core.color (this.paletteColors[0]);
 
         if (this.values.valueColumn.item.columnType === "number")
         {
@@ -1215,15 +1214,14 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Add map polygons
         polygonSeries = chart.series.push (new am4maps.MapPolygonSeries ());
         polygonSeries.useGeodata = true;
-        polygonSeries.mapPolygons.template.fill = chartColor;
         polygonSeries.mapPolygons.template.stroke = black;
         polygonSeries.mapPolygons.template.strokeOpacity = 0.25;
         polygonSeries.mapPolygons.template.strokeWidth = 0.5;
         polygonSeries.heatRules.push ({
           property: "fill",
           target: polygonSeries.mapPolygons.template,
-          min: chartColor.brighten (0.5),
-          max: chartColor.brighten (-0.5)
+          min: am4core.color (this.paletteColors[0]),
+          max: am4core.color (this.paletteColors[1])
         });
 
         // Exclude Antartica if the geography data is the world
@@ -1252,7 +1250,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         polygonTemplate.nonScalingStroke = true;
         polygonTemplate.strokeWidth = 0.5;
         hoverState = polygonTemplate.states.create ("hover");
-        hoverState.properties.fill = chartColor;
 
         // Set the values for each polygon
         polygonSeries.data = [];
