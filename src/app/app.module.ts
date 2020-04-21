@@ -212,6 +212,7 @@ import { PublicDashboardComponent } from './public-dashboard/public-dashboard.co
 import { PublicizeDashboardDialogComponent } from './publicize-dashboard-dialog/publicize-dashboard-dialog.component';
 import { UrlMessageComponent } from './url-message/url-message.component';
 import { MsfConfirmationDialogDatalakeComponent } from './msf-confirmation-dialog-datalake/msf-confirmation-dialog-datalake.component';
+import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -400,7 +401,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PublicizeDashboardDialogComponent,
     PublicizeDashboardDialogComponent,
     UrlMessageComponent,
-    MsfConfirmationDialogDatalakeComponent
+    MsfConfirmationDialogDatalakeComponent,
+    MsfChartPreviewComponent
   ],
   imports: [
     BrowserModule,
@@ -506,7 +508,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfPartialSummariesComponent,
     PublicizeDashboardDialogComponent,
     UrlMessageComponent,
-    PublicizeDashboardDialogComponent
+    PublicizeDashboardDialogComponent,
+    MsfChartPreviewComponent
   ]
 })
 export class AppModule { }
