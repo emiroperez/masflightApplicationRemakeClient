@@ -381,7 +381,7 @@
                     <mat-label>Values</mat-label>
                     <mat-select placeholder="Values" [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-                      <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
+                      <mat-option *ngFor="let variable of filteredValues | async" [value]="variable">
                         {{variable.name}}
                       </mat-option>
                     </mat-select>
@@ -424,13 +424,23 @@
                 </div>
               </div>
             </div>
+            <div class="msf-dashboard-assistant-chart-preview-button" *ngIf="generateBtnEnabled"
+                 (mouseover)="chartPreviewHover = true" (mouseout)="chartPreviewHover = false" (click)="previewChart()">
+              <img *ngIf="!chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
+                   src="../../assets/images/{{globals.theme}}-chart-preview.png" />
+              <img *ngIf="chartPreviewHover" class="msf-dashboard-assistant-chart-preview-pic"
+                   src="../../assets/images/dark-theme-chart-preview.png" />
+              Chart Preview
+            </div>
+          </div>
+          <div class="msf-dashboard-function-selector">
             <div class="msf-dashboard-assistant-interval-mode" *ngIf="panelMode === 'advanced'">
               <span class="msf-dashboard-assistant-chart-type-label">Interval Type</span>
               <mat-radio-group [(ngModel)]="values.intervalType" (ngModelChange)="resetIntervalValue()">
                 <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'ncile'">
                   By Ncile
                 </mat-radio-button>
-                <mat-radio-button class="cancels-checkbox interval-checkbox second-option" [value]="'value'">
+                <mat-radio-button class="cancels-checkbox interval-checkbox" [value]="'value'">
                   By Value
                 </mat-radio-button>
               </mat-radio-group>

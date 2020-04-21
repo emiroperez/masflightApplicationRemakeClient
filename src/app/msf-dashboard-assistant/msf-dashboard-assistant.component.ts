@@ -22,6 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
+import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -277,6 +278,56 @@ export class MsfDashboardAssistantComponent implements OnInit {
       {
         this.values.currentChartType = item;
         break;
+      }
+    }
+
+    this.values.valueList = [];
+
+    if (this.data.values.valueList && this.values.chartColumnOptions != null && this.values.currentChartType && this.isSimpleChart ())
+    {
+      for (i = 0; i < this.data.values.valueList.length; i++)
+      {
+        let value = this.data.values.valueList[i];
+
+        for (let column of this.values.chartColumnOptions)
+        {
+          if (column.id === value.id)
+          {
+            this.values.valueList.push (column);
+            break;
+          }
+        }
+      }
+    }
+
+    if (this.values.currentChartType)
+    {
+      if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+      {
+        this.panelMode = "advanced";
+
+        for (let type of this.panelTypes)
+        {
+          if (this.values.currentChartType.name === "Advanced " + type.name)
+          {
+            this.selectedPanelType = type;
+            break;
+          }
+        }
+      }
+      else
+      {
+        this.panelMode = "basic";
+
+        // set panel type for the interface
+        for (let type of this.panelTypes)
+        {
+          if (this.values.currentChartType.name === type.name)
+          {
+            this.selectedPanelType = type;
+            break;
+          }
+        }
       }
     }
 
@@ -2734,7 +2785,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   resetIntervalValue(): void
   {
     if (this.values.intervalType === "value")
-      this.values.intValue = null;
+      this.values.intValue = 100;
     else
       this.values.intValue = 5;
   }
@@ -2776,5 +2827,113 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
       }
     }
+  }
+
+  previewChart(): void
+  {
+    let i, variable, xaxis, valueColumn, selectedType;
+
+    if (this.panelMode === "advanced")
+    {
+      if (this.aggregationValueSelected.columnType !== "number")
+      {
+        this.dialog.open (MessageComponent, {
+          data: { title: "Error", message: "Only numeric value types are allowed for aggregation value." }
+        });
+
+        return;
+      }
+    }
+
+    if ((this.panelMode === "advanced" && this.selectedPanelType.flags & ChartFlags.XYCHART
+      || this.panelMode === "basic")
+      && this.analysisSelected)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (this.values.chartColumnOptions[i].id == this.analysisSelected.columnName)
+        {
+          variable = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+    else
+      variable = null;
+
+    if (this.selectedPanelType.flags & ChartFlags.XYCHART && this.xAxisSelected)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (this.values.chartColumnOptions[i].id == this.xAxisSelected.columnName)
+        {
+          xaxis = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+    else
+      xaxis = null;
+
+    if (this.panelMode === "advanced")
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (this.values.chartColumnOptions[i].id == this.aggregationValueSelected.columnName)
+        {
+          valueColumn = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+    else if (this.valueSelected)
+    {
+      for (i = 0; i < this.values.chartColumnOptions.length; i++)
+      {
+        if (this.values.chartColumnOptions[i].id == this.valueSelected.columnName)
+        {
+          valueColumn = this.values.chartColumnOptions[i];
+          break;
+        }
+      }
+    }
+
+    for (let type of this.chartTypes)
+    {
+      if (type.name === this.values.currentChartType.name)
+      {
+        selectedType = type;
+        break;
+      }
+    }
+
+    this.dialog.open (MsfChartPreviewComponent, {
+      panelClass: 'msf-dashboard-assistant-dialog',
+      autoFocus: false,
+      data: {
+        currentChartType: selectedType,
+        currentOption: this.values.currentOption,
+        currentOptionCategories: this.values.currentOptionCategories,
+        function: this.values.function,
+        variable: variable,
+        xaxis: xaxis,
+        valueColumn: valueColumn,
+        valueList: this.values.valueList,
+        chartMode: this.panelMode,
+        intervalType: this.values.intervalType,
+        intValue: this.values.intValue,
+        startAtZero: this.values.startAtZero,
+        ordered: this.values.ordered,
+        chartColumnOptions: this.values.chartColumnOptions,
+        thresholds: this.values.thresholds,
+        goals: this.values.goals,
+        paletteColor: this.values.paletteColors,
+        chartTypes: this.chartTypes,
+        minValueRange: this.values.minValueRange,
+        maxValueRange: this.values.maxValueRange,
+        vertAxisName: this.values.vertAxisName,
+        horizAxisName: this.values.horizAxisName
+      }
+    });
   }
 }
