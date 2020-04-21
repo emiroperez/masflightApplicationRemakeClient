@@ -91,14 +91,12 @@ export class Themes {
             sumStroke: darkGray,
             heatMapColors: [
                 "#ffffff",
-                "#eb5c1b"
+                "#003d5b"
             ],
             resultColors: [
-                "#00ca77",
-                "#ff7242",
-                "#ffc54f",
                 "#4f933b",
-                "#00aca9",
+                "#00ca77",
+                "#00a68b",
                 "#136fc1",
                 "#6b94fc",
                 "#a769f6",
@@ -106,6 +104,8 @@ export class Themes {
                 "#c767dc",
                 "#dc677e",
                 "#dc4238",
+                "#ff7242",
+                "#ffc54f",
                 "#8bcccc"
             ]
         }
