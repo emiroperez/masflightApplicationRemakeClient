@@ -333,12 +333,12 @@ export class MsfChartPreviewComponent {
 
         chart.data = chartInfo.dataProvider;
 
-        if (this.data.valueColumn.columnType === "number")
+        if (this.data.valueColumn.item.columnType === "number")
         {
-          if (this.data.valueColumn.outputFormat)
-            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.outputFormat);
+          if (this.data.valueColumn.item.outputFormat)
+            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.item.outputFormat);
           else
-            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.columnFormat);
+            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.item.columnFormat);
         }
         else
           chart.numberFormatter.numberFormat = "#,###.#";
@@ -365,47 +365,52 @@ export class MsfChartPreviewComponent {
 
         chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
 
-        if (this.data.valueColumn && this.data.valueColumn.columnType === "number")
+        if (this.data.valueColumn && !this.data.valueList)
         {
-          if (this.data.valueColumn.outputFormat)
-            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.outputFormat);
+          if (this.data.valueColumn.item.columnType === "number")
+          {
+            if (this.data.valueColumn.item.outputFormat)
+              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat(this.data.valueColumn.item.outputFormat);
+            else
+              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat(this.data.valueColumn.item.columnFormat);
+          }
           else
-            chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.columnFormat);
+            chart.numberFormatter.numberFormat = "#,###.#";
         }
         else
-          chart.numberFormatter.numberFormat = "#,###.#";
+          chart.numberFormatter.numberFormat = "#,###.#"; // universal number format if there are multiple values or no values set
 
         // Don't parse dates if the chart is a simple version
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.data));
-          if (this.data.chartMode === "advanced")
+          if (this.data.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.data.xaxis.columnType === "date") ? true : false;
+            parseDate = (this.data.xaxis.item.columnType === "date") ? true : false;
         }
         else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
-          if (this.data.chartMode === "advanced")
+          if (this.data.currentChartType.flags & ChartFlags.ADVANCED)
             parseDate = false;
           else
-            parseDate = (this.data.variable.columnType === "date") ? true : false;
+            parseDate = (this.data.variable.item.columnType === "date") ? true : false;
         }
 
         if (parseDate)
         {
           if (this.data.currentChartType.flags & ChartFlags.XYCHART)
           {
-            if (this.data.xaxis.columnFormat)
+            if (this.data.xaxis.item.columnFormat)
             {
               for (let data of chart.data)
-                data[this.data.xaxis.id] = this.parseDate (data[this.data.xaxis.id], this.data.xaxis.columnFormat);
+                data[this.data.xaxis.id] = this.parseDate (data[this.data.xaxis.id], this.data.xaxis.item.columnFormat);
 
-              if (this.data.xaxis.outputFormat)
-                outputFormat = this.data.xaxis.outputFormat;
+              if (this.data.xaxis.item.outputFormat)
+                outputFormat = this.data.xaxis.item.outputFormat;
               else
-                outputFormat = this.data.xaxis.columnFormat;
+                outputFormat = this.data.xaxis.item.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[outputFormat])
@@ -416,15 +421,15 @@ export class MsfChartPreviewComponent {
           }
           else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
           {
-            if (this.data.variable.columnFormat)
+            if (this.data.variable.item.columnFormat)
             {
               for (let data of chart.data)
-                data[this.data.variable.id] = this.parseDate (data[this.data.variable.id], this.data.variable.columnFormat);
+                data[this.data.variable.id] = this.parseDate (data[this.data.variable.id], this.data.variable.item.columnFormat);
 
-              if (this.data.variable.outputFormat)
-                outputFormat = this.data.variable.outputFormat;
+              if (this.data.variable.item.outputFormat)
+                outputFormat = this.data.variable.item.outputFormat;
               else
-                outputFormat = this.data.variable.columnFormat;
+                outputFormat = this.data.variable.item.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[outputFormat])
@@ -593,20 +598,80 @@ export class MsfChartPreviewComponent {
           // Set axis name into the chart
           if (this.data.chartMode === "advanced")
           {
-            categoryAxis.title.text = "Intervals";   
-            valueAxis.title.text = this.data.valueColumn.name;
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                categoryAxis.title.text = this.data.horizAxisName;
+              else
+                categoryAxis.title.text = "Intervals";
+    
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                valueAxis.title.text = this.data.vertAxisName;
+              else
+              {
+                if (this.data.valueColumn)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
+            }
+            else
+            {
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                categoryAxis.title.text = this.data.vertAxisName;
+              else
+                categoryAxis.title.text = "Intervals";
+    
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                valueAxis.title.text = this.data.horizAxisName;
+              else
+              {
+                if (this.data.valueColumn)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
+            }
 
-            // The category will be the x axis if the chart type has it
             categoryAxis.dataFields.category = "Interval";
           }
           else
           {
-            categoryAxis.title.text = this.data.xaxis.name;    
-
-            if (!this.data.valueColumn)
-              valueAxis.title.text = "Count";
+            // Set axis name into the chart
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                categoryAxis.title.text = this.data.horizAxisName;
+              else
+                categoryAxis.title.text = this.data.xaxis.name;
+    
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                valueAxis.title.text = this.data.vertAxisName;
+              else
+              {
+                if (this.data.valueColumn)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
+            }
             else
-              valueAxis.title.text = this.data.valueColumn.name;
+            {
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                categoryAxis.title.text = this.data.vertAxisName;
+              else
+                categoryAxis.title.text = this.data.xaxis.name;
+    
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                valueAxis.title.text = this.data.horizAxisName;
+              else
+              {
+                if (this.data.valueColumn)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
+            }
   
             // The category will be the x axis if the chart type has it
             categoryAxis.dataFields.category = this.data.xaxis.id;
@@ -679,15 +744,15 @@ export class MsfChartPreviewComponent {
 
           for (let object of chartInfo.filter)
           {
-            if (this.data.variable.columnType === "date")
+            if (this.data.variable.item.columnType === "date")
             {
-              let date = this.parseDate (object.valueAxis, this.data.variable.columnFormat);
+              let date = this.parseDate (object.valueAxis, this.data.variable.item.columnFormat);
               let legendOutputFormat;
 
-              if (this.data.variable.outputFormat)
-                legendOutputFormat = this.data.variable.outputFormat;
+              if (this.data.variable.item.outputFormat)
+                legendOutputFormat = this.data.variable.item.outputFormat;
               else
-                legendOutputFormat = this.data.variable.columnFormat;
+                legendOutputFormat = this.data.variable.item.columnFormat;
 
               // Set predefined format if used
               if (this.predefinedColumnFormats[legendOutputFormat])
@@ -703,42 +768,149 @@ export class MsfChartPreviewComponent {
         {
           if (this.data.chartMode === "advanced")
           {
-            categoryAxis.title.text = "Intervals"; 
-            valueAxis.title.text = this.data.valueColumn.name;
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                categoryAxis.title.text = this.data.horizAxisName;
+              else
+                categoryAxis.title.text = "Intervals";
+
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                valueAxis.title.text = this.data.vertAxisName;
+              else
+              {
+                if (this.data.valueColumn)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
+            }
+            else
+            {
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                categoryAxis.title.text = this.data.vertAxisName;
+              else
+                categoryAxis.title.text = "Intervals";
+  
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                valueAxis.title.text = this.data.horizAxisName;
+              else
+              {
+                if (this.data.valueColumn)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = "Count";
+              }
+            }
           }
           else
           {
-            categoryAxis.title.text = this.data.variable.name; 
+            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            {
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                categoryAxis.title.text = this.data.horizAxisName;
+              else
+                categoryAxis.title.text = this.data.variable.name;
 
-            if (!this.data.valueColumn)
-              valueAxis.title.text = "Count";
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                valueAxis.title.text = this.data.vertAxisName;
+              else
+              {
+                if (this.data.valueList && this.data.valueList.length == 1)
+                  valueAxis.title.text = this.data.valueList[0].name;
+                else if (this.data.valueColumn && !this.data.valueList)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = this.data.function.name;
+              }
+            }
             else
-              valueAxis.title.text = this.data.valueColumn.name;
+            {
+              if (this.data.vertAxisName && this.data.vertAxisName != "")
+                categoryAxis.title.text = this.data.vertAxisName;
+              else
+                categoryAxis.title.text = this.data.variable.name;
+  
+              if (this.data.horizAxisName && this.data.horizAxisName != "")
+                valueAxis.title.text = this.data.horizAxisName;
+              else
+              {
+                if (this.data.valueList && this.data.valueList.length == 1)
+                  valueAxis.title.text = this.data.valueList[0].name;
+                else if (this.data.valueColumn && !this.data.valueList)
+                  valueAxis.title.text = this.data.valueColumn.name;
+                else
+                  valueAxis.title.text = this.data.function.name;
+              }
+            }
 
             if (this.data.ordered && this.data.chartMode !== "advanced")
             {
-              if (parseDate)
+              if (this.data.valueList && this.data.valueList.length > 1)
               {
-                let axisField = this.data.variable.id;
-  
-                // reverse order for rotated charts
-                if (this.data.currentChartType.flags & ChartFlags.ROTATED)
-                  categoryAxis.renderer.inversed = true;
+                for (let data of chart.data)
+                {
+                  let average = 0;
 
-                chart.events.on ("beforedatavalidated", function (event) {
-                  chart.data.sort (function (e1, e2) {
-                    return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                  for (let object of chartInfo.valueFields)
+                  {
+                    let value = data[object];
+  
+                    if (value != null)
+                      average += value;
+                  }
+
+                  data["avg"] = average / chartInfo.valueFields.length;
+                }
+  
+                if (parseDate)
+                {
+                  let axisField = this.data.variable.id;
+
+                  // reverse order for rotated charts
+                  if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                    categoryAxis.renderer.inversed = true;
+
+                  chart.events.on ("beforedatavalidated", function (event) {
+                    chart.data.sort (function (e1, e2) {
+                      return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                    });
                   });
-                });
+                }
+                else
+                {
+                  chart.events.on ("beforedatavalidated", function(event) {
+                    chart.data.sort (function(e1, e2) {
+                      return e1["avg"] - e2["avg"];
+                    });
+                  });
+                }
               }
               else
               {
-                // Sort values from least to greatest
-                chart.events.on ("beforedatavalidated", function(event) {
-                  chart.data.sort (function(e1, e2) {
-                    return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                if (parseDate)
+                {
+                  let axisField = this.data.variable.id;
+
+                  // reverse order for rotated charts
+                  if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                    categoryAxis.renderer.inversed = true;
+
+                  chart.events.on ("beforedatavalidated", function (event) {
+                    chart.data.sort (function (e1, e2) {
+                      return +(new Date(e1[axisField])) - +(new Date(e2[axisField]));
+                    });
                   });
-                });
+                }
+                else
+                {
+                  // Sort values from least to greatest
+                  chart.events.on ("beforedatavalidated", function(event) {
+                    chart.data.sort (function(e1, e2) {
+                      return e1[chartInfo.valueField] - e2[chartInfo.valueField];
+                    });
+                  });
+                }
               }
             }
           }
@@ -763,6 +935,27 @@ export class MsfChartPreviewComponent {
                 }
               }
 
+              if (this.isSimpleChart () && this.data.currentChartType.flags & ChartFlags.LINECHART)
+              {
+                // set line color depending of the threshold
+                for (let data of chart.data)
+                {
+                  let lineColor = am4core.color (this.paletteColors[i]);
+                  let value = data[chartInfo.valueFields[i]];
+
+                  for (let threshold of this.data.thresholds)
+                  {
+                    if (curValue.item.id == threshold.column && value >= threshold.min && value <= threshold.max)
+                    {
+                      lineColor = am4core.color (threshold.color);
+                      break;
+                    }
+                  }
+
+                  data["lineColor" + chartInfo.valueFields[i]] = lineColor;
+                }
+              }
+
               this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, false, this.paletteColors);
             }
           }
@@ -776,6 +969,27 @@ export class MsfChartPreviewComponent {
               {
                 curValue = item;
                 break;
+              }
+            }
+
+            if (this.isSimpleChart () && this.data.currentChartType.flags & ChartFlags.LINECHART)
+            {
+              // set line color depending of the threshold
+              for (let data of chart.data)
+              {
+                let lineColor = am4core.color (this.paletteColors[0]);
+                let value = data[chartInfo.valueField];
+
+                for (let threshold of this.data.thresholds)
+                {
+                  if (curValue && curValue.item.id == threshold.column && value >= threshold.min && value <= threshold.max)
+                  {
+                    lineColor = am4core.color (threshold.color);
+                    break;
+                  }
+                }
+
+                data["lineColor" + chartInfo.valueField] = lineColor;
               }
             }
 
@@ -804,6 +1018,7 @@ export class MsfChartPreviewComponent {
             range.label.fill = range.grid.stroke;
             range.label.verticalCenter = "bottom";
           }
+        }
       }
 
       // Add export menu

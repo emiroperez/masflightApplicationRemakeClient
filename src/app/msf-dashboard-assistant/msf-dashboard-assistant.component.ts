@@ -2930,7 +2930,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
         paletteColor: this.values.paletteColors,
         chartTypes: this.chartTypes,
         minValueRange: this.values.minValueRange,
-        maxValueRange: this.values.maxValueRange
+        maxValueRange: this.values.maxValueRange,
+        vertAxisName: this.values.vertAxisName,
+        horizAxisName: this.values.horizAxisName
       }
     });
   }
