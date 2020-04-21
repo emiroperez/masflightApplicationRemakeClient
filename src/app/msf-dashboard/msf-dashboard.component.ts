@@ -864,8 +864,8 @@ export class MsfDashboardComponent implements OnInit {
       newPanel = {
         'dashboardMenuId' : this.currentDashboardMenu.id,
         'title' : newPanelInfo.chartName,
-        'x': newPanelInfo.x,
-        'y': newPanelInfo.y,
+        'x': panels[this.dashboardPanels.length - 1].x,
+        'y': panels[this.dashboardPanels.length - 1].y,
         'height' : newPanelInfo.height,
         'width' : newPanelInfo.width
       };

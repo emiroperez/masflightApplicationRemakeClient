@@ -156,6 +156,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.childPanelValues = this.data.childPanelValues;
     this.childPanelsConfigured = this.data.childPanelsConfigured;
 
+    this.values.currentChartType = this.chartTypes[0];
+
     this.panelForm = this.formBuilder.group ({
       columnCtrl: new FormControl (''),
       fontSizeCtrl: new FormControl (this.fontSizes[1]),
@@ -965,7 +967,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
   isControlVariablesSet(): boolean
   {
     if (!this.values.currentOptionCategories)
+    {
+      this.controlVariablesSet = false;
       return false;
+    }
 
     for (let curOptionCategory of this.values.currentOptionCategories)
     {

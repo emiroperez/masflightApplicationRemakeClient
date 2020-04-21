@@ -6687,7 +6687,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         geodatas: this.geodatas,
         childPanelValues: this.childPanelValues,
         childPanelsConfigured: this.childPanelsConfigured,
-        controlVariablesSet: this.controlVariablesSet,
         toggleControlVariableDialogOpen: this.toggleControlVariableDialogOpen,
         msfMapRef: this.msfMapRef
       }
@@ -6700,9 +6699,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (result)
       {
-        if (result.controlVariablesSet != null)
-          this.controlVariablesSet = result.controlVariablesSet;
-
         if (result.generateChart)
         {
           this.setPanelValues (result.values);
