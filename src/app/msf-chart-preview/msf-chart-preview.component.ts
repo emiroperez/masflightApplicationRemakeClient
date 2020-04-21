@@ -785,7 +785,25 @@ export class MsfChartPreviewComponent {
 
         // Add cursor if the chart type is line, area or stacked area
         if (this.data.currentChartType.flags & ChartFlags.LINECHART)
-          chart.cursor = new am4charts.XYCursor ();
+          chart.cursor = new am4charts.XYCursor();
+
+        // Create axis ranges if available
+        if (this.data.goals && this.data.goals.length)
+        {
+          for (let goal of this.data.goals)
+          {
+            let range = valueAxis.axisRanges.create ();
+
+            range.value = goal.value;
+            range.grid.stroke = am4core.color(goal.color);
+            range.grid.strokeWidth = 2;
+            range.grid.strokeOpacity = 1;
+            range.grid.above = true;
+            range.label.inside = true;
+            range.label.text = goal.name;
+            range.label.fill = range.grid.stroke;
+            range.label.verticalCenter = "bottom";
+          }
       }
 
       // Add export menu
