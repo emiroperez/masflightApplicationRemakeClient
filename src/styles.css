@@ -102,6 +102,9 @@
 .dark-theme .msf-menu-op-1:disabled .mat-button-wrapper, .dark-theme .msf-menu-op-2:disabled .mat-button-wrapper, .dark-theme .msf-menu-op-3:disabled .mat-button-wrapper, .dark-theme .msf-menu-op-1-selected:disabled .mat-button-wrapper {
   color: rgba(255, 255, 255, 0.3);
 }
+.dark-theme .msf-menu-op-active {
+  background-color: #1e1e1e !important;
+}
 .dark-theme .mat-menu-panel {
   background-color: #3d3d3d;
 }
@@ -953,13 +956,21 @@
   color: #ffffff;
   background-color: inherit;
 }
-.dark-theme .msf-menu-icons-container {
-  color: #ffffff;
-}
 .dark-theme .msf-menu-icon {
   color: #ffffff;
 }
 .dark-theme .msf-menu-icon:disabled {
+  color: #9e9e9e;
+}
+.dark-theme .msf-menu-icons-container {
+  color: #ffffff;
+  background-color: #1e1e1e;
+  border-top: 1px solid #3d3d3d;
+}
+.dark-theme .msf-menu-icons-container .msf-menu-icon {
+  color: #ffffff;
+}
+.dark-theme .msf-menu-icons-container .msf-menu-icon:disabled {
   color: #9e9e9e;
 }
 .dark-theme .msf-intro-body {
@@ -1070,8 +1081,23 @@
 .dark-theme .ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
   color: #ffffff !important;
 }
+.dark-theme .ng-select.ng-select-focused .ng-select-container {
+  border-color: #01abec !important;
+}
 .dark-theme .ng-select.ng-select-focused .ng-select-container:after {
   border-color: #01abec !important;
+}
+.dark-theme .ng-select.ng-select-focused .ng-select-container .ng-clear-wrapper {
+  color: #01abec !important;
+}
+.dark-theme .ng-select.ng-select-focused .ng-select-container .ng-clear-wrapper:hover {
+  color: #01abec !important;
+}
+.dark-theme .ng-select.ng-select-focused .ng-select-container .ng-clear-wrapper:hover {
+  color: #01abec !important;
+}
+.dark-theme .ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
+  color: #01abec !important;
 }
 .dark-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
   color: #01abec !important;
@@ -1574,7 +1600,7 @@
   background-color: #01abec;
 }
 .dark-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: rgba(1, 171, 236, 0.54);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 .dark-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
   background-color: #01abec;
@@ -1613,6 +1639,9 @@
   color: #046988;
 }
 .dark-theme .login-button, .dark-theme .msf-medium-button, .dark-theme .msf-big-button, .dark-theme .msf-big-button {
+  background-color: #01abec !important;
+}
+.dark-theme .login-button:hover, .dark-theme .msf-medium-button:hover, .dark-theme .msf-big-button:hover, .dark-theme .msf-big-button:hover {
   background-color: #01abec !important;
 }
 .dark-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .dark-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
@@ -1794,7 +1823,7 @@
   text-align: right;
 }
 .dark-theme .login-header-logo {
-  background-image: url(assets/images/dark-theme-logo.png);
+  background-image: url(assets/images/logo.png);
 }
 .dark-theme .login-pulse-logo {
   background-image: url(assets/images/dark-theme-login-logo.png);
@@ -3445,6 +3474,9 @@
 .light-theme .msf-menu-op-1:disabled .mat-button-wrapper, .light-theme .msf-menu-op-2:disabled .mat-button-wrapper, .light-theme .msf-menu-op-3:disabled .mat-button-wrapper, .light-theme .msf-menu-op-1-selected:disabled .mat-button-wrapper {
   color: rgba(255, 255, 255, 0.3);
 }
+.light-theme .msf-menu-op-active {
+  background-color: #001e2d !important;
+}
 .light-theme .mat-menu-panel {
   background-color: #003d5b;
 }
@@ -4296,14 +4328,22 @@
   color: #4d4d4d;
   background-color: inherit;
 }
-.light-theme .msf-menu-icons-container {
-  color: #4d4d4d;
-}
 .light-theme .msf-menu-icon {
   color: #4d4d4d;
 }
 .light-theme .msf-menu-icon:disabled {
   color: #2d2d2d;
+}
+.light-theme .msf-menu-icons-container {
+  color: #ffffff;
+  background-color: #001e2d;
+  border-top: 1px solid #003d5b;
+}
+.light-theme .msf-menu-icons-container .msf-menu-icon {
+  color: #ffffff;
+}
+.light-theme .msf-menu-icons-container .msf-menu-icon:disabled {
+  color: #9e9e9e;
 }
 .light-theme .msf-intro-body {
   color: #4d4d4d;
@@ -4374,7 +4414,7 @@
   background-color: #01abec;
 }
 .light-theme .msf-menu-search-button:hover {
-  background-color: #00263E;
+  background-color: #0589bb;
 }
 .light-theme .msf-menu-search-button:disabled {
   background-color: #b2b2b2;
@@ -4413,8 +4453,23 @@
 .light-theme .ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
   color: #4d4d4d !important;
 }
+.light-theme .ng-select.ng-select-focused .ng-select-container {
+  border-color: #01abec !important;
+}
 .light-theme .ng-select.ng-select-focused .ng-select-container:after {
   border-color: #01abec !important;
+}
+.light-theme .ng-select.ng-select-focused .ng-select-container .ng-clear-wrapper {
+  color: #01abec !important;
+}
+.light-theme .ng-select.ng-select-focused .ng-select-container .ng-clear-wrapper:hover {
+  color: #01abec !important;
+}
+.light-theme .ng-select.ng-select-focused .ng-select-container .ng-clear-wrapper:hover {
+  color: #01abec !important;
+}
+.light-theme .ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
+  color: #01abec !important;
 }
 .light-theme .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
   color: #ffffff !important;
@@ -4659,7 +4714,7 @@
   background-color: #333333;
 }
 .light-theme .msf-plan-name {
-  background-color: #ff651f;
+  background-color: #003d5b;
 }
 .light-theme .msf-plan-name .mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label, .light-theme .msf-plan-name .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   color: #4d4d4d !important;
@@ -4675,7 +4730,7 @@
   background-color: #2b2b2b;
 }
 .light-theme .msf-fab-button-features .mat-button-wrapper {
-  color: #ff651f;
+  color: #003d5b;
 }
 .light-theme .msf-more-info-popup .mat-dialog-container {
   background-color: #ffffff !important;
@@ -4907,8 +4962,8 @@
   background-color: #01abec !important;
 }
 .light-theme .theme-picker {
-  background: #ffffff;
-  color: #4d4d4d;
+  background: #00263E;
+  color: #ffffff;
 }
 .light-theme .theme-picker .theme-picker-label-container {
   background: #01abec;
@@ -4917,7 +4972,7 @@
   background-color: #01abec;
 }
 .light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: rgba(1, 171, 236, 0.54);
+  background-color: rgba(0, 0, 0, 0.25);
 }
 .light-theme .theme-picker .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
   background-color: #01abec;
@@ -4944,18 +4999,21 @@
   color: #4d4d4d !important;
 }
 .light-theme .mat-icon.input_img, .light-theme .login-form .block-item-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
-  color: #01abec !important;
+  color: #00263E !important;
 }
 .light-theme .login-link-reg {
   color: #4d4d4d;
 }
 .light-theme .login-link-reg2 {
-  color: #01abec;
+  color: #00263E;
 }
 .light-theme .login-font-color {
   color: #5b5b5f;
 }
 .light-theme .login-button, .light-theme .msf-medium-button, .light-theme .msf-big-button, .light-theme .msf-big-button {
+  background-color: #00263E !important;
+}
+.light-theme .login-button:hover, .light-theme .msf-medium-button:hover, .light-theme .msf-big-button:hover, .light-theme .msf-big-button:hover {
   background-color: #01abec !important;
 }
 .light-theme .login-form .mat-checkbox-checked.mat-primary .mat-checkbox-background, .light-theme .two-factor-auth-form .mat-checkbox-checked.mat-primary .mat-checkbox-background {
@@ -5137,7 +5195,7 @@
   text-align: right;
 }
 .light-theme .login-header-logo {
-  background-image: url(assets/images/light-theme-logo.png);
+  background-image: url(assets/images/logo.png);
 }
 .light-theme .login-pulse-logo {
   background-image: url(assets/images/light-theme-login-logo.png);
@@ -5300,8 +5358,8 @@
   color: #ffffff !important;
 }
 .light-theme .msf-dashboard-assistant-chart-config-values-button-selected, .light-theme .msf-dashboard-assistant-chart-config-values-button:hover {
-  background-color: #f17f2f !important;
-  border-color: #f17f2f !important;
+  background-color: #003d5b !important;
+  border-color: #003d5b !important;
   color: #ffffff !important;
 }
 .light-theme .msf-dashboard-assistant-chart-config-aggregation-button-selected, .light-theme .msf-dashboard-assistant-chart-config-aggregation-button:hover {
@@ -5346,17 +5404,17 @@
   border-bottom: 3px solid #f2bf00 !important;
 }
 .light-theme .distribution-chart-column-values-header-hover, .light-theme .distribution-chart-column-values-header-selected {
-  background-color: #f17f2f !important;
-  border-color: #f17f2f !important;
+  background-color: #003d5b !important;
+  border-color: #003d5b !important;
 }
 .light-theme .distribution-chart-column-values-row-hover, .light-theme .distribution-chart-column-values-row-selected {
-  background-color: rgba(241, 127, 47, 0.5) !important;
-  border-left: 3px solid #f17f2f !important;
-  border-right: 3px solid #f17f2f !important;
-  border-bottom-color: rgba(241, 127, 47, 0.25) !important;
+  background-color: rgba(0, 61, 91, 0.5) !important;
+  border-left: 3px solid #003d5b !important;
+  border-right: 3px solid #003d5b !important;
+  border-bottom-color: rgba(0, 61, 91, 0.25) !important;
 }
 .light-theme .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-hover, .light-theme .msf-dashboard-child-panel-table tr.mat-row.ng-star-inserted:last-child > td.distribution-chart-column-values-row-selected {
-  border-bottom: 3px solid #f17f2f !important;
+  border-bottom: 3px solid #003d5b !important;
 }
 .light-theme .distribution-chart-column-aggregation-header-hover, .light-theme .distribution-chart-column-aggregation-header-selected {
   background-color: #f2bf00 !important;
@@ -11543,6 +11601,10 @@ input[type=checkbox]:checked + label {
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   padding: 0px 5px;
+}
+
+.ng-select.ng-select-multiple .ng-select-container.ng-has-value {
+  padding-left: 5px;
 }
 
 .ng-select .ng-has-value .ng-placeholder, .ng-select.ng-select-opened .ng-placeholder {
