@@ -2587,10 +2587,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
         {
           this.values.variable = null;
           this.values.valueColumn = null;
+          this.values.horizAxisName = null;
         }
 
         this.values.vertAxisName = null;
-        this.values.horizAxisName = null;
 
         if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
         {
