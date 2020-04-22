@@ -1021,6 +1021,7 @@ toggle(){
   {
     let displayedColumns = _this.msfContainerRef.msfTableRef.tableOptions.displayedColumns;
     let keys, data, response, totalRecord;
+    let CSVseparator = "\t";
     let blob, link, url;
     let CSVdata = "";
     let i, j;
@@ -1090,7 +1091,7 @@ toggle(){
       CSVdata += column.columnLabel;
 
       if (i != displayedColumns.length - 1)
-        CSVdata += ";";
+        CSVdata += CSVseparator;
     }
 
     CSVdata += "\n";
@@ -1115,7 +1116,7 @@ toggle(){
             if (curitem == null || curitem == "")
             {
               if (k != displayedColumns.length - 1)
-                CSVdata += ";";
+                CSVdata += CSVseparator;
 
               continue;
             }
@@ -1148,7 +1149,7 @@ toggle(){
               CSVdata += curitem;
 
             if (k != displayedColumns.length - 1)
-              CSVdata += ";";
+              CSVdata += CSVseparator;
           }
 
           if (j != item.Flight.length - 1)
@@ -1166,7 +1167,7 @@ toggle(){
         if (curitem == null || curitem == "")
         {
           if (j != displayedColumns.length - 1)
-            CSVdata += ";";
+            CSVdata += CSVseparator;
 
           continue;
         }
@@ -1199,7 +1200,7 @@ toggle(){
           CSVdata += curitem;
 
         if (j != displayedColumns.length - 1)
-          CSVdata += ";";
+          CSVdata += CSVseparator;
       }
 
       if (i != data.length - 1)
