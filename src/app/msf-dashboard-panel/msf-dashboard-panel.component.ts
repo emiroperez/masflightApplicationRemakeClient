@@ -1324,7 +1324,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           legend.parent = chart.chartContainer;
           legend.background.fill = black;
           legend.background.fillOpacity = 0.25;
-          legend.width = 150;
+          legend.position = "right";
+          legend.maxWidth = undefined;
           legend.marginRight = am4core.percent (1);
           legend.padding (10, 15, 10, 15);
           legend.itemContainers.template.clickable = false;
