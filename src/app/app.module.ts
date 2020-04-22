@@ -150,8 +150,6 @@ import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admi
 import { DragScrollModule } from 'cdk-drag-scroll';
 import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
 import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
-import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
-import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
 import { AuthGuard } from './guards/auth.guard';
 import { MatTreeModule } from '@angular/material/tree';
 import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
@@ -350,8 +348,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfAddSharedDashboardComponent,
     MsfArgumentComponent,
     DialogArgumentPreviewComponent,
-    MsfDashboardPanelOptionPipe,
-    MsfDashboardPanelTypePipe,
     TwoFactorLoginDialogComponent,
     MaterialIconPickerComponent,
     CreateCustomerComponent,
