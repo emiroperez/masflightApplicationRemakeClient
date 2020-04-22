@@ -1150,6 +1150,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     return momentDate.toDate ();
   }
 
+  getHeatMapColor(value): am4core.Color
+  {
+    let selectedColor = this.values.thresholds[0].color;
+
+    if (this.values.thresholds.length > 1)
+    {
+      for (let threshold of this.values.thresholds)
+      {
+        if (value >= threshold.min)
+          selectedColor = threshold.color;
+      }
+    }
+
+    return am4core.color (selectedColor);
+  }
+
   makeChart(chartInfo, panelLoading): void
   {
     let theme = this.globals.theme;
@@ -1189,8 +1205,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        let polygonSeries, polygonTemplate, hoverState;
-        let minRange, maxRange, heatLegend, pow, home, zoomControl;
+        let polygonSeries, polygonTemplate;
+        let home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
@@ -1217,12 +1233,19 @@ export class MsfDashboardPanelComponent implements OnInit {
         polygonSeries.mapPolygons.template.stroke = black;
         polygonSeries.mapPolygons.template.strokeOpacity = 0.25;
         polygonSeries.mapPolygons.template.strokeWidth = 0.5;
-        polygonSeries.heatRules.push ({
-          property: "fill",
-          target: polygonSeries.mapPolygons.template,
-          min: am4core.color (this.paletteColors[0]),
-          max: am4core.color (this.paletteColors[1])
-        });
+        polygonTemplate = polygonSeries.mapPolygons.template;
+
+        if (this.values.thresholds.length >= 1)
+          polygonTemplate.propertyFields.fill = "fill";
+        else
+        {
+          polygonSeries.heatRules.push ({
+            property: "fill",
+            target: polygonSeries.mapPolygons.template,
+            min: am4core.color (this.paletteColors[0]),
+            max: am4core.color (this.paletteColors[1])
+          });
+        }
 
         // Exclude Antartica if the geography data is the world
         if (chart.geodata === am4geodata_worldLow)
@@ -1245,11 +1268,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.homeZoomLevel = 1;
 
         // Configure series tooltip
-        polygonTemplate = polygonSeries.mapPolygons.template;
         polygonTemplate.tooltipText = "{name}: {value}";
         polygonTemplate.nonScalingStroke = true;
         polygonTemplate.strokeWidth = 0.5;
-        hoverState = polygonTemplate.states.create ("hover");
 
         // Set the values for each polygon
         polygonSeries.data = [];
@@ -1258,7 +1279,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           polygonSeries.data.push ({
             id: item.id,
-            value: 0
+            value: 0,
+            fill: (this.values.thresholds.length ? am4core.color (this.values.thresholds[0].color) : null)
           });
         }
 
@@ -1274,55 +1296,92 @@ export class MsfDashboardPanelComponent implements OnInit {
             if (item.id.includes (resultInfo))
             {
               item.value = result[this.values.variable.id];
+
+              if (this.values.thresholds.length)
+                item.fill = this.getHeatMapColor (item.value);
+
               break;
             }
           }
         }
 
-        // Display heat legend
-        heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
-        heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-        heatLegend.series = polygonSeries;
-        heatLegend.align = "right";
-        heatLegend.valign = "bottom";
-        heatLegend.width = am4core.percent (20);
-        heatLegend.marginRight = am4core.percent (4);
-        heatLegend.dx -= 10;
-
-        // Set minimum and maximum value for the heat legend
-        heatLegend.minValue = 0;
-        heatLegend.maxValue = 10;
-
-        // For the maximum value, get the highest value of the result and calculate
-        // it by doing an division with the power of 10
-        for (let item of polygonSeries.data)
+        // Display legend
+        if (this.values.thresholds.length)
         {
-          if (heatLegend.maxValue < item.value)
-            heatLegend.maxValue = item.value;
-        }
+          let legend = new am4maps.Legend ();
+          legend.parent = chart.chartContainer;
+          legend.background.fill = black;
+          legend.background.fillOpacity = 0.15;
+          legend.width = 150;
+          legend.marginRight = am4core.percent (1);
+//          legend.dx -= 10;
+          legend.align = "right";
+          legend.valign = "bottom";
+          legend.data = [];
 
-        // Find the power of 10 from the maximum result
-        pow = 1;
-        while (pow <= heatLegend.maxValue)
-          pow = (pow << 3) + (pow << 1);
+          for (let i = this.values.thresholds.length - 1; i >= 0; i--)
+          {
+            let name;
 
-        pow /= 10; // notch down one power
-        heatLegend.maxValue = Math.ceil (heatLegend.maxValue / pow) * pow;
+            if (i != this.values.thresholds.length - 1)
+              name = this.values.thresholds[i].min + " - " + (this.values.thresholds[i + 1].min - 1);
+            else
+              name = this.values.thresholds[i].min + "+";
 
-        // Set minimum and maximum values for the heat legend
-        minRange = heatLegend.valueAxis.axisRanges.create ();
-        minRange.value = heatLegend.minValue;
-        minRange.label.text = "0";
-        maxRange = heatLegend.valueAxis.axisRanges.create ();
-        maxRange.value = heatLegend.maxValue;
-        maxRange.label.text = "" + maxRange.value;
-
-        // Hide internal heat legend value labels
-        heatLegend.valueAxis.renderer.labels.template.adapter.add ("text",
-          function (labelText) {
-            return "";
+            legend.data.push ({
+              name: name,
+              fill: am4core.color (this.values.thresholds[i].color)
+            });
           }
-        );
+        }
+        else
+        {
+          let minRange, maxRange, heatLegend, pow;
+
+          heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
+          heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          heatLegend.series = polygonSeries;
+          heatLegend.align = "right";
+          heatLegend.valign = "bottom";
+          heatLegend.width = am4core.percent (20);
+          heatLegend.marginRight = am4core.percent (1);
+          heatLegend.dx -= 10;
+
+          // Set minimum and maximum value for the heat legend
+          heatLegend.minValue = 0;
+          heatLegend.maxValue = 10;
+
+          // For the maximum value, get the highest value of the result and calculate
+          // it by doing an division with the power of 10
+          for (let item of polygonSeries.data)
+          {
+            if (heatLegend.maxValue < item.value)
+              heatLegend.maxValue = item.value;
+          }
+
+          // Find the power of 10 from the maximum result
+          pow = 1;
+          while (pow <= heatLegend.maxValue)
+            pow = (pow << 3) + (pow << 1);
+
+          pow /= 10; // notch down one power
+          heatLegend.maxValue = Math.ceil (heatLegend.maxValue / pow) * pow;
+
+          // Set minimum and maximum values for the heat legend
+          minRange = heatLegend.valueAxis.axisRanges.create ();
+          minRange.value = heatLegend.minValue;
+          minRange.label.text = "0";
+          maxRange = heatLegend.valueAxis.axisRanges.create ();
+          maxRange.value = heatLegend.maxValue;
+          maxRange.label.text = "" + maxRange.value;
+
+          // Hide internal heat legend value labels
+          heatLegend.valueAxis.renderer.labels.template.adapter.add ("text",
+            function (labelText) {
+              return "";
+            }
+          );
+        }
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -2554,7 +2613,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: JSON.stringify (this.values.thresholds),
         goals: null,
         startAtZero: null,
-        limitMode: null,
+        limitMode: this.values.limitMode,
         limitAmount: null,
         ordered: null,
         valueList: null,
@@ -2576,7 +2635,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
         startAtZero: null,
-        limitMode: null,
+        limitMode: this.values.limitMode,
         limitAmount: null,
         ordered: null,
         valueList: null,

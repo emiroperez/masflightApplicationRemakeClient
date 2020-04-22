@@ -2455,7 +2455,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             background-color: $primary-color
         .goals-thresholds-tab, .limit-results-tab, .color-picker-tab, .axis-names-tab
             background-color: $dashboard-threshold-background-color
-        .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item
+        .msf-dashboard-color-picker-threshold-input, .msf-dashboard-color-picker-threshold-item, .msf-dashboard-color-picker-goal-item, .msf-dashboard-color-item
             border-bottom: 1px solid $dashboard-panel-background-color
         .msf-dashboard-color-picker-grid-layout, .msf-dashboard-color-picker-layout
             .msf-dashboard-color-picker-selector-container
@@ -2472,6 +2472,8 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             background-image: url(assets/images/info-arrow.png)
         .menu-category-description
             border: 1px solid $primary-color
+        .color-picker-header
+            border-bottom: 1px solid $dashboard-panel-background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -5255,7 +5257,9 @@ mat-tab-group
         text-align: end !important
         margin-left: 0 !important
         margin-right: 10px !important
-        width: 50px !important
+        width: 60px !important
+    .msf-dashboard-color-picker-color-label
+        width: calc(100% - 155px) !important
     .msf-dashboard-color-picker-selector-container
         padding-bottom: 10px
         border-radius: 5px
@@ -5301,6 +5305,36 @@ mat-tab-group
 
 .goals-thresholds-tab
     height: 100%
+
+.msf-dashboard-color-picker-list-container
+    overflow-y: auto
+    height: calc(100% - 46px)
+    display: flex
+    flex-direction: column
+    width: 100%
+    .msf-dashboard-color-item
+        display: flex
+        flex-direction: row
+        width: calc(100% - 10px)
+        padding: 5px
+        padding-top: 10px
+        .color-index-label
+            display: flex
+            align-items: center
+            justify-content: center
+            width: 75px
+        .starting-value-input
+            width: calc(75% - 75px) !important
+            .mat-form-field-wrapper
+                padding-bottom: 0 !important
+        .msf-dashboard-color-picker-selector-container
+            justify-content: center
+            margin-top: -2px
+            width: 25%
+            padding-top: 0px
+            .msf-dashboard-color-picker-selector-label
+                margin-right: 0px
+                width: 40px
 
 .msf-dashboard-color-picker-threshold-container
     overflow-y: auto
@@ -12353,6 +12387,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     span
       font-weight: 550
 
+.color-picker-header
+    height: 40px
+    margin-left: 0
+    padding-left: 10px
+    margin-top: 0 !important
+
 .limit-radio-group
     margin-bottom: 20px !important
     .mat-radio-group
@@ -12376,7 +12416,18 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .theme-color-checkbox
     text-align: end
-    width: calc(100% - 160px)
+    margin-left: calc(100% - 290px)
+
+.heat-legend-checkbox
+    text-align: end
+    margin-left: calc(100% - 425px)
+
+.heat-legend-checkbox-disabled
+    margin-left: calc(100% - 365px) !important
+
+.heat-theme-color-checkbox
+    margin-left: 15px
+    width: 128px
 
 .no-info
     margin-top: 24px

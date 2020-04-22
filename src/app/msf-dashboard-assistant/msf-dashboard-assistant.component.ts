@@ -724,7 +724,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
       this.advConfigFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
+      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
       this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
@@ -742,13 +742,13 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
-      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR;
+      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR | ConfigFlags.CHARTCOLORS;
     }
 
-    if (this.values.limitMode != null)
+    if (this.values.limitMode == null)
       this.values.limitMode = 0;
 
-    if (this.values.limitAmount != null)
+    if (this.values.limitAmount == null)
       this.values.limitAmount = 10;
 
     if (this.values.paletteColors == null)
@@ -835,6 +835,44 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.values.paletteColors = [];
   }
 
+  toggleHeatLegend(): void
+  {
+    if (!this.values.limitMode)
+    {
+      this.values.limitMode = 1;
+      this.values.thresholds = [{
+        min: 0,
+        color: "#000000"
+      }];
+    }
+    else
+    {
+      this.values.limitMode = null;
+      this.values.thresholds = [];
+    }
+  }
+
+  addColor(): void
+  {
+    this.values.thresholds.push ({
+      min: 0,
+      color: "#000000"
+    });
+  }
+
+  removeColor(): void
+  {
+    if (this.values.thresholds.length == 1)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "At least one color must be available." }
+      });
+
+      return;
+    }
+
+    this.values.thresholds.pop ();
+  }
 
   checkPanelTypeSelection(): void
   {
@@ -901,7 +939,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         this.values.startAtZero = false;
     }
 
-    if (this.values.limitMode != null)
+    if (this.values.limitMode != null || (this.values.currentChartType.flags & ChartFlags.HEATMAP))
       this.values.limitMode = 0;
 
     if (this.values.limitAmount != null)
@@ -1127,7 +1165,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         this.configureAdditionalSettings ();
 
-        if (this.values.limitMode == null)
+        if (this.values.limitMode == null && !(this.values.currentChartType.flags & ChartFlags.HEATMAP))
           this.values.limitMode = 0;
 
         if (this.values.limitAmount == null)
