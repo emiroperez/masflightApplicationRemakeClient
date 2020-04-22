@@ -1313,7 +1313,12 @@ export class MsfDashboardPanelComponent implements OnInit {
           legend = new am4maps.Legend ();
 
           legendTitle = legend.createChild (am4core.Label);
-          legendTitle.text = this.values.variable.name;
+
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            legendTitle.text = this.values.horizAxisName;
+          else
+            legendTitle.text = this.values.variable.name;
+
           legendTitle.fontSize = 13;
 
           legend.parent = chart.chartContainer;
@@ -1350,7 +1355,12 @@ export class MsfDashboardPanelComponent implements OnInit {
           heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
 
           legendTitle = heatLegend.createChild (am4core.Label);
-          legendTitle.text = this.values.variable.name;
+
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            legendTitle.text = this.values.horizAxisName;
+          else
+            legendTitle.text = this.values.variable.name;
+
           legendTitle.align = "center";
           legendTitle.fontSize = 13;
 
@@ -2636,7 +2646,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         ordered: null,
         valueList: null,
         minValueRange: null,
-        maxValueRange: null
+        maxValueRange: null,
+        horizAxisName: this.values.horizAxisName
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)

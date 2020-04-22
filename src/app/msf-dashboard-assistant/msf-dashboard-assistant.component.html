@@ -839,6 +839,17 @@
                   </mat-form-field>
                 </div>
               </div>
+              <div class="msf-dashboard-chart-selector heatmap-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">list</mat-icon>
+                </div>
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Legend Title (optional)</mat-label>
+                    <input matInput autocomplete="off" [(ngModel)]="values.horizAxisName"/>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
         </div>
