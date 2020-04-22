@@ -1308,13 +1308,22 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Display legend
         if (this.values.thresholds.length)
         {
-          let legend = new am4maps.Legend ();
+          let legend, legendTitle;
+
+          legend = new am4maps.Legend ();
+
+          legendTitle = legend.createChild (am4core.Label);
+          legendTitle.text = this.values.variable.name;
+          legendTitle.fontSize = 13;
+
           legend.parent = chart.chartContainer;
           legend.background.fill = black;
-          legend.background.fillOpacity = 0.15;
+          legend.background.fillOpacity = 0.25;
           legend.width = 150;
           legend.marginRight = am4core.percent (1);
-//          legend.dx -= 10;
+          legend.padding (10, 15, 10, 15);
+          legend.itemContainers.template.clickable = false;
+          legend.itemContainers.template.focusable = false;
           legend.align = "right";
           legend.valign = "bottom";
           legend.data = [];
@@ -1336,16 +1345,25 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else
         {
-          let minRange, maxRange, heatLegend, pow;
+          let minRange, maxRange, heatLegend, pow, legendTitle;
 
           heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
+
+          legendTitle = heatLegend.createChild (am4core.Label);
+          legendTitle.text = this.values.variable.name;
+          legendTitle.align = "center";
+          legendTitle.fontSize = 13;
+
           heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
           heatLegend.series = polygonSeries;
+          heatLegend.background.fill = black;
+          heatLegend.background.fillOpacity = 0.25;
           heatLegend.align = "right";
           heatLegend.valign = "bottom";
           heatLegend.width = am4core.percent (20);
           heatLegend.marginRight = am4core.percent (1);
           heatLegend.dx -= 10;
+          heatLegend.padding (10, 20, 10, 15);
 
           // Set minimum and maximum value for the heat legend
           heatLegend.minValue = 0;
