@@ -68,8 +68,6 @@ export class AuthGuard implements CanActivate {
 
   logout(): void
   {
-    let _this = this;
-
     if (this.authService.getToken ())
     {
       this.authService.setUserLastLoginTime (this, this.authService.getUserIdFromToken (), this.logoutSuccess, this.redirectToLogin);
