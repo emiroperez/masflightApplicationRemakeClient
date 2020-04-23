@@ -1629,8 +1629,8 @@ toggle(){
       if (!this.tableLoading)
       {
         this.pageIndex = event;
+        this.pageI = event.pageIndex;
         this.globals.moreResultsBtn = true;
-        // this.pageIndex = event.pageIndex;
         this.moreResults();
         return event;
       }
