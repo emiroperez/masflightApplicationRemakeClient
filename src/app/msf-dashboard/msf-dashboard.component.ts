@@ -10,7 +10,6 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { MsfDashboardPanelComponent } from '../msf-dashboard-panel/msf-dashboard-panel.component';
-import * as am4core from "@amcharts/amcharts4/core";
 
 // dashboard gridstack constants
 const maxDashboardWidth = 12;
@@ -958,7 +957,7 @@ export class MsfDashboardComponent implements OnInit {
 
   ngOnDestroy(): void
   {
-  	this.mobileQuery.removeListener (this._mobileQueryListener);
+    this.mobileQuery.removeListener (this._mobileQueryListener);
   }
 
   keepContextMenu(event): void

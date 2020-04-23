@@ -281,8 +281,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnInit()
   {
-    this.displayLabel = this.panelWidth >= 5 ? true : false;
-
     // copy function list for use with the information panel
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
@@ -373,8 +371,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (changes['panelWidth'])
     {
-      this.displayLabel = this.panelWidth >= 5 ? true : false;
-
       if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.displayMapbox)
         this.msfMapRef.resizeMap();
 
@@ -2448,15 +2444,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   destroyChart(): void
   {
-    if (this.chart)
-    {
-      this.zone.runOutsideAngular (() => {
+    this.zone.runOutsideAngular (() => {
+      if (this.chart)
+      {
         this.imageSeries = null;
         this.lineSeries = null;
         this.shadowLineSeries = null;
         this.chart.dispose ();
-      });
-    }
+      }
+    });
   }
 
   ngAfterViewInit(): void
@@ -3249,7 +3245,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnDestroy()
   {
-    clearInterval (this.updateInterval);
+    if (this.updateInterval)
+      clearInterval (this.updateInterval);
 
     this.destroyChart ();
   }
@@ -6524,6 +6521,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return null;
 
     this.pageIndex = event;
+    this.pageI = event.pageIndex;
     this.moreResultsBtn = true;
     // this.pageIndex = event.pageIndex;
     this.moreTableResults();
