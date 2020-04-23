@@ -1,4 +1,4 @@
-<div id="msf-dashboard-element" #scrollContainer (touchstart)="disableContextMenu()" (touchend)="disableContextMenu()" (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
+<div #scrollContainer (touchstart)="disableContextMenu()" (touchend)="disableContextMenu()" (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': (!controlVariableDialogOpen && !displayContextMenu && !displayPanelContextMenu) }">
     <div [ngClass]="mobileQuery.matches ? (public ? 'msf-dashboard-header is-mobile' : 'msf-dashboard-header is-mobile msf-dashboard-header-private-mobile') : 'msf-dashboard-header'" *ngIf="currentDashboardMenu">
@@ -28,7 +28,7 @@
       </div>
     </div>
     <app-msf-dashboard-control-panel #dashboardControlPanel (updateAllPanels)="updateAllPanels($event)" (hideCategoryFromCharts)="hideCategoryFromCharts($event)" [controlPanelOpen]="controlPanelOpen" [controlVariablesAvailable]="controlVariablesAvailable" [controlPanelCategories]="controlPanelCategories"></app-msf-dashboard-control-panel>
-    <div class="msf-dashboard-gridstack" lb-gridstack width="12" [options]="gridStackOptions" (change)="onDashboardChange($event)" *ngIf="dashboardPanels.length">
+    <div class="msf-dashboard-gridstack" lb-gridstack width="12" [options]="gridStackOptions" (change)="onDashboardChange($event)">
       <div lb-gridstack-item *ngFor="let panel of dashboardPanels" [id]="panel.gridId" [x]="panel.x" [y]="panel.y" [width]="panel.width" [height]="panel.height" [auto-position]="panel.autoposition" [no-resize]="readOnlyDashboard" [no-move]="readOnlyDashboard" min-width="2" min-height="3" (touchend)="onRightClick($event, panel)" (contextmenu)="onRightClick($event, panel)">
         <div [ngClass]="panel.isLoading ? 'tab-show loading-panel' : 'tab-hide'" id="msf-dashboard-panel-loading" class="msf-dashboard-panel-loading">
           <div class="msf-dashboard-panel-button msf-dashboard-panel-loading-button" *ngIf="!globals.readOnlyDashboard">

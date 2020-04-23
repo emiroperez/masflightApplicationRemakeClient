@@ -57,10 +57,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
+    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
+    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
     { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
-    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
   ];
 
   functions: any[];
@@ -724,7 +725,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
       this.advConfigFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR | ConfigFlags.CHARTCOLORS;
+      this.advConfigFlags = ConfigFlags.HEATMAPCOLOR;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
       this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
@@ -742,13 +743,13 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
-      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR;
+      this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR | ConfigFlags.CHARTCOLORS;
     }
 
-    if (this.values.limitMode != null)
+    if (this.values.limitMode == null)
       this.values.limitMode = 0;
 
-    if (this.values.limitAmount != null)
+    if (this.values.limitAmount == null)
       this.values.limitAmount = 10;
 
     if (this.values.paletteColors == null)
@@ -835,6 +836,44 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.values.paletteColors = [];
   }
 
+  toggleHeatLegend(): void
+  {
+    if (!this.values.limitMode)
+    {
+      this.values.limitMode = 1;
+      this.values.thresholds = [{
+        min: 0,
+        color: "#000000"
+      }];
+    }
+    else
+    {
+      this.values.limitMode = null;
+      this.values.thresholds = [];
+    }
+  }
+
+  addColor(): void
+  {
+    this.values.thresholds.push ({
+      min: 0,
+      color: "#000000"
+    });
+  }
+
+  removeColor(): void
+  {
+    if (this.values.thresholds.length == 1)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "At least one color must be available." }
+      });
+
+      return;
+    }
+
+    this.values.thresholds.pop ();
+  }
 
   checkPanelTypeSelection(): void
   {
@@ -901,7 +940,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         this.values.startAtZero = false;
     }
 
-    if (this.values.limitMode != null)
+    if (this.values.limitMode != null || (this.values.currentChartType.flags & ChartFlags.HEATMAP))
       this.values.limitMode = 0;
 
     if (this.values.limitAmount != null)
@@ -1127,7 +1166,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         this.configureAdditionalSettings ();
 
-        if (this.values.limitMode == null)
+        if (this.values.limitMode == null && !(this.values.currentChartType.flags & ChartFlags.HEATMAP))
           this.values.limitMode = 0;
 
         if (this.values.limitAmount == null)
@@ -2549,10 +2588,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
         {
           this.values.variable = null;
           this.values.valueColumn = null;
+          this.values.horizAxisName = null;
         }
 
         this.values.vertAxisName = null;
-        this.values.horizAxisName = null;
 
         if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
         {

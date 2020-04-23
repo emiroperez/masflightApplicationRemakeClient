@@ -93,7 +93,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Advanced Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
     { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
     { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
-    { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE }
+    { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE },
+    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE }
   ];
 
   functions: any[] = [
@@ -280,8 +281,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnInit()
   {
-    this.displayLabel = this.panelWidth >= 5 ? true : false;
-
     // copy function list for use with the information panel
     this.values.infoFunc1 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
@@ -372,8 +371,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (changes['panelWidth'])
     {
-      this.displayLabel = this.panelWidth >= 5 ? true : false;
-
       if (this.values.currentChartType.flags & ChartFlags.MAPBOX && this.displayMapbox)
         this.msfMapRef.resizeMap();
 
@@ -1150,6 +1147,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     return momentDate.toDate ();
   }
 
+  getHeatMapColor(value): am4core.Color
+  {
+    let selectedColor = this.values.thresholds[0].color;
+
+    if (this.values.thresholds.length > 1)
+    {
+      for (let threshold of this.values.thresholds)
+      {
+        if (value >= threshold.min)
+          selectedColor = threshold.color;
+      }
+    }
+
+    return am4core.color (selectedColor);
+  }
+
   makeChart(chartInfo, panelLoading): void
   {
     let theme = this.globals.theme;
@@ -1184,13 +1197,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.zone.runOutsideAngular (() => {
       let chart, options;
 
-      am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
-
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       {
-        let polygonSeries, polygonTemplate, hoverState;
-        let minRange, maxRange, heatLegend, pow, home, zoomControl;
+        let polygonSeries, polygonTemplate, imageSeries;
+        let home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
 
@@ -1214,15 +1225,148 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Add map polygons
         polygonSeries = chart.series.push (new am4maps.MapPolygonSeries ());
         polygonSeries.useGeodata = true;
-        polygonSeries.mapPolygons.template.stroke = black;
         polygonSeries.mapPolygons.template.strokeOpacity = 0.25;
         polygonSeries.mapPolygons.template.strokeWidth = 0.5;
-        polygonSeries.heatRules.push ({
-          property: "fill",
-          target: polygonSeries.mapPolygons.template,
-          min: am4core.color (this.paletteColors[0]),
-          max: am4core.color (this.paletteColors[1])
-        });
+        polygonTemplate = polygonSeries.mapPolygons.template;
+
+        if (this.values.currentChartType.flags & ChartFlags.BUBBLE)
+        {
+          let imageTemplate, circle;
+
+          // Use normal map polygon colors
+          polygonSeries.mapPolygons.template.fill = Themes.AmCharts[theme].mapPolygonColor;
+          polygonSeries.mapPolygons.template.stroke = Themes.AmCharts[theme].mapPolygonStroke;
+          polygonSeries.calculateVisualCenter = true;
+
+          imageSeries = chart.series.push (new am4maps.MapImageSeries ());
+          imageSeries.dataFields.value = "value";
+
+          imageTemplate = imageSeries.mapImages.template;
+          imageTemplate.nonScaling = true;
+
+          circle = imageTemplate.createChild (am4core.Circle);
+          circle.tooltipText = "{name}: {value}";
+          circle.fillOpacity = 0.7;
+          circle.propertyFields.fill = "color";
+
+          imageSeries.heatRules.push ({
+            property: "radius",
+            target: circle,
+            min: 4,
+            max: 30,
+            dataField: "value"
+          });
+
+          if (!this.values.thresholds.length)
+          {
+            imageSeries.heatRules.push ({
+              property: "fill",
+              target: circle,
+              min: am4core.color (this.paletteColors[0]),
+              max: am4core.color (this.paletteColors[1])
+            });
+          }
+
+          // Set the values for each bubble
+          imageSeries.data = [];
+
+          for (let result of chartInfo)
+          {
+            for (let item of chart.geodata.features)
+            {
+              let resultInfo = result[this.values.valueColumn.id];
+
+              if (resultInfo == null)
+                continue;
+
+              if (item.id.includes (resultInfo))
+              {
+                item.value = result[this.values.variable.id];
+
+                imageSeries.data.push ({
+                  id: item.id,
+                  name: item.properties.name,
+                  value: item.value,
+                  color: (this.values.thresholds.length ? this.getHeatMapColor (item.value) : null)
+                });
+
+                break;
+              }
+            }
+          }
+
+          imageTemplate.adapter.add ("latitude", function (latitude, target) {
+            let polygon = polygonSeries.getPolygonById (target.dataItem.dataContext.id);
+
+            if (polygon)
+              return polygon.visualLatitude;
+
+            return latitude;
+          });
+
+          imageTemplate.adapter.add ("longitude", function (longitude, target) {
+            let polygon = polygonSeries.getPolygonById (target.dataItem.dataContext.id);
+
+            if (polygon)
+              return polygon.visualLongitude;
+
+            return longitude;
+          });
+        }
+        else
+        {
+          polygonSeries.mapPolygons.template.stroke = black;
+
+          if (this.values.thresholds.length >= 1)
+            polygonTemplate.propertyFields.fill = "fill";
+          else
+          {
+            polygonSeries.heatRules.push ({
+              property: "fill",
+              target: polygonSeries.mapPolygons.template,
+              min: am4core.color (this.paletteColors[0]),
+              max: am4core.color (this.paletteColors[1])
+            });
+          }
+
+          // Set the values for each polygon
+          polygonSeries.data = [];
+
+          for (let item of chart.geodata.features)
+          {
+            polygonSeries.data.push ({
+              id: item.id,
+              value: 0,
+              fill: (this.values.thresholds.length ? am4core.color (this.values.thresholds[0].color) : null)
+            });
+          }
+
+          for (let result of chartInfo)
+          {
+            for (let item of polygonSeries.data)
+            {
+              let resultInfo = result[this.values.valueColumn.id];
+
+              if (resultInfo == null)
+                continue;
+
+              if (item.id.includes (resultInfo))
+              {
+                item.value = result[this.values.variable.id];
+
+                if (this.values.thresholds.length)
+                  item.fill = this.getHeatMapColor (item.value);
+
+                break;
+              }
+            }
+          }
+
+          // Configure series tooltip
+          polygonTemplate.tooltipText = "{name}: {value}";
+          polygonTemplate.nonScalingStroke = true;
+          polygonTemplate.strokeWidth = 0.5;
+        }
 
         // Exclude Antartica if the geography data is the world
         if (chart.geodata === am4geodata_worldLow)
@@ -1244,85 +1388,119 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         chart.homeZoomLevel = 1;
 
-        // Configure series tooltip
-        polygonTemplate = polygonSeries.mapPolygons.template;
-        polygonTemplate.tooltipText = "{name}: {value}";
-        polygonTemplate.nonScalingStroke = true;
-        polygonTemplate.strokeWidth = 0.5;
-        hoverState = polygonTemplate.states.create ("hover");
-
-        // Set the values for each polygon
-        polygonSeries.data = [];
-
-        for (let item of chart.geodata.features)
+        // Display legend
+        if (this.values.thresholds.length)
         {
-          polygonSeries.data.push ({
-            id: item.id,
-            value: 0
-          });
-        }
+          let legend, legendTitle;
 
-        for (let result of chartInfo)
-        {
-          for (let item of polygonSeries.data)
+          legend = new am4maps.Legend ();
+
+          legendTitle = legend.createChild (am4core.Label);
+
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            legendTitle.text = this.values.horizAxisName;
+          else
+            legendTitle.text = this.values.variable.name;
+
+          legendTitle.fontSize = 13;
+
+          legend.parent = chart.chartContainer;
+          legend.background.fill = black;
+          legend.background.fillOpacity = 0.25;
+          legend.position = "right";
+          legend.maxWidth = undefined;
+          legend.marginRight = am4core.percent (1);
+          legend.padding (10, 15, 10, 15);
+          legend.itemContainers.template.clickable = false;
+          legend.itemContainers.template.focusable = false;
+          legend.align = "right";
+          legend.valign = "bottom";
+          legend.data = [];
+
+          for (let i = this.values.thresholds.length - 1; i >= 0; i--)
           {
-            let resultInfo = result[this.values.valueColumn.id];
+            let name;
 
-            if (resultInfo == null)
-              continue;
+            if (i != this.values.thresholds.length - 1)
+              name = this.values.thresholds[i].min + " - " + (this.values.thresholds[i + 1].min - 1);
+            else
+              name = this.values.thresholds[i].min + "+";
 
-            if (item.id.includes (resultInfo))
-            {
-              item.value = result[this.values.variable.id];
-              break;
-            }
+            legend.data.push ({
+              name: name,
+              fill: am4core.color (this.values.thresholds[i].color)
+            });
           }
         }
-
-        // Display heat legend
-        heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
-        heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-        heatLegend.series = polygonSeries;
-        heatLegend.align = "right";
-        heatLegend.valign = "bottom";
-        heatLegend.width = am4core.percent (20);
-        heatLegend.marginRight = am4core.percent (4);
-        heatLegend.dx -= 10;
-
-        // Set minimum and maximum value for the heat legend
-        heatLegend.minValue = 0;
-        heatLegend.maxValue = 10;
-
-        // For the maximum value, get the highest value of the result and calculate
-        // it by doing an division with the power of 10
-        for (let item of polygonSeries.data)
+        else
         {
-          if (heatLegend.maxValue < item.value)
-            heatLegend.maxValue = item.value;
-        }
+          let minRange, maxRange, heatLegend, pow, legendTitle, legendSeries;
 
-        // Find the power of 10 from the maximum result
-        pow = 1;
-        while (pow <= heatLegend.maxValue)
-          pow = (pow << 3) + (pow << 1);
+          if (this.values.currentChartType.flags & ChartFlags.BUBBLE)
+            legendSeries = imageSeries;
+          else
+            legendSeries = polygonSeries;
 
-        pow /= 10; // notch down one power
-        heatLegend.maxValue = Math.ceil (heatLegend.maxValue / pow) * pow;
+          heatLegend = chart.chartContainer.createChild (am4maps.HeatLegend);
 
-        // Set minimum and maximum values for the heat legend
-        minRange = heatLegend.valueAxis.axisRanges.create ();
-        minRange.value = heatLegend.minValue;
-        minRange.label.text = "0";
-        maxRange = heatLegend.valueAxis.axisRanges.create ();
-        maxRange.value = heatLegend.maxValue;
-        maxRange.label.text = "" + maxRange.value;
+          legendTitle = heatLegend.createChild (am4core.Label);
 
-        // Hide internal heat legend value labels
-        heatLegend.valueAxis.renderer.labels.template.adapter.add ("text",
-          function (labelText) {
-            return "";
+          if (this.values.horizAxisName && this.values.horizAxisName != "")
+            legendTitle.text = this.values.horizAxisName;
+          else
+            legendTitle.text = this.values.variable.name;
+
+          legendTitle.align = "center";
+          legendTitle.fontSize = 13;
+
+          heatLegend.valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          heatLegend.series = legendSeries;
+          heatLegend.background.fill = black;
+          heatLegend.background.fillOpacity = 0.25;
+          heatLegend.minColor = am4core.color (this.paletteColors[0]);
+          heatLegend.maxColor = am4core.color (this.paletteColors[1]);
+          heatLegend.align = "right";
+          heatLegend.valign = "bottom";
+          heatLegend.width = am4core.percent (20);
+          heatLegend.marginRight = am4core.percent (1);
+          heatLegend.dx -= 10;
+          heatLegend.padding (10, 20, 10, 15);
+
+          // Set minimum and maximum value for the heat legend
+          heatLegend.minValue = 0;
+          heatLegend.maxValue = 10;
+
+          // For the maximum value, get the highest value of the result and calculate
+          // it by doing an division with the power of 10
+          for (let item of legendSeries.data)
+          {
+            if (heatLegend.maxValue < item.value)
+              heatLegend.maxValue = item.value;
           }
-        );
+
+          // Find the power of 10 from the maximum result
+          pow = 1;
+          while (pow <= heatLegend.maxValue)
+            pow = (pow << 3) + (pow << 1);
+
+          pow /= 10; // notch down one power
+          heatLegend.maxValue = Math.ceil (heatLegend.maxValue / pow) * pow;
+
+          // Set minimum and maximum values for the heat legend
+          minRange = heatLegend.valueAxis.axisRanges.create ();
+          minRange.value = heatLegend.minValue;
+          minRange.label.text = "0";
+          maxRange = heatLegend.valueAxis.axisRanges.create ();
+          maxRange.value = heatLegend.maxValue;
+          maxRange.label.text = "" + maxRange.value;
+
+          // Hide internal heat legend value labels
+          heatLegend.valueAxis.renderer.labels.template.adapter.add ("text",
+            function (labelText) {
+              return "";
+            }
+          );
+        }
 
         // Add zoom control buttons
         zoomControl = new am4maps.ZoomControl ();
@@ -2195,8 +2373,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       this.chart = chart;
 
-      am4core.options.viewportTarget = null;
-
       // build interval table for advanced charts
       if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
       {
@@ -2268,15 +2444,15 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   destroyChart(): void
   {
-    if (this.chart)
-    {
-      this.zone.runOutsideAngular (() => {
+    this.zone.runOutsideAngular (() => {
+      if (this.chart)
+      {
         this.imageSeries = null;
         this.lineSeries = null;
         this.shadowLineSeries = null;
         this.chart.dispose ();
-      });
-    }
+      }
+    });
   }
 
   ngAfterViewInit(): void
@@ -2554,12 +2730,13 @@ export class MsfDashboardPanelComponent implements OnInit {
         thresholds: JSON.stringify (this.values.thresholds),
         goals: null,
         startAtZero: null,
-        limitMode: null,
+        limitMode: this.values.limitMode,
         limitAmount: null,
         ordered: null,
         valueList: null,
         minValueRange: null,
-        maxValueRange: null
+        maxValueRange: null,
+        horizAxisName: this.values.horizAxisName
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -2576,7 +2753,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         lastestResponse: JSON.stringify (this.values.lastestResponse),
         analysis: this.msfMapRef.mapTypes.indexOf (this.values.style),
         startAtZero: null,
-        limitMode: null,
+        limitMode: this.values.limitMode,
         limitAmount: null,
         ordered: null,
         valueList: null,
@@ -3068,7 +3245,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   ngOnDestroy()
   {
-    clearInterval (this.updateInterval);
+    if (this.updateInterval)
+      clearInterval (this.updateInterval);
 
     this.destroyChart ();
   }
@@ -4152,10 +4330,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           this.values.variable = null;
           this.values.valueColumn = null;
+          this.values.horizAxisName = null;
         }
 
         this.values.vertAxisName = null;
-        this.values.horizAxisName = null;
 
         if (!(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
         {
@@ -6343,6 +6521,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       return null;
 
     this.pageIndex = event;
+    this.pageI = event.pageIndex;
     this.moreResultsBtn = true;
     // this.pageIndex = event.pageIndex;
     this.moreTableResults();

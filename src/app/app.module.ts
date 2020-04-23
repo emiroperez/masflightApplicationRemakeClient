@@ -150,8 +150,6 @@ import { AdminArgumentsCategoryComponent } from './admin-arguments-category/admi
 import { DragScrollModule } from 'cdk-drag-scroll';
 import { MsfArgumentComponent } from './msf-argument/msf-argument.component';
 import { DialogArgumentPreviewComponent } from './dialog-argument-preview/dialog-argument-preview.component';
-import { MsfDashboardPanelOptionPipe } from './msf-dashboard-panel/msf-dashboard-panel-option-pipe';
-import { MsfDashboardPanelTypePipe } from './msf-dashboard-panel/msf-dashboard-panel-type-pipe';
 import { AuthGuard } from './guards/auth.guard';
 import { MatTreeModule } from '@angular/material/tree';
 import { TwoFactorLoginDialogComponent } from './two-factor-login-dialog/two-factor-login-dialog.component';
@@ -213,6 +211,7 @@ import { PublicizeDashboardDialogComponent } from './publicize-dashboard-dialog/
 import { UrlMessageComponent } from './url-message/url-message.component';
 import { MsfConfirmationDialogDatalakeComponent } from './msf-confirmation-dialog-datalake/msf-confirmation-dialog-datalake.component';
 import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
+import { ExportCsvDialogComponent } from './export-csv-dialog/export-csv-dialog.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -350,8 +349,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfAddSharedDashboardComponent,
     MsfArgumentComponent,
     DialogArgumentPreviewComponent,
-    MsfDashboardPanelOptionPipe,
-    MsfDashboardPanelTypePipe,
     TwoFactorLoginDialogComponent,
     MaterialIconPickerComponent,
     CreateCustomerComponent,
@@ -402,7 +399,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PublicizeDashboardDialogComponent,
     UrlMessageComponent,
     MsfConfirmationDialogDatalakeComponent,
-    MsfChartPreviewComponent
+    MsfChartPreviewComponent,
+    ExportCsvDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -509,7 +507,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PublicizeDashboardDialogComponent,
     UrlMessageComponent,
     PublicizeDashboardDialogComponent,
-    MsfChartPreviewComponent
+    MsfChartPreviewComponent,
+    ExportCsvDialogComponent
   ]
 })
 export class AppModule { }

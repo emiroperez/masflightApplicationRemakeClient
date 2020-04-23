@@ -839,6 +839,17 @@
                   </mat-form-field>
                 </div>
               </div>
+              <div class="msf-dashboard-chart-selector heatmap-selector">
+                <div class="msf-dashboard-chart-analysis-title">
+                  <mat-icon class="msf-dashboard-chart-icon">list</mat-icon>
+                </div>
+                <div class="datalake-search-input panel-description-input msf-dashboard-chart-op-container">
+                  <mat-form-field class="msf-full-width config-panel-form-field" appearance="outline">
+                    <mat-label>Legend Title (optional)</mat-label>
+                    <input matInput autocomplete="off" [(ngModel)]="values.horizAxisName"/>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -885,31 +896,77 @@
         <div class="msf-dashboard-panel-step-item">
           <div class="msf-dashboard-assistant-tab-group msf-dashboard-assistant-edit-tab-group">
             <mat-tab-group>
+              <mat-tab label="Color Picker" *ngIf="hasHeatMapColorSettings()">
+                <div class="color-picker-tab">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label color-picker-header">
+                    <mat-icon class="msf-dashboard-chart-icon" aria-label="Color Picker">palette</mat-icon>
+                    <span class="msf-dashboard-addmenu-item-text">Select Palette Colors</span>
+                    <ng-container *ngIf="!values.limitMode">
+                      <mat-checkbox class="heat-legend-checkbox" color="primary" [checked]="!values.limitMode" (change)="toggleHeatLegend()">
+                        <ng-container>Use Heat Legend</ng-container>
+                      </mat-checkbox>
+                      <mat-checkbox class="heat-theme-color-checkbox" color="primary" [(ngModel)]="useThemeColors" (ngModelChange)="toggleThemeColors()">
+                        <ng-container>Use Theme Colors</ng-container>
+                      </mat-checkbox>
+                    </ng-container>
+                    <ng-container *ngIf="values.limitMode">
+                      <mat-checkbox class="heat-legend-checkbox heat-legend-checkbox-disabled" color="primary" [checked]="!values.limitMode" (change)="toggleHeatLegend()">
+                        <ng-container>Use Heat Legend</ng-container>
+                      </mat-checkbox>
+                      <div class="goal-thresholds-buttons" *ngIf="values.limitMode">
+                        <button mat-icon-button (click)="addColor()">
+                          <mat-icon aria-label="add">add_circle</mat-icon>
+                        </button>
+                        {{values.thresholds.length}}
+                        <button mat-icon-button (click)="removeColor()">
+                          <mat-icon aria-label="delete">remove_circle</mat-icon>
+                        </button>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <ng-container *ngIf="values.paletteColors && values.paletteColors.length">
+                    <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="!values.limitMode">
+                      <div class="msf-dashboard-color-picker-layout">
+                        <div class="msf-dashboard-color-picker-selector-container">
+                          <span class="msf-dashboard-color-picker-selector-label">Min</span>
+                          <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
+                          <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
+                        </div>
+                        <div class="msf-dashboard-color-picker-selector-container">
+                          <span class="msf-dashboard-color-picker-selector-label">Max</span>
+                          <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[1]" [style.background]="values.paletteColors[1]" [(cpOutputFormat)]="hex" />
+                          <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[1]}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="msf-dashboard-color-picker-list-container" *ngIf="values.limitMode">
+                    <div class="msf-dashboard-color-item datalake-search-input" *ngFor="let threshold of values.thresholds; let i = index; trackBy: trackColor">
+                      <div class="color-index-label">Color {{i}}</div>
+                      <mat-form-field class="starting-value-input datalake-search-formfield config-panel-form-field panel-formfield" appearance="outline">
+                        <mat-label>Starting Value</mat-label>
+                        <input matInput autocomplete="off" type="numeric" pattern="[0-9]*" [(ngModel)]="threshold.min" />
+                      </mat-form-field>
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Color</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="threshold.color" [style.background]="threshold.color" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{threshold.color}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
               <mat-tab label="Color Picker" *ngIf="hasColorSettings()">
                 <div class="color-picker-tab">
-                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label">
+                  <div class="msf-dashboard-addmenu-icon-item msf-dashboard-additional-settings-title limit-results-label color-picker-header">
                     <mat-icon class="msf-dashboard-chart-icon" aria-label="Color Picker">palette</mat-icon>
-                    <span class="msf-dashboard-addmenu-item-text" *ngIf="hasHeatMapColorSettings()">Select Palette Color</span>
-                    <span class="msf-dashboard-addmenu-item-text" *ngIf="!hasHeatMapColorSettings()">Select Palette Colors</span>
-                    <mat-checkbox class="theme-color-checkbox" color="primary" [(ngModel)]="useThemeColors" (click)="toggleThemeColors()">
-                      <ng-container *ngIf="hasHeatMapColorSettings()">Use Theme Color</ng-container>
-                      <ng-container *ngIf="!hasHeatMapColorSettings()">Use Theme Colors</ng-container>
+                    <span class="msf-dashboard-addmenu-item-text">Select Palette Colors</span>
+                    <mat-checkbox class="theme-color-checkbox" color="primary" [(ngModel)]="useThemeColors" (ngModelChange)="toggleThemeColors()">
+                      <ng-container>Use Theme Colors</ng-container>
                     </mat-checkbox>
                   </div>
                   <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length">
-                    <div class="msf-dashboard-color-picker-layout" *ngIf="hasHeatMapColorSettings()">
-                      <div class="msf-dashboard-color-picker-selector-container">
-                        <span class="msf-dashboard-color-picker-selector-label">Min</span>
-                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
-                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
-                      </div>
-                      <div class="msf-dashboard-color-picker-selector-container">
-                        <span class="msf-dashboard-color-picker-selector-label">Max</span>
-                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[1]" [style.background]="values.paletteColors[1]" [(cpOutputFormat)]="hex" />
-                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[1]}}</span>
-                      </div>
-                    </div>
-                    <div class="msf-dashboard-color-picker-grid-layout" *ngIf="!hasHeatMapColorSettings()">
+                    <div class="msf-dashboard-color-picker-grid-layout">
                       <div *ngFor="let color of values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
                         <span class="msf-dashboard-color-picker-selector-label">Color {{i + 1}}</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[i]" [style.background]="values.paletteColors[i]" [(cpOutputFormat)]="hex" />
