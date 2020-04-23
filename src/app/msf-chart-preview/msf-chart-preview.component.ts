@@ -347,7 +347,7 @@ export class MsfChartPreviewComponent {
         chart.fontSize = 10;
 
         // Create the series
-        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null, false, this.paletteColors);
+        this.data.currentChartType.createSeries (this.data, false, chart, chartInfo, null, theme, null, this.paletteColors);
 
         if (this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -761,7 +761,7 @@ export class MsfChartPreviewComponent {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, false, this.paletteColors);
+            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors);
           }
         }
         else
@@ -956,7 +956,7 @@ export class MsfChartPreviewComponent {
                 }
               }
 
-              this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, false, this.paletteColors);
+              this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
             }
           }
           else
@@ -993,7 +993,7 @@ export class MsfChartPreviewComponent {
               }
             }
 
-            this.data.currentChartType.createSeries(this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, false, this.paletteColors);
+            this.data.currentChartType.createSeries(this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
           }
         }
 
