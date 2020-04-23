@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit, Input, SimpleChanges, ViewChild, ChangeDetectorRef, ViewChildren, QueryList, isDevMode } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 import { Globals } from '../globals/Globals';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
@@ -9,7 +10,7 @@ import { ChartFlags } from '../msf-dashboard-panel/msf-dashboard-chartflags';
 import { MsfDashboardControlPanelComponent } from '../msf-dashboard-control-panel/msf-dashboard-control-panel.component';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { MsfDashboardPanelComponent } from '../msf-dashboard-panel/msf-dashboard-panel.component';
-import { MediaMatcher } from '@angular/cdk/layout';
+import * as am4core from "@amcharts/amcharts4/core";
 
 // dashboard gridstack constants
 const maxDashboardWidth = 12;
@@ -364,8 +365,11 @@ export class MsfDashboardComponent implements OnInit {
       });
     }
 
-    for (let dashboardPanel of dashboardPanels)
+//    for (let dashboardPanel of dashboardPanels)
+    for (let i = dashboardPanels.length - 1; i >= 0; i--)
     {
+      let dashboardPanel = dashboardPanels[i];
+
       dashboardPanelIds.push (dashboardPanel.id);
 
       if (legacyDashboard)
