@@ -60,7 +60,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
-    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'heatmap.png', allowedInAdvancedMode: false },
+    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
     { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
   ];
 
