@@ -57,10 +57,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
+    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
+    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Map Tracker', flags: ChartFlags.MAP | ChartFlags.MAPBOX, image: 'mapbox.png', allowedInAdvancedMode: false }
-    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
   ];
 
   functions: any[];

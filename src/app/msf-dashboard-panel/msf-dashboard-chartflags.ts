@@ -20,6 +20,7 @@ export enum ChartFlags
   MAPBOX       = 0x00004000,
   DYNTABLE     = 0x00008000,
   ADVANCED     = 0x00010000,
-  BULLET       = 0x00020000  
-  // ACTIONLIST   = 0x00040000
+  BULLET       = 0x00020000,
+  ACTIONLIST   = 0x00040000,
+  BUBBLE       = 0x00080000
 };
