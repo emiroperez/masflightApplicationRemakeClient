@@ -25,6 +25,7 @@ import { AirportSelection } from '../commons/AirportSelection';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { DashboardCategory } from '../model/DashboardCategory';
 import { MsfPartialSummariesComponent } from '../msf-partial-summaries/msf-partial-summaries.component';
+import { ExportCsvDialogComponent } from '../export-csv-dialog/export-csv-dialog.component';
 
 @Component({
   selector: 'app-application',
@@ -53,6 +54,7 @@ export class ApplicationComponent implements OnInit {
   userName : any;
   partialSummaryValues: any = null;
   dynamicTableValues: any = null;
+  CSVseparator: string = "\t";
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -1009,19 +1011,32 @@ toggle(){
 
   exportToCSV(): void
   {
-    this.globals.isLoading = true;
+    let dialogRef = this.dialog.open (ExportCsvDialogComponent,
+    {
+      width: '480px',
+      panelClass: 'msf-dashboard-control-variables-dialog',
+      autoFocus: false
+    });
 
-    this.authService.removeTokenResultTable();
-    let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
+    dialogRef.afterClosed ().subscribe ((result) => {
+      if (!result)
+        return;
 
-    this.appService.getDataTableSourceForCSV (this, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns, this.prepareDataForCSV, this.CSVFail);
+      this.CSVseparator = result;
+      this.globals.isLoading = true;
+
+      this.authService.removeTokenResultTable ();
+      let tokenResultTable = this.authService.getTokenResultTable () ? this.authService.getTokenResultTable () : "";
+
+      this.appService.getDataTableSourceForCSV (this, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns, this.prepareDataForCSV, this.CSVFail);
+    });
   }
 
   prepareDataForCSV(_this, result): void
   {
     let displayedColumns = _this.msfContainerRef.msfTableRef.tableOptions.displayedColumns;
     let keys, data, response, totalRecord;
-    let CSVseparator = "\t";
+    let CSVseparator = _this.CSVseparator;
     let blob, link, url;
     let CSVdata = "";
     let i, j;

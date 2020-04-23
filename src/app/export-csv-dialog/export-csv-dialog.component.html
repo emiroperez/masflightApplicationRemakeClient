@@ -1,0 +1,27 @@
+<div class="msf-dashboard-info-function-title">
+  <div class="msf-dashboard-control-variables-close-button">
+    <mat-icon class="msf-dashboard-close-icon" aria-label="close" (click)="exportToCSV(false)">close</mat-icon>
+  </div>
+  Export CSV
+</div>
+<div class="msf-dashboard-panel-sub-container-row msf-edit-dashboard-container">
+  <div class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
+    Which separator you want to use:
+  </div>
+  <div class="msf-dashboard-panel-sub-container-row msf-shared-dashboard-container">
+    <mat-radio-group [(ngModel)]="customSeparator" (ngModelChange)="setSeparator($event)">
+      <mat-radio-button class="cancels-checkbox" [value]="false">Tab separator</mat-radio-button>
+      <mat-radio-button class="cancels-checkbox" [value]="true">Custom separator</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="msf-dashboard-function-measure dashboard-config-title csv-separator-input-container" *ngIf="customSeparator">
+    <mat-form-field class="csv-separator-input">
+      <input matInput autocomplete="off" type="text" maxlength="1" placeholder="CSV Separator" [(ngModel)]="separator" />
+    </mat-form-field>
+  </div>
+</div>
+<div class="msf-dashboard-control-variables-button export-csv-buttons">
+  <button mat-flat-button [disabled]="!separator" [ngClass]="{ 'flat-button': separator, 'flat-button-disabled': !separator }" (click)="exportToCSV(true)">OK</button>
+  <span class="button-separator"></span>
+  <button mat-flat-button class="flat-button" (click)="exportToCSV(false)">Cancel</button>
+</div>
