@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MatDialog } from '@angular/material';
@@ -112,7 +112,7 @@ export class AuthGuard implements CanActivate {
   {
     if (!this.authService.isTokenExpired ())
     {
-      if (!this.inactivityTimeout)
+      if (!this.inactivityTimeout && !isDevMode ())
       {
         let _this = this;
 
@@ -138,8 +138,6 @@ export class AuthGuard implements CanActivate {
 
       if (!this.sessionInterval)
       {
-        let _this = this;
-
         // poll each 5 seconds while checking the status of the token
         this.sessionInterval = setInterval (() => {
           if (!this.authService.isTokenExpired ())
