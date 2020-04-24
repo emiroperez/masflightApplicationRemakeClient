@@ -443,14 +443,13 @@ export class MsfDashboardPanelComponent implements OnInit {
   }
 
   // Function to create horizontal column chart series
-  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): void
+  createHorizColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): void
   {
     // Set up series
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
     series.name = item.valueAxis;
     series.dataFields.valueX = item.valueField;
-    series.sequencedInterpolation = true;
 
     // Parse date if available
     if (parseDate)
@@ -511,20 +510,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create vertical column chart series
-  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
+  createVertColumnSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
 
     if (parseDate)
     {
@@ -582,21 +577,17 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create line chart series
-  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
+  createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
 
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
     series.tooltip.pointerOrientation = "horizontal";
@@ -691,14 +682,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create simple line chart series
-  createSimpleLineSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading, paletteColors): any
+  createSimpleLineSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, paletteColors): any
   {
     // Set up series
     let series = chart.series.push (new am4charts.LineSeries ());
@@ -714,7 +702,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dataFields.valueY = item.valueField;
     }
 
-    series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
     series.tooltip.pointerOrientation = "horizontal";
@@ -810,14 +797,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create simple vertical column chart series
-  createSimpleVertColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading, paletteColors): any
+  createSimpleVertColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
@@ -861,6 +845,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     series.columns.template.strokeWidth = 0;
+    series.sequencedInterpolation = true;
 
     // Set colors
     if (simpleValue && simpleValue.item.columnType === "number")
@@ -901,14 +886,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create simple horizontal column chart series
-  createSimpleHorizColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, panelLoading, paletteColors): any
+  createSimpleHorizColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, paletteColors): any
   {
     let series = chart.series.push (new am4charts.ColumnSeries ());
 
@@ -952,6 +934,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     series.columns.template.strokeWidth = 0;
+    series.sequencedInterpolation = true;
 
     if (simpleValue && simpleValue.item.columnType === "number")
     {
@@ -990,14 +973,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create pie chart series
-  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
+  createPieSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series, colorSet;
 
@@ -1056,14 +1036,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
   // Function to create funnel chart series
-  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, panelLoading, paletteColors): any
+  createFunnelSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
     let series, colorSet;
 
@@ -1114,9 +1091,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
-    if (panelLoading)
-      series.showOnInit = false;
-
     return series;
   }
 
@@ -1163,7 +1137,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     return am4core.color (selectedColor);
   }
 
-  makeChart(chartInfo, panelLoading): void
+  makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
 
@@ -1642,7 +1616,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.fontSize = 10;
 
         // Create the series
-        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null, panelLoading, this.paletteColors));
+        this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, false, chart, chartInfo, null, theme, null, this.paletteColors));
 
         if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         {
@@ -2068,7 +2042,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, panelLoading, this.paletteColors));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors));
           }
         }
         else
@@ -2263,7 +2237,7 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
-              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, panelLoading, this.paletteColors));
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors));
             }
           }
           else
@@ -2300,7 +2274,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, 0, outputFormat, panelLoading, this.paletteColors));
+            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors));
           }
         }
 
@@ -2491,7 +2465,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
       {
         this.values.chartGenerated = true;
-        this.makeChart (this.values.lastestResponse, true);
+        this.makeChart (this.values.lastestResponse);
       }
     }
 
@@ -3839,7 +3813,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (_this.values.lastestResponse, false);
+      _this.makeChart (_this.values.lastestResponse);
       _this.configureAnchoredControlVariables ();
   
       _this.stopUpdateInterval ();
@@ -3868,7 +3842,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (_this.values.lastestResponse, false);
+      _this.makeChart (_this.values.lastestResponse);
       _this.configureAnchoredControlVariables ();
   
       _this.stopUpdateInterval ();
@@ -3963,7 +3937,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       _this.values.isLoading = false;
 
-      _this.makeChart (data, false);
+      _this.makeChart (data);
       _this.configureAnchoredControlVariables ();
   
       _this.stopUpdateInterval ();
@@ -6696,6 +6670,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       let city, latOrigin, lonOrigin, latDest, lonDest;
 
+      latOrigin = parseFloat (record.latOrigin);
+      lonOrigin = parseFloat (record.lonOrigin);
+      latDest = parseFloat (record.latDest);
+      lonDest = parseFloat (record.lonDest);
+
       if (latOrigin === "NULL" || lonOrigin === "NULL")
       {
         console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
@@ -6707,11 +6686,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
         continue;
       }
-
-      latOrigin = parseFloat (record.latOrigin);
-      lonOrigin = parseFloat (record.lonOrigin);
-      latDest = parseFloat (record.latDest);
-      lonDest = parseFloat (record.lonDest);
 
       if (cities.indexOf (record.origin) == -1)
       {

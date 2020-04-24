@@ -4,6 +4,7 @@ export class AmChartConfig
 {
     public static Init(): void
     {
+        am4core.options.minPolylineStep = 5;
         am4core.options.queue = true;
     }
 }

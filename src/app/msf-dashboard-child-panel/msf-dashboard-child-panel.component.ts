@@ -123,7 +123,6 @@ export class MsfDashboardChildPanelComponent {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
     series.dataFields.valueX = item.valueField;
-    series.sequencedInterpolation = true;
 
     // Parse date if available
     if (parseDate)
@@ -158,7 +157,6 @@ export class MsfDashboardChildPanelComponent {
     let series = chart.series.push (new am4charts.ColumnSeries ());
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
 
     if (parseDate)
     {
@@ -192,7 +190,6 @@ export class MsfDashboardChildPanelComponent {
     let series = chart.series.push (new am4charts.LineSeries ());
     series.name = item.valueAxis;
     series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
     series.tooltip.pointerOrientation = "horizontal";
@@ -252,7 +249,6 @@ export class MsfDashboardChildPanelComponent {
     let series = chart.series.push (new am4charts.LineSeries ());
     series.name = item.valueField;
     series.dataFields.valueY = item.valueField;
-    series.sequencedInterpolation = true;
     series.strokeWidth = 2;
     series.minBulletDistance = 10;
     series.tooltip.pointerOrientation = "horizontal";
@@ -372,6 +368,7 @@ export class MsfDashboardChildPanelComponent {
     }
 
     series.columns.template.strokeWidth = 0;
+    series.sequencedInterpolation = true;
 
     series.stacked = stacked;
 
@@ -409,6 +406,7 @@ export class MsfDashboardChildPanelComponent {
     }
 
     series.columns.template.strokeWidth = 0;
+    series.sequencedInterpolation = true;
 
     series.stacked = stacked;
 
