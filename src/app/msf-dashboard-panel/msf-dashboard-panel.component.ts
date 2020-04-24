@@ -6670,6 +6670,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       let city, latOrigin, lonOrigin, latDest, lonDest;
 
+      latOrigin = parseFloat (record.latOrigin);
+      lonOrigin = parseFloat (record.lonOrigin);
+      latDest = parseFloat (record.latDest);
+      lonDest = parseFloat (record.lonDest);
+
       if (latOrigin === "NULL" || lonOrigin === "NULL")
       {
         console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
@@ -6681,11 +6686,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
         continue;
       }
-
-      latOrigin = parseFloat (record.latOrigin);
-      lonOrigin = parseFloat (record.lonOrigin);
-      latDest = parseFloat (record.latDest);
-      lonDest = parseFloat (record.lonDest);
 
       if (cities.indexOf (record.origin) == -1)
       {
