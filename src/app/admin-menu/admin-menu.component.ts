@@ -999,6 +999,7 @@ export class ExampleFlatNode {
   createdMetas: any[];
   createdDrillDowns: any[];
   serverSorting: number;
+  showAdmin: number;
 }
 
 @Component({
@@ -1046,6 +1047,7 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     flatNode.welcome = node.welcome;
     flatNode.createdMetas = node.createdMetas;
     flatNode.serverSorting = node.serverSorting;
+    flatNode.showAdmin = node.showAdmin;
     flatNode.createdDrillDowns = node.createdDrillDowns;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
@@ -1267,6 +1269,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   setChangeSorting(node) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.serverSorting = node.serverSorting? 1:0 ;
+    this.dataChange.next(this.data);
+  }
+
+  setChangeShowAdmin(node) {
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.showAdmin = node.showAdmin? 1:0 ;
     this.dataChange.next(this.data);
   }
 
@@ -1564,7 +1572,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       "isRoot": false,
       "applicationId": this.globals.currentApplication.id,
       "metaData": 1,
-      "serverSorting": 0
+      "serverSorting": 0,
+      "showAdmin": 0
     };
     if (this.optionSelected.label != null) {
       this.optionSelected.isOpened = true;
@@ -2356,7 +2365,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         metaData: 1,
         createdMetas: [],
         createdDrillDowns: [],
-        serverSorting: 0
+        serverSorting: 0,
+        showAdmin: 0
       } as any);
       this.dataChange.next(this.data);
     } else {
@@ -2374,7 +2384,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         typeOption: "0",
         applicationId: this.globals.currentApplication.id,
         metaData: 1,
-        serverSorting: 0
+        serverSorting: 0,
+        showAdmin: 0
       } as any);
       this.dataChange.next(this.data);
     }

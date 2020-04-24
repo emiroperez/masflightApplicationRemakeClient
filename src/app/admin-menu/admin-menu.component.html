@@ -106,6 +106,7 @@
                                     <div class="admin-menu-header-container">
                                         <h2 class="title-section">Menu Option Configuration</h2>
                                         <div class="admin-menu-option-checkbox" *ngIf="globals.currentApplication.id != 5">
+                                            <mat-checkbox color="primary" [(ngModel)]="optionSelected.showAdmin" (change)="setChangeShowAdmin(optionSelected)">Only Administrators</mat-checkbox>
                                             <mat-checkbox class="admin-checkboxes" color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
                                         </div>
                                     </div>

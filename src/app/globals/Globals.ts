@@ -48,7 +48,7 @@ export class Globals {
   moreResultsBtn : boolean = true;
   subMoreResultsBtn : boolean = true;
   currentApplication : any;
-  currentDashboardMenu : any;
+  currentDashboardMenu : any = null;
   currentDashboardLocation : any;
   readOnlyDashboard : SharedDashboardMenu = null;
   readOnlyDashboardPlan : boolean = false;
@@ -123,8 +123,8 @@ export class Globals {
 
     if (isDevMode ())
     {
-      // this.baseUrl = "http://localhost:8887";
-      this.baseUrl = "http://pulse.globaleagle.com:8887";
+      this.baseUrl = "http://localhost:8882";
+      // this.baseUrl = "http://pulse.globaleagle.com:8887";
       this.baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
       this.popupUrl = "http://pulse.globaleagle.com:8881";
     }

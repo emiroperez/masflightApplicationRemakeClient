@@ -936,4 +936,9 @@ export class ApplicationService {
     let url = _this.globals.baseUrl + "/checkPublicDashboardName?name=" + dashboardName;
     this.http.post (_this, url, null, handlerSuccess, handlerError);
   }
+
+  loadActionListForDashboard(_this,panelId, handlerSuccess, handlerError) {
+    let url = this.host + "/getActionListTreeForDashboard?panelId=" + panelId;
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
 }
