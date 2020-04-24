@@ -123,8 +123,8 @@ export class Globals {
 
     if (isDevMode ())
     {
-      this.baseUrl = "http://localhost:8882";
-      // this.baseUrl = "http://pulse.globaleagle.com:8887";
+      // this.baseUrl = "http://localhost:8887";
+      this.baseUrl = "http://pulse.globaleagle.com:8887";
       this.baseUrl2 = "http://pulse.globaleagle.com:8884/mapBoxServices";
       this.popupUrl = "http://pulse.globaleagle.com:8881";
     }
@@ -176,6 +176,12 @@ export class Globals {
     // save current theme into the cookies
     if (!keepTheme)
       this.cookie.set ("pulseTheme", themeName);
+  }
+
+  isTablet(): boolean
+  {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test (userAgent);
   }
 
    initDataSource(){
