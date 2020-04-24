@@ -21,7 +21,7 @@
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
             <span class="step-label">Panel Type</span>
           </div>
-          <ng-container *ngIf="!isPicturePanel()">
+          <ng-container *ngIf="!isPicturePanel() && !isActionListPanel()">
             <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
               <span class="step-label">Select Source</span>
@@ -62,6 +62,10 @@
           <div [ngClass]="values.currentOption && values.currentOptionCategories && controlVariablesSet ? 'msf-dashboard-panel-step-selector' : 'msf-dashboard-panel-step-selector-disabled'" (click)="selectStep(11)" *ngIf="hasAdditinalSettings()">
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 11 }"><mat-icon *ngIf="selectedStep == 11">edit</mat-icon></div>
             <span class="step-label">Advanced Configuration</span>
+          </div>
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isActionListPanel()">
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 10 }"><mat-icon *ngIf="selectedStep == 10">edit</mat-icon></div>
+            <span class="step-label">Configuration</span>
           </div>
         </div>
         <div class="msf-dashboard-panel-step-button-container">
