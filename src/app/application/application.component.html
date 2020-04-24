@@ -1,6 +1,5 @@
 <!--Header-->
-<div *ngIf="(mobileQuery.matches || ResponsiveQuery.matches) ||(!globals.isFullscreen && !mobileQuery.matches || (globals.isFullscreen && globals.currentOption !== 'dashboard' && !mobileQuery.matches && !ResponsiveQuery.matches))"
-    class="msf-menu-header">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
     <!-- div to Menu Mobile-->
     <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-mobile-menu-header">
         <button *ngIf="((globals.showMenu || globals.showIntroWelcome) && mobileQuery.matches) 
@@ -166,7 +165,7 @@
             <img src="../../assets/images/dark-theme-trash-small.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Delete Dashboard</span>
         </button>
-        <button class="msf-menu-icon" *ngIf="!globals.isFullscreen" (click)="goToFullscreen()">
+        <button class="msf-menu-icon" *ngIf="!globals.isTablet()" (click)="goToFullscreen()">
             <img src="../../assets/images/dark-theme-fullscreen.png" class="msf-menu-image msf-vertical-middle">
             <span class="msf-vertical-middle" *ngIf="!TabletQuery.matches">Full Screen</span>
         </button>

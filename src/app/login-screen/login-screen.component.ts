@@ -253,15 +253,12 @@ export class LoginScreenComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event)
   {
-    // if(!this.mobileQuery.matches)
-    // {
+    if (this.globals.isTablet ())
+      return;
+
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
       this.globals.isFullscreen = false;
-    // }
-    // else{
-    //   this.globals.isFullscreen = false;
-    // }
   }
 }

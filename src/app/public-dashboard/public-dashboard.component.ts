@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 
@@ -85,5 +85,17 @@ export class PublicDashboardComponent {
     this.globals.currentApplication = application;
     this.globals.currentDashboardMenu = this.dashboard;
     this.globals.readOnlyDashboard = this.dashboard;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  checkScreen(event)
+  {
+    if (this.globals.isTablet ())
+      return;
+
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+      this.globals.isFullscreen = true;
+    else
+      this.globals.isFullscreen = false;
   }
 }
