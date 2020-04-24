@@ -364,10 +364,10 @@ export class MsfDashboardComponent implements OnInit {
       });
     }
 
-//    for (let dashboardPanel of dashboardPanels)
-    for (let i = dashboardPanels.length - 1; i >= 0; i--)
+    //for (let i = dashboardPanels.length - 1; i >= 0; i--)
+    for (let dashboardPanel of dashboardPanels)
     {
-      let dashboardPanel = dashboardPanels[i];
+//      let dashboardPanel = dashboardPanels[i];
 
       dashboardPanelIds.push (dashboardPanel.id);
 
