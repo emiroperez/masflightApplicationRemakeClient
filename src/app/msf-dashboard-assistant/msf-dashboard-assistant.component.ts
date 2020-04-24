@@ -17,13 +17,14 @@ import { MessageComponent } from '../message/message.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
 import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 import { AirportSelection } from '../commons/AirportSelection';
+import { ActionListFlatNode } from '../model/ActionListFlatNode';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -57,7 +58,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
+    { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false },
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
@@ -79,6 +80,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   selectedStep: number = 1;
   stepLoading: number = 0;
 
+  EditActionList: any;
   menuCategories: any[] = [];
   selectedItem: any = null;
 
@@ -122,6 +124,48 @@ export class MsfDashboardAssistantComponent implements OnInit {
   formFilterCtrl: FormControl[] = [];
 
   _onDestroy = new Subject<void> ();
+
+  optionSelected: any = {};
+  dataChange = new BehaviorSubject<any[]>([]);
+  get dataEditActionList(): any[] { return this.dataChange.value; }
+  expandedNodeSet = new Set<string>();
+  dragging = false;
+  expandTimeout: any;
+  expandDelay = 1000;
+  flatNodeMap = new Map<ActionListFlatNode, any>();
+  nestedNodeMap = new Map<any, ActionListFlatNode>();
+  private transformer = (node: any, level: number) =>
+      {
+        const existingNode = this.nestedNodeMap.get (node);
+        const flatNode = existingNode && existingNode.title === node.title
+          ? existingNode
+          : new ActionListFlatNode ();
+        flatNode.expandable = !!node.children && node.children.length > 0;
+        flatNode.id = node.id;
+        flatNode.uid = node.uid;
+        flatNode.dashboardPanel_id = node.dashboardPanel_id;
+        flatNode.level = level;
+        flatNode.parent = node.parent;
+        flatNode.title = node.title;
+        flatNode.item = node.item;
+        flatNode.children = node.children;
+        
+    this.flatNodeMap.set(flatNode, node);
+    this.nestedNodeMap.set(node, flatNode);
+    return flatNode;
+  };
+  treeControl = new FlatTreeControl<ActionListFlatNode>(
+    node => node.level,
+    node => node.expandable
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this.transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children
+  );
+  dataSourceEditActionList = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
@@ -170,6 +214,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.msfMapRef = this.data.msfMapRef;
 
     this.generateBtnEnabled = this.data.generateBtnEnabled;
+
+    this.dataChange.subscribe(data => {
+      this.dataSourceEditActionList.data = data;
+    });
   }
 
   ngOnInit()
@@ -336,6 +384,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
       && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
       && this.values.chartColumnOptions != null)
     {
       if (this.data.values.infoVar1 != null)
@@ -762,7 +811,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)) ? true : false;
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)) ? true : false;
   }
 
   isSimpleChart(): boolean
@@ -789,6 +839,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
   isPicturePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
+  }
+
+  isEditActionListPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST) ? true : false;
   }
 
   isTablePanel(): boolean
@@ -2188,7 +2243,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   hasAdditinalSettings(): boolean
   {
     if (!this.isDynTablePanel () && !this.isTablePanel () && !this.isInformationPanel () && !this.isSimpleFormPanel ()
-      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ())
+      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ()  && !this.isEditActionListPanel())
       return true;
 
     return (this.isHeatMapPanel () || this.isSimpleFormPanel () || this.isTablePanel ()) ? true : false;
@@ -2342,12 +2397,17 @@ export class MsfDashboardAssistantComponent implements OnInit {
         return true;
       }
     }
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+        this.generateBtnEnabled = true;
+        return true;
+    }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       if (this.values.formVariables.length)
       {
         this.generateBtnEnabled = true;
-        return true;
+        return true;  
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2538,6 +2598,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
         this.generateBtnEnabled = false;
 
       return;
+    }else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+        this.generateBtnEnabled = true;
+
+      return;
     }
     else
     {
@@ -2639,7 +2704,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
       if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
         || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
-        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE
+        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST))
         this.values.function = this.functions[0];
 
       this.values.formVariables = [];
@@ -3032,4 +3098,139 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
     });
   }
+
+  getOptionSelected(option) {
+    this.optionSelected.isActive = false;
+    option.isActive = option.isActive == null ? true : !option.isActive;
+    this.optionSelected = option;
+
+    // this.optionForm.get('optionTypeCtrl').setValue(null);
+
+    // if (!option.isRoot)
+      // this.getOptionCategoryArguments ();
+  }
+
+  addNewItem() {
+    const parentNode = this.flatNodeMap.get(this.optionSelected);
+    this.insertItem(parentNode!,this.values.id, '');
+    this.treeControl.expand(this.optionSelected);
+  }
+  
+  insertItem(parent: any,idpanel, name: string) {
+    if (parent) {
+      parent.children.push({
+        title: 'new item',
+        uid: 'optnew' + parent.id + parent.children.length,
+        dashboardPanel_id: idpanel,
+        parent: null,
+        children: [],
+        item: null
+      } as any);
+      this.dataChange.next(this.dataEditActionList);
+    } else {
+      this.dataSourceEditActionList.data.push({
+        title: 'new Item',
+        uid: 'catnew' + this.dataSourceEditActionList.data.length,
+        dashboardPanel_id: idpanel,
+        parent: null,
+        children: [],
+        item: null
+      } as any);
+      this.dataChange.next(this.dataEditActionList);
+    }
+  }
+
+  setChange(node) {
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.label = node.label;
+    this.dataChange.next(this.dataEditActionList);
+  }
+
+  EditActionListDataSuccess(_this, data): void
+  {
+
+  }
+
+  dragStart() {
+    this.dragging = true;
+  }
+  dragEnd() {
+    this.dragging = false;
+  }
+
+  rebuildTreeForData(data: any) {
+    this.rememberExpandedTreeNodes(this.treeControl, this.expandedNodeSet);
+    this.dataSourceEditActionList.data = data;
+    this.forgetMissingExpandedNodes(this.treeControl, this.expandedNodeSet);
+    this.expandNodesById(
+      this.treeControl.dataNodes,
+      Array.from(this.expandedNodeSet)
+    );
+  }
+
+  private rememberExpandedTreeNodes(
+    treeControl: FlatTreeControl<ActionListFlatNode>,
+    expandedNodeSet: Set<string>
+  ) {
+    if (treeControl.dataNodes) {
+      treeControl.dataNodes.forEach(node => {
+        if (treeControl.isExpandable(node) && treeControl.isExpanded(node)) {
+          // capture latest expanded state
+          expandedNodeSet.add(node.uid);
+        }
+      });
+    }
+  }
+
+  private forgetMissingExpandedNodes(
+    treeControl: FlatTreeControl<ActionListFlatNode>,
+    expandedNodeSet: Set<string>
+  ) {
+    if (treeControl.dataNodes) {
+      expandedNodeSet.forEach(nodeId => {
+        if (!treeControl.dataNodes.find(n => n.uid === nodeId)) {
+          expandedNodeSet.delete(nodeId);
+        }
+      });
+    }
+  }
+
+  private expandNodesById(flatNodes: ActionListFlatNode[], ids: string[]) {
+    if (!flatNodes || flatNodes.length === 0) return;
+    const idSet = new Set(ids);
+    return flatNodes.forEach(node => {
+      if (idSet.has(node.uid)) {
+        this.treeControl.expand(node);
+        let parent = this.getParentEditActionListNode(node);
+        while (parent) {
+          this.treeControl.expand(parent);
+          parent = this.getParentEditActionListNode(parent);
+        }
+      }
+    });
+  }
+
+  private getParentEditActionListNode(node: ActionListFlatNode): ActionListFlatNode | null {
+    const currentLevel = node.level;
+    if (currentLevel < 1) {
+      return null;
+    }
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+      if (currentNode.level < currentLevel) {
+        return currentNode;
+      }
+    }
+    return null;
+  }
+
+  print(node) {
+  }
+
+  printAll() {
+  }
+
+  EditActionListDataError(_this, data): void
+  {}
 }

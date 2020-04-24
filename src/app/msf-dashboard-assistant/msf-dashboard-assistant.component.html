@@ -64,7 +64,7 @@
             <span class="step-label">Advanced Configuration</span>
           </div>
           <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isActionListPanel()">
-            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 10 }"><mat-icon *ngIf="selectedStep == 10">edit</mat-icon></div>
+            <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 12 }"><mat-icon *ngIf="selectedStep == 12">edit</mat-icon></div>
             <span class="step-label">Configuration</span>
           </div>
         </div>
@@ -1121,6 +1121,57 @@
             </mat-tab-group>
           </div>
         </div>
+      </div>
+      <div class="msf-dashboard-panel-step-content" *ngIf="selectedStep == 12">
+          <div class="msf-dashboard-panel-step-item">
+            <div class="datalake-search-input image-link-input">
+              <div class="msf-dashboard-panel-tittle-actionList">
+                <h2>Customize Your Action List</h2>
+                <div [ngStyle]="{ 'align-self': 'center' }">
+                  <button mat-icon-button (click)="addNewItem()">
+                    <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="deleteOption()">
+                      <mat-icon class="admin-mat-icon-button" aria-label="delete">remove_circle</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="saveMenu()">
+                      <mat-icon class="admin-mat-icon-button" aria-label="save">save</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div #scrollContainer class="menu-tree-scrollbar admin-menu-tree-body image-url-container">
+                  <mat-tree class="admin-menu-tree" [dataSource]="dataSourceActionList" 
+                  [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
+                      <mat-tree-node  
+                      matTreeNodePadding *matTreeNodeDef="let node" cdkDrag cdkDragLockAxis="y" [cdkDragData]="node" (cdkDragStarted)="dragStart()"
+                          (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)" cdkDragBoundary=".menu-tree-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
+                          <div [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" 
+                          class="{{globals.theme}} menu-node actionListNode">
+                              <div class="actionListNodeTittle">
+                                <button [ngStyle]="{ 'display': 'none' }" mat-icon-button disabled></button>
+                                <mat-icon class="menu-drag-handle" cdkDragHandle>drag_handle</mat-icon>
+                                <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.title" (ngModelChange)="setChange(node)">
+                              </div>
+                              <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.title" (ngModelChange)="setChange(node)">
+                          </div>
+                          <mat-divider></mat-divider>
+                      </mat-tree-node>
+                      <mat-tree-node  matTreeNodePadding *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag cdkDragLockAxis="y" [cdkDragData]="node"
+                          (cdkDragStarted)="dragStart()" (click)=" getOptionSelected(node)" cdkDragBoundary=".menu-tree-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
+                          <div [ngClass]="{'is-active': node.isActive,'is-inactive': !node.isActive }" class="{{globals.theme}} menu-node">
+                              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.title">
+                                  <mat-icon class="mat-icon-rtl-mirror">
+                                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                  </mat-icon>
+                              </button>
+                              <input type="text" name="optionname" autocomplete="off" matInput class="input-option-tree" [(ngModel)]="node.title" (ngModelChange)="setChange(node)">
+                              <mat-icon class="menu-drag-handle" cdkDragHandle>drag_handle</mat-icon>
+                          </div>
+                          <mat-divider></mat-divider>
+                      </mat-tree-node>
+                  </mat-tree>
+              </div>
+            </div>
       </div>
     </div>
   </div>
