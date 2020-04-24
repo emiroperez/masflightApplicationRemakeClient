@@ -1281,6 +1281,13 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     this.dataChange.next(this.data);
   }
 
+  isDisabled(option){
+    if(option){
+      return true;
+    }
+    return false;
+  }
+
   checkDefaultMenu(optionSelected): void
   {
     if (this.defaultMenu == optionSelected.id)

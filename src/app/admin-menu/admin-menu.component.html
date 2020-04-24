@@ -107,7 +107,7 @@
                                         <h2 class="title-section">Menu Option Configuration</h2>
                                         <div class="admin-menu-option-checkbox" *ngIf="globals.currentApplication.id != 5">
                                             <mat-checkbox class="admin-checkboxes-right" color="primary" [(ngModel)]="optionSelected.showAdmin" (change)="setChangeShowAdmin(optionSelected)">Only Administrators</mat-checkbox>
-                                            <mat-checkbox [disabled]="optionSelected.showAdmin"color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
+                                            <mat-checkbox [disabled]="isDisabled(optionSelected.showAdmin)" color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
                                         </div>
                                     </div>
                                     <mat-form-field class="standard-text admin-input-base-url">
