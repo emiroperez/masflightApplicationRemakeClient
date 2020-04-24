@@ -1284,6 +1284,9 @@ toggle(){
   {
     let element: any = document.documentElement;
 
+    if (this.globals.isTablet ())
+      return;
+
     if (element.requestFullscreen)
       element.requestFullscreen ();
     else if (element.mozRequestFullScreen)
@@ -1297,17 +1300,13 @@ toggle(){
   @HostListener('window:resize', ['$event'])
   checkScreen(event)
   {
-    // if(!this.mobileQuery.matches)
-    // {
-      if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
+    if (this.globals.isTablet ())
+      return;
+
+    if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
       this.globals.isFullscreen = false;
-    // }
-    // else{
-    //   this.globals.isFullscreen = false;
-    // }
-
   }
 
   recursiveTotalDashboardCategories(categories, category): void

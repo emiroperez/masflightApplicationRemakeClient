@@ -336,19 +336,17 @@ deleteCategory() {
   }
 
   @HostListener('window:resize', ['$event'])
-  checkScreen(event): void {
+  checkScreen(event)
+  {
     this.innerHeight = event.target.innerHeight;
 
-    // if(!this.mobileQuery.matches)
-    // {
+    if (this.globals.isTablet ())
+      return;
+
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
       this.globals.isFullscreen = false;
-    // }
-    // else{
-    //   this.globals.isFullscreen = false;
-    // }
   }
 
     getInnerHeight(): number

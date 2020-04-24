@@ -378,19 +378,15 @@ export class DatalakeComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  checkScreen(event): void {
-    this.bodyHeight = window.innerHeight - 60;
+  checkScreen(event)
+  {
+    if (this.globals.isTablet ())
+      return;
 
-    // if(!this.mobileQuery.matches)
-    // {
     if (event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width)
       this.globals.isFullscreen = true;
     else
       this.globals.isFullscreen = false;
-    // }
-    // else{
-    //   this.globals.isFullscreen = false;
-    // }
   }
 
   isReadOnlyDashboardSet(): boolean
@@ -577,17 +573,21 @@ export class DatalakeComponent implements OnInit {
     _this.getDashboardsUser();
   }
 
-  goToFullscreen(): void {
+  goToFullscreen(): void
+  {
     let element: any = document.documentElement;
 
+    if (this.globals.isTablet ())
+      return;
+
     if (element.requestFullscreen)
-      element.requestFullscreen();
+      element.requestFullscreen ();
     else if (element.mozRequestFullScreen)
-      element.mozRequestFullScreen();
+      element.mozRequestFullScreen ();
     else if (element.webkitRequestFullscreen)
-      element.webkitRequestFullscreen();
+      element.webkitRequestFullscreen ();
     else if (element.msRequestFullscreen)
-      element.msRequestFullscreen();
+      element.msRequestFullscreen ();
   }
 
   isSimpleContent(): boolean {
