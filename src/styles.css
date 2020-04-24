@@ -1605,7 +1605,7 @@
 .dark-theme .button-setup {
   background-color: #101010;
 }
-.dark-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .dark-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
+.dark-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .dark-theme .admin-checkboxes-right.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .dark-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
   background-color: #01abec !important;
 }
 .dark-theme .theme-picker {
@@ -5102,7 +5102,7 @@
 .light-theme .button-setup {
   background-color: #003d5b;
 }
-.light-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .light-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
+.light-theme .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .light-theme .admin-checkboxes-right.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .light-theme .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background {
   background-color: #01abec !important;
 }
 .light-theme .theme-picker {
@@ -13500,6 +13500,10 @@ mat-form-field.msf-table-input {
   margin-left: 18px;
 }
 
+.admin-checkboxes-right {
+  margin-right: 18px;
+}
+
 .admin-menu-tree-header {
   display: flex;
   flex-direction: row;
@@ -15192,7 +15196,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 .admin-menu-header-container .admin-menu-option-checkbox {
   margin-top: 8px;
-  text-align: end;
+  text-align: Start;
   width: 50%;
 }
 

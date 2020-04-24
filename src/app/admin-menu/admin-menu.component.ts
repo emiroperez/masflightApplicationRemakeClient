@@ -1275,7 +1275,18 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   setChangeShowAdmin(node) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.showAdmin = node.showAdmin? 1:0 ;
+    if(nestedNode.showAdmin && this.defaultMenu === node.id){
+      this.defaultMenu = null;
+    }
     this.dataChange.next(this.data);
+  }
+
+  checkDefaultMenu(optionSelected): void
+  {
+    if (this.defaultMenu == optionSelected.id)
+      this.defaultMenu = null;
+    else
+      this.defaultMenu = optionSelected.id;
   }
 
   ngOnInit() {
@@ -2510,12 +2521,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     return this.defaultMenu === optionSelected.id;
   }
 
-  checkDefaultMenu(optionSelected): void
-  {
-    if (this.defaultMenu == optionSelected.id)
-      this.defaultMenu = null;
-    else
-      this.defaultMenu = optionSelected.id;
-  }
+
 }
 

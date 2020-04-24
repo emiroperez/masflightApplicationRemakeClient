@@ -1062,7 +1062,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             background-color: $admin-table-hover-color
         .button-setup
             background-color: $admin-secondary-button-color
-        .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background
+        .admin-checkboxes.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .admin-checkboxes-right.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-disabled.mat-checkbox-indeterminate .mat-checkbox-background
             background-color: $primary-color !important
         .theme-picker
             // background: $background-color
@@ -7869,6 +7869,10 @@ mat-form-field.msf-table-input
     // margin: 5px
     margin-left: 18px
 
+.admin-checkboxes-right
+    // margin: 5px
+    margin-right: 18px
+
 .admin-menu-tree-header
     display: flex
     flex-direction: row
@@ -9296,7 +9300,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 50%
     .admin-menu-option-checkbox
         margin-top: 8px
-        text-align: end
+        text-align: Start
         width: 50%
 
 .admin-menu-root-container

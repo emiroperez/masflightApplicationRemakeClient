@@ -106,8 +106,8 @@
                                     <div class="admin-menu-header-container">
                                         <h2 class="title-section">Menu Option Configuration</h2>
                                         <div class="admin-menu-option-checkbox" *ngIf="globals.currentApplication.id != 5">
-                                            <mat-checkbox color="primary" [(ngModel)]="optionSelected.showAdmin" (change)="setChangeShowAdmin(optionSelected)">Only Administrators</mat-checkbox>
-                                            <mat-checkbox class="admin-checkboxes" color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
+                                            <mat-checkbox class="admin-checkboxes-right" color="primary" [(ngModel)]="optionSelected.showAdmin" (change)="setChangeShowAdmin(optionSelected)">Only Administrators</mat-checkbox>
+                                            <mat-checkbox [disabled]="optionSelected.showAdmin"color="primary" [checked]="isDefaultMenuChecked(optionSelected)" (change)="checkDefaultMenu(optionSelected)">Default Option</mat-checkbox>
                                         </div>
                                     </div>
                                     <mat-form-field class="standard-text admin-input-base-url">
@@ -175,8 +175,8 @@
                                             <mat-icon class="admin-mat-search-icon" aria-label="search">search</mat-icon>
                                         </mat-form-field>
                                         <div class="msf-admin-show-selected">
-                                            <mat-checkbox color="primary" [(ngModel)]="optionSelected.serverSorting" (change)="setChangeSorting(optionSelected)">Server Side Sorting</mat-checkbox>
-                                            <mat-checkbox class="admin-checkboxes" color="primary" [(ngModel)]="showSelected">Only Selected</mat-checkbox>
+                                            <mat-checkbox class="admin-checkboxes-right" color="primary" [(ngModel)]="optionSelected.serverSorting" (change)="setChangeSorting(optionSelected)">Server Side Sorting</mat-checkbox>
+                                            <mat-checkbox color="primary" [(ngModel)]="showSelected">Only Selected</mat-checkbox>
                                         </div>
                                         <div class="dialog-category-arguments-container">
                                             <div class="dialog-category-arguments-header">
