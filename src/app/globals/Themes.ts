@@ -6,6 +6,7 @@ const black = am4core.color ("#000000");
 const darkGray = am4core.color ("#3b3b3b");
 const darkGray2 = am4core.color ("#4d4d4d");
 const lightGray = am4core.color ("#b2b2b2");
+const lightGray2 = am4core.color ("#b2b2b2");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
 // const orange = am4core.color ("#eb5c1b");
@@ -76,7 +77,7 @@ export class Themes {
         },
         "light-theme": {
             mainTheme: am4themes_light,
-            mapPolygonColor: lightGray,
+            mapPolygonColor: lightGray2,
             mapPolygonStroke: white,
             mapCityLabelHoverColor: darkOrange,
             mapCityColor: darkGray2,
