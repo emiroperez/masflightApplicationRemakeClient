@@ -440,7 +440,18 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     this.values.paletteColors = JSON.parse (JSON.stringify (this.data.values.paletteColors));
 
-    this.values.animated = this.data.values.animated;
+    this.values.valueListInfo = JSON.parse (JSON.stringify (this.data.values.valueListInfo));
+    if (!this.values.valueListInfo.length && this.values.valueList)
+    {
+      for (let i = 0; i < this.values.valueList.length; i++)
+      {
+        this.values.valueListInfo.push ({
+          function: this.functions.indexOf (this.values.function),
+          axis: !i ? true : false
+        });
+      }
+    }
+
     this.values.style = this.msfMapRef.mapTypes[1];
   }
 
@@ -3047,7 +3058,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         maxValueRange: this.values.maxValueRange,
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
-        animated: this.values.animated
+        valueListInfo: this.values.valueListInfo
       }
     });
   }
@@ -3059,7 +3070,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       autoFocus: false,
       data: {
         values: this.values,
-        columns: this.msfConfigTableRef.metadata
+        columns: this.msfConfigTableRef.metadata,
+        functions: this.functions
       }
     });
   }

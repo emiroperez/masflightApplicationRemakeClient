@@ -373,8 +373,10 @@
                      (click)="selectValue()" *ngIf="!isSimpleChart()">
                   Value
                 </div>
-                <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart()">
-                  <!--
+                <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && !isAdvChartPanel()">
+                  Set Values
+                </div>
+                <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && isAdvChartPanel()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
                     <mat-label>Values</mat-label>
                     <mat-select placeholder="Values" [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
@@ -384,10 +386,8 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                  -->
-                  Set Values
                 </div>
-                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart()">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart() && !isAdvChartPanel()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
                     <mat-label>Function</mat-label>
                     <mat-select [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">

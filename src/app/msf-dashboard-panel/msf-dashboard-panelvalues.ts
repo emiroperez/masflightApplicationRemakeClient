@@ -72,7 +72,7 @@ export class MsfDashboardPanelValues {
 
     calculatedHeight: number;
     chartSeries: any[] = [];
-    valueAxes: any[] = [];
+    valueListInfo: any[] = [];
 
     vertAxisName: string;
     horizAxisName: string;
@@ -101,13 +101,11 @@ export class MsfDashboardPanelValues {
     y: number;
     autoposition: boolean;
 
-    animated: boolean;
-
     constructor(options: any[], chartName: String,chartDescription: String, id: number, gridId: number, x: number, y: number, width: number, height: number, currentOption?: any, variable?: any,
         xaxis?: any, valueColumn?: any, func?: any, chartType?: any, currentOptionCategories?: any, lastestResponse?: string,
         paletteColors?: any, updateTimeInterval?: number, thresholds?: any, vertAxisName?: string, horizAxisName?: string,
         intValue?: any, startAtZero?: boolean, limitMode?: number, limitAmount?: number, ordered?: boolean,
-        valueList?: any, minValueRange?: number, maxValueRange?: number, goals?: any, animated?: boolean)
+        valueList?: any, minValueRange?: number, maxValueRange?: number, goals?: any, valueListInfo?: any)
     {
         this.options = options;
         this.chartName = chartName;
@@ -202,9 +200,9 @@ export class MsfDashboardPanelValues {
         this.minValueRange = minValueRange;
         this.maxValueRange = maxValueRange;
 
-        if (animated != null)
-          this.animated = animated;
+        if (valueListInfo != null)
+          this.valueListInfo = JSON.parse (valueListInfo);
         else
-          this.animated = false;
+          this.valueListInfo = [];
     }
 }

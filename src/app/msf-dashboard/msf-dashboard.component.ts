@@ -405,7 +405,7 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.limitAmount, dashboardPanel.ordered,
         dashboardPanel.valueList, dashboardPanel.minValueRange,
         dashboardPanel.maxValueRange, dashboardPanel.goals,
-        dashboardPanel.animated
+        dashboardPanel.valueListInfo
       ));
     }
 

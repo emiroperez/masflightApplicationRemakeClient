@@ -822,9 +822,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dataFields.valueY = item.valueField;
     }
 
-    if (values.valueAxes.length)
-      series.yAxis = chart.yAxes.values[index];
-
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       series.dataFields.categoryX = item.titleField;
@@ -1743,19 +1740,30 @@ export class MsfDashboardPanelComponent implements OnInit {
             parseDate = false;
         }
 
-        if (this.isSimpleChart () && this.values.valueAxes.length > 1)
+        valueAxes = [];
+
+        if (this.isSimpleChart () && this.values.valueListInfo.length > 1 && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
         {
-          valueAxes = [];
-
-          for (let i = 0; i < this.values.valueAxes.length; i++)
+          for (let i = 0; i < this.values.valueListInfo.length; i++)
           {
-            let valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+            let valueAxis;
 
-            if (i != 0)
+            if (!this.values.valueListInfo[i].axis)
+              continue;
+
+            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+              valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+            else
+              valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+            if (chart.yAxes.indexOf (valueAxis) != 0)
             {
               valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
               valueAxis.renderer.opposite = true;
             }
+
+            if (this.values.startAtZero)
+              valueAxis.min = 0;
 
             valueAxis.renderer.labels.template.fontSize = 10;
             valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
@@ -1771,7 +1779,20 @@ export class MsfDashboardPanelComponent implements OnInit {
             valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
             valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
-            valueAxes.push (valueAxis);
+            valueAxes.push ({
+              item: valueAxis,
+              name: this.values.valueList[i].id
+            });
+          }
+
+          if (valueAxes.length == 1)
+          {
+            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+              chart.xAxes.removeIndex (0);
+            else
+              chart.yAxes.removeIndex (0);
+
+            valueAxes = [];
           }
         }
 
@@ -1817,7 +1838,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis.renderer.labels.template.maxWidth = 160;
           }
 
-          if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+          if (!(this.isSimpleChart () && valueAxes.length > 1))
           {
             valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
@@ -1879,7 +1900,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis.renderer.labels.template.maxWidth = 240;
           }
 
-          if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+          if (!(this.isSimpleChart () && valueAxes.length > 1))
           {
             valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
@@ -1908,7 +1929,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryAxis.renderer.grid.template.strokeWidth = 1;
         categoryAxis.renderer.line.strokeWidth = 1;
 
-        if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+        if (!(this.isSimpleChart () && valueAxes.length > 1))
         {
           // Set value axis properties
           valueAxis.renderer.labels.template.fontSize = 10;
@@ -1936,7 +1957,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = "Intervals";
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.vertAxisName && this.values.vertAxisName != "")
                   valueAxis.title.text = this.values.vertAxisName;
@@ -1956,7 +1977,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = "Intervals";
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.horizAxisName && this.values.horizAxisName != "")
                   valueAxis.title.text = this.values.horizAxisName;
@@ -1982,7 +2003,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = this.values.xaxis.name;
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.vertAxisName && this.values.vertAxisName != "")
                   valueAxis.title.text = this.values.vertAxisName;
@@ -2002,7 +2023,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = this.values.xaxis.name;
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.horizAxisName && this.values.horizAxisName != "")
                   valueAxis.title.text = this.values.horizAxisName;
@@ -2121,7 +2142,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = "Intervals";
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.vertAxisName && this.values.vertAxisName != "")
                   valueAxis.title.text = this.values.vertAxisName;
@@ -2141,7 +2162,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = "Intervals";
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.horizAxisName && this.values.horizAxisName != "")
                   valueAxis.title.text = this.values.horizAxisName;
@@ -2164,7 +2185,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = this.values.variable.name;
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.vertAxisName && this.values.vertAxisName != "")
                   valueAxis.title.text = this.values.vertAxisName;
@@ -2186,7 +2207,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = this.values.variable.name;
 
-              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
                 if (this.values.horizAxisName && this.values.horizAxisName != "")
                   valueAxis.title.text = this.values.horizAxisName;
@@ -2282,6 +2303,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             for (let i = 0; i < chartInfo.valueFields.length; i++)
             {
               let curValue = chartInfo.valueFields[i];
+              let series;
 
               // Get value name for the legend
               for (let item of this.values.chartColumnOptions)
@@ -2314,7 +2336,45 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
-              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors));
+              series = this.values.currentChartType.createSeries(this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
+
+              if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED))
+              {
+                if (this.values.valueListInfo.length > 1 && this.values.valueListInfo[i].axis)
+                {
+                  let found = false;
+
+                  for (let valueAxis of valueAxes)
+                  {
+                    if (valueAxis.name === this.values.valueList[i].id)
+                    {
+                      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                        series.xAxis = valueAxis.item;
+                      else
+                        series.yAxis = valueAxis.item;
+
+                      found = true;
+                      break;
+                    }
+                  }
+
+                  if (!found)
+                  {
+                    if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                    {
+                      if (!series.xAxis)
+                        series.xAxis = valueAxis[0].item;
+                    }
+                    else
+                    {
+                      if (!series.yAxis)
+                        series.yAxis = valueAxis[0].item;
+                    }
+                  }
+                }
+              }
+
+              this.values.chartSeries.push (series);
             }
           }
           else
@@ -2360,10 +2420,10 @@ export class MsfDashboardPanelComponent implements OnInit {
           chart.cursor = new am4charts.XYCursor ();
 
         // Create axis ranges if available
-        if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+        if (!(this.isSimpleChart () && valueAxes.length > 1))
           goalAxis = valueAxis;
         else
-          goalAxis = valueAxes[0];
+          goalAxis = valueAxes[0].item;
 
         if (this.values.goals && this.values.goals.length)
         {
@@ -2893,8 +2953,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         maxValueRange: this.values.maxValueRange,
         variableName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
         valueName: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.id : null) : null,
-        functionName: "advby" + this.values.intervalType,
-        animated: this.values.animated
+        functionName: "advby" + this.values.intervalType
       };
     }
     else
@@ -2928,7 +2987,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         valueName: this.values.chartColumnOptions ? ((this.values.valueColumn && !this.isSimpleChart ()) ? this.values.valueColumn.id : null) : null,
         functionName: this.values.function.id,
         valueNameList: this.generateValueNameList (),
-        animated: this.values.animated
+        valueListInfo: this.generateValueListInfo ()
       };
     }
   }
@@ -4307,7 +4366,18 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.paletteColors = JSON.parse (JSON.stringify (values.paletteColors));
 
-    this.values.animated = values.animated;
+    this.values.valueListInfo = JSON.parse (JSON.stringify (values.valueListInfo));
+    if (!this.values.valueListInfo.length && this.values.valueList)
+    {
+      for (let i = 0; i < this.values.valueList.length; i++)
+      {
+        this.values.valueListInfo.push ({
+          function: this.functions.indexOf (this.values.function),
+          axis: !i ? true : false
+        });
+      }
+    }
+
     this.values.style = values.style;
   }
 
@@ -5110,7 +5180,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else if (this.values.valueList != null)
           {
-            this.values.valueList = this.values.valueList.split (",");
+            if (typeof this.values.valueList === "string")
+              this.values.valueList = this.values.valueList.split (",");
 
             for (i = 0; i < this.values.valueList.length; i++)
             {
@@ -6543,6 +6614,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return list;
+  }
+
+  generateValueListInfo(): string
+  {
+    if (!this.isSimpleChart () || !this.values.valueListInfo || (this.values.valueListInfo && !this.values.valueListInfo.length) || this.isAdvChartPanel ())
+      return null;
+
+    for (let valueInfo of this.values.valueListInfo)
+      valueInfo.name = undefined;
+
+    return JSON.stringify (this.values.valueListInfo);
   }
 
   generateValueNameList(): string

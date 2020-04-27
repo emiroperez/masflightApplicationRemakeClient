@@ -2321,6 +2321,12 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
                 color: $dashboard-panel-background-color
             .mat-form-field-appearance-outline .mat-form-field-outline-thick
                 color: $dashboard-panel-background-color !important
+            .value-item-body
+                background-color: $background-color !important
+                .mat-form-field-appearance-outline .mat-form-field-outline
+                    color: $font-color !important
+                .mat-form-field-appearance-outline .mat-form-field-outline-thick
+                    color: $font-color !important
         .partial-summaries-desc
             background-color: $table-header-border-color
         .partial-summaries-item
@@ -9047,8 +9053,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     min-width: 550px !important
     max-width: 550px !important
     width: 550px !important
-    height: 110px !important
-    max-height: 500px !important
+    min-height: 110px !important
     .mat-dialog-container
         padding: 0
         min-height: inherit !important
@@ -12526,7 +12531,29 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .set-values-body
     width: 100%
-    height: calc(100% - 53px)
+    .values-dialog-combobox
+        margin-bottom: -10px
+    .value-item-container
+        padding: 0px 10px 10px 10px
+        .value-item-body
+            display: flex
+            height: 45px
+            align-items: center
+            border-radius: 5px
+            .value-item-name-label
+                margin-left: 15px
+                width: 180px
+            .value-item-combobox
+                margin-top: 18px
+                width: 140px
+            .value-item-axis-checkbox
+                margin-left: 40px
+    .value-item-list
+        overflow-y: auto
+        max-height: 400px
+        .mat-form-field-wrapper
+            padding-bottom: 0 !important
+            margin-top: -12px !important
 
 //.amcharts-LineSeries
 //    stroke-linejoin: round

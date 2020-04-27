@@ -7,15 +7,37 @@
   </div>
 </div>
 <div class="set-values-body">
-  <div class="assistant-function-combobox datalake-search-input">
+  <div class="assistant-function-combobox datalake-search-input values-dialog-combobox">
     <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
       <mat-label>Values</mat-label>
-      <mat-select placeholder="Values" [(ngModel)]="data.values.valueList" multiple>
+      <mat-select placeholder="Values" [(ngModel)]="data.values.valueList" (ngModelChange)="updateValueListInfo()" multiple>
         <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
         <mat-option *ngFor="let variable of data.values.chartColumnOptions" [value]="variable">
           {{variable.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </div>
+  <div class="value-item-list">
+    <div class="value-item-container" *ngFor="let value of valueListInfo; let i = index">
+      <div class="value-item-body">
+        <span class="value-item-name-label">{{value.name}}</span>
+        <div class="assistant-function-combobox datalake-search-input">
+          <mat-form-field class="datalake-search-formfield config-panel-form-field value-item-combobox" appearance="outline">
+            <mat-label>Function</mat-label>
+            <mat-select [(ngModel)]="value.function">
+              <mat-option *ngFor="let fun of data.functions; let j = index" [value]="j">
+                {{fun.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="value-item-axis-checkbox" *ngIf="i">
+          <mat-checkbox [(ngModel)]="value.axis">
+            Generate New Axis
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
