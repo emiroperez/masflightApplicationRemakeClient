@@ -57,7 +57,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false }
+    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false },
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
@@ -181,7 +181,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
-    // discard any changes
     this.values.urlImg = this.data.values.urlImg;
     this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
     this.values.chartName = this.data.values.chartName;
@@ -437,6 +436,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     this.values.paletteColors = JSON.parse (JSON.stringify (this.data.values.paletteColors));
 
+    this.values.animated = this.data.values.animated;
     this.values.style = this.msfMapRef.mapTypes[1];
   }
 
@@ -714,6 +714,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return (this.advConfigFlags & ConfigFlags.AXISNAMES) ? true : false;
   }
 
+  hasAnimationSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.ANIMATIONS) ? true : false;
+  }
+
   configureAdditionalSettings(): void
   {
     this.advConfigFlags = ConfigFlags.NONE;
@@ -730,6 +735,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
     {
       this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
 
+      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        this.advConfigFlags |= ConfigFlags.ANIMATIONS;
+
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.advConfigFlags |= ConfigFlags.LIMITVALUES;
@@ -744,6 +752,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
     {
       this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
       this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR | ConfigFlags.CHARTCOLORS;
+
+      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        this.advConfigFlags |= ConfigFlags.ANIMATIONS;
     }
 
     if (this.values.limitMode == null)
@@ -1096,8 +1107,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         this.selectedStep = 5;
 
-        if (!this.msfConfigTableRef.dataSource)
+        //if (!this.msfConfigTableRef.dataSource)
         {
+          this.msfConfigTableRef.displayedColumns = [];
+          this.msfConfigTableRef.dataSource = null;
+
           if (this.stepLoading != 4)
           {
             this.stepLoading = 5;
@@ -1105,7 +1119,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
             this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
           }
         }
-        else
+        /*else
         {
           if (this.values.variable)
           {
@@ -1146,7 +1160,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
               }
             }
           }
-        }
+        }*/
         break;
 
       case 6:
@@ -1366,7 +1380,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=25&page_number=0";
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=15&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -3028,7 +3042,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
         minValueRange: this.values.minValueRange,
         maxValueRange: this.values.maxValueRange,
         vertAxisName: this.values.vertAxisName,
-        horizAxisName: this.values.horizAxisName
+        horizAxisName: this.values.horizAxisName,
+        animated: this.values.animated
       }
     });
   }

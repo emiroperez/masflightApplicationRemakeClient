@@ -364,11 +364,8 @@ export class MsfDashboardComponent implements OnInit {
       });
     }
 
-    //for (let i = dashboardPanels.length - 1; i >= 0; i--)
     for (let dashboardPanel of dashboardPanels)
     {
-//      let dashboardPanel = dashboardPanels[i];
-
       dashboardPanelIds.push (dashboardPanel.id);
 
       if (legacyDashboard)
@@ -407,10 +404,13 @@ export class MsfDashboardComponent implements OnInit {
         dashboardPanel.startAtZero, dashboardPanel.limitMode,
         dashboardPanel.limitAmount, dashboardPanel.ordered,
         dashboardPanel.valueList, dashboardPanel.minValueRange,
-        dashboardPanel.maxValueRange, dashboardPanel.goals));
+        dashboardPanel.maxValueRange, dashboardPanel.goals,
+        dashboardPanel.animated
+      ));
     }
 
     _this.changeDetector.detectChanges ();
+
     _this.addingOrRemovingPanels = 0;
     _this.service.getAllChildPanels (_this, dashboardPanelIds, _this.setChildPanels, _this.handlerError);
   }
@@ -554,15 +554,22 @@ export class MsfDashboardComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   checkScreen(event): void
   {
-    if ((event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width && !this.public) || this.public)
-      this.screenHeight = "100%";
-    else
+    if (this.globals.isTablet())
     {
-      if (this.mobileQuery.matches)
+      if (this.public)
+        this.screenHeight = "100%";
+      else if (this.mobileQuery.matches)
         this.screenHeight = "calc(100% - 60px)";
       else
         this.screenHeight = "calc(100% - 90px)";
+
+      return;
     }
+
+    if ((event.target.innerHeight == window.screen.height && event.target.innerWidth == window.screen.width && !this.public) || this.public)
+      this.screenHeight = "100%";
+    else
+      this.screenHeight = "calc(100% - 90px)";
   
     this.disableContextMenu ();
   }

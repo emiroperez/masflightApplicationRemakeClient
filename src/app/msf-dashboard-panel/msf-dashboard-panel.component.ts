@@ -510,6 +510,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    series.showOnInit = false;
+
     return series;
   }
 
@@ -576,6 +578,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values.chartSecondaryObjectSelected = series.dataFields.valueY;
       });
     }
+
+    series.showOnInit = false;
 
     return series;
   }
@@ -681,6 +685,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         values.chartSecondaryObjectSelected = series.dataFields.valueY;
       });
     }
+
+    series.showOnInit = false;
 
     return series;
   }
@@ -797,6 +803,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
 
+    series.showOnInit = false;
+
     return series;
   }
 
@@ -886,6 +894,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
+    series.showOnInit = false;
+
     return series;
   }
 
@@ -973,6 +983,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
+    series.showOnInit = false;
+
     return series;
   }
 
@@ -1036,6 +1048,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartSecondaryObjectSelected = null;
     });
 
+    series.showOnInit = false;
+
     return series;
   }
 
@@ -1090,6 +1104,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       values.chartObjectSelected = event.target.dataItem.dataContext[item.titleField];
       values.chartSecondaryObjectSelected = null;
     });
+
+    series.showOnInit = false;
 
     return series;
   }
@@ -1170,6 +1186,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
+
+      //am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
+      //if (this.values.animated)
+      //  am4core.options.autoSetClassName = true;
 
       // Check chart type before generating it
       if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
@@ -2413,6 +2433,9 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
       }
+
+      //if (this.values.animated)
+      //  am4core.options.autoSetClassName = false;
     });
   }
 
@@ -2811,7 +2834,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         maxValueRange: this.values.maxValueRange,
         variableName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
         valueName: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.id : null) : null,
-        functionName: "advby" + this.values.intervalType
+        functionName: "advby" + this.values.intervalType,
+        animated: this.values.animated
       };
     }
     else
@@ -2844,7 +2868,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         xaxisName: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.id : null) : null,
         valueName: this.values.chartColumnOptions ? ((this.values.valueColumn && !this.isSimpleChart ()) ? this.values.valueColumn.id : null) : null,
         functionName: this.values.function.id,
-        valueNameList: this.generateValueNameList ()
+        valueNameList: this.generateValueNameList (),
+        animated: this.values.animated
       };
     }
   }
@@ -4222,6 +4247,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.ordered = values.ordered;
 
     this.values.paletteColors = JSON.parse (JSON.stringify (values.paletteColors));
+
+    this.values.animated = values.animated;
+    this.values.style = values.style;
   }
 
   goToResults(): void
