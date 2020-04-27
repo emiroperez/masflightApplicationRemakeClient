@@ -58,7 +58,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false },
+    { name: 'Editable Action List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false },
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
@@ -188,6 +188,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.infoGenerated = this.data.values.infoGenerated;
     this.values.formGenerated = this.data.values.formGenerated;
     this.values.picGenerated = this.data.values.picGenerated;
+    this.values.EditactionListGenerated = this.data.values.EditactionListGenerated;
     this.values.tableGenerated = this.data.values.tableGenerated;
     this.values.mapboxGenerated = this.data.values.mapboxGenerated;
     this.values.dynTableGenerated = this.data.values.dynTableGenerated;
@@ -2097,7 +2098,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   resultsGenerated(): boolean
   {
-    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated);
+    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated && !this.values.EditactionListGenerated);
   }
 
   isValueSelectedForSimpleChart(column): boolean

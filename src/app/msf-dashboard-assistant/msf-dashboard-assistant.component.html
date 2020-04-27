@@ -21,7 +21,7 @@
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 2 }"><mat-icon *ngIf="selectedStep == 2">edit</mat-icon></div>
             <span class="step-label">Panel Type</span>
           </div>
-          <ng-container *ngIf="!isPicturePanel() && !isActionListPanel()">
+          <ng-container *ngIf="!isPicturePanel() && !isEditActionListPanel()">
             <div class="msf-dashboard-panel-step-selector" (click)="selectStep(3)">
               <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 3 }"><mat-icon *ngIf="selectedStep == 3">edit</mat-icon></div>
               <span class="step-label">Select Source</span>
@@ -63,7 +63,7 @@
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 11 }"><mat-icon *ngIf="selectedStep == 11">edit</mat-icon></div>
             <span class="step-label">Advanced Configuration</span>
           </div>
-          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isActionListPanel()">
+          <div class="msf-dashboard-panel-step-selector" (click)="selectStep(12)" *ngIf="isEditActionListPanel()">
             <div class="msf-dashboard-panel-step-circle" [ngClass]="{ 'msf-dashboard-panel-step-circle-selected' : selectedStep == 12 }"><mat-icon *ngIf="selectedStep == 12">edit</mat-icon></div>
             <span class="step-label">Configuration</span>
           </div>
@@ -1140,7 +1140,7 @@
                 </div>
               </div>
               <div #scrollContainer class="menu-tree-scrollbar admin-menu-tree-body image-url-container">
-                  <mat-tree class="admin-menu-tree" [dataSource]="dataSourceActionList" 
+                  <mat-tree class="admin-menu-tree" [dataSource]="dataSourceEditActionList" 
                   [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
                       <mat-tree-node  
                       matTreeNodePadding *matTreeNodeDef="let node" cdkDrag cdkDragLockAxis="y" [cdkDragData]="node" (cdkDragStarted)="dragStart()"

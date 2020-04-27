@@ -13,6 +13,7 @@ export class MsfDashboardPanelValues {
     tableGenerated: boolean;
     mapboxGenerated: boolean;
     dynTableGenerated: boolean;
+    EditactionListGenerated: boolean;
 
     chartName: String;
     chartDescription: String;
