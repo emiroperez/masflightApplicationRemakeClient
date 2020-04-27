@@ -53,8 +53,6 @@ const targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
-  valueAxis: any;
-
   chart: any;
   chartInfo: any;
 
@@ -1187,7 +1185,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.zone.runOutsideAngular (() => {
       let chart, options;
 
-      //am4core.options.viewportTarget = document.getElementById ("msf-dashboard-element");
       //if (this.values.animated)
       //  am4core.options.autoSetClassName = true;
 
@@ -1539,9 +1536,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         options = chart.exporting.getFormatOptions ("pdf");
         options.addURL = false;
         chart.exporting.setFormatOptions ("pdf", options);
-
-        // Set value axis to null
-        this.valueAxis = null;
       }
       else if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -1605,9 +1599,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.oldVariableName = "";
         this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
-        // Set value axis to null
-        this.valueAxis = null;
-
         // If the option meta data is 4 (Route Networks), add origin cities and its destinations
         if (this.values.currentOption.metaData == 4)
           this.setRouteNetworks (chart, theme);
@@ -1665,9 +1656,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         options = chart.exporting.getFormatOptions ("pdf");
         options.addURL = false;
         chart.exporting.setFormatOptions ("pdf", options);
-
-        // Set value axis to null
-        this.valueAxis = null;
       }
       else
       {
@@ -2338,9 +2326,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         options = chart.exporting.getFormatOptions ("pdf");
         options.addURL = false;
         chart.exporting.setFormatOptions ("pdf", options);
-
-        // Save value axis
-        this.valueAxis = valueAxis;
       }
 
       if (this.values.currentChartType.flags & ChartFlags.XYCHART
@@ -4487,7 +4472,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else
         {
-          if (this.values.function.id === "count")
+          if (this.values.function != null && this.values.function.id === "count")
           {
             if (this.values.variable != null)
               return true;

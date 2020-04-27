@@ -182,7 +182,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
     this.values.urlImg = this.data.values.urlImg;
-    this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
+
+    if (this.data.values.currentOption != null)
+      this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
+
     this.values.chartName = this.data.values.chartName;
     this.values.chartDescription = this.data.values.chartDescription;
 
@@ -2433,7 +2436,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
         else
         {
-          if (this.values.function.id === "count")
+          if (this.values.function != null && this.values.function.id === "count")
           {
             if (this.values.variable != null)
             {
@@ -2465,7 +2468,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
         else
         {
-          if (this.values.function.id === "count")
+          if (this.values.function != null && this.values.function.id === "count")
           {
             if (this.values.variable != null && this.values.xaxis != null)
             {
