@@ -822,6 +822,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dataFields.valueY = item.valueField;
     }
 
+    if (values.valueAxes.length)
+      series.yAxis = chart.yAxes.values[index];
+
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       series.dataFields.categoryX = item.titleField;
@@ -1659,7 +1662,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        let categoryAxis, valueAxis, parseDate, outputFormat, stacked;
+        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
 
@@ -1740,6 +1743,38 @@ export class MsfDashboardPanelComponent implements OnInit {
             parseDate = false;
         }
 
+        if (this.isSimpleChart () && this.values.valueAxes.length > 1)
+        {
+          valueAxes = [];
+
+          for (let i = 0; i < this.values.valueAxes.length; i++)
+          {
+            let valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+            if (i != 0)
+            {
+              valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
+              valueAxis.renderer.opposite = true;
+            }
+
+            valueAxis.renderer.labels.template.fontSize = 10;
+            valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+            valueAxis.renderer.grid.template.strokeOpacity = 1;
+            valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+            valueAxis.renderer.grid.template.strokeWidth = 1;
+
+            valueAxis.renderer.line.strokeOpacity = 1;
+            valueAxis.renderer.line.strokeWidth = 2;
+            valueAxis.renderer.line.stroke = am4core.color (this.paletteColors[i]);
+            valueAxis.renderer.labels.template.fill = am4core.color (this.paletteColors[i]);
+
+            valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+            valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+
+            valueAxes.push (valueAxis);
+          }
+        }
+
         // Set chart axes depeding on the rotation
         if (this.values.currentChartType.flags & ChartFlags.ROTATED)
         {
@@ -1782,10 +1817,13 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis.renderer.labels.template.maxWidth = 160;
           }
 
-          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+          if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+          {
+            valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
-          if (this.values.startAtZero)
-            valueAxis.min = 0;
+            if (this.values.startAtZero)
+              valueAxis.min = 0;
+          }
 
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1 && !this.isMobile)
@@ -1841,10 +1879,13 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis.renderer.labels.template.maxWidth = 240;
           }
 
-          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+          if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+          {
+            valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
-          if (this.values.startAtZero)
-            valueAxis.min = 0;
+            if (this.values.startAtZero)
+              valueAxis.min = 0;
+          }
 
           if (chart.data.length > 1 && !this.isMobile)
           {
@@ -1867,16 +1908,20 @@ export class MsfDashboardPanelComponent implements OnInit {
         categoryAxis.renderer.grid.template.strokeWidth = 1;
         categoryAxis.renderer.line.strokeWidth = 1;
 
-        // Set value axis properties
-        valueAxis.renderer.labels.template.fontSize = 10;
-        valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-        valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
-        valueAxis.renderer.grid.template.strokeWidth = 1;
+        if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+        {
+          // Set value axis properties
+          valueAxis.renderer.labels.template.fontSize = 10;
+          valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          valueAxis.renderer.grid.template.strokeOpacity = 1;
+          valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+          valueAxis.renderer.grid.template.strokeWidth = 1;
+
+          valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+        }
 
         // Set axis tooltip background color depending of the theme
-        valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-        valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
         categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
@@ -1890,15 +1935,18 @@ export class MsfDashboardPanelComponent implements OnInit {
                 categoryAxis.title.text = this.values.horizAxisName;
               else
                 categoryAxis.title.text = "Intervals";
-    
-              if (this.values.vertAxisName && this.values.vertAxisName != "")
-                valueAxis.title.text = this.values.vertAxisName;
-              else
+
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueColumn)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.vertAxisName && this.values.vertAxisName != "")
+                  valueAxis.title.text = this.values.vertAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.values.valueColumn)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
             else
@@ -1907,15 +1955,18 @@ export class MsfDashboardPanelComponent implements OnInit {
                 categoryAxis.title.text = this.values.vertAxisName;
               else
                 categoryAxis.title.text = "Intervals";
-    
-              if (this.values.horizAxisName && this.values.horizAxisName != "")
-                valueAxis.title.text = this.values.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueColumn)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.horizAxisName && this.values.horizAxisName != "")
+                  valueAxis.title.text = this.values.horizAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.values.valueColumn)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
 
@@ -1930,15 +1981,18 @@ export class MsfDashboardPanelComponent implements OnInit {
                 categoryAxis.title.text = this.values.horizAxisName;
               else
                 categoryAxis.title.text = this.values.xaxis.name;
-    
-              if (this.values.vertAxisName && this.values.vertAxisName != "")
-                valueAxis.title.text = this.values.vertAxisName;
-              else
+
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueColumn)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.vertAxisName && this.values.vertAxisName != "")
+                  valueAxis.title.text = this.values.vertAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.values.valueColumn)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
             else
@@ -1947,15 +2001,18 @@ export class MsfDashboardPanelComponent implements OnInit {
                 categoryAxis.title.text = this.values.vertAxisName;
               else
                 categoryAxis.title.text = this.values.xaxis.name;
-    
-              if (this.values.horizAxisName && this.values.horizAxisName != "")
-                valueAxis.title.text = this.values.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueColumn)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.horizAxisName && this.values.horizAxisName != "")
+                  valueAxis.title.text = this.values.horizAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.values.valueColumn)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
 
@@ -2064,14 +2121,17 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = "Intervals";
 
-              if (this.values.vertAxisName && this.values.vertAxisName != "")
-                valueAxis.title.text = this.values.vertAxisName;
-              else
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueColumn)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.vertAxisName && this.values.vertAxisName != "")
+                  valueAxis.title.text = this.values.vertAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.values.valueColumn)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
             else
@@ -2080,15 +2140,18 @@ export class MsfDashboardPanelComponent implements OnInit {
                 categoryAxis.title.text = this.values.vertAxisName;
               else
                 categoryAxis.title.text = "Intervals";
-  
-              if (this.values.horizAxisName && this.values.horizAxisName != "")
-                valueAxis.title.text = this.values.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueColumn)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.horizAxisName && this.values.horizAxisName != "")
+                  valueAxis.title.text = this.values.horizAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.values.valueColumn)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
           }
@@ -2101,16 +2164,19 @@ export class MsfDashboardPanelComponent implements OnInit {
               else
                 categoryAxis.title.text = this.values.variable.name;
 
-              if (this.values.vertAxisName && this.values.vertAxisName != "")
-                valueAxis.title.text = this.values.vertAxisName;
-              else
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueList && this.values.valueList.length == 1)
-                  valueAxis.title.text = this.values.valueList[0].name;
-                else if (this.values.valueColumn && !this.values.valueList)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.vertAxisName && this.values.vertAxisName != "")
+                  valueAxis.title.text = this.values.vertAxisName;
                 else
-                  valueAxis.title.text = this.values.function.name;
+                {
+                  if (this.values.valueList && this.values.valueList.length == 1)
+                    valueAxis.title.text = this.values.valueList[0].name;
+                  else if (this.values.valueColumn && !this.values.valueList)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = this.values.function.name;
+                }
               }
             }
             else
@@ -2119,17 +2185,20 @@ export class MsfDashboardPanelComponent implements OnInit {
                 categoryAxis.title.text = this.values.vertAxisName;
               else
                 categoryAxis.title.text = this.values.variable.name;
-  
-              if (this.values.horizAxisName && this.values.horizAxisName != "")
-                valueAxis.title.text = this.values.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
               {
-                if (this.values.valueList && this.values.valueList.length == 1)
-                  valueAxis.title.text = this.values.valueList[0].name;
-                else if (this.values.valueColumn && !this.values.valueList)
-                  valueAxis.title.text = this.values.valueColumn.name;
+                if (this.values.horizAxisName && this.values.horizAxisName != "")
+                  valueAxis.title.text = this.values.horizAxisName;
                 else
-                  valueAxis.title.text = this.values.function.name;
+                {
+                  if (this.values.valueList && this.values.valueList.length == 1)
+                    valueAxis.title.text = this.values.valueList[0].name;
+                  else if (this.values.valueColumn && !this.values.valueList)
+                    valueAxis.title.text = this.values.valueColumn.name;
+                  else
+                    valueAxis.title.text = this.values.function.name;
+                }
               }
             }
 
@@ -2291,14 +2360,19 @@ export class MsfDashboardPanelComponent implements OnInit {
           chart.cursor = new am4charts.XYCursor ();
 
         // Create axis ranges if available
+        if (!(this.isSimpleChart () && this.values.valueAxes.length > 1))
+          goalAxis = valueAxis;
+        else
+          goalAxis = valueAxes[0];
+
         if (this.values.goals && this.values.goals.length)
         {
           for (let goal of this.values.goals)
           {
-            let range = valueAxis.axisRanges.create ();
+            let range = goalAxis.axisRanges.create ();
 
             range.value = goal.value;
-            range.grid.stroke = am4core.color(goal.color);
+            range.grid.stroke = am4core.color (goal.color);
             range.grid.strokeWidth = 2;
             range.grid.strokeOpacity = 1;
             range.grid.above = true;
@@ -6955,9 +7029,10 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
   }
 
-
-  clearSort() {
-    if (this.values.ListSortingColumns != "") {
+  clearSort(): void
+  {
+    if (this.values.ListSortingColumns != "")
+    {
       this.values.ListSortingColumns = "";
       this.actualPageNumber = 0;
       this.moreResults = false;

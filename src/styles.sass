@@ -1322,7 +1322,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
                     .mat-radio-container 
                         .mat-radio-inner-circle
                             background-color: $font-color
-        .msf-dashboard-assistant-dialog, .msf-select-data-dialog
+        .msf-dashboard-assistant-dialog, .msf-select-data-dialog, .msf-dashboard-value-selector-dialog
             .mat-dialog-container
                 color: $font-color
         .msf-dashboard-assistant-stepper
@@ -2309,10 +2309,18 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             background-color: $category-admin-option-container-color
         .msf-mobile-menu-header
             background-color: $menu-header-color
-        .partial-summaries-header, .partial-summaries-body, .dynamic-table-config-header, .dynamic-table-body
+        .partial-summaries-header, .partial-summaries-body, .dynamic-table-config-header, .dynamic-table-body, .set-values-header, .set-values-body
             color: $font-color
             .flat-button-disabled
                 background-color: $dashboard-assistant-sub-background-color !important
+        .set-values-body
+            background-color: $dashboard-assistant-sub-background-color
+            .mat-form-field-label
+                color: $font-color
+            .mat-form-field-appearance-outline .mat-form-field-outline
+                color: $dashboard-panel-background-color
+            .mat-form-field-appearance-outline .mat-form-field-outline-thick
+                color: $dashboard-panel-background-color !important
         .partial-summaries-desc
             background-color: $table-header-border-color
         .partial-summaries-item
@@ -2365,7 +2373,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             background-color: $dashboard-background-color !important
             .summary-column-container
                 color: $font-color
-        .partial-summaries-close-button .mat-icon, .partial-summaries-delete-button, .dynamic-table-close-button .mat-icon
+        .partial-summaries-close-button .mat-icon, .partial-summaries-delete-button, .dynamic-table-close-button .mat-icon, .set-values-close-button .mat-icon
             color: $font-color !important
         .y-axis-container, .x-axis-and-values-container
             .drop-here
@@ -9033,7 +9041,19 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     padding: 0px 10px
 
 .msf-dashboard-assistant-loading
-  height: 100% !important
+    height: 100% !important
+
+.msf-dashboard-value-selector-dialog
+    min-width: 550px !important
+    max-width: 550px !important
+    width: 550px !important
+    height: 110px !important
+    max-height: 500px !important
+    .mat-dialog-container
+        padding: 0
+        min-height: inherit !important
+        max-height: inherit !important
+        overflow: hidden
 
 .msf-dashboard-assistant-dialog
     min-width: 1050px !important
@@ -12346,7 +12366,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                                     resize: none
 
 .values-combobox
-    margin-left: -5px
+    margin-top: 10px !important
+    width: 96%
 
 .num-variables-icon
     margin-top: -20px
@@ -12481,6 +12502,31 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .anim-checkbox
     margin-left: 15px
+
+.set-values-header
+    display: flex
+    align-items: center
+    height: 36px
+    padding: 10px 2px 7px 18px
+    position: relative
+    .set-values-icon
+        width: 20px
+        height: 20px
+        margin-right: 15px
+    .set-values-title
+        font-size: 16px
+        font-weight: 550
+    .set-values-header-buttons
+        position: absolute
+        right: 10px
+        .set-values-close-button
+            height: 35px !important
+            line-height: 35px !important
+            margin-left: 10px
+
+.set-values-body
+    width: 100%
+    height: calc(100% - 53px)
 
 //.amcharts-LineSeries
 //    stroke-linejoin: round

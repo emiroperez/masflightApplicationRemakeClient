@@ -72,6 +72,7 @@ export class MsfDashboardPanelValues {
 
     calculatedHeight: number;
     chartSeries: any[] = [];
+    valueAxes: any[] = [];
 
     vertAxisName: string;
     horizAxisName: string;

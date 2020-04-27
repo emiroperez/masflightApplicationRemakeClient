@@ -1,0 +1,21 @@
+<div class="set-values-header">
+  <span class="set-values-title">Set Values</span>
+  <div class="set-values-header-buttons">
+    <button mat-icon-button class="set-values-close-button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="set-values-body">
+  <div class="assistant-function-combobox datalake-search-input">
+    <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
+      <mat-label>Values</mat-label>
+      <mat-select placeholder="Values" [(ngModel)]="data.values.valueList" multiple>
+        <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+        <mat-option *ngFor="let variable of data.values.chartColumnOptions" [value]="variable">
+          {{variable.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

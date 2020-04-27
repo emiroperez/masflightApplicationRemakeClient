@@ -24,6 +24,7 @@ import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functi
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 import { AirportSelection } from '../commons/AirportSelection';
+import { MsfDashboardValueSelectorDialogComponent } from '../msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -3047,6 +3048,18 @@ export class MsfDashboardAssistantComponent implements OnInit {
         vertAxisName: this.values.vertAxisName,
         horizAxisName: this.values.horizAxisName,
         animated: this.values.animated
+      }
+    });
+  }
+
+  setSimpleValues(): void
+  {
+    this.dialog.open (MsfDashboardValueSelectorDialogComponent, {
+      panelClass: 'msf-dashboard-value-selector-dialog',
+      autoFocus: false,
+      data: {
+        values: this.values,
+        columns: this.msfConfigTableRef.metadata
       }
     });
   }
