@@ -2336,7 +2336,7 @@ export class MsfDashboardPanelComponent implements OnInit {
                 }
               }
 
-              series = this.values.currentChartType.createSeries(this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
+              series = this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
 
               if (!(this.values.currentChartType.flags & ChartFlags.ADVANCED))
               {

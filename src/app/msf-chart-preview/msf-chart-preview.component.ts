@@ -168,7 +168,7 @@ export class MsfChartPreviewComponent {
 
   getPanelInfo(): any
   {
-    if (this.data.currentChartType.flags & ChartFlags.ADVANCED)
+    if (this.data.chartMode === "advanced")
     {
       return {
         option: this.data.currentOption,
@@ -196,7 +196,8 @@ export class MsfChartPreviewComponent {
         xaxisName: this.data.chartColumnOptions ? (this.data.xaxis ? this.data.xaxis.id : null) : null,
         valueName: this.data.chartColumnOptions ? ((this.data.valueColumn && !this.isSimpleChart()) ? this.data.valueColumn.id : null) : null,
         functionName: this.data.function.id,
-        valueNameList: this.generateValueNameList ()
+        valueNameList: this.generateValueNameList (),
+        valueListInfo: this.generateValueListInfo ()
       };
     }
   }
@@ -219,6 +220,16 @@ export class MsfChartPreviewComponent {
     return list;
   }
 
+  generateValueListInfo(): string
+  {
+    if (!this.isSimpleChart() || !this.data.valueListInfo || (this.data.valueListInfo && !this.data.valueListInfo.length) || this.isAdvChartPanel ())
+      return null;
+
+    for (let valueInfo of this.data.valueListInfo)
+      valueInfo.name = undefined;
+
+    return JSON.stringify (this.data.valueListInfo);
+  }
 
   generateValueNameList(): string
   {
@@ -361,7 +372,7 @@ export class MsfChartPreviewComponent {
       }
       else
       {
-        let categoryAxis, valueAxis, parseDate, outputFormat, stacked;
+        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis;
 
         chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
 
@@ -442,6 +453,62 @@ export class MsfChartPreviewComponent {
             parseDate = false;
         }
 
+        valueAxes = [];
+
+        if (this.isSimpleChart() && this.data.valueListInfo.length > 1 && this.data.chartMode !== "advanced")
+        {
+          for (let i = 0; i < this.data.valueListInfo.length; i++)
+          {
+            let valueAxis;
+
+            if (!this.data.valueListInfo[i].axis)
+              continue;
+
+            if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+              valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+            else
+              valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+            if (chart.yAxes.indexOf (valueAxis) != 0)
+            {
+              valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
+              valueAxis.renderer.opposite = true;
+            }
+
+            if (this.data.startAtZero)
+              valueAxis.min = 0;
+
+            valueAxis.renderer.labels.template.fontSize = 10;
+            valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+            valueAxis.renderer.grid.template.strokeOpacity = 1;
+            valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+            valueAxis.renderer.grid.template.strokeWidth = 1;
+
+            valueAxis.renderer.line.strokeOpacity = 1;
+            valueAxis.renderer.line.strokeWidth = 2;
+            valueAxis.renderer.line.stroke = am4core.color (this.paletteColors[i]);
+            valueAxis.renderer.labels.template.fill = am4core.color (this.paletteColors[i]);
+
+            valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+            valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+
+            valueAxes.push ({
+              item: valueAxis,
+              name: this.data.valueList[i].id
+            });
+          }
+
+          if (valueAxes.length == 1)
+          {
+            if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+              chart.xAxes.removeIndex (0);
+            else
+              chart.yAxes.removeIndex (0);
+
+            valueAxes = [];
+          }
+        }
+
         // Set chart axes depeding on the rotation
         if (this.data.currentChartType.flags & ChartFlags.ROTATED)
         {
@@ -488,10 +555,13 @@ export class MsfChartPreviewComponent {
             categoryAxis.renderer.labels.template.maxWidth = 240;
           }
 
-          valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+          if (!(this.isSimpleChart () && valueAxes.length > 1))
+          {
+            valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
 
-          if (this.data.startAtZero)
-            valueAxis.min = 0;
+            if (this.data.startAtZero)
+              valueAxis.min = 0;
+          }
 
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
@@ -551,10 +621,13 @@ export class MsfChartPreviewComponent {
             categoryAxis.renderer.labels.template.maxWidth = 240;
           }
 
-          valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+          if (!(this.isSimpleChart () && valueAxes.length > 1))
+          {
+            valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
-          if (this.data.startAtZero)
-            valueAxis.min = 0;
+            if (this.data.startAtZero)
+              valueAxis.min = 0;
+          }
 
           if (chart.data.length > 1)
           {
@@ -577,21 +650,22 @@ export class MsfChartPreviewComponent {
         categoryAxis.renderer.grid.template.strokeWidth = 1;
         categoryAxis.renderer.line.strokeWidth = 1;
 
-        // Set value axis properties
-        valueAxis.renderer.labels.template.fontSize = 10;
-        valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-        valueAxis.renderer.grid.template.strokeOpacity = 1;
-        valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
-        valueAxis.renderer.grid.template.strokeWidth = 1;
-
-        if (this.data.currentChartType.flags & ChartFlags.LINECHART)
+        if (!(this.isSimpleChart () && valueAxes.length > 1))
         {
-          // Set axis tooltip background color depending of the theme
+          // Set value axis properties
+          valueAxis.renderer.labels.template.fontSize = 10;
+          valueAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          valueAxis.renderer.grid.template.strokeOpacity = 1;
+          valueAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+          valueAxis.renderer.grid.template.strokeWidth = 1;
+
           valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
-          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
+
+        // Set axis tooltip background color depending of the theme
+        categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+        categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -604,15 +678,18 @@ export class MsfChartPreviewComponent {
                 categoryAxis.title.text = this.data.horizAxisName;
               else
                 categoryAxis.title.text = "Intervals";
-    
-              if (this.data.vertAxisName && this.data.vertAxisName != "")
-                valueAxis.title.text = this.data.vertAxisName;
-              else
+
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueColumn)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.vertAxisName && this.data.vertAxisName != "")
+                  valueAxis.title.text = this.data.vertAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.data.valueColumn)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
             else
@@ -621,15 +698,18 @@ export class MsfChartPreviewComponent {
                 categoryAxis.title.text = this.data.vertAxisName;
               else
                 categoryAxis.title.text = "Intervals";
-    
-              if (this.data.horizAxisName && this.data.horizAxisName != "")
-                valueAxis.title.text = this.data.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueColumn)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.horizAxisName && this.data.horizAxisName != "")
+                  valueAxis.title.text = this.data.horizAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.data.valueColumn)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
 
@@ -644,15 +724,18 @@ export class MsfChartPreviewComponent {
                 categoryAxis.title.text = this.data.horizAxisName;
               else
                 categoryAxis.title.text = this.data.xaxis.name;
-    
-              if (this.data.vertAxisName && this.data.vertAxisName != "")
-                valueAxis.title.text = this.data.vertAxisName;
-              else
+
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueColumn)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.vertAxisName && this.data.vertAxisName != "")
+                  valueAxis.title.text = this.data.vertAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.data.valueColumn)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
             else
@@ -661,15 +744,18 @@ export class MsfChartPreviewComponent {
                 categoryAxis.title.text = this.data.vertAxisName;
               else
                 categoryAxis.title.text = this.data.xaxis.name;
-    
-              if (this.data.horizAxisName && this.data.horizAxisName != "")
-                valueAxis.title.text = this.data.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueColumn)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.horizAxisName && this.data.horizAxisName != "")
+                  valueAxis.title.text = this.data.horizAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.data.valueColumn)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
   
@@ -775,14 +861,17 @@ export class MsfChartPreviewComponent {
               else
                 categoryAxis.title.text = "Intervals";
 
-              if (this.data.vertAxisName && this.data.vertAxisName != "")
-                valueAxis.title.text = this.data.vertAxisName;
-              else
+              if (!(this.isSimpleChart() && valueAxes.length > 1))
               {
-                if (this.data.valueColumn)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.vertAxisName && this.data.vertAxisName != "")
+                  valueAxis.title.text = this.data.vertAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.data.valueColumn)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
             else
@@ -791,15 +880,18 @@ export class MsfChartPreviewComponent {
                 categoryAxis.title.text = this.data.vertAxisName;
               else
                 categoryAxis.title.text = "Intervals";
-  
-              if (this.data.horizAxisName && this.data.horizAxisName != "")
-                valueAxis.title.text = this.data.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueColumn)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.horizAxisName && this.data.horizAxisName != "")
+                  valueAxis.title.text = this.data.horizAxisName;
                 else
-                  valueAxis.title.text = "Count";
+                {
+                  if (this.data.valueColumn)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = "Count";
+                }
               }
             }
           }
@@ -812,16 +904,19 @@ export class MsfChartPreviewComponent {
               else
                 categoryAxis.title.text = this.data.variable.name;
 
-              if (this.data.vertAxisName && this.data.vertAxisName != "")
-                valueAxis.title.text = this.data.vertAxisName;
-              else
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueList && this.data.valueList.length == 1)
-                  valueAxis.title.text = this.data.valueList[0].name;
-                else if (this.data.valueColumn && !this.data.valueList)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.vertAxisName && this.data.vertAxisName != "")
+                  valueAxis.title.text = this.data.vertAxisName;
                 else
-                  valueAxis.title.text = this.data.function.name;
+                {
+                  if (this.data.valueList && this.data.valueList.length == 1)
+                    valueAxis.title.text = this.data.valueList[0].name;
+                  else if (this.data.valueColumn && !this.data.valueList)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = this.data.function.name;
+                }
               }
             }
             else
@@ -830,17 +925,20 @@ export class MsfChartPreviewComponent {
                 categoryAxis.title.text = this.data.vertAxisName;
               else
                 categoryAxis.title.text = this.data.variable.name;
-  
-              if (this.data.horizAxisName && this.data.horizAxisName != "")
-                valueAxis.title.text = this.data.horizAxisName;
-              else
+
+              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
-                if (this.data.valueList && this.data.valueList.length == 1)
-                  valueAxis.title.text = this.data.valueList[0].name;
-                else if (this.data.valueColumn && !this.data.valueList)
-                  valueAxis.title.text = this.data.valueColumn.name;
+                if (this.data.horizAxisName && this.data.horizAxisName != "")
+                  valueAxis.title.text = this.data.horizAxisName;
                 else
-                  valueAxis.title.text = this.data.function.name;
+                {
+                  if (this.data.valueList && this.data.valueList.length == 1)
+                    valueAxis.title.text = this.data.valueList[0].name;
+                  else if (this.data.valueColumn && !this.data.valueList)
+                    valueAxis.title.text = this.data.valueColumn.name;
+                  else
+                    valueAxis.title.text = this.data.function.name;
+                }
               }
             }
 
@@ -921,6 +1019,8 @@ export class MsfChartPreviewComponent {
           // Create the series
           if (this.data.valueList && this.data.valueList.length > 1)
           {
+            let series;
+
             for (let i = 0; i < chartInfo.valueFields.length; i++)
             {
               let curValue = chartInfo.valueFields[i];
@@ -956,7 +1056,43 @@ export class MsfChartPreviewComponent {
                 }
               }
 
-              this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
+              series = this.data.currentChartType.createSeries(this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
+
+              if (this.data.chartMode !== "advanced")
+              {
+                if (this.data.valueListInfo.length > 1 && this.data.valueListInfo[i].axis)
+                {
+                  let found = false;
+
+                  for (let valueAxis of valueAxes)
+                  {
+                    if (valueAxis.name === this.data.valueList[i].id)
+                    {
+                      if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                        series.xAxis = valueAxis.item;
+                      else
+                        series.yAxis = valueAxis.item;
+
+                      found = true;
+                      break;
+                    }
+                  }
+
+                  if (!found)
+                  {
+                    if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                    {
+                      if (!series.xAxis)
+                        series.xAxis = valueAxis[0].item;
+                    }
+                    else
+                    {
+                      if (!series.yAxis)
+                        series.yAxis = valueAxis[0].item;
+                    }
+                  }
+                }
+              }
             }
           }
           else
