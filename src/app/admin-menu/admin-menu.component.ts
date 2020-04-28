@@ -969,6 +969,18 @@ export class EditCategoryArgumentDialog {
   isStates(item) {
     return ComponentType.states == item.type;
   }
+
+  adjustMaxDate(item): void
+  {
+    if (item.maxDate < item.minDate)
+      item.maxDate = item.minDate;
+  }
+
+  adjustMinDate(item): void
+  {
+    if (item.minDate > item.maxDate)
+      item.minDate = item.maxDate;
+  }
 }
 
 export class ExampleFlatNode {

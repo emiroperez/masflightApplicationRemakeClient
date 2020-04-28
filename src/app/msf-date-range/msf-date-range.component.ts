@@ -142,9 +142,6 @@ export class MsfDateRangeComponent implements OnInit {
   @Output("startURLUpdate")
   startUpdateURL = new EventEmitter ();
 
-  maxDate: Date;
-  minDate: Date;
-
   calendarHeader: any = MonthHeader;
   currentDateRange: any[] = [];
   currentValueType: number = 0;
@@ -314,9 +311,6 @@ export class MsfDateRangeComponent implements OnInit {
     else if (this.globals.dateRestrictionInfo.endDate)
       this.argument.maxDate = this.globals.dateRestrictionInfo.endDate;
 
-    this.minDate = this.argument.minDate;
-    this.maxDate = this.argument.maxDate;
-
     switch (this.currentValueType)
     {
       case 3:
@@ -398,10 +392,6 @@ export class MsfDateRangeComponent implements OnInit {
           break;
         }
       }
-
-      this.minDate = this.argument.value1;
-      if (this.isDateRange)
-        this.maxDate = this.argument.value2;
 
       // set display and date values
       switch (this.currentValueType)
@@ -505,9 +495,6 @@ export class MsfDateRangeComponent implements OnInit {
           this.argument.value2 = this.argument.minDate;
       }
 
-      this.minDate = this.argument.value1;
-      this.maxDate = this.argument.value2;
-
       switch (this.currentValueType)
       {
         case 1:
@@ -547,16 +534,14 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateChange(normalizedDate: Moment): void
   {
-    this.minDate = normalizedDate.toDate ();
-
     if (!this.isDateRange)
       return;
 
     if (this.dateStartView !== "month")
       this.argument.value2 = this.value2Date;
 
-    if (!this.argument.value2 || this.argument.value2 < this.minDate)
-      this.argument.value2 = this.minDate;
+    if (!this.argument.value2 || this.argument.value2 < this.argument.value1)
+      this.argument.value2 = this.argument.value1;
 
     switch (this.currentValueType)
     {
@@ -578,8 +563,6 @@ export class MsfDateRangeComponent implements OnInit {
 
   dateChange2(normalizedDate: Moment): void
   {
-    this.maxDate = normalizedDate.toDate ();
-
     if (!this.isDateRange)
       return;
 
@@ -589,8 +572,8 @@ export class MsfDateRangeComponent implements OnInit {
     if (!this.argument.value1)
       return;
 
-    if (this.argument.value1 > this.maxDate)
-      this.argument.value1 = this.maxDate;
+    if (this.argument.value1 > this.argument.value2)
+      this.argument.value1 = this.argument.value2;
 
     switch (this.currentValueType)
     {
@@ -648,9 +631,6 @@ export class MsfDateRangeComponent implements OnInit {
         if (this.argument.value2 && this.argument.value2 < this.argument.minDate)
           this.argument.value2 = this.argument.minDate;
       }
-
-      this.minDate = this.argument.value1;
-      this.maxDate = this.argument.value2;
 
       switch (this.currentValueType)
       {
@@ -769,8 +749,6 @@ export class MsfDateRangeComponent implements OnInit {
         this.argument.value1 = this.argument.maxDate;
       else if (this.argument.minDate && this.argument.value1 < this.argument.minDate)
         this.argument.value1 = this.argument.minDate;
-
-      this.minDate = this.argument.value1;
 
       switch (this.currentValueType)
       {
@@ -891,9 +869,6 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (!(this.argument.maxDate == null || today < this.argument.maxDate))
       this.argument.value2 = this.argument.maxDate;
-
-    this.minDate = this.argument.value1;
-    this.maxDate = this.argument.value2;
   }
 
   calculateDateRange2(option: string): void
@@ -956,8 +931,6 @@ export class MsfDateRangeComponent implements OnInit {
 
     if (this.argument.maxDate && this.argument.value2 > this.argument.maxDate)
       this.argument.value2 = this.argument.maxDate;
-
-    this.maxDate = this.argument.value2;
   }
 
   getMonthDateFormat(): string
