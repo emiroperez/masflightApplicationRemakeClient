@@ -50,6 +50,14 @@ export class MsfDashboardValueSelectorDialogComponent
     this.data.values.valueListInfo = this.valueListInfo;
   }
 
+  updateMainFunction(index): void
+  {
+    if (index)
+      return;
+
+    this.data.values.function = this.data.functions[this.data.values.valueListInfo[0].function];
+  }
+
   onNoClick(): void
   {
     this.dialogRef.close ();

@@ -25,7 +25,7 @@
         <div class="assistant-function-combobox datalake-search-input">
           <mat-form-field class="datalake-search-formfield config-panel-form-field value-item-combobox" appearance="outline">
             <mat-label>Function</mat-label>
-            <mat-select [(ngModel)]="value.function">
+            <mat-select [(ngModel)]="value.function" (ngModelUpdate)="updateMainFunction(i)">
               <mat-option *ngFor="let fun of data.functions; let j = index" [value]="j">
                 {{fun.name}}
               </mat-option>
