@@ -379,7 +379,7 @@
                 <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && isAdvChartPanel()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
                     <mat-label>Values</mat-label>
-                    <mat-select placeholder="Values" [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
+                    <mat-select [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredValues | async" [value]="variable">
                         {{variable.name}}

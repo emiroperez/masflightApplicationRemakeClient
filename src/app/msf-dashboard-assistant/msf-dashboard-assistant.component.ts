@@ -3070,7 +3070,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
       autoFocus: false,
       data: {
         values: this.values,
-        columns: this.msfConfigTableRef.metadata,
         functions: this.functions
       }
     });

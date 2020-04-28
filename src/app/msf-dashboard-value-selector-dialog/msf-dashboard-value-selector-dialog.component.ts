@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-msf-dashboard-value-selector-dialog',
@@ -7,6 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class MsfDashboardValueSelectorDialogComponent
 {
+  filteredVariables: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   valueListInfo: any[] = [];
 
   constructor(public dialogRef: MatDialogRef<MsfDashboardValueSelectorDialogComponent>,
@@ -28,6 +30,9 @@ export class MsfDashboardValueSelectorDialogComponent
 
       this.data.values.valueListInfo = this.valueListInfo;
     }
+
+    if (this.data.values.chartColumnOptions)
+      this.filteredVariables.next (this.data.values.chartColumnOptions.slice ());
   }
 
   updateValueListInfo(): void
@@ -56,6 +61,25 @@ export class MsfDashboardValueSelectorDialogComponent
       return;
 
     this.data.values.function = this.data.functions[this.data.values.valueListInfo[0].function];
+  }
+
+  filterVariables(value): void
+  {
+    if (!this.data.values.chartColumnOptions)
+      return;
+
+    // get the search keyword
+    let search = value;
+    if (!search)
+    {
+      this.filteredVariables.next (this.data.values.chartColumnOptions.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredVariables.next (
+      this.data.values.chartColumnOptions.filter (a => a.name.toLowerCase ().indexOf (search) > -1)
+    );
   }
 
   onNoClick(): void

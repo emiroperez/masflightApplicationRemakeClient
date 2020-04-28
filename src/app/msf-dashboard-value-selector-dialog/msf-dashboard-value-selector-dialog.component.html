@@ -11,8 +11,8 @@
     <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
       <mat-label>Values</mat-label>
       <mat-select placeholder="Values" [(ngModel)]="data.values.valueList" (ngModelChange)="updateValueListInfo()" multiple>
-        <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-        <mat-option *ngFor="let variable of data.values.chartColumnOptions" [value]="variable">
+        <ngx-mat-select-search ngModel (ngModelChange)="filterVariables($event)" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+        <mat-option *ngFor="let variable of filteredVariables | async" [value]="variable">
           {{variable.name}}
         </mat-option>
       </mat-select>
