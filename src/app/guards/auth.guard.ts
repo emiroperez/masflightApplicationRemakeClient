@@ -103,6 +103,7 @@ export class AuthGuard implements CanActivate {
 
   redirectToLogin(_this): void
   {
+    _this.dialog.closeAll ();
     _this.router.navigate (['']);
   }
 
@@ -110,7 +111,7 @@ export class AuthGuard implements CanActivate {
   {
     if (!this.authService.isTokenExpired ())
     {
-      if (!this.inactivityTimeout && !isDevMode ())
+      if (!this.inactivityTimeout/* && !isDevMode ()*/)
       {
         let _this = this;
 
