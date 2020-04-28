@@ -412,13 +412,11 @@ export class ApplicationService {
     this.http.get(_this, url, handlerSuccess, handlerError, null);
   }
 
-  saveMenu(_this, defaultMenuId, data, handlerSuccess, handlerError){
+  saveMenu(_this, data, handlerSuccess, handlerError){
     let url;
 
     _this.globals.isLoading = true;
     url = this.host + "/menu?applicationId=" + _this.globals.currentApplication.id;
-    if (defaultMenuId)
-      url += "&defaultMenuId=" + defaultMenuId;
 
     this.http.post(_this, url, data, handlerSuccess, handlerError);
   }
@@ -776,17 +774,6 @@ export class ApplicationService {
     this.http.post (_this, url, shareInfo, handlerSuccess, handlerError);
   }
 
-  getMenuDefaultId(_this, handlerSuccess, handlerError)
-  {
-    let url;
-
-    if (_this.globals.currentApplication == undefined)
-      _this.globals.currentApplication = JSON.parse (localStorage.getItem ("currentApplication"));
-
-    url = this.host + "/getMenuDefaultId?applicationId=" + _this.globals.currentApplication.id;
-    this.http.get (_this, url, handlerSuccess, handlerError, null);
-  }
-
   getMenuCategoryWelcome(_this, handlerSuccess, handlerError) {
     let url = this.host + "/secure/getMenuCategoryWelcome?application=" + _this.globals.currentApplication.id;
     this.authService.get (_this, url, handlerSuccess, handlerError);
@@ -939,6 +926,21 @@ export class ApplicationService {
 
   loadActionListForDashboard(_this,panelId, handlerSuccess, handlerError) {
     let url = this.host + "/getActionListTreeForDashboard?panelId=" + panelId;
+    this.authService.get (_this, url, handlerSuccess, handlerError);
+  }
+
+  getDefaultOptionId(_this, handlerSuccess, handlerError)
+  {
+    let url;
+
+    if (_this.globals.currentApplication == undefined)
+      _this.globals.currentApplication = JSON.parse (localStorage.getItem ("currentApplication"));
+
+    url = this.host + "/secure/getDefaultOptionId?appId=" + _this.globals.currentApplication.id;
+
+    if (_this.globals.testingPlan != -1)
+      url += "?testPlanId=" + _this.globals.testingPlan;
+
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
 }

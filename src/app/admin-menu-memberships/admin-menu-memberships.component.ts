@@ -45,6 +45,8 @@ export class AdminMenuMembershipsComponent implements OnInit {
 
   @Output() idSelected = new EventEmitter();
 
+  @Output("toggleOption")
+  toggleOption = new EventEmitter ();
 
   selected: any;
   total: any;
@@ -118,6 +120,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
     cascadeState(option){
       let newState = option.selected;
       let childrenOption = option.children;
+      this.toggleOption.emit (option);
       for (let i=0; i < childrenOption.length; i++){
       this.recursiveStates(childrenOption[i], newState);
       }
@@ -125,6 +128,7 @@ export class AdminMenuMembershipsComponent implements OnInit {
 
     recursiveStates(option, state){
       option.selected = state;
+      this.toggleOption.emit (option);
       if (option.children.length > 0) {
         for (let i=0; i < option.children.length; i++){
           this.recursiveStates(option.children[i], state);
