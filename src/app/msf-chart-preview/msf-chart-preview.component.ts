@@ -323,10 +323,12 @@ export class MsfChartPreviewComponent {
     {
       if (this.data.currentChartType.flags & ChartFlags.ROTATED)
       {
-        if (this.data.currentChartType.flags & ChartFlags.LINECHART)
-          chartName = "Vertical " + valueChartName;
+        valueChartName = valueChartName.split (" ")[1];
+
+        if (valueChartName === "Lines")
+          chartName = "Simple Vertical " + valueChartName;
         else
-          chartName = "Horizontal " + valueChartName;
+          chartName = "Simple Horizontal " + valueChartName;
       }
       else
         chartName = valueChartName;
@@ -338,7 +340,10 @@ export class MsfChartPreviewComponent {
         return chartType;
     }
 
-    return this.data.chartTypes[0];
+    if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+      return this.data.chartTypes[3];
+
+    return this.data.chartTypes[2];
   }
 
   makeChart(chartInfo): void
@@ -493,14 +498,24 @@ export class MsfChartPreviewComponent {
               continue;
 
             if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+            {
               valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+              if (chart.xAxes.indexOf (valueAxis) != 0)
+              {
+                valueAxis.syncWithAxis = chart.xAxes.getIndex (0);
+                valueAxis.renderer.opposite = true;
+              }
+            }
             else
+            {
               valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
-            if (chart.yAxes.indexOf (valueAxis) != 0)
-            {
-              valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
-              valueAxis.renderer.opposite = true;
+              if (chart.yAxes.indexOf (valueAxis) != 0)
+              {
+                valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
+                valueAxis.renderer.opposite = true;
+              }
             }
 
             if (this.data.startAtZero)

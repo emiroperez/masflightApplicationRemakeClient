@@ -942,6 +942,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.valueSelected = null;
       this.values.valueColumn = null;
       this.values.valueList = [];
+      this.values.valueListInfo = [];
       this.values.startAtZero = false;
     }
     else
@@ -950,6 +951,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.aggregationValueSelected = null;
       this.values.valueColumn = null;
       this.values.valueList = [];
+      this.values.valueListInfo = [];
 
       for (let chart of this.chartTypes)
       {
@@ -2583,6 +2585,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
       this.values.valueColumn = null;
       this.values.valueList = [];
+      this.values.valueListInfo = [];
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
         this.values.formVariables = [];
@@ -3065,7 +3068,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   setSimpleValues(): void
   {
-    this.dialog.open (MsfDashboardValueSelectorDialogComponent, {
+    const dialogRef = this.dialog.open (MsfDashboardValueSelectorDialogComponent, {
       panelClass: 'msf-dashboard-value-selector-dialog',
       autoFocus: false,
       data: {
@@ -3073,6 +3076,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
         functions: this.functions,
         chartTypes: this.chartTypes
       }
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      this.checkPanelConfiguration ();
     });
   }
 }

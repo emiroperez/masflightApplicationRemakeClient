@@ -92,7 +92,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
     { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE },
-    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE }
+    { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE },
+    { name: 'Simple Vertical Lines', flags: ChartFlags.LINECHART | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries },
+    { name: 'Simple Vertical Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries }
   ];
 
   functions: any[] = [
@@ -808,6 +810,124 @@ export class MsfDashboardPanelComponent implements OnInit {
     return series;
   }
 
+  // Function to create simple vertical line chart series
+  createSimpleVertLineSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, paletteColors): any
+  {
+    // Set up series
+    let series = chart.series.push (new am4charts.LineSeries ());
+
+    if (simpleValue)
+    {
+      series.name = simpleValue.name;
+      series.dataFields.valueX = simpleValue.id;
+    }
+    else
+    {
+      series.name = item.valueField;
+      series.dataFields.valueX = item.valueField;
+    }
+
+    series.strokeWidth = 2;
+    series.minBulletDistance = 10;
+    series.tooltip.pointerOrientation = "horizontal";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+    series.tensionY = 0.8;
+    series.zIndex = 1;
+
+    if (values.currentChartType.flags & ChartFlags.BULLET)
+    {
+      let bullet, circle;
+
+      series.strokeOpacity = 0;
+
+      // add circle bullet for scatter chart
+      bullet = series.bullets.push (new am4charts.Bullet ());
+
+      circle = bullet.createChild (am4core.Circle);
+      circle.horizontalCenter = "middle";
+      circle.verticalCenter = "middle";
+      circle.fill = am4core.color (paletteColors[index]);
+      circle.strokeWidth = 0;
+      circle.width = 12;
+      circle.height = 12;
+    }
+
+    if (values.currentChartType.flags & ChartFlags.ADVANCED)
+    {
+      series.dataFields.categoryY = item.titleField;
+      series.tooltipText = "{valueX}";
+    }
+    else
+    {
+      if (parseDate)
+      {
+        series.dataFields.dateY = item.titleField;
+        series.dateFormatter.dateFormat = outputFormat;
+
+        if (simpleValue && simpleValue.item.columnType === "number")
+          series.tooltipText = "{dateY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+        else
+          series.tooltipText = "{dateY}: {valueX}";
+      }
+      else
+      {
+        series.dataFields.categoryY = item.titleField;
+
+        if (simpleValue && simpleValue.item.columnType === "number")
+          series.tooltipText = "{categoryY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+        else
+          series.tooltipText = "{categoryY}: {valueX}";
+      }
+    }
+
+    // Set line color for legend
+    series.segments.template.adapter.add ("fill", (fill, target) => {
+      return am4core.color (paletteColors[index]);
+    });
+
+    series.adapter.add ("stroke", (stroke, target) => {
+      return am4core.color (paletteColors[index]);
+    });
+
+    // Set thresholds
+    if (simpleValue && simpleValue.item.columnType === "number")
+    {
+      series.propertyFields.stroke = "lineColor" + series.dataFields.valueX;
+      series.propertyFields.fill = "lineColor" + series.dataFields.valueX;
+    }
+
+    if (!(values.currentChartType.flags & ChartFlags.ADVANCED))
+    {
+      // Display a special context menu when a chart line segment is right clicked
+      series.segments.template.interactionsEnabled = true;
+      series.segments.template.events.on ("down", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        if (!event.touch)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.variable.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueX;
+      });
+
+      series.segments.template.events.on ("rightclick", function (event) {
+        if (!values.currentOption.drillDownOptions.length)
+          return;
+
+        values.chartClicked = true;
+        values.chartObjectSelected = event.target.dataItem.component.tooltipDataItem.dataContext[values.variable.id];
+        values.chartSecondaryObjectSelected = series.dataFields.valueX;
+      });
+    }
+
+    series.showOnInit = false;
+
+    return series;
+  }
   // Function to create simple vertical column chart series
   createSimpleVertColumnSeries(values, simpleValue, chart, item, parseDate, index, outputFormat, paletteColors): any
   {
@@ -1163,10 +1283,12 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       if (this.values.currentChartType.flags & ChartFlags.ROTATED)
       {
-        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
-          chartName = "Vertical " + valueChartName;
+        valueChartName = valueChartName.split (" ")[1];
+
+        if (valueChartName === "Lines")
+          chartName = "Simple Vertical " + valueChartName;
         else
-          chartName = "Horizontal " + valueChartName;
+          chartName = "Simple Horizontal " + valueChartName;
       }
       else
         chartName = valueChartName;
@@ -1178,7 +1300,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         return chartType;
     }
 
-    return this.chartTypes[0];
+    if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+      return this.chartTypes[3];
+
+    return this.chartTypes[2];
   }
 
   makeChart(chartInfo): void
@@ -1782,14 +1907,24 @@ export class MsfDashboardPanelComponent implements OnInit {
               continue;
 
             if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+            {
               valueAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+              if (chart.xAxes.indexOf (valueAxis) != 0)
+              {
+                valueAxis.syncWithAxis = chart.xAxes.getIndex (0);
+                valueAxis.renderer.opposite = true;
+              }
+            }
             else
+            {
               valueAxis = chart.yAxes.push (new am4charts.ValueAxis ());
 
-            if (chart.yAxes.indexOf (valueAxis) != 0)
-            {
-              valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
-              valueAxis.renderer.opposite = true;
+              if (chart.yAxes.indexOf (valueAxis) != 0)
+              {
+                valueAxis.syncWithAxis = chart.yAxes.getIndex (0);
+                valueAxis.renderer.opposite = true;
+              }
             }
 
             if (this.values.startAtZero)
@@ -2409,6 +2544,10 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
 
               this.values.chartSeries.push (series);
+
+              if (this.values.currentChartType.flags & ChartFlags.LINECHART && !chart.cursor)
+                chart.cursor = new am4charts.XYCursor ();
+
               this.values.currentChartType = prevChartType;
             }
           }
@@ -2451,7 +2590,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
 
         // Add cursor if the chart type is line, area or stacked area
-        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART && !chart.cursor)
           chart.cursor = new am4charts.XYCursor ();
 
         // Create axis ranges if available
