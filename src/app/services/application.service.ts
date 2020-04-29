@@ -939,7 +939,7 @@ export class ApplicationService {
     url = this.host + "/secure/getDefaultOptionId?appId=" + _this.globals.currentApplication.id;
 
     if (_this.globals.testingPlan != -1)
-      url += "?testPlanId=" + _this.globals.testingPlan;
+      url += "&testPlanId=" + _this.globals.testingPlan;
 
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
