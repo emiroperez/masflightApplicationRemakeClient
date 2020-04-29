@@ -713,6 +713,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
+    series.zIndex = 1;
 
     if (values.currentChartType.flags & ChartFlags.BULLET)
     {
@@ -1150,6 +1151,34 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
 
     return am4core.color (selectedColor);
+  }
+
+  getChartType(valueChartName: string): any
+  {
+    let chartName;
+
+    if (!valueChartName)
+      chartName = this.values.currentChartType.name;
+    else
+    {
+      if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+          chartName = "Vertical " + valueChartName;
+        else
+          chartName = "Horizontal " + valueChartName;
+      }
+      else
+        chartName = valueChartName;
+    }
+
+    for (let chartType of this.chartTypes)
+    {
+      if (chartName === chartType.name)
+        return chartType;
+    }
+
+    return this.chartTypes[0];
   }
 
   makeChart(chartInfo): void
@@ -2303,8 +2332,12 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             for (let i = 0; i < chartInfo.valueFields.length; i++)
             {
+              let prevChartType = this.values.currentChartType;
               let curValue = chartInfo.valueFields[i];
               let series;
+
+              if (i != 0)
+                this.values.currentChartType = this.getChartType (this.values.valueListInfo[i].chartType);
 
               // Get value name for the legend
               for (let item of this.values.chartColumnOptions)
@@ -2376,6 +2409,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
 
               this.values.chartSeries.push (series);
+              this.values.currentChartType = prevChartType;
             }
           }
           else

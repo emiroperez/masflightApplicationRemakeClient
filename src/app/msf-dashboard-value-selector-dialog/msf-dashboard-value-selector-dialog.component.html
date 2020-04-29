@@ -23,6 +23,17 @@
       <div class="value-item-body">
         <span class="value-item-name-label">{{value.name}}</span>
         <div class="assistant-function-combobox datalake-search-input">
+          <mat-form-field class="datalake-search-formfield config-panel-form-field value-item-combobox" appearance="outline" *ngIf="i">
+            <mat-label>Chart Type</mat-label>
+            <mat-select [(ngModel)]="value.chartType">
+              <mat-option *ngFor="let chartType of filteredChartTypes" [value]="chartType.name">
+                {{chartType.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="value-tiem-padding" *ngIf="!i"></div>
+        <div class="assistant-function-combobox datalake-search-input">
           <mat-form-field class="datalake-search-formfield config-panel-form-field value-item-combobox" appearance="outline">
             <mat-label>Function</mat-label>
             <mat-select [(ngModel)]="value.function" (ngModelUpdate)="updateMainFunction(i)">

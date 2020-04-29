@@ -3070,7 +3070,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       autoFocus: false,
       data: {
         values: this.values,
-        functions: this.functions
+        functions: this.functions,
+        chartTypes: this.chartTypes
       }
     });
   }
