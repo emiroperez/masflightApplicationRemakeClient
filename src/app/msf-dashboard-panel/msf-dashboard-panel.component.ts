@@ -726,6 +726,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       circle = bullet.createChild (am4core.Circle);
       circle.horizontalCenter = "middle";
       circle.verticalCenter = "middle";
+      circle.fill = am4core.color (paletteColors[index]);
       circle.strokeWidth = 0;
       circle.width = 12;
       circle.height = 12;
