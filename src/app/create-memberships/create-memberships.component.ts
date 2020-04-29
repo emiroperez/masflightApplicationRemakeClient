@@ -70,11 +70,14 @@ export class EditOptionsDialog {
 
   defaultOptionId: number = null;
 
+  filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
   constructor(
     public dialogRef: MatDialogRef<EditOptionsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any, defaultOptionId: number })
   {
     this.getItemsSelected (data.menuSelected, true);
+    this.filteredOptions.next (this.optionList.slice ());
     this.defaultOptionId = data.defaultOptionId;
   }
 
@@ -103,6 +106,8 @@ export class EditOptionsDialog {
       if (!value.children.length)
         this.optionList.push (value);
     }
+
+    this.filteredOptions.next (this.optionList.slice ());
   }
 
   onNoClick():void{
@@ -144,6 +149,21 @@ export class EditOptionsDialog {
     }
   }
 
+  filterOptions(value: string): void
+  {
+    // get the search keyword
+    let search = value;
+    if (!search)
+    {
+      this.filteredOptions.next (this.optionList.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredOptions.next (
+      this.optionList.filter (a => a.label.toLowerCase ().indexOf (search) > -1)
+    );
+  }
 }
 
 

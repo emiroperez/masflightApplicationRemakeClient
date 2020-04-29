@@ -8,10 +8,8 @@
     <div class="membership-options-buttons" [style.margin-top.px]="10">
       <mat-form-field class="membership-default-option-combobox" *ngIf="optionList.length">
         <mat-select placeholder="Default Option" [(ngModel)]="defaultOptionId">
-          <!--
-          <ngx-mat-select-search placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
-          -->
-          <mat-option *ngFor="let option of optionList" [value]="option.id">
+          <ngx-mat-select-search ngModel (ngModelChange)="filterOptions($event)" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id">
             {{option.label}}
           </mat-option>
         </mat-select>
