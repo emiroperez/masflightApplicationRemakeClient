@@ -313,6 +313,34 @@ export class MsfChartPreviewComponent {
     return momentDate.toDate ();
   }
 
+  getChartType(valueChartName: string): any
+  {
+    let chartName;
+
+    if (!valueChartName)
+      chartName = this.data.currentChartType.name;
+    else
+    {
+      if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+      {
+        if (this.data.currentChartType.flags & ChartFlags.LINECHART)
+          chartName = "Vertical " + valueChartName;
+        else
+          chartName = "Horizontal " + valueChartName;
+      }
+      else
+        chartName = valueChartName;
+    }
+
+    for (let chartType of this.data.chartTypes)
+    {
+      if (chartName === chartType.name)
+        return chartType;
+    }
+
+    return this.data.chartTypes[0];
+  }
+
   makeChart(chartInfo): void
   {
     let theme = this.globals.theme;
@@ -1023,7 +1051,11 @@ export class MsfChartPreviewComponent {
 
             for (let i = 0; i < chartInfo.valueFields.length; i++)
             {
+              let prevChartType = this.data.currentChartType;
               let curValue = chartInfo.valueFields[i];
+
+              if (i != 0)
+                this.data.currentChartType = this.getChartType (this.data.valueListInfo[i].chartType);
 
               // Get value name for the legend
               for (let item of this.data.chartColumnOptions)
@@ -1093,6 +1125,8 @@ export class MsfChartPreviewComponent {
                   }
                 }
               }
+
+              this.data.currentChartType = prevChartType;
             }
           }
           else

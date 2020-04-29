@@ -3052,7 +3052,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         chartColumnOptions: this.values.chartColumnOptions,
         thresholds: this.values.thresholds,
         goals: this.values.goals,
-        paletteColor: this.values.paletteColors,
+        paletteColors: this.values.paletteColors,
         chartTypes: this.chartTypes,
         minValueRange: this.values.minValueRange,
         maxValueRange: this.values.maxValueRange,
