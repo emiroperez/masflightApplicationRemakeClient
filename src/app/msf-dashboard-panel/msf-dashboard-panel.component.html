@@ -1,5 +1,5 @@
 <div style="height: calc(100% - 20px)">
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!displayActionList && !displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!displayEditActionList && !displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -8,7 +8,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!displayActionList && !displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!displayEditActionList && !displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && !globals.readOnlyDashboard">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
   <!-- ngIf doesn't work with AmCharts -->
@@ -312,7 +312,7 @@
     </div>
   </div>
   <!--action List-->
-  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="displayActionList">
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="displayEditActionList">
     <div class="msf-dashboard-panel-title">
       <div class="msf-dashboard-panel-title-label-icon">
         <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
@@ -332,7 +332,7 @@
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
-        <app-msf-action-list ></app-msf-action-list>
+        <app-msf-action-list [values]="values.EditActionList"></app-msf-action-list>
       </div>
     </div>
   </div>

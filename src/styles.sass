@@ -12479,15 +12479,65 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 70px
         text-align: center
 
-
-.msf-dashboard-panel-tittle-actionList
-    display: flex
-    flex-direction: row
-    justify-content: space-between
+.msf-dashboard-panel-actionList
+    .msf-dashboard-panel-tittle-actionList
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        padding: 0px 15px
+    .admin-menu-tree .mat-tree-node .divNode
+        background: white
+        border-radius: 10px
+        margin-top: 20px
+        width: 100%
+    .admin-menu-tree .mat-tree-node[aria-expanded="true"]
+        // background: white
+        .divNode
+            border-radius: 10px 10px 0px 0px !important
+    .admin-menu-tree .mat-tree-node[aria-expanded="true"][aria-level="1"]
+        background: white
+        border-radius: 0px !important
+        .divNode
+            margin-top: 0px
+    .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="1"],.admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="2"], .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="3"]
+        background-color: white
+        border-radius: 0px 0px 10px 10px
+        .divNode
+            margin-top: 0px
 
 .actionListNode
     display: flex
     flex-direction: column
+    padding: 10px 0px
+    .mat-form-field-wrapper
+        padding-bottom: .34375em
     .actionListNodeTittle
         display: flex
         flex-direction: row
+        padding: 0px 10px
+        .IconList
+            width: 10% !important
+            .mat-form-field-infix
+                border-top: 0px !important
+                padding: 0.6em 0px !important
+                width: 40px !important
+            .IconActionLIst
+                background-size: contain
+                background-repeat: no-repeat
+                background-position: left
+                transition: background-image .5s ease-in-out
+                height: 21px                
+                display: flex
+                justify-content: flex-end
+                .mat-select-trigger
+                    display: flex !important
+                    flex-direction: row
+                    justify-content: flex-end
+                    // height: 21px
+                    align-items: flex-end
+        .input-option-tree
+            margin-left: 10px
+        .menu-drag-handle
+            line-height: 24px
+    .input-description
+        padding-left: 10px

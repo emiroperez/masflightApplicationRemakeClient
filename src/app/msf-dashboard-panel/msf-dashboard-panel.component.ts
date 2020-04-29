@@ -3254,10 +3254,11 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (!this.values.urlImg || (this.values.urlImg && !this.values.urlImg.length))
           return false;
       }
-      // else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
-      // {
-      //     return false;
-      // }
+      else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+      {
+        if (!this.values.EditActionList || (this.values.EditActionList && !this.values.EditActionList.length))
+          return false;
+      }
       else
       {
         if (!this.haveDataInfo (this.values.lastestResponse))
@@ -3496,16 +3497,9 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   
   loadActionListData() {
-    this.displayEditActionList = true;
-    this.displayPic = false;
-    this.values.chartGenerated = false;
-    this.values.infoGenerated = false;
-    this.values.formGenerated = false;
-    this.values.EditactionListGenerated = true;
-    this.values.picGenerated = false;
-    this.values.tableGenerated = false;
-    this.values.mapboxGenerated = false;
-    this.values.dynTableGenerated = false;
+    this.values.lastestResponse = this.values.EditActionList;
+    this.values.isLoading = true;
+    this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerEditACtionSuccess, this.handlerEditActionError);
   }
 
   loadPicData(): void
@@ -3522,6 +3516,51 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.lastestResponse = this.values.urlImg;
     this.values.isLoading = true;
     this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerPicSuccess, this.handlerPicError);
+  }
+
+  handlerEditACtionSuccess(_this): void
+  {
+    if (!_this.values.isLoading)
+      return;
+
+    _this.values.isLoading = false;
+    _this.destroyChart ();
+
+    _this.displayEditActionList = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.EditactionListGenerated = true;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
+
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: _this.oldOptionCategories
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.addNewVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.values.currentChartType),
+      analysisName: null,
+      controlVariables: _this.values.currentOptionCategories,
+      chartSeries: _this.values.chartSeries,
+      optionId: _this.values.currentOption.id
+    });
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+
+    _this.anchoredArguments = []; // images has no control variables
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   handlerPicSuccess(_this): void
@@ -4063,6 +4102,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.generateError ();
   }
 
+  handlerEditActionError(_this, result): void
+  {
+    _this.generateError ();
+  }
+
   handlerTableError(_this, result): void
   {
     _this.generateError ();
@@ -4136,6 +4180,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // discard any changes
     this.values.urlImg = values.urlImg;
+    this.values.EditActionList = values.EditActionList;
     this.values.currentOption = JSON.parse (JSON.stringify (values.currentOption));
     this.values.chartName = values.chartName;
     this.values.chartDescription = values.chartDescription;
@@ -4428,6 +4473,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
     {
+      if (this.values.EditActionList && this.values.EditActionList.length != 0)
         return true;
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
@@ -5212,6 +5258,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       panel = this.getPanelInfo ();
       panel.lastestResponse = this.values.urlImg;
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+      panel = this.getPanelInfo ();
+      panel.lastestResponse = this.values.EditActionList;
     }
     else
     {
@@ -6612,6 +6663,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.displayPic = false;
     this.displayTable = false;
     this.displayDynTable = false;
+    this.displayEditActionList = false;
 
     // set new argument values
     for (let categoryArgument of this.values.currentOptionCategories)

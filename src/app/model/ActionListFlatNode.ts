@@ -5,8 +5,9 @@ export class ActionListFlatNode {
   dashboardPanel_id: string;
   parent: string;
   title: string;
-  item: string;
+  description: string;
   children: any[];
   expandable: boolean;
   level: number;
+  icon: any;
 }

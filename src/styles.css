@@ -19035,19 +19035,80 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   text-align: center;
 }
 
-.msf-dashboard-panel-tittle-actionList {
+.msf-dashboard-panel-actionList .msf-dashboard-panel-tittle-actionList {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 0px 15px;
+}
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode {
+  background: white;
+  border-radius: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=true] .divNode {
+  border-radius: 10px 10px 0px 0px !important;
+}
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=true][aria-level="1"] {
+  background: white;
+  border-radius: 0px !important;
+}
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=true][aria-level="1"] .divNode {
+  margin-top: 0px;
+}
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="1"], .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="2"], .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="3"] {
+  background-color: white;
+  border-radius: 0px 0px 10px 10px;
+}
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="1"] .divNode, .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="2"] .divNode, .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="3"] .divNode {
+  margin-top: 0px;
 }
 
 .actionListNode {
   display: flex;
   flex-direction: column;
+  padding: 10px 0px;
+}
+.actionListNode .mat-form-field-wrapper {
+  padding-bottom: 0.34375em;
 }
 .actionListNode .actionListNodeTittle {
   display: flex;
   flex-direction: row;
+  padding: 0px 10px;
+}
+.actionListNode .actionListNodeTittle .IconList {
+  width: 10% !important;
+}
+.actionListNode .actionListNodeTittle .IconList .mat-form-field-infix {
+  border-top: 0px !important;
+  padding: 0.6em 0px !important;
+  width: 40px !important;
+}
+.actionListNode .actionListNodeTittle .IconList .IconActionLIst {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  transition: background-image 0.5s ease-in-out;
+  height: 21px;
+  display: flex;
+  justify-content: flex-end;
+}
+.actionListNode .actionListNodeTittle .IconList .IconActionLIst .mat-select-trigger {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.actionListNode .actionListNodeTittle .input-option-tree {
+  margin-left: 10px;
+}
+.actionListNode .actionListNodeTittle .menu-drag-handle {
+  line-height: 24px;
+}
+.actionListNode .input-description {
+  padding-left: 10px;
 }
 
 /*# sourceMappingURL=styles.css.map */

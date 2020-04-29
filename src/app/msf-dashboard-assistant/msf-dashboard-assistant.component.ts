@@ -25,6 +25,7 @@ import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variable
 import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 import { AirportSelection } from '../commons/AirportSelection';
 import { ActionListFlatNode } from '../model/ActionListFlatNode';
+import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -36,6 +37,12 @@ export class MsfDashboardAssistantComponent implements OnInit {
   values: MsfDashboardPanelValues;
   panelForm: FormGroup;
   updateURLResults: boolean = false;
+
+  
+  @ViewChild("materialIconPicker", { static: false })
+  materialIconPicker: MaterialIconPickerComponent;
+
+  listActionIcons: any[] = ['IconOption1.png','IconOption2.png','IconOption3.png','IconOption4.png','IconOption5.png','IconOption6.png'];
 
   panelTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', allowedInAdvancedMode: true },
@@ -58,7 +65,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    { name: 'Editable Action List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false },
+    { name: 'Editable Action List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'actionList.png', allowedInAdvancedMode: false },
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
@@ -143,11 +150,12 @@ export class MsfDashboardAssistantComponent implements OnInit {
         flatNode.expandable = !!node.children && node.children.length > 0;
         flatNode.id = node.id;
         flatNode.uid = node.uid;
+        flatNode.icon = node.icon;
         flatNode.dashboardPanel_id = node.dashboardPanel_id;
         flatNode.level = level;
         flatNode.parent = node.parent;
         flatNode.title = node.title;
-        flatNode.item = node.item;
+        flatNode.description = node.description;
         flatNode.children = node.children;
         
     this.flatNodeMap.set(flatNode, node);
@@ -232,6 +240,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     // discard any changes
     this.values.urlImg = this.data.values.urlImg;
+    this.values.EditActionList = this.data.values.EditActionList;
     this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
     this.values.chartName = this.data.values.chartName;
     this.values.chartDescription = this.data.values.chartDescription;
@@ -250,6 +259,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.intervalType = this.data.values.intervalType;
     this.values.intValue = this.data.values.intValue;
     this.values.valueList = this.data.values.valueList;
+    if(this.values.EditActionList){
+      this.dataSourceEditActionList.data = this.data.values.EditActionList;
+    }
 
     if (this.values.currentOption)
     {
@@ -2400,8 +2412,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     }
     else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
     {
+      if (this.values.EditActionList && this.values.EditActionList.length != 0)
+      {
         this.generateBtnEnabled = true;
         return true;
+      }
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
@@ -2601,7 +2616,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
       return;
     }else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
     {
-        this.generateBtnEnabled = true;
+      if (this.values.EditActionList && this.values.EditActionList.length != 0)
+      this.generateBtnEnabled = true; //kp2020Ene23
+    else
+      this.generateBtnEnabled = false;
 
       return;
     }
@@ -3101,14 +3119,13 @@ export class MsfDashboardAssistantComponent implements OnInit {
   }
 
   getOptionSelected(option) {
-    this.optionSelected.isActive = false;
-    option.isActive = option.isActive == null ? true : !option.isActive;
-    this.optionSelected = option;
-
-    // this.optionForm.get('optionTypeCtrl').setValue(null);
-
-    // if (!option.isRoot)
-      // this.getOptionCategoryArguments ();
+    if(this.optionSelected === option){
+      this.optionSelected = null;
+    }else{
+      this.optionSelected = option;
+      this.optionSelected.isActive = false;
+      option.isActive = option.isActive == null ? true : !option.isActive;
+    }
   }
 
   addNewItem() {
@@ -3120,22 +3137,23 @@ export class MsfDashboardAssistantComponent implements OnInit {
   insertItem(parent: any,idpanel, name: string) {
     if (parent) {
       parent.children.push({
-        title: 'new item',
+        title: '',
         uid: 'optnew' + parent.id + parent.children.length,
         dashboardPanel_id: idpanel,
+        icon: null,
         parent: null,
         children: [],
-        item: null
-      } as any);
+        description: null
+      } as any);      
       this.dataChange.next(this.dataEditActionList);
     } else {
       this.dataSourceEditActionList.data.push({
-        title: 'new Item',
+        title: '',
         uid: 'catnew' + this.dataSourceEditActionList.data.length,
         dashboardPanel_id: idpanel,
         parent: null,
         children: [],
-        item: null
+        description: null
       } as any);
       this.dataChange.next(this.dataEditActionList);
     }
@@ -3143,13 +3161,15 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   setChange(node) {
     const nestedNode = this.flatNodeMap.get(node);
-    nestedNode.label = node.label;
+    nestedNode.title = node.title;
+    nestedNode.description = node.description;
+    nestedNode.icon = node.icon;
     this.dataChange.next(this.dataEditActionList);
   }
 
   EditActionListDataSuccess(_this, data): void
   {
-
+    this.generateBtnEnabled=true;
   }
 
   dragStart() {
@@ -3234,4 +3254,34 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   EditActionListDataError(_this, data): void
   {}
-}
+
+  getNodeIndent(node){
+    return 20;
+  }
+
+  getWidth(level){
+    let ident = (level*20)+20;
+    return "calc(100% - "+ident+"px) !important";
+    
+  }
+  saveActionList() {
+    // this.emptyError = 0;
+    // let verify = this.verifyMenu();
+    // if (verify > 0) {
+    //   const dialogRef = this.dialog.open(MessageComponent, {
+    //     data: { title: "Error", message: "You have empty options, please complete them and try again." }
+    //   });
+    // } else {
+      // this.verifyOrder();
+      this.service.saveActionList(this,this.dataSourceEditActionList.data, this.handlerSuccessSaveAcionList, this.handlerErrorSaveActionList);
+    // }
+  }
+
+  handlerSuccessSaveAcionList(_this, data): void{
+    _this.values.EditActionList = data;
+    _this.generateBtnEnabled = true; 
+  }
+
+  handlerErrorSaveActionList(){}
+
+  }
