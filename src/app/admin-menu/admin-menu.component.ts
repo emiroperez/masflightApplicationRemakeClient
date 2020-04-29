@@ -508,6 +508,7 @@ export class EditCategoryArgumentDialog {
   clearValue1(item): void
   {
     item.value1 = null;
+    item.groupingSelector = false;
   }
 
   clearValues(item): void
@@ -539,6 +540,7 @@ export class EditCategoryArgumentDialog {
         item.label2 = null;
         item.name2 = null;
         item.value2 = null;
+        item.groupingSelector = false;
       }
     }
   }
@@ -706,6 +708,10 @@ export class EditCategoryArgumentDialog {
 
   isAirport(argument: Arguments) {
     return ComponentType.airport == argument.type || ComponentType.airportsRoutes == argument.type;
+  }
+
+  isAirportRoutes(argument: Arguments) {
+    return ComponentType.airportsRoutes == argument.type;
   }
 
   isAircraftType(argument: Arguments) {
