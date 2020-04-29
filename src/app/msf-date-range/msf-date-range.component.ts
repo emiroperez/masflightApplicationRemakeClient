@@ -540,8 +540,8 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.dateStartView !== "month")
       this.argument.value2 = this.value2Date;
 
-    if (!this.argument.value2 || this.argument.value2 < this.argument.value1)
-      this.argument.value2 = this.argument.value1;
+    if (!this.argument.value2 || this.argument.value2 < normalizedDate)
+      this.argument.value2 = normalizedDate;
 
     switch (this.currentValueType)
     {
@@ -569,11 +569,8 @@ export class MsfDateRangeComponent implements OnInit {
     if (this.dateStartView !== "month")
       this.argument.value1 = this.value1Date;
 
-    if (!this.argument.value1)
-      return;
-
-    if (this.argument.value1 > this.argument.value2)
-      this.argument.value1 = this.argument.value2;
+    if (!this.argument.value1 || this.argument.value1 > normalizedDate)
+      this.argument.value1 = normalizedDate;
 
     switch (this.currentValueType)
     {
