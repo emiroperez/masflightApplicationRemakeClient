@@ -1094,6 +1094,7 @@ export class MsfDashboardChildPanelComponent {
     let secondaryParentCategoryId = null;
     let secondaryParentArgument = null;
     let secondaryFilterValue = this.data.secondaryCategoryFilter;
+    let paramsGroup = [];
     let params;
 
     if (this.data.secondaryParentCategory != null)
@@ -1114,50 +1115,55 @@ export class MsfDashboardChildPanelComponent {
           {
             let argument: Arguments = category.arguments[j];
 
-            if (parentArgument != null && argument.id == parentArgument.argumentId.id)
+            if (argument.type != "AAA_Group")
             {
-              if (parentCategoryId.toLowerCase () === "yyyymmdd")
+              if (parentArgument != null && argument.id == parentArgument.argumentId.id)
               {
-                filterValue = moment (filterValue, "YYYYMMDD").toDate ().toString ();
-                filterValue = new DatePipe ('en-US').transform (filterValue, 'yyyy/MM/dd');
-              }
+                if (parentCategoryId.toLowerCase () === "yyyymmdd")
+                {
+                  filterValue = moment (filterValue, "YYYYMMDD").toDate ().toString ();
+                  filterValue = new DatePipe ('en-US').transform (filterValue, 'yyyy/MM/dd');
+                }
 
-              if (params)
-                params += "&" + this.utils.getArguments2 (argument, parentCategoryId, filterValue);
-              else
-                params = this.utils.getArguments2 (argument, parentCategoryId, filterValue);
-            }
-            else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.argumentId.id)
-            {
-              if (secondaryParentCategoryId.toLowerCase () === "yyyymmdd")
+                if (params)
+                  params += "&" + this.utils.getArguments2 (argument, parentCategoryId, filterValue);
+                else
+                  params = this.utils.getArguments2 (argument, parentCategoryId, filterValue);
+              }
+              else if (secondaryParentArgument != null && argument.id == secondaryParentArgument.argumentId.id)
               {
-                secondaryFilterValue = moment (secondaryFilterValue, "YYYYMMDD").toDate ().toString ();
-                secondaryFilterValue = new DatePipe ('en-US').transform (secondaryFilterValue, 'yyyy/MM/dd');
-              }
+                if (secondaryParentCategoryId.toLowerCase () === "yyyymmdd")
+                {
+                  secondaryFilterValue = moment (secondaryFilterValue, "YYYYMMDD").toDate ().toString ();
+                  secondaryFilterValue = new DatePipe ('en-US').transform (secondaryFilterValue, 'yyyy/MM/dd');
+                }
 
-              if (params)
-                params += "&" + this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
+                if (params)
+                  params += "&" + this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
+                else
+                  params = this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
+              }
               else
-                params = this.utils.getArguments2 (argument, secondaryParentCategoryId, secondaryFilterValue);
+              {
+                if (params)
+                {
+                  if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                    params += "&" + this.utils.getArguments (argument);
+                  else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                    params += "&" + this.utils.getArguments (argument);
+                }
+                else
+                  params = this.utils.getArguments (argument);
+              }
             }
             else
-            {
-              if (params)
-              {
-                if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
-                  params += "&" + this.utils.getArguments (argument);
-                else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
-                  params += "&" + this.utils.getArguments (argument);
-              }
-              else
-                params = this.utils.getArguments (argument);
-            }
+              paramsGroup.push ({ target: argument.targetGroup, val: this.utils.getValueFormat (argument.type, argument.value1, argument) });
           }
         }        
       }
     }
 
-    return params;
+    return this.utils.setTarget (paramsGroup, params);
   }
 
   getOption(dashboardPanelOption)

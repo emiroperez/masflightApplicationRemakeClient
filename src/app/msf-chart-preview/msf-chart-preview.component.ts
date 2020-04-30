@@ -89,8 +89,11 @@ export class MsfChartPreviewComponent {
 
   getParameters()
   {
-    let currentOptionCategories = this.data.currentOptionCategories;
+    let currentOptionCategories;
+    let paramsGroup = [];
     let params;
+
+    currentOptionCategories = this.data.currentOptionCategories;
 
     if (currentOptionCategories)
     {
@@ -104,21 +107,26 @@ export class MsfChartPreviewComponent {
           {
             let argument: Arguments = category.arguments[j];
 
-            if (params)
+            if (argument.type != "AAA_Group")
             {
-              if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
-                params += "&" + this.utils.getArguments (argument);
-              else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
-                params += "&" + this.utils.getArguments (argument);
+              if (params)
+              {
+                if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                  params += "&" + this.utils.getArguments (argument);
+                else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                  params += "&" + this.utils.getArguments (argument);
+              }
+              else
+                params = this.utils.getArguments(argument);
             }
             else
-              params = this.utils.getArguments (argument);
+              paramsGroup.push ({ target: argument.targetGroup, val: this.utils.getValueFormat (argument.type, argument.value1, argument) });
           }
         }        
       }
     }
 
-    return params;
+    return this.utils.setTarget (paramsGroup, params);
   }
 
   loadChartData(handlerSuccess, handlerError): void
