@@ -28,7 +28,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
   filteredAirport: any[] = [];
   filteredAircraft: any[] = [];
 
-  searchText: string;
+  searchText: string = null;
   searchAirport: string;
   ArgumentsGroups: any[] = [];  
   ArgumentGroupDelete: any[] = [];
@@ -60,6 +60,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
      private menuService: MenuService,
     public dialog: MatDialog) {     
     //add airports and airlines 
+    this.searchText = null;
     this.validateAdmin ();
     this.getAirports(null,this.AirportHandlerSuccess,this.AirportHandlerError);
     this.getAirlines(null,this.AirlineHandlerSuccess,this.AirlineHandlerError);
@@ -166,6 +167,7 @@ export class AdminArgumentsGroupComponent implements OnInit {
       this.ArgumentGroup = option;      
       this.checkArgGroupDet(this.ArgumentGroup);
       this.disable = false;
+      this.cleanFilter();
       setTimeout(() => this.nameGroup.nativeElement.focus(), 100);
       // this.shareAct= true;
     } else {
@@ -372,8 +374,23 @@ handlerSuccessSend(_this, result){
 
   _this.ArgumentGroup = { id: null, name: '', group: '',owner:'', type: 1,share: 0, isSelected: false };
   _this.ArgumentsGroups = result;
+  _this.cleanFilter();
   _this.globals.isLoading = false;
   _this.disable = true;
+}
+
+cleanFilter(){  
+  this.filteredAirline.forEach(element => {
+    element.visible = true;
+  });  
+  this.filteredAirport.forEach(element => {
+    element.visible = true;
+  });  
+  this.filteredAircraft.forEach(element => {
+    element.visible = true;
+  });
+  this.showSelected = false;
+  this.searchAirport="";
 }
 
 handlerErrorSend(_this,result){
@@ -439,8 +456,8 @@ isSelected(Airport,iataList,group){
 sendData() {
   // this.addIataToGroupDet(this.ArgumentsGroups);
   this.dataToSend = this.ArgumentsGroups.concat(this.ArgumentGroupDelete);
-  this.service.saveNewGroupArguments(this, this.dataToSend, this.handlerSuccessSend, this.handlerErrorSend);
   this.searchAirport="";
+  this.service.saveNewGroupArguments(this, this.dataToSend, this.handlerSuccessSend, this.handlerErrorSend);
 }
 
 share(ArgumentsGroup): void{
