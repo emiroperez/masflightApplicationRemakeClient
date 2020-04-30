@@ -458,9 +458,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dateFormatter.dateFormat = outputFormat;
 
       if (values.valueColumn.item.columnType === "number")
-        series.columns.template.tooltipText = "{dateY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        series.columns.template.tooltipText = "{dateY} ({name}): " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
       else
-        series.columns.template.tooltipText = "{dateY}: {valueX}";
+        series.columns.template.tooltipText = "{dateY} ({name}): {valueX}";
     }
     else
     {
@@ -474,11 +474,14 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.categoryY = values.xaxis.id;
 
         if (values.valueColumn.item.columnType === "number")
-          series.columns.template.tooltipText = "{categoryY}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+          series.columns.template.tooltipText = "{categoryY} ({name}): " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueX}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
         else
-          series.columns.template.tooltipText = "{categoryY}: {valueX}";
+          series.columns.template.tooltipText = "{categoryY} ({name}): {valueX}";
       }
     }
+
+    if (stacked)
+      series.tooltip.pointerOrientation = "horizontal";
 
     // Configure columns
     series.stacked = stacked;
@@ -529,9 +532,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dateFormatter.dateFormat = outputFormat;
 
       if (values.valueColumn.item.columnType === "number")
-        series.columns.template.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        series.columns.template.tooltipText = "{dateX} ({name}): " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
       else
-        series.columns.template.tooltipText = "{dateX}: {valueY}";
+        series.columns.template.tooltipText = "{dateX} ({name}): {valueY}";
     }
     else
     {
@@ -545,15 +548,15 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.categoryX = values.xaxis.id;
 
         if (values.valueColumn.item.columnType === "number")
-          series.columns.template.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+          series.columns.template.tooltipText = "{categoryX} ({name}): " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
         else
-          series.columns.template.tooltipText = "{categoryX}: {valueY}";
+          series.columns.template.tooltipText = "{categoryX} ({name}): {valueY}";
       }
     }
 
     series.stacked = stacked;
     series.columns.template.strokeWidth = 0;
-    series.columns.template.width = am4core.percent (60);
+    series.columns.template.width = am4core.percent(60);
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -623,9 +626,9 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dateFormatter.dateFormat = outputFormat;
 
       if (values.valueColumn.item.columnType === "number")
-        series.tooltipText = "{dateX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+        series.tooltipText = "{dateX} ({name}): " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
       else
-        series.tooltipText = "{dateX}: {valueY}";
+        series.tooltipText = "{dateX} ({name}): {valueY}";
     }
     else
     {
@@ -639,9 +642,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dataFields.categoryX = values.xaxis.id;
 
         if (values.valueColumn.item.columnType === "number")
-          series.tooltipText = "{categoryX}: " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+          series.tooltipText = "{categoryX} ({name}): " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
         else
-          series.tooltipText = "{categoryX}: {valueY}";
+          series.tooltipText = "{categoryX} ({name}): {valueY}";
       }
     }
 
@@ -748,18 +751,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dateFormatter.dateFormat = outputFormat;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.tooltipText = "{dateX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.tooltipText = "{dateX} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.tooltipText = "{dateX}: {valueY}";
+          series.tooltipText = "{dateX} ({name}): {valueY}";
       }
       else
       {
         series.dataFields.categoryX = item.titleField;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.tooltipText = "{categoryX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.tooltipText = "{categoryX} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.tooltipText = "{categoryX}: {valueY}";
+          series.tooltipText = "{categoryX} ({name}): {valueY}";
       }
     }
 
@@ -867,20 +870,22 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dateFormatter.dateFormat = outputFormat;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.tooltipText = "{dateY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.tooltipText = "{dateY} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.tooltipText = "{dateY}: {valueX}";
+          series.tooltipText = "{dateY} ({name}): {valueX}";
       }
       else
       {
         series.dataFields.categoryY = item.titleField;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.tooltipText = "{categoryY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.tooltipText = "{categoryY} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.tooltipText = "{categoryY}: {valueX}";
+          series.tooltipText = "{categoryY} ({name}): {valueX}";
       }
     }
+
+    series.tooltip.pointerOrientation = "horizontal";
 
     // Set line color for legend
     series.segments.template.adapter.add ("fill", (fill, target) => {
@@ -957,18 +962,18 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dateFormatter.dateFormat = outputFormat;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.columns.template.tooltipText = "{dateX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.columns.template.tooltipText = "{dateX} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.columns.template.tooltipText = "{dateX}: {valueY}";
+          series.columns.template.tooltipText = "{dateX} ({name}): {valueY}";
       }
       else
       {
         series.dataFields.categoryX = item.titleField;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.columns.template.tooltipText = "{categoryX}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.columns.template.tooltipText = "{categoryX} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueY}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.columns.template.tooltipText = "{categoryX}: {valueY}";
+          series.columns.template.tooltipText = "{categoryX} ({name}): {valueY}";
       }
     }
 
@@ -1048,20 +1053,22 @@ export class MsfDashboardPanelComponent implements OnInit {
         series.dateFormatter.dateFormat = outputFormat;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.columns.template.tooltipText = "{dateY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.columns.template.tooltipText = "{dateY} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.columns.template.tooltipText = "{dateY}: {valueX}";
+          series.columns.template.tooltipText = "{dateY} ({name}): {valueX}";
       }
       else
       {
         series.dataFields.categoryY = item.titleField;
 
         if (simpleValue && simpleValue.item.columnType === "number")
-          series.columns.template.tooltipText = "{categoryY}: " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
+          series.columns.template.tooltipText = "{categoryY} ({name}): " + (simpleValue.item.prefix ? simpleValue.item.prefix : "") + "{valueX}" + (simpleValue.item.suffix ? simpleValue.item.suffix : "");
         else
-          series.columns.template.tooltipText = "{categoryY}: {valueX}";
+          series.columns.template.tooltipText = "{categoryY} ({name}): {valueX}";
       }
     }
+
+    series.tooltip.pointerOrientation = "down";
 
     series.columns.template.strokeWidth = 0;
     series.sequencedInterpolation = true;
@@ -1814,9 +1821,10 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis;
+        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
+        barChartHoverSet = false;
 
         if (this.values.valueColumn && !this.values.valueList)
         {
@@ -2545,8 +2553,49 @@ export class MsfDashboardPanelComponent implements OnInit {
 
               this.values.chartSeries.push (series);
 
-              if (this.values.currentChartType.flags & ChartFlags.LINECHART && !chart.cursor)
+              if (!chart.cursor)
+              {
                 chart.cursor = new am4charts.XYCursor ();
+
+                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                  chart.cursor.lineX.zIndex = 2;
+                else
+                  chart.cursor.lineY.zIndex = 2;
+              }
+
+              if (!(this.values.currentChartType.flags & ChartFlags.LINECHART) && !barChartHoverSet)
+              {
+                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                {
+                  chart.cursor.fullWidthLineY = true;
+                  chart.cursor.yAxis = categoryAxis;
+                  chart.cursor.lineX.disabled = true;
+                  chart.cursor.lineX.zIndex = 1;
+                  chart.cursor.lineY.strokeOpacity = 0;
+                  chart.cursor.lineY.fill = black;
+                  chart.cursor.lineY.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+                }
+                else
+                {
+                  chart.cursor.fullWidthLineX = true;
+                  chart.cursor.xAxis = categoryAxis;
+                  chart.cursor.lineY.disabled = true;
+                  chart.cursor.lineY.zIndex = 1;
+                  chart.cursor.lineX.strokeOpacity = 0;
+                  chart.cursor.lineX.fill = black;
+                  chart.cursor.lineX.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+                }
+
+                barChartHoverSet = true;
+              }
+
+              if (this.values.currentChartType.flags & ChartFlags.LINECHART && barChartHoverSet)
+              {
+                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                  chart.cursor.lineX.disabled = false;
+                else
+                  chart.cursor.lineY.disabled = false;
+              }
 
               this.values.currentChartType = prevChartType;
             }
@@ -2589,9 +2638,50 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
-        // Add cursor if the chart type is line, area or stacked area
         if (this.values.currentChartType.flags & ChartFlags.LINECHART && !chart.cursor)
+        {
           chart.cursor = new am4charts.XYCursor ();
+
+          if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+            chart.cursor.lineX.zIndex = 2;
+          else
+            chart.cursor.lineY.zIndex = 2;
+        }
+
+        if (chart.cursor)
+        {
+          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART) && !barChartHoverSet)
+          {
+            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+            {
+              chart.cursor.fullWidthLineY = true;
+              chart.cursor.yAxis = categoryAxis;
+              chart.cursor.lineX.disabled = true;
+              chart.cursor.lineY.strokeOpacity = 0;
+              chart.cursor.lineY.fill = black;
+              chart.cursor.lineY.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+            }
+            else
+            {
+              chart.cursor.fullWidthLineX = true;
+              chart.cursor.xAxis = categoryAxis;
+              chart.cursor.lineY.disabled = true;
+              chart.cursor.lineX.strokeOpacity = 0;
+              chart.cursor.lineX.fill = black;
+              chart.cursor.lineX.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+            }
+
+            barChartHoverSet = true;
+          }
+
+          if (this.values.currentChartType.flags & ChartFlags.LINECHART && barChartHoverSet)
+          {
+             if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+              chart.cursor.lineX.disabled = false;
+            else
+              chart.cursor.lineY.disabled = false;
+          }
+        }
 
         // Create axis ranges if available
         if (!(this.isSimpleChart () && valueAxes.length > 1))
