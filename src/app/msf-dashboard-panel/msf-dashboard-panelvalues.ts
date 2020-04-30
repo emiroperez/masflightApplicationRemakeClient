@@ -22,7 +22,7 @@ export class MsfDashboardPanelValues {
     currentOption: any;
     currentOptionCategories: CategoryArguments[];
     urlImg: String;
-    EditActionList: String;
+    EditActionList: any;
 
     width: number;
     height: any;

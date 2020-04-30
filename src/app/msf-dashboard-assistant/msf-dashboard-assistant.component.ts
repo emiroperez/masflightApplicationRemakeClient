@@ -65,7 +65,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    { name: 'Editable Action List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'actionList.png', allowedInAdvancedMode: false },
+    { name: 'Editable List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'actionList.png', allowedInAdvancedMode: false },
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
@@ -226,6 +226,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     this.dataChange.subscribe(data => {
       this.dataSourceEditActionList.data = data;
+      this.values.EditActionList = data;
     });
   }
 
@@ -260,7 +261,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.intValue = this.data.values.intValue;
     this.values.valueList = this.data.values.valueList;
     if(this.values.EditActionList){
-      this.dataSourceEditActionList.data = this.data.values.EditActionList;
+      this.dataChange.next(this.data.values.EditActionList);
+      this.treeControl.expandAll();
     }
 
     if (this.values.currentOption)
@@ -3118,45 +3120,62 @@ export class MsfDashboardAssistantComponent implements OnInit {
     });
   }
 
-  getOptionSelected(option) {
-    if(this.optionSelected === option){
-      this.optionSelected = null;
-    }else{
+  getOptionSelected($event,option) {
+    // $event.stopPropagation();
+    // if(this.optionSelected === option){
+    //   this.optionSelected.isActive = false;
+    //   this.optionSelected = null;
+    // }else{
+      if(this.optionSelected != option){
+      if(this.optionSelected){
+        this.optionSelected.isActive = false;
+      }
+      if(option){
+        option.isActive = option.isActive == null ? true : !option.isActive;
+      }
       this.optionSelected = option;
-      this.optionSelected.isActive = false;
-      option.isActive = option.isActive == null ? true : !option.isActive;
     }
   }
 
-  addNewItem() {
-    const parentNode = this.flatNodeMap.get(this.optionSelected);
-    this.insertItem(parentNode!,this.values.id, '');
-    this.treeControl.expand(this.optionSelected);
+  addNewItem(node,$event) {
+    const parentNode = this.flatNodeMap.get(node);
+    this.insertItem(parentNode!,this.values.id,$event);
+    this.treeControl.expand(node);
+    // $event.stopPropagation();
+  }
+
+  DeleteItem(node) {
+    const parentNode = this.flatNodeMap.get(node);
+    this.deleteOption(parentNode!);
+    this.treeControl.expand(node);
   }
   
-  insertItem(parent: any,idpanel, name: string) {
+  insertItem(parent: any,idpanel,$event) {
     if (parent) {
       parent.children.push({
         title: '',
         uid: 'optnew' + parent.id + parent.children.length,
         dashboardPanel_id: idpanel,
-        icon: null,
-        parent: null,
+        icon: 'IconOption6.png',
+        parent: parent.uid,
         children: [],
         description: null
       } as any);      
       this.dataChange.next(this.dataEditActionList);
+      this.getOptionSelected(parent,$event);
     } else {
       this.dataSourceEditActionList.data.push({
         title: '',
         uid: 'catnew' + this.dataSourceEditActionList.data.length,
         dashboardPanel_id: idpanel,
+        icon: 'IconOption3.png',
         parent: null,
         children: [],
         description: null
       } as any);
       this.dataChange.next(this.dataEditActionList);
     }
+    this.checkChartType();
   }
 
   setChange(node) {
@@ -3165,18 +3184,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
     nestedNode.description = node.description;
     nestedNode.icon = node.icon;
     this.dataChange.next(this.dataEditActionList);
-  }
-
-  EditActionListDataSuccess(_this, data): void
-  {
-    this.generateBtnEnabled=true;
-  }
-
-  dragStart() {
-    this.dragging = true;
-  }
-  dragEnd() {
-    this.dragging = false;
   }
 
   rebuildTreeForData(data: any) {
@@ -3246,42 +3253,20 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return null;
   }
 
-  print(node) {
-  }
-
-  printAll() {
-  }
-
-  EditActionListDataError(_this, data): void
-  {}
-
   getNodeIndent(node){
     return 20;
   }
 
-  getWidth(level){
-    let ident = (level*20)+20;
-    return "calc(100% - "+ident+"px) !important";
-    
+  deleteOption(node) {
+    if(node.parent){
+      const index: number = this.dataSourceEditActionList.data.findIndex(d => d.uid === node.parent);
+    }else{
+      const index: number = this.dataSourceEditActionList.data.findIndex(d => d.uid === node.uid);
+      if(index != -1){
+        this.dataSourceEditActionList.data.splice(index, 1);
+        this.dataChange.next(this.dataEditActionList);
+      }
+    }
+     
   }
-  saveActionList() {
-    // this.emptyError = 0;
-    // let verify = this.verifyMenu();
-    // if (verify > 0) {
-    //   const dialogRef = this.dialog.open(MessageComponent, {
-    //     data: { title: "Error", message: "You have empty options, please complete them and try again." }
-    //   });
-    // } else {
-      // this.verifyOrder();
-      this.service.saveActionList(this,this.dataSourceEditActionList.data, this.handlerSuccessSaveAcionList, this.handlerErrorSaveActionList);
-    // }
-  }
-
-  handlerSuccessSaveAcionList(_this, data): void{
-    _this.values.EditActionList = data;
-    _this.generateBtnEnabled = true; 
-  }
-
-  handlerErrorSaveActionList(){}
-
   }

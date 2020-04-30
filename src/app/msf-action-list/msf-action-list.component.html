@@ -1,31 +1,26 @@
-<div #scrollContainer class="menu-tree-scrollbar admin-menu-tree-body image-url-container">
-    <mat-tree class="admin-menu-tree" [dataSource]="dataSourceEditActionList" [treeControl]="treeControl" cdkDropList
-        (cdkDropListDropped)="drop($event)">
-        <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node"
-            cdkDrag cdkDragLockAxis="y" [cdkDragData]="node" (cdkDragStarted)="dragStart()"
-            (cdkDragReleased)="dragEnd()" (click)=" getOptionSelected(node)" cdkDragBoundary=".menu-tree-scrollbar"
-            vsDragScroll [vsDragScrollContainer]="scrollContainer">
+<div #scrollContainer class="menu-tree-scrollbar ActionList-container">
+    <mat-tree class="admin-menu-tree" [dataSource]="dataSourceEditActionList" [treeControl]="treeControl">
+        <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" 
+        *matTreeNodeDef="let node">
             <div class="divNode">
                 <div class="{{globals.theme}} menu-node actionListNode">
                     <div class="actionListNodeTittle">                        
-                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="datalake-alarm-email-icon">
+                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <span>{{node.title}}</span>
                     </div>
-                    <span>{{node.description}}</span>
+                    <span class="actionListDesc" >{{node.description}}</span>
                 </div>
             </div>
         </mat-tree-node>
         <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)"
-            *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag cdkDragLockAxis="y"
-            [cdkDragData]="node" (cdkDragStarted)="dragStart()" (click)=" getOptionSelected(node)"
-            cdkDragBoundary=".menu-tree-scrollbar" vsDragScroll [vsDragScrollContainer]="scrollContainer">
+            *matTreeNodeDef="let node;when: hasChild">
             <div class="divNode">
                 <div class="{{globals.theme}} menu-node actionListNode">
                     <div class="actionListNodeTittle">                        
-                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="datalake-alarm-email-icon">
+                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <span>{{node.title}}</span>
                     </div>
-                    <span>{{node.description}}</span>
+                    <span class="actionListDesc">{{node.description}}</span>
                 </div>
             </div>
         </mat-tree-node>

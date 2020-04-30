@@ -12479,42 +12479,67 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 70px
         text-align: center
 
+.ActionList-container
+    .divNode
+        text-align: left
+        width: 100%
+        .actionListNode, .actionListNode-child
+            padding: 5px !important
+            .actionListNodeTittle
+                display: flex
+                flex-direction: row
+                
+.actionList-icon
+    height: 15px
+    margin-right: 5px
+
+.actionListDesc
+    margin-left: 22px
+
 .msf-dashboard-panel-actionList
     .msf-dashboard-panel-tittle-actionList
         display: flex
         flex-direction: row
         justify-content: space-between
         padding: 0px 15px
+    .admin-menu-tree-body .admin-menu-tree
+        background: white
+        border-radius: 10px
     .admin-menu-tree .mat-tree-node .divNode
         background: white
         border-radius: 10px
-        margin-top: 20px
-        width: 100%
-    .admin-menu-tree .mat-tree-node[aria-expanded="true"]
-        // background: white
+        margin: 3px 1px 0px 1px
+        width: calc(100% - 2px)
+    .admin-menu-tree .mat-tree-node .divNode-is-active
+        border: 1px solid #01abec
+    .admin-menu-tree .mat-tree-node[aria-level="0"]
         .divNode
-            border-radius: 10px 10px 0px 0px !important
-    .admin-menu-tree .mat-tree-node[aria-expanded="true"][aria-level="1"]
-        background: white
-        border-radius: 0px !important
-        .divNode
-            margin-top: 0px
-    .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="1"],.admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="2"], .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="3"]
-        background-color: white
-        border-radius: 0px 0px 10px 10px
-        .divNode
-            margin-top: 0px
+            margin: 20px 1px 0px 1px !important
+    // .admin-menu-tree .mat-tree-node[aria-expanded="true"]
+    //     .divNode
+    //         border-radius: 10px 10px 0px 0px !important
+    // .admin-menu-tree .mat-tree-node[aria-expanded="true"][aria-level="1"]
+    //     background: white
+    //     border-radius: 0px !important
+    //     .divNode
+    //         margin-top: 0px
+    // .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="1"],.admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="2"], .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="3"]
+    //     background-color: white
+    //     border-radius: 0px 0px 10px 10px
+    //     .divNode
+    //         margin-top: 0px
 
-.actionListNode
+.actionListNode, .actionListNode-child
     display: flex
     flex-direction: column
-    padding: 10px 0px
+    padding: 10px 10px
+    width: calc(100% - 20px)
     .mat-form-field-wrapper
         padding-bottom: .34375em
     .actionListNodeTittle
         display: flex
         flex-direction: row
-        padding: 0px 10px
+        // padding: 0px 10px
         .IconList
             width: 10% !important
             .mat-form-field-infix
@@ -12537,7 +12562,14 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
                     align-items: flex-end
         .input-option-tree
             margin-left: 10px
+            width: calc(100% - 110px)
         .menu-drag-handle
             line-height: 24px
     .input-description
-        padding-left: 10px
+        width: calc(100% - 40px)
+
+.actionListNode-child
+    .actionListNodeTittle
+        .input-option-tree
+            // width: calc(100% - 150px) !important
+            width: calc(100% - 110px) !important

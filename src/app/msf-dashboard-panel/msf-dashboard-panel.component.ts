@@ -94,7 +94,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
     { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE },
-    { name: 'Editable Action List', flags: ChartFlags.INFO | ChartFlags.EDITACTIONLIST},
+    { name: 'Editable List', flags: ChartFlags.INFO | ChartFlags.EDITACTIONLIST},
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE }
   ];
 
@@ -3550,7 +3550,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
-      optionId: _this.values.currentOption.id
+      optionId: null
     });
 
     _this.oldChartType = null;
@@ -3594,7 +3594,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
-      optionId: _this.values.currentOption.id
+      optionId: null
     });
 
     _this.oldChartType = null;

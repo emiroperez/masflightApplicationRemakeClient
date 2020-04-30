@@ -19035,58 +19035,72 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   text-align: center;
 }
 
+.ActionList-container .divNode {
+  text-align: left;
+  width: 100%;
+}
+.ActionList-container .divNode .actionListNode, .ActionList-container .divNode .actionListNode-child {
+  padding: 5px !important;
+}
+.ActionList-container .divNode .actionListNode .actionListNodeTittle, .ActionList-container .divNode .actionListNode-child .actionListNodeTittle {
+  display: flex;
+  flex-direction: row;
+}
+
+.actionList-icon {
+  height: 15px;
+  margin-right: 5px;
+}
+
+.actionListDesc {
+  margin-left: 22px;
+}
+
 .msf-dashboard-panel-actionList .msf-dashboard-panel-tittle-actionList {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 0px 15px;
 }
+.msf-dashboard-panel-actionList .admin-menu-tree-body .admin-menu-tree {
+  background: white;
+  border-radius: 10px;
+}
 .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode {
   background: white;
   border-radius: 10px;
-  margin-top: 20px;
-  width: 100%;
+  margin: 3px 1px 0px 1px;
+  width: calc(100% - 2px);
 }
-.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=true] .divNode {
-  border-radius: 10px 10px 0px 0px !important;
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode-is-active {
+  border: 1px solid #01abec;
 }
-.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=true][aria-level="1"] {
-  background: white;
-  border-radius: 0px !important;
-}
-.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=true][aria-level="1"] .divNode {
-  margin-top: 0px;
-}
-.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="1"], .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="2"], .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="3"] {
-  background-color: white;
-  border-radius: 0px 0px 10px 10px;
-}
-.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="1"] .divNode, .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="2"] .divNode, .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-expanded=false][aria-level="3"] .divNode {
-  margin-top: 0px;
+.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-level="0"] .divNode {
+  margin: 20px 1px 0px 1px !important;
 }
 
-.actionListNode {
+.actionListNode, .actionListNode-child {
   display: flex;
   flex-direction: column;
-  padding: 10px 0px;
+  padding: 10px 10px;
+  width: calc(100% - 20px);
 }
-.actionListNode .mat-form-field-wrapper {
+.actionListNode .mat-form-field-wrapper, .actionListNode-child .mat-form-field-wrapper {
   padding-bottom: 0.34375em;
 }
-.actionListNode .actionListNodeTittle {
+.actionListNode .actionListNodeTittle, .actionListNode-child .actionListNodeTittle {
   display: flex;
   flex-direction: row;
-  padding: 0px 10px;
 }
-.actionListNode .actionListNodeTittle .IconList {
+.actionListNode .actionListNodeTittle .IconList, .actionListNode-child .actionListNodeTittle .IconList {
   width: 10% !important;
 }
-.actionListNode .actionListNodeTittle .IconList .mat-form-field-infix {
+.actionListNode .actionListNodeTittle .IconList .mat-form-field-infix, .actionListNode-child .actionListNodeTittle .IconList .mat-form-field-infix {
   border-top: 0px !important;
   padding: 0.6em 0px !important;
   width: 40px !important;
 }
-.actionListNode .actionListNodeTittle .IconList .IconActionLIst {
+.actionListNode .actionListNodeTittle .IconList .IconActionLIst, .actionListNode-child .actionListNodeTittle .IconList .IconActionLIst {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: left;
@@ -19095,20 +19109,25 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   display: flex;
   justify-content: flex-end;
 }
-.actionListNode .actionListNodeTittle .IconList .IconActionLIst .mat-select-trigger {
+.actionListNode .actionListNodeTittle .IconList .IconActionLIst .mat-select-trigger, .actionListNode-child .actionListNodeTittle .IconList .IconActionLIst .mat-select-trigger {
   display: flex !important;
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
 }
-.actionListNode .actionListNodeTittle .input-option-tree {
+.actionListNode .actionListNodeTittle .input-option-tree, .actionListNode-child .actionListNodeTittle .input-option-tree {
   margin-left: 10px;
+  width: calc(100% - 110px);
 }
-.actionListNode .actionListNodeTittle .menu-drag-handle {
+.actionListNode .actionListNodeTittle .menu-drag-handle, .actionListNode-child .actionListNodeTittle .menu-drag-handle {
   line-height: 24px;
 }
-.actionListNode .input-description {
-  padding-left: 10px;
+.actionListNode .input-description, .actionListNode-child .input-description {
+  width: calc(100% - 40px);
+}
+
+.actionListNode-child .actionListNodeTittle .input-option-tree {
+  width: calc(100% - 110px) !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

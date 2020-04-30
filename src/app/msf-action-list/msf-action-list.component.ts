@@ -66,7 +66,7 @@ export class MsfActionListComponent implements OnInit {
 
   ngOnInit() {
     this.globals.isLoading = false;
-    this.dataSourceEditActionList.data = this.values;
+    this.dataChange.next(this.values);
     this.treeControl.expandAll();
 
     // this.service.loadActionListForDashboard(this,this.values.panelId, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
