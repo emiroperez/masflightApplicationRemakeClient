@@ -17,7 +17,7 @@
   color: #ffffff;
 }
 .dark-theme .body-background {
-  background-image: url(assets/images/dark-theme-background.png);
+  background-image: url(assets/images/dark-theme-background.webp);
 }
 .dark-theme .msf-container, .dark-theme .msf-container-welcome {
   background-color: #333333;
@@ -3535,7 +3535,7 @@
   color: #4d4d4d;
 }
 .light-theme .body-background {
-  background-image: url(assets/images/light-theme-background.png);
+  background-image: url(assets/images/light-theme-background.webp);
 }
 .light-theme .msf-container, .light-theme .msf-container-welcome {
   background-color: #ffffff;
