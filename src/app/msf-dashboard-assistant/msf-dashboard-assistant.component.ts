@@ -26,6 +26,7 @@ import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview
 import { AirportSelection } from '../commons/AirportSelection';
 import { ActionListFlatNode } from '../model/ActionListFlatNode';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
+import { MsfDashboardValueSelectorDialogComponent } from '../msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -239,10 +240,12 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.infoFunc2 = JSON.parse (JSON.stringify (this.functions));
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
-    // discard any changes
     this.values.urlImg = this.data.values.urlImg;
     this.values.EditActionList = this.data.values.EditActionList;
-    this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
+
+    if (this.data.values.currentOption != null)
+      this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
+
     this.values.chartName = this.data.values.chartName;
     this.values.chartDescription = this.data.values.chartDescription;
 
@@ -501,6 +504,18 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     this.values.paletteColors = JSON.parse (JSON.stringify (this.data.values.paletteColors));
 
+    this.values.valueListInfo = JSON.parse (JSON.stringify (this.data.values.valueListInfo));
+    if (!this.values.valueListInfo.length && this.values.valueList)
+    {
+      for (let i = 0; i < this.values.valueList.length; i++)
+      {
+        this.values.valueListInfo.push ({
+          function: this.functions.indexOf (this.values.function),
+          axis: !i ? true : false
+        });
+      }
+    }
+
     this.values.style = this.msfMapRef.mapTypes[1];
   }
 
@@ -710,6 +725,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   getParameters()
   {
     let currentOptionCategories;
+    let paramsGroup = [];
     let params;
 
     currentOptionCategories = this.values.currentOptionCategories;
@@ -726,21 +742,26 @@ export class MsfDashboardAssistantComponent implements OnInit {
           {
             let argument: Arguments = category.arguments[j];
 
-            if (params)
+            if (argument.type != "AAA_Group")
             {
-              if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
-                params += "&" + this.utils.getArguments (argument);
-              else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
-                params += "&" + this.utils.getArguments (argument);
+              if (params)
+              {
+                if (argument.type != "singleCheckbox" && argument.type != "serviceClasses" && argument.type != "fareLower" && argument.type != "airportsRoutes" && argument.name1 != "intermediateCitiesList")
+                  params += "&" + this.utils.getArguments (argument);
+                else if (argument.value1 != false && argument.value1 != "" && argument.value1 != undefined && argument.value1 != null)
+                  params += "&" + this.utils.getArguments (argument);
+              }
+              else
+                params = this.utils.getArguments(argument);
             }
             else
-              params = this.utils.getArguments (argument);
+              paramsGroup.push ({ target: argument.targetGroup, val: this.utils.getValueFormat (argument.type, argument.value1, argument) });
           }
         }        
       }
     }
 
-    return params;
+    return this.utils.setTarget (paramsGroup, params);
   }
 
   hasLimitResultsSettings(): boolean
@@ -778,6 +799,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return (this.advConfigFlags & ConfigFlags.AXISNAMES) ? true : false;
   }
 
+  hasAnimationSettings(): boolean
+  {
+    return (this.advConfigFlags & ConfigFlags.ANIMATIONS) ? true : false;
+  }
+
   configureAdditionalSettings(): void
   {
     this.advConfigFlags = ConfigFlags.NONE;
@@ -794,6 +820,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
     {
       this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
 
+      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        this.advConfigFlags |= ConfigFlags.ANIMATIONS;
+
       if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
       {
         this.advConfigFlags |= ConfigFlags.LIMITVALUES;
@@ -808,6 +837,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
     {
       this.advConfigFlags &= ~ConfigFlags.LIMITVALUES;
       this.advConfigFlags |= ConfigFlags.LIMITAGGREGATOR | ConfigFlags.CHARTCOLORS;
+
+      if (this.values.currentChartType.flags & ChartFlags.LINECHART)
+        this.advConfigFlags |= ConfigFlags.ANIMATIONS;
     }
 
     if (this.values.limitMode == null)
@@ -986,6 +1018,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.valueSelected = null;
       this.values.valueColumn = null;
       this.values.valueList = [];
+      this.values.valueListInfo = [];
       this.values.startAtZero = false;
     }
     else
@@ -994,6 +1027,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.aggregationValueSelected = null;
       this.values.valueColumn = null;
       this.values.valueList = [];
+      this.values.valueListInfo = [];
 
       for (let chart of this.chartTypes)
       {
@@ -1166,8 +1200,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         this.selectedStep = 5;
 
-        if (!this.msfConfigTableRef.dataSource)
+        //if (!this.msfConfigTableRef.dataSource)
         {
+          this.msfConfigTableRef.displayedColumns = [];
+          this.msfConfigTableRef.dataSource = null;
+
           if (this.stepLoading != 4)
           {
             this.stepLoading = 5;
@@ -1175,7 +1212,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
             this.loadConfigTableData (this.msfConfigTableRef.handlerSuccess, this.msfConfigTableRef.handlerError);
           }
         }
-        else
+        /*else
         {
           if (this.values.variable)
           {
@@ -1216,7 +1253,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
               }
             }
           }
-        }
+        }*/
         break;
 
       case 6:
@@ -1436,7 +1473,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     else
       urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
 
-    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=25&page_number=0";
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&&pageSize=15&page_number=0";
     urlArg = encodeURIComponent (urlBase);
     url = this.service.host + "/secure/consumeWebServices?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
 
@@ -2497,7 +2534,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
         else
         {
-          if (this.values.function.id === "count")
+          if (this.values.function != null && this.values.function.id === "count")
           {
             if (this.values.variable != null)
             {
@@ -2529,7 +2566,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
         else
         {
-          if (this.values.function.id === "count")
+          if (this.values.function != null && this.values.function.id === "count")
           {
             if (this.values.variable != null && this.values.xaxis != null)
             {
@@ -2640,6 +2677,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
       this.values.valueColumn = null;
       this.values.valueList = [];
+      this.values.valueListInfo = [];
 
       if (!(this.values.currentChartType.flags & ChartFlags.FORM))
         this.values.formVariables = [];
@@ -3110,13 +3148,31 @@ export class MsfDashboardAssistantComponent implements OnInit {
         chartColumnOptions: this.values.chartColumnOptions,
         thresholds: this.values.thresholds,
         goals: this.values.goals,
-        paletteColor: this.values.paletteColors,
+        paletteColors: this.values.paletteColors,
         chartTypes: this.chartTypes,
         minValueRange: this.values.minValueRange,
         maxValueRange: this.values.maxValueRange,
         vertAxisName: this.values.vertAxisName,
-        horizAxisName: this.values.horizAxisName
+        horizAxisName: this.values.horizAxisName,
+        valueListInfo: this.values.valueListInfo
       }
+    });
+  }
+
+  setSimpleValues(): void
+  {
+    const dialogRef = this.dialog.open (MsfDashboardValueSelectorDialogComponent, {
+      panelClass: 'msf-dashboard-value-selector-dialog',
+      autoFocus: false,
+      data: {
+        values: this.values,
+        functions: this.functions,
+        chartTypes: this.chartTypes
+      }
+    });
+
+    dialogRef.afterClosed ().subscribe (() => {
+      this.checkPanelConfiguration ();
     });
   }
 

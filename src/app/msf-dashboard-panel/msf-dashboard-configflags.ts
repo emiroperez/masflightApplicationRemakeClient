@@ -7,5 +7,6 @@ export enum ConfigFlags
   LIMITAGGREGATOR = 0x00000008,
   GOALS           = 0x00000010,
   HEATMAPCOLOR    = 0x00000020,
-  AXISNAMES       = 0x00000040
+  AXISNAMES       = 0x00000040,
+  ANIMATIONS      = 0x00000080
 };

@@ -213,14 +213,14 @@
                     </div>
                     <div class="arguments-child" [style.margin-right.%]="5">
                         <mat-form-field [style.width.%]="100">
-                            <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" [max]="item.maxDate" [matDatepicker]="startDatePicker">
+                            <input matInput placeholder="Start Date Availability" [(ngModel)]="item.minDate" (ngModelChange)="adjustMaxDate(item)" [matDatepicker]="startDatePicker">
                             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #startDatePicker></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div class="arguments-child">
                         <mat-form-field [style.width.%]="100">
-                            <input matInput placeholder="End Date Availability" [(ngModel)]="item.maxDate" [min]="item.minDate" [matDatepicker]="endDatePicker">
+                            <input matInput placeholder="End Date Availability" [(ngModel)]="item.maxDate" (ngModelChange)="adjustMinDate(item)" [matDatepicker]="endDatePicker">
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>
@@ -544,6 +544,21 @@
                             </div>
                         </div>
                     </div>
+                </ng-container>
+                <ng-container *ngIf="isAirline(item) && item.selectionMode >= 1">
+                    <mat-checkbox [(ngModel)]="item.groupingSelector">
+                        Enable Airline Groups
+                    </mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="isAircraftType(item) && item.selectionMode >= 1">
+                    <mat-checkbox [(ngModel)]="item.groupingSelector">
+                        Enable Aircraft Groups
+                    </mat-checkbox>
+                </ng-container>
+                <ng-container *ngIf="isAirport(item) && !isAirportRoutes(item) && item.selectionMode >= 1">
+                    <mat-checkbox [(ngModel)]="item.groupingSelector" [style.margin-top.px]="10">
+                        Enable Airport Groups
+                    </mat-checkbox>
                 </ng-container>
                 <ng-container *ngIf="isTimeRange(item)">
                     <div class="arguments-child" [style.margin-right.%]="0.1">

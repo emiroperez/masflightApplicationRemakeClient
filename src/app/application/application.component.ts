@@ -87,7 +87,8 @@ export class ApplicationComponent implements OnInit {
   lengthpag: any;
   pageI: any;
   pageSize: any;
-  showMoreResult: boolean;  
+  showMoreResult: boolean;
+  defaultOptionId: number = null;
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
@@ -217,9 +218,14 @@ export class ApplicationComponent implements OnInit {
       };
     }
 
-    _this.getMenu ();
+    _this.appService.getDefaultOptionId (_this, _this.defaultOptionSuccess, _this.errorLogin);
   }
 
+  defaultOptionSuccess(_this, data)
+  {
+    _this.defaultOptionId = data;
+    _this.getMenu ();
+  }
 
   recursiveDashboardFullPath(category, dashboard, arg): any
   {
@@ -493,7 +499,7 @@ export class ApplicationComponent implements OnInit {
           _this.recursiveSearch (option.children,_this,category);
         else
         {
-          if (option.id == _this.globals.currentApplication.defaultMenu)
+          if (option.id == _this.defaultOptionId)
           {
             _this.globals.clearVariables();
             _this.globals.isLoading = true;
@@ -516,7 +522,7 @@ export class ApplicationComponent implements OnInit {
         _this.recursiveSearch (option.children,_this,category);
       else
       {
-        if (option.id == _this.globals.currentApplication.defaultMenu)
+        if (option.id == _this.defaultOptionId)
         {
           _this.globals.clearVariables();
           _this.globals.isLoading = true;
@@ -1633,8 +1639,8 @@ toggle(){
     // reload menu
     this.globals.lastTime = null;
     this.globals.clearVariables ();
-    this.globals.clearVariablesMenu ();
-    this.getMenu ();
+    this.globals.clearVariablesMenu();
+    this.appService.getDefaultOptionId (this, this.defaultOptionSuccess, this.errorLogin);
   }
 
   public getServerData(event?:PageEvent){

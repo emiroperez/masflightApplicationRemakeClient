@@ -55,6 +55,7 @@ export class Themes {
             chartZoomScrollBar: blueJeans,
             axisTooltipFontColor: white,
             sumStroke: white,
+            barHoverOpacity: 0.3,
             heatMapColors: [
                 "#dddddd",
                 "#01abec"
@@ -90,6 +91,7 @@ export class Themes {
             chartZoomScrollBar: orange,
             axisTooltipFontColor: black,
             sumStroke: darkGray,
+            barHoverOpacity: 0.1,
             heatMapColors: [
                 "#ffffff",
                 "#003d5b"

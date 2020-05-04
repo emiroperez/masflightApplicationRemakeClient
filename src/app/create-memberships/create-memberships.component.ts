@@ -66,25 +66,56 @@ export class EditOptionsDialog {
 
   options: any[];
 
+  optionList: any[] = [];
+
+  defaultOptionId: number = null;
+
+  filteredOptions: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
   constructor(
     public dialogRef: MatDialogRef<EditOptionsDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any })
-    { }
+    @Inject(MAT_DIALOG_DATA) public data: { menuSelected: any, auxOptions: any, defaultOptionId: number })
+  {
+    this.getItemsSelected (data.menuSelected, true);
+    this.filteredOptions.next (this.optionList.slice ());
+    this.defaultOptionId = data.defaultOptionId;
+  }
 
 
-  getItemsSelected(menu) {
+  getItemsSelected(menu, init) {
     for (let j = 0; j < menu.length; j++) {
-      this.recursiveOption(menu[j]);
+      this.recursiveOption(menu[j], init);
     }
-    this.optionsArray = this.data.auxOptions;
+
+    if (!init)
+      this.optionsArray = this.data.auxOptions;
+  }
+
+  toggleOption(value): void
+  {
+    if (!value.selected)
+    {
+      if (this.defaultOptionId == value.id)
+        this.defaultOptionId = null;
+
+      if (!value.children.length)
+        this.optionList.splice (this.optionList.indexOf (value), 1);
+    }
+    else
+    {
+      if (!value.children.length)
+        this.optionList.push (value);
+    }
+
+    this.filteredOptions.next (this.optionList.slice ());
   }
 
   onNoClick():void{
     this.dialogRef.close();
   }
 
-  recursiveOption(option: any) {
-
+  recursiveOption(option: any, init: boolean)
+  {
     if (option.children.length !== 0) {
       for (let i = 0; i < option.children.length; i++) {
         const element = option.children[i];
@@ -98,6 +129,9 @@ export class EditOptionsDialog {
             if (element.id === this.data.auxOptions[j].optionId) {
               this.data.auxOptions[j].delete = false;
               found = true;
+
+              if (init && !element.children.length)
+                this.optionList.push (element);
             }
           }
         }
@@ -108,13 +142,28 @@ export class EditOptionsDialog {
           this.data.auxOptions.push(optionAdd);
         }
         if (element.children.length>0){
-          this.recursiveOption(element);
+          this.recursiveOption(element,init);
 
         }
       }
     }
   }
 
+  filterOptions(value: string): void
+  {
+    // get the search keyword
+    let search = value;
+    if (!search)
+    {
+      this.filteredOptions.next (this.optionList.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    this.filteredOptions.next (
+      this.optionList.filter (a => a.label.toLowerCase ().indexOf (search) > -1)
+    );
+  }
 }
 
 
@@ -186,7 +235,7 @@ export class CreateMembershipsComponent implements OnInit {
   }
 
   getPlansService() {
-    let url= this.globals.baseUrl+'/getPlans';
+    let url = this.globals.baseUrl + '/getPlans?appId=' + this.globals.currentApplication.id;
     this.http.get(this, url, this.handlerSuccessInit, this.handlerError, null);
   }
 
@@ -475,6 +524,7 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
       plan.features = this.getFeaturesJson(i);
       plan.fares = this.getPricesJson(i);
       plan.advanceFeatures = this.getAdvanceFeaturesJson(i);
+      plan.defaultOptionId = this.planJson[i]['defaultOptionId']
       plansJsons.push(plan);
     }
     return plansJsons;
@@ -767,21 +817,24 @@ createAdvanceFeature(advanceFeaturesArray): FormGroup[] {
     planId = this.planJson[index]['id'];
     let auxOptions: Array<PlanOption> = new Array();
     let menuClear = this.clearOptionData(this.menu);
+    let defaultOptionId = null;
     if (planId){
       auxOptions = this.getOptionsPlanJson(index);
       menuSelected = this.getSelectedOptionsByPlan(menuClear, auxOptions, index);
+      defaultOptionId = this.planJson[index]['defaultOptionId'];
     }else {
       menuSelected = menuClear;
     }
     const dialogRef = this.dialog.open(EditOptionsDialog, {
       width: '80%',
-      data: { menuSelected: menuSelected, auxOptions: auxOptions }
+      data: { menuSelected: menuSelected, auxOptions: auxOptions, defaultOptionId: defaultOptionId }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.planJson[index]['options'] = [];
-        this.planJson[index]['options'] = result;
+        this.planJson[index]['options'] = result.auxOptions;
+        this.planJson[index]['defaultOptionId'] = result.defaultOptionId;
       }
     });
 

@@ -17,7 +17,7 @@
   color: #ffffff;
 }
 .dark-theme .body-background {
-  background-image: url(assets/images/dark-theme-background.png);
+  background-image: url(assets/images/dark-theme-background.webp);
 }
 .dark-theme .msf-container, .dark-theme .msf-container-welcome {
   background-color: #333333;
@@ -1941,7 +1941,7 @@
 .dark-theme .select-group .mat-radio-checked .mat-radio-label .mat-radio-container .mat-radio-inner-circle {
   background-color: #ffffff;
 }
-.dark-theme .msf-dashboard-assistant-dialog .mat-dialog-container, .dark-theme .msf-select-data-dialog .mat-dialog-container {
+.dark-theme .msf-dashboard-assistant-dialog .mat-dialog-container, .dark-theme .msf-select-data-dialog .mat-dialog-container, .dark-theme .msf-dashboard-value-selector-dialog .mat-dialog-container {
   color: #ffffff;
 }
 .dark-theme .msf-dashboard-assistant-stepper {
@@ -3276,11 +3276,32 @@
 .dark-theme .msf-mobile-menu-header {
   background-color: #3d3d3d;
 }
-.dark-theme .partial-summaries-header, .dark-theme .partial-summaries-body, .dark-theme .dynamic-table-config-header, .dark-theme .dynamic-table-body {
+.dark-theme .partial-summaries-header, .dark-theme .partial-summaries-body, .dark-theme .dynamic-table-config-header, .dark-theme .dynamic-table-body, .dark-theme .set-values-header, .dark-theme .set-values-body {
   color: #ffffff;
 }
-.dark-theme .partial-summaries-header .flat-button-disabled, .dark-theme .partial-summaries-body .flat-button-disabled, .dark-theme .dynamic-table-config-header .flat-button-disabled, .dark-theme .dynamic-table-body .flat-button-disabled {
+.dark-theme .partial-summaries-header .flat-button-disabled, .dark-theme .partial-summaries-body .flat-button-disabled, .dark-theme .dynamic-table-config-header .flat-button-disabled, .dark-theme .dynamic-table-body .flat-button-disabled, .dark-theme .set-values-header .flat-button-disabled, .dark-theme .set-values-body .flat-button-disabled {
   background-color: #282828 !important;
+}
+.dark-theme .set-values-body {
+  background-color: #282828;
+}
+.dark-theme .set-values-body .mat-form-field-label {
+  color: #ffffff;
+}
+.dark-theme .set-values-body .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #3b3b3b;
+}
+.dark-theme .set-values-body .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #3b3b3b !important;
+}
+.dark-theme .set-values-body .value-item-body {
+  background-color: #333333 !important;
+}
+.dark-theme .set-values-body .value-item-body .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #ffffff !important;
+}
+.dark-theme .set-values-body .value-item-body .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #ffffff !important;
 }
 .dark-theme .partial-summaries-desc {
   background-color: #141414;
@@ -3347,7 +3368,7 @@
 .dark-theme .summary-column .summary-column-container {
   color: #ffffff;
 }
-.dark-theme .partial-summaries-close-button .mat-icon, .dark-theme .partial-summaries-delete-button, .dark-theme .dynamic-table-close-button .mat-icon {
+.dark-theme .partial-summaries-close-button .mat-icon, .dark-theme .partial-summaries-delete-button, .dark-theme .dynamic-table-close-button .mat-icon, .dark-theme .set-values-close-button .mat-icon {
   color: #ffffff !important;
 }
 .dark-theme .y-axis-container .drop-here, .dark-theme .x-axis-and-values-container .drop-here {
@@ -3514,7 +3535,7 @@
   color: #4d4d4d;
 }
 .light-theme .body-background {
-  background-image: url(assets/images/light-theme-background.png);
+  background-image: url(assets/images/light-theme-background.webp);
 }
 .light-theme .msf-container, .light-theme .msf-container-welcome {
   background-color: #ffffff;
@@ -5438,7 +5459,7 @@
 .light-theme .select-group .mat-radio-checked .mat-radio-label .mat-radio-container .mat-radio-inner-circle {
   background-color: #4d4d4d;
 }
-.light-theme .msf-dashboard-assistant-dialog .mat-dialog-container, .light-theme .msf-select-data-dialog .mat-dialog-container {
+.light-theme .msf-dashboard-assistant-dialog .mat-dialog-container, .light-theme .msf-select-data-dialog .mat-dialog-container, .light-theme .msf-dashboard-value-selector-dialog .mat-dialog-container {
   color: #4d4d4d;
 }
 .light-theme .msf-dashboard-assistant-stepper {
@@ -6773,11 +6794,32 @@
 .light-theme .msf-mobile-menu-header {
   background-color: #003d5b;
 }
-.light-theme .partial-summaries-header, .light-theme .partial-summaries-body, .light-theme .dynamic-table-config-header, .light-theme .dynamic-table-body {
+.light-theme .partial-summaries-header, .light-theme .partial-summaries-body, .light-theme .dynamic-table-config-header, .light-theme .dynamic-table-body, .light-theme .set-values-header, .light-theme .set-values-body {
   color: #4d4d4d;
 }
-.light-theme .partial-summaries-header .flat-button-disabled, .light-theme .partial-summaries-body .flat-button-disabled, .light-theme .dynamic-table-config-header .flat-button-disabled, .light-theme .dynamic-table-body .flat-button-disabled {
+.light-theme .partial-summaries-header .flat-button-disabled, .light-theme .partial-summaries-body .flat-button-disabled, .light-theme .dynamic-table-config-header .flat-button-disabled, .light-theme .dynamic-table-body .flat-button-disabled, .light-theme .set-values-header .flat-button-disabled, .light-theme .set-values-body .flat-button-disabled {
   background-color: #f0f0f0 !important;
+}
+.light-theme .set-values-body {
+  background-color: #f0f0f0;
+}
+.light-theme .set-values-body .mat-form-field-label {
+  color: #4d4d4d;
+}
+.light-theme .set-values-body .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #e6e6e6;
+}
+.light-theme .set-values-body .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #e6e6e6 !important;
+}
+.light-theme .set-values-body .value-item-body {
+  background-color: #ffffff !important;
+}
+.light-theme .set-values-body .value-item-body .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #4d4d4d !important;
+}
+.light-theme .set-values-body .value-item-body .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #4d4d4d !important;
 }
 .light-theme .partial-summaries-desc {
   background-color: #eaeaea;
@@ -6844,7 +6886,7 @@
 .light-theme .summary-column .summary-column-container {
   color: #4d4d4d;
 }
-.light-theme .partial-summaries-close-button .mat-icon, .light-theme .partial-summaries-delete-button, .light-theme .dynamic-table-close-button .mat-icon {
+.light-theme .partial-summaries-close-button .mat-icon, .light-theme .partial-summaries-delete-button, .light-theme .dynamic-table-close-button .mat-icon, .light-theme .set-values-close-button .mat-icon {
   color: #4d4d4d !important;
 }
 .light-theme .y-axis-container .drop-here, .light-theme .x-axis-and-values-container .drop-here {
@@ -11538,8 +11580,9 @@ td.mat-cell.admin-column-arguments-cell {
   text-align: center;
 }
 .msf-plan-card-content .msf-plan-name .msf-plan-test-button .flat-button {
-  width: 290px;
+  width: 65%;
   height: 50px;
+  font-size: min(0.75vw, 14px);
 }
 .msf-plan-card-content .msf-advanced-features {
   display: flex;
@@ -14179,6 +14222,17 @@ mat-form-field.msf-table-input {
 .membership-dialog-container .mat-form-field-underline {
   height: 0px;
 }
+.membership-dialog-container .membership-options-buttons {
+  display: flex;
+  margin-top: 10px;
+  height: 40px;
+}
+.membership-dialog-container .membership-options-buttons .membership-default-option-combobox .mat-form-field-wrapper {
+  width: 25%;
+}
+.membership-dialog-container .membership-options-buttons .membership-cancel-button {
+  width: 90px !important;
+}
 
 .feature-checkbox .mat-checkbox-layout .mat-checkbox-label {
   color: #ffffff;
@@ -14868,6 +14922,19 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .msf-dashboard-assistant-loading {
   height: 100% !important;
+}
+
+.msf-dashboard-value-selector-dialog {
+  min-width: 650px !important;
+  max-width: 650px !important;
+  width: 650px !important;
+  min-height: 110px !important;
+}
+.msf-dashboard-value-selector-dialog .mat-dialog-container {
+  padding: 0;
+  min-height: inherit !important;
+  max-height: inherit !important;
+  overflow: hidden;
 }
 
 .msf-dashboard-assistant-dialog {
@@ -18865,7 +18932,8 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 }
 
 .values-combobox {
-  margin-left: -5px;
+  margin-top: 10px !important;
+  width: 96%;
 }
 
 .num-variables-icon {
@@ -19128,6 +19196,75 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
 
 .actionListNode-child .actionListNodeTittle .input-option-tree {
   width: calc(100% - 110px) !important;
+}
+
+.anim-checkbox {
+  margin-left: 15px;
+}
+
+.set-values-header {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 10px 2px 7px 18px;
+  position: relative;
+}
+.set-values-header .set-values-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+}
+.set-values-header .set-values-title {
+  font-size: 16px;
+  font-weight: 550;
+}
+.set-values-header .set-values-header-buttons {
+  position: absolute;
+  right: 10px;
+}
+.set-values-header .set-values-header-buttons .set-values-close-button {
+  height: 35px !important;
+  line-height: 35px !important;
+  margin-left: 10px;
+}
+
+.set-values-body {
+  width: 100%;
+}
+.set-values-body .values-dialog-combobox {
+  margin-bottom: -10px;
+}
+.set-values-body .value-item-container {
+  padding: 0px 10px 10px 10px;
+}
+.set-values-body .value-item-container .value-item-body {
+  display: flex;
+  height: 45px;
+  align-items: center;
+  border-radius: 5px;
+}
+.set-values-body .value-item-container .value-item-body .value-item-name-label {
+  margin-left: 15px;
+  width: 180px;
+}
+.set-values-body .value-item-container .value-item-body .value-item-combobox {
+  margin-top: 18px;
+  width: 140px;
+}
+.set-values-body .value-item-container .value-item-body .value-item-axis-checkbox {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.set-values-body .value-tiem-padding {
+  width: 120px;
+}
+.set-values-body .value-item-list {
+  overflow-y: auto;
+  max-height: 400px;
+}
+.set-values-body .value-item-list .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+  margin-top: -12px !important;
 }
 
 /*# sourceMappingURL=styles.css.map */

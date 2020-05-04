@@ -213,6 +213,7 @@ import { MsfConfirmationDialogDatalakeComponent } from './msf-confirmation-dialo
 import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.component';
 import { ExportCsvDialogComponent } from './export-csv-dialog/export-csv-dialog.component';
 import { MsfActionListComponent } from './msf-action-list/msf-action-list.component';
+import { MsfDashboardValueSelectorDialogComponent } from './msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -402,7 +403,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MsfConfirmationDialogDatalakeComponent,
     MsfChartPreviewComponent,
     ExportCsvDialogComponent,
-    MsfActionListComponent
+    MsfActionListComponent,
+    MsfDashboardValueSelectorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -510,7 +512,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     UrlMessageComponent,
     PublicizeDashboardDialogComponent,
     MsfChartPreviewComponent,
-    ExportCsvDialogComponent
+    ExportCsvDialogComponent,
+    MsfDashboardValueSelectorDialogComponent
   ]
 })
 export class AppModule { }

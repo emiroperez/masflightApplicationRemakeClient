@@ -377,10 +377,13 @@
                      (click)="selectValue()" *ngIf="!isSimpleChart()">
                   Value
                 </div>
-                <div class="assistant-function-combobox datalake-search-input" *ngIf="isSimpleChart()">
+                <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && !isAdvChartPanel()">
+                  Set Values
+                </div>
+                <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && isAdvChartPanel()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field values-combobox" appearance="outline">
                     <mat-label>Values</mat-label>
-                    <mat-select placeholder="Values" [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
+                    <mat-select [(ngModel)]="values.valueList" (ngModelChange)="checkPanelConfiguration()" multiple>
                       <ngx-mat-select-search [formControl]="valueFilterCtrl" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
                       <mat-option *ngFor="let variable of filteredValues | async" [value]="variable">
                         {{variable.name}}
@@ -388,7 +391,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="assistant-function-combobox datalake-search-input">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart() && !isAdvChartPanel()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
                     <mat-label>Function</mat-label>
                     <mat-select [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
@@ -1118,6 +1121,15 @@
                   </div>
                 </div>
               </mat-tab>
+              <!--
+              <mat-tab label="Animation" *ngIf="hasAnimationSettings()">
+                <div class="axis-names-tab">
+                  <mat-checkbox class="anim-checkbox" color="primary" [(ngModel)]="values.animated">
+                    <ng-container>Use Animations On Initialization</ng-container>
+                  </mat-checkbox>
+                </div>
+              </mat-tab>
+              -->
             </mat-tab-group>
           </div>
         </div>

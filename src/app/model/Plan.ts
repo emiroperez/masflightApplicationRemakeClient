@@ -12,6 +12,7 @@ export class Plan{
     "advanceFeatures": Array<PlanAdvanceFeatures>;
     "delete": boolean;
     "isNew": boolean;
+    "defaultOptionId": number;
 
     constructor(){
         this.name = '';
@@ -21,5 +22,6 @@ export class Plan{
         this.advanceFeatures = new Array();
         this.delete = false;
         this.isNew = false;
+        this.defaultOptionId = null;
     }
 }

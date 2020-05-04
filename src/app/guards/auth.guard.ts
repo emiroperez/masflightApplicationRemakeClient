@@ -6,7 +6,7 @@ import { MessageComponent } from '../message/message.component';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  static INACTIVITY_TIMEOUT: number = 30 * 60 * 1000; // 30 minutes for inactivity timeout
+  static INACTIVITY_TIMEOUT: number = 90 * 60 * 1000; // 90 minutes for inactivity timeout
 
   sessionInterval: any;
   inactivityTimeout: any;
@@ -103,6 +103,7 @@ export class AuthGuard implements CanActivate {
 
   redirectToLogin(_this): void
   {
+    _this.dialog.closeAll ();
     _this.router.navigate (['']);
   }
 

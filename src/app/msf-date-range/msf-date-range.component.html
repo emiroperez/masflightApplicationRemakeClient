@@ -22,19 +22,19 @@
         <div class="msf-component-date-input-container msf-single-date">
             <ng-container *ngIf="dateStartView === 'month'">
                 <mat-form-field class="msf-full-width">
-                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <input matInput [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker1" placeholder="{{argument.label1}}" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
-                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
+                    <input matInput [min]="argument.minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" [matDatepicker]="picker2" placeholder="{{argument.label2}}" autocomplete="off" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
             </ng-container>
             <ng-container *ngIf="dateStartView !== 'month'">
                 <mat-form-field class="msf-full-width">
-                    <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                    <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
                     <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label1}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
@@ -59,7 +59,7 @@
                 </div>
                 <ng-container *ngIf="isDateRange">
                     <mat-form-field class="msf-full-width msf-single-date">
-                        <input hidden [min]="minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
+                        <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
                         <input matInput [ngModel]="value2Display" (ngModelChange)="dateChange2($event)" [ngModelOptions]="{ standalone: true }" placeholder="{{argument.label2}}" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
                         <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                         <mat-datepicker #picker4 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler2($event,picker4)" (monthSelected)="chosenMonthHandler2($event,picker4)"></mat-datepicker>
@@ -100,14 +100,14 @@
             <div class="msf-component-date-input-container msf-single-date">
                 <ng-container *ngIf="dateStartView === 'month'">
                     <mat-form-field class="msf-full-width">
-                        <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" placeholder="Initial Date" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                        <input matInput [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker1" placeholder="Initial Date" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
                     </mat-form-field>
                 </ng-container>
                 <ng-container *ngIf="dateStartView !== 'month'">
                     <mat-form-field class="msf-full-width">
-                        <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                        <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
                         <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" placeholder="Initial Date" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
                         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                         <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
@@ -165,13 +165,13 @@
             <ng-container *ngIf="dateStartView === 'month'">
                 <span class="anchor-date-label" *ngIf="argument.label1">{{argument.label1}}</span>
                 <mat-form-field class="msf-full-width">
-                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <input matInput [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker1" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
                 <span class="anchor-date-label" *ngIf="argument.label2">{{argument.label2}}</span>
                 <mat-form-field *ngIf="isDateRange" class="msf-full-width msf-single-date">
-                    <input matInput [min]="minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" [matDatepicker]="picker2" autocomplete="off" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
+                    <input matInput [min]="argument.minDate" [max]="argument.maxDate" class="msf-component-airport-container mat-input-element" [matDatepicker]="picker2" autocomplete="off" [(ngModel)]="argument.value2" (ngModelChange)="dateChange2($event)" (click)="picker2.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
@@ -179,7 +179,7 @@
             <ng-container *ngIf="dateStartView !== 'month'">
                 <span class="anchor-date-label" *ngIf="argument.label1">{{argument.label1}}</span>
                 <mat-form-field class="msf-full-width">
-                    <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                    <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
                     <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>
@@ -204,7 +204,7 @@
                 <ng-container *ngIf="isDateRange">
                     <span class="anchor-date-label" *ngIf="argument.label2">{{argument.label2}}</span>
                     <mat-form-field class="msf-full-width msf-single-date">
-                        <input hidden [min]="minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
+                        <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker4" [(ngModel)]="value2Date" [readonly]="true">
                         <input matInput [ngModel]="value2Display" (ngModelChange)="dateChange2($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker4.open()" [readonly]="true">
                         <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                         <mat-datepicker #picker4 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler2($event,picker4)" (monthSelected)="chosenMonthHandler2($event,picker4)"></mat-datepicker>
@@ -235,7 +235,7 @@
             <ng-container *ngIf="dateStartView === 'month'">
                 <span class="anchor-date-label initial-date-label">Select Initial Date</span>
                 <mat-form-field class="msf-full-width">
-                    <input matInput [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
+                    <input matInput [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker1" [(ngModel)]="argument.value1" (ngModelChange)="dateChange($event)" (click)="picker1.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1 startView="{{dateStartView}}"></mat-datepicker>
                 </mat-form-field>
@@ -243,7 +243,7 @@
             <ng-container *ngIf="dateStartView !== 'month'">
                 <span class="anchor-date-label initial-date-quarter-label">Select Initial Date</span>
                 <mat-form-field class="msf-full-width">
-                    <input hidden [min]="argument.minDate" [max]="maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
+                    <input hidden [min]="argument.minDate" [max]="argument.maxDate" [matDatepicker]="picker3" [(ngModel)]="value1Date" [readonly]="true">
                     <input matInput [ngModel]="value1Display" (ngModelChange)="dateChange($event)" [ngModelOptions]="{ standalone: true }" autocomplete="off" class="msf-full-width msf-menu-arg-select" (click)="picker3.open()" [readonly]="true">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3 startView="{{dateStartView}}" [calendarHeaderComponent]="calendarHeader" (yearSelected)="chosenYearHandler1($event,picker3)" (monthSelected)="chosenMonthHandler1($event,picker3)"></mat-datepicker>

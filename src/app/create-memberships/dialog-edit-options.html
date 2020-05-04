@@ -2,11 +2,20 @@
     <div mat-dialog-title class="membership-dialog-title">Options</div>
     <div mat-dialog-content class="membership-dialog-content">
         <div *ngFor="let option of data.menuSelected; let i = index;">
-            <app-admin-menu-memberships [menu]="option" [index]="i"></app-admin-menu-memberships>
+            <app-admin-menu-memberships [menu]="option" [index]="i" (toggleOption)="toggleOption($event)"></app-admin-menu-memberships>
         </div>
     </div>
-    <div [style.margin-top.px]="10">
-        <button mat-button class="flat-button membership-cancel-button" (click)="onNoClick()">Cancel</button>
-        <button mat-button class="flat-button" (click)="getItemsSelected(data.menuSelected)" [mat-dialog-close]="data.auxOptions">OK</button>
+    <div class="membership-options-buttons" [style.margin-top.px]="10">
+      <mat-form-field class="membership-default-option-combobox" *ngIf="optionList.length">
+        <mat-select placeholder="Default Option" [(ngModel)]="defaultOptionId">
+          <ngx-mat-select-search ngModel (ngModelChange)="filterOptions($event)" placeholderLabel="Search" noEntriesFoundLabel="Not Found"></ngx-mat-select-search>
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.id">
+            {{option.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div [style.width.%]="100" *ngIf="!optionList.length"></div>
+      <button mat-button class="flat-button membership-cancel-button" (click)="onNoClick()">Cancel</button>
+      <button mat-button class="flat-button" (click)="getItemsSelected(data.menuSelected, false)" [mat-dialog-close]="{ auxOptions: data.auxOptions, defaultOptionId: defaultOptionId }">OK</button>
     </div>
 </div>

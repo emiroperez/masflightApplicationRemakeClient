@@ -508,6 +508,7 @@ export class EditCategoryArgumentDialog {
   clearValue1(item): void
   {
     item.value1 = null;
+    item.groupingSelector = false;
   }
 
   clearValues(item): void
@@ -539,6 +540,7 @@ export class EditCategoryArgumentDialog {
         item.label2 = null;
         item.name2 = null;
         item.value2 = null;
+        item.groupingSelector = false;
       }
     }
   }
@@ -706,6 +708,10 @@ export class EditCategoryArgumentDialog {
 
   isAirport(argument: Arguments) {
     return ComponentType.airport == argument.type || ComponentType.airportsRoutes == argument.type;
+  }
+
+  isAirportRoutes(argument: Arguments) {
+    return ComponentType.airportsRoutes == argument.type;
   }
 
   isAircraftType(argument: Arguments) {
@@ -969,6 +975,18 @@ export class EditCategoryArgumentDialog {
   isStates(item) {
     return ComponentType.states == item.type;
   }
+
+  adjustMaxDate(item): void
+  {
+    if (item.maxDate < item.minDate)
+      item.maxDate = item.minDate;
+  }
+
+  adjustMinDate(item): void
+  {
+    if (item.minDate > item.maxDate)
+      item.minDate = item.maxDate;
+  }
 }
 
 export class ExampleFlatNode {
@@ -1206,8 +1224,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     ]
   };
 
-  defaultMenu: number;
-
   constructor(private http: ApiClient, public globals: Globals,
     private service: ApplicationService, public snackBar: MatSnackBar,
     public dialog: MatDialog, private ref: ChangeDetectorRef,
@@ -1275,9 +1291,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
   setChangeShowAdmin(node) {
     const nestedNode = this.flatNodeMap.get(node);
     nestedNode.showAdmin = node.showAdmin? 1:0 ;
-    if(nestedNode.showAdmin && this.defaultMenu === node.id){
-      this.defaultMenu = null;
-    }
     this.dataChange.next(this.data);
   }
 
@@ -1288,17 +1301,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  checkDefaultMenu(optionSelected): void
-  {
-    if (this.defaultMenu == optionSelected.id)
-      this.defaultMenu = null;
-    else
-      this.defaultMenu = optionSelected.id;
-  }
-
   ngOnInit() {
     this.innerHeight = window.innerHeight;
-    this.getDefaultMenuId ();
     this.getMenuData ();
     this.getCategoryArguments ();
   }
@@ -1632,9 +1636,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
         {
           if (result.confirm) {
 
-            if (this.defaultMenu == this.optionSelected.id)
-              this.defaultMenu = null;
-
             if (this.optionSelected.uid.includes("catnew") || this.optionSelected.uid.includes("optnew"))
               this.deleteNewItem();
             else {
@@ -1709,14 +1710,12 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.verifyOrder();
-      this.service.saveMenu(this, this.defaultMenu, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
+      this.service.saveMenu(this, this.dataSource.data, this.handlerSuccessSaveMenuData, this.handlerErrorSaveMenuData);
     }
   }
 
   handlerSuccessSaveMenuData(_this)
   {
-    // set default menu id after saving the menu
-    _this.globals.currentApplication.defaultMenu = _this.defaultMenu;
     localStorage.setItem ("currentApplication", JSON.stringify (_this.globals.currentApplication));
 
     _this.getMenuData();
@@ -1818,15 +1817,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
 
   handlerSuccessdrillDown(_this, data) {
     _this.globals.isLoading = false;
-  }
-
-  getDefaultMenuId(): void {
-    this.service.getMenuDefaultId(this, this.handlerDefaultMenuSuccess, this.handlerGetErrorMenuData);
-  }
-
-  handlerDefaultMenuSuccess(_this, data): void
-  {
-    _this.defaultMenu = data;
   }
 
   getMenuData(): void {
@@ -2520,12 +2510,6 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
       this.categories.filter (a => a.label.toLowerCase ().indexOf (search) > -1)
     );
   }
-
-  isDefaultMenuChecked(optionSelected): boolean
-  {
-    return this.defaultMenu === optionSelected.id;
-  }
-
 
 }
 

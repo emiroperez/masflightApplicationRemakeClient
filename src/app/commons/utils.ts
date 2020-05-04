@@ -451,7 +451,7 @@ export class Utils{
             // it is a date?
             if (Object.prototype.toString.call (value) === "[object Date]")
             {
-                if (isNaN (value.getTime()))
+                if (isNaN (value.getTime ()))
                     return value;
             }
             else if (moment.isMoment (value))
@@ -683,6 +683,7 @@ export class Utils{
             if (type == ComponentType.dateRange)
             {
                 let currentValueType = (argument.selectionMode >> 1) & 3;
+                let inputFormat = this.getDateFormatFromArg (argument.dateFormat);
                 let dateFormat = "MM/dd/yyyy";
 
                 switch (currentValueType)
@@ -697,7 +698,7 @@ export class Utils{
                         break;
                 }
 
-                return this.getDateFormat (value, dateFormat);
+                return this.getDateFormat (moment (value, argument.dateFormat), inputFormat, dateFormat);
             }
             else if (type == ComponentType.airport)
             {
@@ -900,7 +901,7 @@ export class Utils{
         }
     }
 
-    getDateFormat(value, format)
+    getDateFormat(value, format, outputFormat?)
     {
         if (value != null)
         {
@@ -917,14 +918,14 @@ export class Utils{
                 format = 'MMddyyyy';
 
               datePipe = new DatePipe ('en-US');
-              return datePipe.transform (value.toDate (), format);
+              return datePipe.transform (value.toDate (), outputFormat ? outputFormat : format);
             }
 
             if (format == null)
                 format = 'MMddyyyy';
 
             datePipe = new DatePipe ('en-US');
-            return datePipe.transform (value, format);            
+            return datePipe.transform (value, outputFormat ? outputFormat : format);            
         }
 
         return value;
