@@ -68,7 +68,7 @@ export class DatalakeQueryEngineSchemaComponent {
 
   setSchemaTables(_this, data): void
   {
-    if (!data.Tables.length)
+    if (!data.Tables || !data.Tables.length)
     {
       _this.isLoading = false;
       return;
