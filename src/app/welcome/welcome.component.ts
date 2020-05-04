@@ -201,9 +201,9 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     aux = aux.replace (" ","");
 
     if (option.hover)
-      return "../../assets/images/w_" + aux + "2.png"
+      return "../../assets/images/w_" + aux + "2.webp"
     else
-      return "../../assets/images/" + this.globals.theme + "-w_" + aux + "1.png"
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + "1.webp"
   }
 
 
@@ -213,9 +213,9 @@ this.mobileQuery.addListener(this._mobileQueryListener);
     aux = aux.replace(" ","");
 
     if (option.hover)
-      return "../../assets/images/dark-theme-w_" + aux + ".png"
+      return "../../assets/images/dark-theme-w_" + aux + ".webp"
     else
-      return "../../assets/images/" + this.globals.theme + "-w_" + aux + ".png"
+      return "../../assets/images/" + this.globals.theme + "-w_" + aux + ".webp"
   }
 
   @HostListener('window:resize', ['$event'])
