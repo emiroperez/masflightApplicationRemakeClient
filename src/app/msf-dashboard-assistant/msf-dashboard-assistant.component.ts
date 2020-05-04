@@ -37,7 +37,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   values: MsfDashboardPanelValues;
   panelForm: FormGroup;
   updateURLResults: boolean = false;
-
+ test : any = "<strong>Hola</strong>";
   
   @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;

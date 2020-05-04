@@ -1194,8 +1194,8 @@
                               </mat-form-field>
                               <mat-form-field appearance="outline" class="input-option-tree">
                                 <mat-label>Title</mat-label>
-                                <input matInput placeholder="Title" type="text" name="optionname" autocomplete="off"
-                                  [(ngModel)]="node.title" (ngModelChange)="setChange(node)">
+                                <textarea matInput placeholder="Title" type="text" name="optionname" autocomplete="off"
+                                  [(ngModel)]="node.title" (ngModelChange)="setChange(node)">*hola*</textarea>
                               </mat-form-field>
                               <button *ngIf="optionSelected==node" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
                                 <img src="../../assets/images/{{globals.theme}}-datalake-DeleteRow-active.png" />
