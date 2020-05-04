@@ -1437,6 +1437,9 @@ export class MsfDashboardPanelComponent implements OnInit {
               {
                 item.value = result[this.values.variable.id];
 
+                if (!item.value)
+                  break;
+
                 imageSeries.data.push ({
                   id: item.id,
                   name: item.properties.name,
@@ -1501,6 +1504,9 @@ export class MsfDashboardPanelComponent implements OnInit {
               {
                 item.value = result[this.values.variable.id];
 
+                if (!item.value)
+                  break;
+
                 polygonSeries.data.push ({
                   id: item.id,
                   value: item.value
@@ -1515,6 +1521,13 @@ export class MsfDashboardPanelComponent implements OnInit {
           polygonTemplate.tooltipText = "{name}: {value}";
           polygonTemplate.nonScalingStroke = true;
           polygonTemplate.strokeWidth = 0.5;
+
+          polygonSeries.tooltip.label.adapter.add ("text", function (text, target) {
+            if (target.dataItem && target.dataItem.value == null)
+              return "{name}: 0";
+            else
+              return text;
+          });
         }
 
         // Exclude Antartica if the geography data is the world
@@ -2475,7 +2488,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               let curValue = chartInfo.valueFields[i];
               let series;
 
-              if (i != 0)
+              if (i != 0 && this.values.valueListInfo && this.values.valueListInfo.length)
                 this.values.currentChartType = this.getChartType (this.values.valueListInfo[i].chartType);
 
               // Get value name for the legend
