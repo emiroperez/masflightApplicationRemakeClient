@@ -626,7 +626,7 @@ toggle(){
   }
 
   search2() {
-    this.searchFilter = "191";
+    this.searchFilter = null;
 
     if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
       this.getRoutes ();
@@ -634,14 +634,14 @@ toggle(){
     {
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource ();
-      this.msfContainerRef.msfTableRef.getData (false, this.searchFilter);
+      this.msfContainerRef.msfTableRef.getData (false);
     }
     else if (this.globals.currentOption.tabType === 'usageStatistics')
       this.msfContainerRef.msfTableRef.getDataUsageStatistics ();
     else
     {
       this.clearSort ();
-      this.msfContainerRef.msfTableRef.getData (false, this.searchFilter);
+      this.msfContainerRef.msfTableRef.getData (false);
     }
   }
 
