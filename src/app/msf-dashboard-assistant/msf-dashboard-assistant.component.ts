@@ -3408,7 +3408,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   RollbackDescription(text){
     if(text){
-      let exp = new RegExp('(</?strong>)\\w+(</?strong>)', 'g');
+      let exp = new RegExp('(</?strong>)([A-Za-z0-9]\s*)+(</?strong>)', 'g');
       let matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3419,7 +3419,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
       }
       
-      exp = new RegExp('(</?del>)\\w+(</?del>)', 'g');
+      exp = new RegExp('(</?del>)([A-Za-z0-9]\s*)+(</?del>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
