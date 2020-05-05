@@ -3408,8 +3408,19 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   RollbackDescription(text){
     if(text){
-      let exp = new RegExp('(</?strong>)([A-Za-z0-9]\\s*)+(</?strong>)', 'g');
+      let exp = new RegExp('(</?i>)([A-Za-z0-9]\\s*)+(</?i>)', 'g');
       let matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<i>','*');
+          newElement = newElement.replace('</i>','*');
+          text = text.replace(element, newElement);      
+        }
+      }
+
+      exp = new RegExp('(</?strong>)([A-Za-z0-9]\\s*)+(</?strong>)', 'g');
+      matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
           const element = matchEpresion[index];
@@ -3434,10 +3445,24 @@ export class MsfDashboardAssistantComponent implements OnInit {
   }
     getDescription(text){
       if(text){
+        //italic
+        // exp = new RegExp('[~](\\w)+[~]', 'g');
+        let exp = new RegExp('[_]([A-Za-z0-9]\\s*)+[_]', 'g');
+        let matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('_','<i>');
+            newElement = newElement.replace('_','</i>');
+            text = text.replace(element, newElement);      
+          }
+        }
+
+        //bold
         // let exp = new RegExp('[*](\\w)+[*]', 'g');
         // let exp = new RegExp('[*](\\w)+(\\s*)(\\w)+[*]', 'g');
-        let exp = new RegExp('[*]([A-Za-z0-9]\\s*)+[*]', 'g');
-        let matchEpresion = text.match(exp);
+        exp = new RegExp('[*]([A-Za-z0-9]\\s*)+[*]', 'g');
+        matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
             const element = matchEpresion[index];
@@ -3447,6 +3472,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
           }
         }
         
+        
+        //Strikethrough
         // exp = new RegExp('[~](\\w)+[~]', 'g');
         exp = new RegExp('[~]([A-Za-z0-9]\\s*)+[~]', 'g');
         matchEpresion = text.match(exp);
