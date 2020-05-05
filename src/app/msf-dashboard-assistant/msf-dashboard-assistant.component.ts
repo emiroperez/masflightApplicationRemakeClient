@@ -3410,7 +3410,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if(text){
       //italicBold
       // exp = new RegExp('[~](\\w)+[~]', 'g');
-      let exp = new RegExp('(</?i></?strong>)([A-Za-z0-9-]\\s*)+(</?strong></?i>)', 'g');
+      let exp = new RegExp('(</?i></?strong>)([A-Za-z0-9,.;-]\\s*)+(</?strong></?i>)', 'g');
       let matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3422,7 +3422,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
 
       //italic
-      exp = new RegExp('(</?i>)([A-Za-z0-9-]\\s*)+(</?i>)', 'g');
+      exp = new RegExp('(</?i>)([A-Za-z0-9,.;-]\\s*)+(</?i>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3434,7 +3434,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
 
       //bold
-      exp = new RegExp('(</?strong>)([A-Za-z0-9]\\s*)+(</?strong>)', 'g');
+      exp = new RegExp('(</?strong>)([A-Za-z0-9,.;-]\\s*)+(</?strong>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3446,7 +3446,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
       
       //monospace
-      exp = new RegExp('(</?tt>)([A-Za-z0-9]\\s*)+(</?tt>)', 'g');
+      exp = new RegExp('(</?tt>)([A-Za-z0-9,.;-]\\s*)+(</?tt>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3458,7 +3458,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
 
       //Strikethrough
-      exp = new RegExp('(</?del>)([A-Za-z0-9]\\s*)+(</?del>)', 'g');
+      exp = new RegExp('(</?del>)([A-Za-z0-9,.;-]\\s*)+(</?del>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3476,7 +3476,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         
         //italicBold
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        let exp = new RegExp('[_][*]([A-Za-z0-9]\\s*)+[*][_]', 'g');
+        let exp = new RegExp('[_][*]([A-Za-z0-9,.;-]\\s*)+[*][_]', 'g');
         let matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3489,7 +3489,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         //italic
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[_]([A-Za-z0-9]\\s*)+[_]', 'g');
+        exp = new RegExp('[_]([A-Za-z0-9,.;-]\\s*)+[_]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3503,7 +3503,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         //bold
         // let exp = new RegExp('[*](\\w)+[*]', 'g');
         // let exp = new RegExp('[*](\\w)+(\\s*)(\\w)+[*]', 'g');
-        exp = new RegExp('[*]([A-Za-z0-9]\\s*)+[*]', 'g');
+        exp = new RegExp('[*]([A-Za-z0-9,.;-]\\s*)+[*]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3517,7 +3517,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         
         //monospace
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[_][~]([A-Za-z0-9]\\s*)+[~][_]', 'g');
+        exp = new RegExp('[_][~]([A-Za-z0-9,.;-]\\s*)+[~][_]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3530,7 +3530,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         //Strikethrough
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[~]([A-Za-z0-9]\\s*)+[~]', 'g');
+        exp = new RegExp('[~]([A-Za-z0-9,.;-]\\s*)+[~]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
