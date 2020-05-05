@@ -314,7 +314,7 @@ export class MsfTableComponent implements OnInit {
     {
       this.displayedColumns = [];
       this.service.getSummaryResponse (this, this.partialSummaryValues, "" + this.actualPageNumber, tokenResultTable, this.ListSortingColumns,
-        this.summarySuccess, this.summaryError);
+        this.summarySuccess, this.summaryError, searchFilter);
     }
     else
       this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber, tokenResultTable, this.ListSortingColumns, searchFilter);

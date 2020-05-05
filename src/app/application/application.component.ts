@@ -837,7 +837,7 @@ toggle(){
         tokenResultTable = this.authService.getTokenResultTable () ? this.authService.getTokenResultTable () : "";
 
         this.appService.getSummaryResponse (this, result, "" + this.msfContainerRef.msfTableRef.actualPageNumber, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns,
-          this.summarySuccess, this.summaryError);
+          this.summarySuccess, this.summaryError, this.searchFilter);
       }
     });
   }

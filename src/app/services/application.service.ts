@@ -54,7 +54,7 @@ export class ApplicationService {
     this.authService.get (_this, url, successHandler, errorHandler);
   }
 
-  getSummaryResponse(_this, config, pageNumber, tokenResultable, SortingColumns, handlerSuccess, handlerError)
+  getSummaryResponse(_this, config, pageNumber, tokenResultable, SortingColumns, handlerSuccess, handlerError, searchFilter: string)
   {
     let param = this.utils.getUrlParameters (_this.globals.currentOption, true, true);
     let urlBase = param.url;
@@ -120,6 +120,9 @@ export class ApplicationService {
     }
 
     urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + pageNumber + "&token=" + tokenResultable + "&sortingColumns=" + SortingColumns;
+
+    if (searchFilter != null)
+      urlBase += "&searchFilter=" + searchFilter;
 
     let urlArg = encodeURIComponent (urlBase);
 
