@@ -626,7 +626,7 @@ toggle(){
   }
 
   search2() {
-    this.searchFilter = null;
+    this.searchFilter = "191";
 
     if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
       this.getRoutes ();
@@ -634,14 +634,14 @@ toggle(){
     {
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource ();
-      this.msfContainerRef.msfTableRef.getData (false);
+      this.msfContainerRef.msfTableRef.getData (false, this.searchFilter);
     }
     else if (this.globals.currentOption.tabType === 'usageStatistics')
       this.msfContainerRef.msfTableRef.getDataUsageStatistics ();
     else
     {
       this.clearSort ();
-      this.msfContainerRef.msfTableRef.getData (false);
+      this.msfContainerRef.msfTableRef.getData (false, this.searchFilter);
     }
   }
 
@@ -837,7 +837,7 @@ toggle(){
         tokenResultTable = this.authService.getTokenResultTable () ? this.authService.getTokenResultTable () : "";
 
         this.appService.getSummaryResponse (this, result, "" + this.msfContainerRef.msfTableRef.actualPageNumber, tokenResultTable, this.msfContainerRef.msfTableRef.ListSortingColumns,
-          this.summarySuccess, this.summaryError);
+          this.summarySuccess, this.summaryError, this.searchFilter);
       }
     });
   }

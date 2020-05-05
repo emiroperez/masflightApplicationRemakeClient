@@ -6,8 +6,89 @@
         *ngFor="let column of metadata; let i = index">
           <th [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isSortingDisabled()">{{column.columnLabel}}</th>
           <td [ngClass]="column.show?'msf-show-table':'msf-hide'" mat-cell *matCellDef="let element;let rowNumber = dataIndex"> 
-            <span *ngIf="column.drillDowns.length==0 && !isArray(element['Flight'])">
+            <div *ngIf="column.drillDowns.length==0 && !isArray(element['Flight'])">
               <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
+                <ng-container *ngIf="element['bold'] === column.columnName">
+                  <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                    <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{element[column.columnName] | date: column.outputFormat}}</span>
+                    <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(element[column.columnName]) }}</span>
+                    <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                    <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                  </ng-container>
+                  <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                    <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType!='number' && column.columnType!='Airline'">{{element[column.columnName]}}</span>
+                    <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    <div *ngIf="column.columnType=='Airline'" class="msf-table-columnTypeEspecial">
+                      <img class="columnTypeEspecial-img" *ngIf="element[column.columnName] != null && element[column.columnName] != ''"
+                        src="{{globals.baseUrl}}/airlineLogos/{{element[column.columnName]}}.png" />
+                      <span class="columnTypeEspecial-title">{{getNameAirline(element[column.columnName])}}</span>
+                    </div>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="element['bold'] !== column.columnName">
+                  <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                    <span class="msf-table-span" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{element[column.columnName] | date: column.outputFormat}}</span>
+                    <span class="msf-table-span" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(element[column.columnName]) }}</span>
+                    <span class="msf-table-span" *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                    <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                  </ng-container>
+                  <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                    <span class="msf-table-span" *ngIf="column.columnType!='number' && column.columnType!='Airline'">{{element[column.columnName]}}</span>
+                    <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    <div *ngIf="column.columnType=='Airline'" class="msf-table-columnTypeEspecial">
+                      <img class="columnTypeEspecial-img" *ngIf="element[column.columnName] != null && element[column.columnName] != ''"
+                        src="{{globals.baseUrl}}/airlineLogos/{{element[column.columnName]}}.png" />
+                      <span class="columnTypeEspecial-title">{{getNameAirline(element[column.columnName])}}</span>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </div>
+            <span class="msf-table-sub-cell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
+              <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
+                <ng-container *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
+                  <ng-container *ngIf="element['bold'] === column.columnName">
+                    <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                      <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
+                      <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(subElement[column.columnName].parsedValue) }}</span>
+                      <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
+                      <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    </ng-container>
+                    <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                      <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
+                      <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="element['bold'] !== column.columnName">
+                    <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                      <span class="msf-table-span" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
+                      <span class="msf-table-span" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(subElement[column.columnName].parsedValue) }}</span>
+                      <span class="msf-table-span" *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
+                      <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    </ng-container>
+                    <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                      <span class="msf-table-span" *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
+                      <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </span>
+            </span>
+          <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0 && !isArray(element['Flight'])" [matMenuTriggerFor]="menu">
+            <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
+              <ng-container *ngIf="element['bold'] === column.columnName">
+                <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
+                  <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{element[column.columnName] | date: column.outputFormat}}</span>
+                  <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(element[column.columnName]) }}</span>
+                  <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
+                  <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                </ng-container>
+                <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
+                  <span class="msf-table-span msf-table-span-bold" *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
+                  <span class="msf-table-span" msf-table-span-bold *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="element['bold'] !== column.columnName">
                 <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
                   <span class="msf-table-span" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{element[column.columnName] | date: column.outputFormat}}</span>
                   <span class="msf-table-span" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(element[column.columnName]) }}</span>
@@ -15,44 +96,9 @@
                   <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
                 </ng-container>
                 <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                  <span class="msf-table-span" *ngIf="column.columnType!='number' && column.columnType!='Airline'">{{element[column.columnName]}}</span>
+                  <span class="msf-table-span" *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
                   <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                  <div *ngIf="column.columnType=='Airline'" class="msf-table-columnTypeEspecial">
-                      <img class="columnTypeEspecial-img"  *ngIf="element[column.columnName] != null && element[column.columnName] != ''" 
-                      src="{{globals.baseUrl}}/airlineLogos/{{element[column.columnName]}}.png"/>
-                      <span class="columnTypeEspecial-title">{{getNameAirline(element[column.columnName])}}</span>
-                    </div>
-                  </ng-container>
-              </ng-container>
-              
-            </span>
-            <span class="msf-table-sub-cell" *ngIf="column.drillDowns.length==0 && isArray(element['Flight'])">
-              <span class="{{getDecoration(element['Flight'],j)}}" *ngFor="let subElement of element['Flight']; let j = index">
-                <ng-container *ngIf="subElement[column.columnName].parsedValue != null && subElement[column.columnName].parsedValue != ''">
-                  <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
-                    <span class="msf-table-span" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{subElement[column.columnName].parsedValue | date: column.outputFormat}}</span>
-                    <span class="msf-table-span" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(subElement[column.columnName].parsedValue) }}</span>
-                    <span class="msf-table-span" *ngIf="column.columnType=='string'">{{subElement[column.columnName].parsedValue}}</span>
-                    <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                  </ng-container>
-                  <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                    <span class="msf-table-span" *ngIf="column.columnType!='number'">{{subElement[column.columnName].parsedValue}}</span>
-                    <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{subElement[column.columnName].parsedValue | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-                  </ng-container>
                 </ng-container>
-              </span>
-            </span>
-          <span class="drillDown-decoration" *ngIf="column.drillDowns.length>0 && !isArray(element['Flight'])" [matMenuTriggerFor]="menu">
-            <ng-container *ngIf="element[column.columnName] != null && element[column.columnName] != ''">
-              <ng-container *ngIf="column.outputFormat != null && column.outputFormat != ''">
-                <span class="msf-table-span" *ngIf="column.columnType=='date' || (column.columnType=='time' && column.outputFormat !== 'min')">{{element[column.columnName] | date: column.outputFormat}}</span>
-                <span class="msf-table-span" *ngIf="column.columnType=='time' && column.outputFormat === 'min'">{{ getFormatMinutes(element[column.columnName]) }}</span>
-                <span class="msf-table-span" *ngIf="column.columnType=='string'">{{element[column.columnName]}}</span>
-                <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:column.outputFormat:'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
-              </ng-container>
-              <ng-container *ngIf="column.outputFormat == null || column.outputFormat == ''">
-                <span class="msf-table-span" *ngIf="column.columnType!='number'">{{element[column.columnName]}}</span>
-                <span class="msf-table-span" *ngIf="column.columnType=='number'" [ngStyle]="{ 'color' : getFontColor(column, element[column.columnName]) }"><span *ngIf="column.prefix">{{column.prefix}}</span>{{element[column.columnName] | number:'.0-2':'en'}}<span *ngIf="column.suffix">{{column.suffix}}</span></span>
               </ng-container>
             </ng-container>
           </span>
