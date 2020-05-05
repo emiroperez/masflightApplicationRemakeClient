@@ -75,6 +75,8 @@ export class MsfTableComponent implements OnInit {
 
   tableOptions: any;
 
+  searchFilter: string;
+
   @Input("paginator")
   paginator: MatPaginator;
   
@@ -285,9 +287,14 @@ export class MsfTableComponent implements OnInit {
      return text.replace(re, ' ');
   }
 
-  getData(moreResults: boolean) {
+  getData(moreResults: boolean, searchFilter?: string) {
     // if(this.tableOptions.moreResultsBtn){
     this.globals.startTimestamp = new Date();
+
+    if (searchFilter)
+      this.searchFilter = searchFilter;
+    else
+      this.searchFilter = null;
 
     if (moreResults) {
       if(this.pageIndex && this.globals.showPaginator){
@@ -310,8 +317,7 @@ export class MsfTableComponent implements OnInit {
         this.summarySuccess, this.summaryError);
     }
     else
-      this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber,tokenResultTable,this.ListSortingColumns);
-    // }}
+      this.service.getDataTableSource(this, this.handlerSuccess, this.handlerError, "" + this.actualPageNumber, tokenResultTable, this.ListSortingColumns, searchFilter);
   }
 
   summarySuccess(_this, data)

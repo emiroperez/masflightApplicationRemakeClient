@@ -38,6 +38,7 @@ export class ApplicationComponent implements OnInit {
   mapboxLoading: boolean = false;
   routeLoading: boolean = false;
   dynTableLoading: boolean = false;
+  searchFilter: string = null;
   isFullscreen: boolean;
   name: string;
   dynamicTablePlan: boolean;
@@ -624,7 +625,9 @@ toggle(){
     }, 3000);
   }
 
-  search2(){
+  search2() {
+    this.searchFilter = null;
+
     if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
       this.getRoutes ();
     else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url != null)
@@ -720,11 +723,11 @@ toggle(){
   moreResults2(){
     if(this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url!=null){
       this.msfContainerRef.msfMapRef.getTrackingDataSource();
-      this.msfContainerRef.msfTableRef.getData(true);
+      this.msfContainerRef.msfTableRef.getData(true, this.searchFilter);
     }else if(this.globals.currentOption.tabType === 'usageStatistics'){
       this.msfContainerRef.msfTableRef.getDataUsageStatistics();
     }else{
-      this.msfContainerRef.msfTableRef.getData(true);
+      this.msfContainerRef.msfTableRef.getData(true, this.searchFilter);
     }
   }
 

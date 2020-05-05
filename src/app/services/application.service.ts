@@ -134,7 +134,7 @@ export class ApplicationService {
     this.authService.post (_this, url, config, handlerSuccess, handlerError);
   }
 
-  getDataTableSource(_this, handlerSuccess, handlerError,pageNumber: String,tokenResultable: String, SortingColumns: String) {
+  getDataTableSource(_this, handlerSuccess, handlerError, pageNumber: String, tokenResultable: String, SortingColumns: String, searchFilter: string) {
     // _this.globals.isLoading = true;
     _this.displayedColumns = [];
     let param = this.utils.getUrlParameters(_this.globals.currentOption,true);
@@ -161,7 +161,11 @@ export class ApplicationService {
       }
     }
 
-    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + pageNumber + "&token=" +tokenResultable+"&sortingColumns="+SortingColumns;
+    urlBase += "&pageSize=" + Globals.TABLE_PAGESIZE + "&page_number=" + pageNumber + "&token=" + tokenResultable + "&sortingColumns=" + SortingColumns;
+
+    if (searchFilter != null)
+      urlBase += "&searchFilter=" + searchFilter;
+
     if(pageNumber=="0"){
       _this.dataSource = null;
     }
