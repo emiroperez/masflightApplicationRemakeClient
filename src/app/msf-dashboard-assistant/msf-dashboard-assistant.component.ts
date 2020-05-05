@@ -3435,7 +3435,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     getDescription(text){
       if(text){
         // let exp = new RegExp('[*](\\w)+[*]', 'g');
-        let exp = new RegExp('[*](\\w)+(\\s*)(\\w)+[*]', 'g');
+        // let exp = new RegExp('[*](\\w)+(\\s*)(\\w)+[*]', 'g');
+        let exp = new RegExp('[*]([A-Za-z0-9]\\s*)+[*]', 'g');
         let matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3447,7 +3448,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
         
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[~](\\w)+(\\s*)(\\w)+[~]', 'g');
+        exp = new RegExp('[~]([A-Za-z0-9]\\s*)+[~]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
