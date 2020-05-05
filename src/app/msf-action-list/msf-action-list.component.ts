@@ -161,30 +161,30 @@ export class MsfActionListComponent {
   }
 
 
-  getDescription(text){
-    if(text){
-      let exp = new RegExp('[*](\\w)+[*]', 'g');
-      let matchEpresion = text.match(exp);
-      if(matchEpresion){
-        for (let index = 0; index < matchEpresion.length; index++) {
-          const element = matchEpresion[index];
-          let newElement = element.replace('*','<strong>');
-          newElement = newElement.replace('*','</strong>');
-          text = text.replace(element, newElement);      
-        }
-      }
+  // getDescription(text){
+  //   if(text){
+  //     let exp = new RegExp('[*](\\w)+[*]', 'g');
+  //     let matchEpresion = text.match(exp);
+  //     if(matchEpresion){
+  //       for (let index = 0; index < matchEpresion.length; index++) {
+  //         const element = matchEpresion[index];
+  //         let newElement = element.replace('*','<strong>');
+  //         newElement = newElement.replace('*','</strong>');
+  //         text = text.replace(element, newElement);      
+  //       }
+  //     }
       
-      exp = new RegExp('[~](\\w)+[~]', 'g');
-      matchEpresion = text.match(exp);
-      if(matchEpresion){
-        for (let index = 0; index < matchEpresion.length; index++) {
-          const element = matchEpresion[index];
-          let newElement = element.replace('~','<del>');
-          newElement = newElement.replace('~','</del>');
-          text = text.replace(element, newElement);      
-        }
-      }
-    }
-    return text;
-  }
+  //     exp = new RegExp('[~](\\w)+[~]', 'g');
+  //     matchEpresion = text.match(exp);
+  //     if(matchEpresion){
+  //       for (let index = 0; index < matchEpresion.length; index++) {
+  //         const element = matchEpresion[index];
+  //         let newElement = element.replace('~','<del>');
+  //         newElement = newElement.replace('~','</del>');
+  //         text = text.replace(element, newElement);      
+  //       }
+  //     }
+  //   }
+  //   return text;
+  // }
 }

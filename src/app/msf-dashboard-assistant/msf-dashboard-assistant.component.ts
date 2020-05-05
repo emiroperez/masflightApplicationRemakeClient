@@ -265,9 +265,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.dynTableVariables = JSON.parse (JSON.stringify (this.data.values.dynTableVariables));
     this.values.intervalType = this.data.values.intervalType;
     this.values.intValue = this.data.values.intValue;
-    this.values.valueList = this.data.values.valueList;
+    this.values.valueList = this.data.values.valueList;    
     if(this.values.EditActionList){
-      this.dataChange.next(this.data.values.EditActionList);
+      this.convertDescription(this.values.EditActionList,false);
+      this.dataChange.next(this.values.EditActionList);
+      // this.dataChange.next(this.data.values.EditActionList);
       this.treeControl.expandAll();
     }
 
@@ -2799,10 +2801,14 @@ export class MsfDashboardAssistantComponent implements OnInit {
     for (let threshold of this.values.thresholds)
       threshold.filteredVariables = null;
 
-    if (this.values.currentChartType.flags & (ChartFlags.EDITACTIONLIST || ChartFlags.PICTURE))
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
       this.values.currentOption = null;
     
-    this.dialogRef.close ({ generateChart: true, values: this.values });
+    if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST){
+      this.values.currentOption = null;
+      this.convertDescription(this.values.EditActionList,true);
+    }
+      this.dialogRef.close ({ generateChart: true, values: this.values });
   }
 
   goToResults(): void
@@ -3382,5 +3388,77 @@ export class MsfDashboardAssistantComponent implements OnInit {
       $event.stopPropagation()
     }
   }
+
+  convertDescription(data,convert){
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      if(convert){
+        data[index].description = this.getDescription(item.description);
+        if(item.children.length>0){
+          this.convertDescription(item.children,true);
+        }
+      }else{
+        data[index].description = this.RollbackDescription(item.description);
+        if(item.children.length>0){
+          this.convertDescription(item.children,false);
+        }
+      }
+    }
+  }
+
+  RollbackDescription(text){
+    if(text){
+      let exp = new RegExp('(</?strong>)\\w+(</?strong>)', 'g');
+      let matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<strong>','*');
+          newElement = newElement.replace('</strong>','*');
+          text = text.replace(element, newElement);      
+        }
+      }
+      
+      exp = new RegExp('(</?del>)\\w+(</?del>)', 'g');
+      matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<del>','~');
+          newElement = newElement.replace('</del>','~');
+          text = text.replace(element, newElement);      
+        }
+      }
+    }
+    return text;
+  }
+    getDescription(text){
+      if(text){
+        // let exp = new RegExp('[*](\\w)+[*]', 'g');
+        let exp = new RegExp('[*](\\w)+(\\s)*(\\w)+[*]', 'g');
+        let matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('*','<strong>');
+            newElement = newElement.replace('*','</strong>');
+            text = text.replace(element, newElement);      
+          }
+        }
+        
+        // exp = new RegExp('[~](\\w)+[~]', 'g');
+        exp = new RegExp('[~](\\w)+(\\s)*(\\w)+[~]', 'g');
+        matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('~','<del>');
+            newElement = newElement.replace('~','</del>');
+            text = text.replace(element, newElement);      
+          }
+        }
+      }
+      return text;
+    }
 
   }
