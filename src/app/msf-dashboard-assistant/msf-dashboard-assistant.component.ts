@@ -28,18 +28,23 @@ import { ActionListFlatNode } from '../model/ActionListFlatNode';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { MsfDashboardValueSelectorDialogComponent } from '../msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
+const signos = "!#&?¿¡!><=}{:,%$.';\-\]\[\)\(";
+
 @Component({
   selector: 'app-msf-dashboard-assistant',
   templateUrl: './msf-dashboard-assistant.component.html',
   styleUrls: ['./msf-dashboard-assistant.component.css']
 })
+
+
+
 export class MsfDashboardAssistantComponent implements OnInit {
   utils: Utils;
   values: MsfDashboardPanelValues;
   panelForm: FormGroup;
   updateURLResults: boolean = false;
- test : any = "<strong>Hola</strong>";
-  
+ 
+
   @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;
   recursiveDeleteDone: boolean;
@@ -3424,7 +3429,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if(text){
       //italicBold
       // exp = new RegExp('[~](\\w)+[~]', 'g');
-      let signos = ",.';-";
       let exp = new RegExp('(</?i></?strong>)([A-Za-z0-9'+signos+']\\s*)+(</?strong></?i>)', 'g');
       let matchEpresion = text.match(exp);
       if(matchEpresion){
@@ -3491,7 +3495,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
         
         //italicBold
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        let signos = ",.';-";
         let exp = new RegExp('[_][*]([A-Za-z0-9'+signos+']\\s*)+[*][_]', 'g');
         let matchEpresion = text.match(exp);
         if(matchEpresion){
