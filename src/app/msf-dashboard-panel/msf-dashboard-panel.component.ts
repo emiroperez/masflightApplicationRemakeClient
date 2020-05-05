@@ -4602,7 +4602,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // discard any changes
     this.values.urlImg = values.urlImg;
-    this.values.EditActionList = JSON.parse (JSON.stringify (values.EditActionList));
+    if(values.EditActionList)
+      this.values.EditActionList = JSON.parse (JSON.stringify (values.EditActionList));
+    else
+      this.values.EditActionList = null;
     this.values.currentOption = JSON.parse (JSON.stringify (values.currentOption));
     this.values.chartName = values.chartName;
     this.values.chartDescription = values.chartDescription;
