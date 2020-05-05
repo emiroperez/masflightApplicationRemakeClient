@@ -28,7 +28,9 @@ import { ActionListFlatNode } from '../model/ActionListFlatNode';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { MsfDashboardValueSelectorDialogComponent } from '../msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
-const signos = "!#&?¿¡!><=}{:,%$.';\-";
+// const signos = "!#&?¿¡!><=}{:,%$.';\-";
+const Expresion = "(.*?)";
+// const Expresion = "\CHARACTER(.*?)\CHARACTER";
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
@@ -3429,7 +3431,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if(text){
       //italicBold
       // exp = new RegExp('[~](\\w)+[~]', 'g');
-      let exp = new RegExp('(</?i></?strong>)([A-Za-z0-9'+signos+']\\s*)+(</?strong></?i>)', 'g');
+      // let exp = new RegExp('(</?i></?strong>)([A-Za-z0-9'+signos+']\\s*)+(</?strong></?i>)', 'g');
+      let exp =new RegExp('(</?i></?strong>)'+Expresion+'(</?strong></?i>)', 'g');
       let matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3441,7 +3444,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
 
       //italic
-      exp = new RegExp('(</?i>)([A-Za-z0-9'+signos+']\\s*)+(</?i>)', 'g');
+      // exp = new RegExp('(</?i>)([A-Za-z0-9'+signos+']\\s*)+(</?i>)', 'g');
+      exp = new RegExp('(</?i>)'+Expresion+'(</?i>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3453,7 +3457,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
 
       //bold
-      exp = new RegExp('(</?strong>)([A-Za-z0-9'+signos+']\\s*)+(</?strong>)', 'g');
+      // exp = new RegExp('(</?strong>)([A-Za-z0-9'+signos+']\\s*)+(</?strong>)', 'g');
+      exp = new RegExp('(</?strong>)'+Expresion+'(</?strong>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3465,7 +3470,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
       
       //monospace
-      exp = new RegExp('(</?tt>)([A-Za-z0-9'+signos+']\\s*)+(</?tt>)', 'g');
+      // exp = new RegExp('(</?tt>)([A-Za-z0-9'+signos+']\\s*)+(</?tt>)', 'g');
+      exp = new RegExp('(</?tt>)'+Expresion+'(</?tt>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3477,7 +3483,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       }
 
       //Strikethrough
-      exp = new RegExp('(</?del>)([A-Za-z0-9'+signos+']\\s*)+(</?del>)', 'g');
+      // exp = new RegExp('(</?del>)([A-Za-z0-9'+signos+']\\s*)+(</?del>)', 'g');
+      exp = new RegExp('(</?del>)'+Expresion+'(</?del>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
@@ -3495,7 +3502,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
         
         //italicBold
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        let exp = new RegExp('[_][*]([A-Za-z0-9'+signos+']\\s*)+[*][_]', 'g');
+        // let exp = new RegExp('[_][*]([A-Za-z0-9'+signos+']\\s*)+[*][_]', 'g');
+        let exp = new RegExp('[_][*]'+Expresion+'[*][_]', 'g');
         let matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3508,7 +3516,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         //italic
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[_]([A-Za-z0-9'+signos+']\\s*)+[_]', 'g');
+        // exp = new RegExp('[_]([A-Za-z0-9'+signos+']\\s*)+[_]', 'g');
+        exp = new RegExp('[_]'+Expresion+'[_]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3522,7 +3531,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
         //bold
         // let exp = new RegExp('[*](\\w)+[*]', 'g');
         // let exp = new RegExp('[*](\\w)+(\\s*)(\\w)+[*]', 'g');
-        exp = new RegExp('[*]([A-Za-z0-9'+signos+']\\s*)+[*]', 'g');
+        // exp = new RegExp('[*]([A-Za-z0-9'+signos+']\\s*)+[*]', 'g');
+        exp = new RegExp('[*]'+Expresion+'[*]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3536,7 +3546,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
         
         //monospace
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[_][~]([A-Za-z0-9'+signos+']\\s*)+[~][_]', 'g');
+        // exp = new RegExp('[_][~]([A-Za-z0-9'+signos+']\\s*)+[~][_]', 'g');
+        exp = new RegExp('[_][~]'+Expresion+'[~][_]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
@@ -3549,7 +3560,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
         //Strikethrough
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        exp = new RegExp('[~]([A-Za-z0-9'+signos+']\\s*)+[~]', 'g');
+        // exp = new RegExp('[~]([A-Za-z0-9'+signos+']\\s*)+[~]', 'g');
+        exp = new RegExp('[~]'+Expresion+'[~]', 'g');
         matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
