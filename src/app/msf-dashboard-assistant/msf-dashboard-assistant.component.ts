@@ -3408,17 +3408,32 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   RollbackDescription(text){
     if(text){
-      let exp = new RegExp('(</?i>)([A-Za-z0-9]\\s*)+(</?i>)', 'g');
+      //italicBold
+      // exp = new RegExp('[~](\\w)+[~]', 'g');
+      let exp = new RegExp('(</?i></?strong>)([A-Za-z0-9-]\\s*)+(</?strong></?i>)', 'g');
       let matchEpresion = text.match(exp);
       if(matchEpresion){
         for (let index = 0; index < matchEpresion.length; index++) {
           const element = matchEpresion[index];
-          let newElement = element.replace('<i>','*');
-          newElement = newElement.replace('</i>','*');
+          let newElement = element.replace('<i><strong>','_*');
+          newElement = newElement.replace('</strong></i>','*_');
           text = text.replace(element, newElement);      
         }
       }
 
+      //italic
+      exp = new RegExp('(</?i>)([A-Za-z0-9-]\\s*)+(</?i>)', 'g');
+      matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<i>','_');
+          newElement = newElement.replace('</i>','_');
+          text = text.replace(element, newElement);      
+        }
+      }
+
+      //bold
       exp = new RegExp('(</?strong>)([A-Za-z0-9]\\s*)+(</?strong>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
@@ -3430,6 +3445,19 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
       }
       
+      //monospace
+      exp = new RegExp('(</?tt>)([A-Za-z0-9]\\s*)+(</?tt>)', 'g');
+      matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<tt>','_~');
+          newElement = newElement.replace('</tt>','~_');
+          text = text.replace(element, newElement);      
+        }
+      }
+
+      //Strikethrough
       exp = new RegExp('(</?del>)([A-Za-z0-9]\\s*)+(</?del>)', 'g');
       matchEpresion = text.match(exp);
       if(matchEpresion){
@@ -3445,10 +3473,24 @@ export class MsfDashboardAssistantComponent implements OnInit {
   }
     getDescription(text){
       if(text){
+        
+        //italicBold
+        // exp = new RegExp('[~](\\w)+[~]', 'g');
+        let exp = new RegExp('[_][*]([A-Za-z0-9]\\s*)+[*][_]', 'g');
+        let matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('_*','<i><strong>');
+            newElement = newElement.replace('*_','</strong></i>');
+            text = text.replace(element, newElement);      
+          }
+        }
+
         //italic
         // exp = new RegExp('[~](\\w)+[~]', 'g');
-        let exp = new RegExp('[_]([A-Za-z0-9]\\s*)+[_]', 'g');
-        let matchEpresion = text.match(exp);
+        exp = new RegExp('[_]([A-Za-z0-9]\\s*)+[_]', 'g');
+        matchEpresion = text.match(exp);
         if(matchEpresion){
           for (let index = 0; index < matchEpresion.length; index++) {
             const element = matchEpresion[index];
@@ -3473,6 +3515,19 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
         
         
+        //monospace
+        // exp = new RegExp('[~](\\w)+[~]', 'g');
+        exp = new RegExp('[_][~]([A-Za-z0-9]\\s*)+[~][_]', 'g');
+        matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('_~','<tt>');
+            newElement = newElement.replace('~_','</tt>');
+            text = text.replace(element, newElement);      
+          }
+        }
+
         //Strikethrough
         // exp = new RegExp('[~](\\w)+[~]', 'g');
         exp = new RegExp('[~]([A-Za-z0-9]\\s*)+[~]', 'g');
