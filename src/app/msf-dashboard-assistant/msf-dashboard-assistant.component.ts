@@ -28,7 +28,7 @@ import { ActionListFlatNode } from '../model/ActionListFlatNode';
 import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { MsfDashboardValueSelectorDialogComponent } from '../msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
-const signos = "!#&?¿¡!><=}{:,%$.';\-\]\[\)\(";
+const signos = "!#&?¿¡!><=}{:,%$.';\-";
 
 @Component({
   selector: 'app-msf-dashboard-assistant',
