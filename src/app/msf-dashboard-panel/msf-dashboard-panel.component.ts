@@ -1418,7 +1418,8 @@ export class MsfDashboardPanelComponent implements OnInit {
               property: "fill",
               target: circle,
               min: am4core.color (this.paletteColors[0]),
-              max: am4core.color (this.paletteColors[1])
+              max: am4core.color (this.paletteColors[1]),
+              logarithmic: true
             });
           }
 
@@ -1437,6 +1438,9 @@ export class MsfDashboardPanelComponent implements OnInit {
               if (item.id.includes (resultInfo))
               {
                 item.value = result[this.values.variable.id];
+
+                if (!item.value)
+                  break;
 
                 imageSeries.data.push ({
                   id: item.id,
@@ -1470,6 +1474,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else
         {
+          polygonSeries.mapPolygons.template.fill = am4core.color (this.paletteColors[0]);
           polygonSeries.mapPolygons.template.stroke = black;
 
           if (this.values.thresholds.length >= 1)
@@ -1480,25 +1485,17 @@ export class MsfDashboardPanelComponent implements OnInit {
               property: "fill",
               target: polygonSeries.mapPolygons.template,
               min: am4core.color (this.paletteColors[0]),
-              max: am4core.color (this.paletteColors[1])
+              max: am4core.color (this.paletteColors[1]),
+              logarithmic: true
             });
           }
 
           // Set the values for each polygon
           polygonSeries.data = [];
 
-          for (let item of chart.geodata.features)
-          {
-            polygonSeries.data.push ({
-              id: item.id,
-              value: 0,
-              fill: (this.values.thresholds.length ? am4core.color (this.values.thresholds[0].color) : null)
-            });
-          }
-
           for (let result of chartInfo)
           {
-            for (let item of polygonSeries.data)
+            for (let item of chart.geodata.features)
             {
               let resultInfo = result[this.values.valueColumn.id];
 
@@ -1509,8 +1506,13 @@ export class MsfDashboardPanelComponent implements OnInit {
               {
                 item.value = result[this.values.variable.id];
 
-                if (this.values.thresholds.length)
-                  item.fill = this.getHeatMapColor (item.value);
+                if (!item.value)
+                  break;
+
+                polygonSeries.data.push ({
+                  id: item.id,
+                  value: item.value
+                });
 
                 break;
               }
@@ -1521,6 +1523,13 @@ export class MsfDashboardPanelComponent implements OnInit {
           polygonTemplate.tooltipText = "{name}: {value}";
           polygonTemplate.nonScalingStroke = true;
           polygonTemplate.strokeWidth = 0.5;
+
+          polygonSeries.tooltip.label.adapter.add ("text", function (text, target) {
+            if (target.dataItem && target.dataItem.value == null)
+              return "{name}: 0";
+            else
+              return text;
+          });
         }
 
         // Exclude Antartica if the geography data is the world
@@ -2481,7 +2490,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               let curValue = chartInfo.valueFields[i];
               let series;
 
-              if (i != 0)
+              if (i != 0 && this.values.valueListInfo && this.values.valueListInfo.length)
                 this.values.currentChartType = this.getChartType (this.values.valueListInfo[i].chartType);
 
               // Get value name for the legend
