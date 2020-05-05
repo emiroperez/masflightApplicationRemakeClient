@@ -2806,6 +2806,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     
     if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST){
       this.values.currentOption = null;
+      this.optionSelected = {};
       this.convertDescription(this.values.EditActionList,true);
     }
       this.dialogRef.close ({ generateChart: true, values: this.values });
@@ -3190,26 +3191,35 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   getOptionSelected($event,option) {
       if(this.optionSelected.uid != option.uid){
-      if(this.optionSelected){
+      if(this.optionSelected.uid){
         this.optionSelected.isActive = false;
+        this.setChangeisActive(this.optionSelected);
       }
       if(option){
-        option.isActive = true;        
-        const nestedNode = this.flatNodeMap.get(option);
-        nestedNode.isActive = option.isActive;
-        this.dataChange.next(this.dataEditActionList);
+        option.isActive = true;
+        this.setChangeisActive(option);
       }
       this.optionSelected = option;
     }
   }
 
+  setChangeisActive(node) {
+    const nestedNode = this.flatNodeMap.get(node);
+    if(nestedNode){
+      nestedNode.isActive = node.isActive
+      this.dataChange.next(this.dataEditActionList);
+    }
+  }
+
   addNewItem(node,$event) {
     $event.stopPropagation();
-      if(this.optionSelected){
+      if(this.optionSelected.uid){
         this.optionSelected.isActive = false;
+        this.setChangeisActive(this.optionSelected);
       }
       if(node){
-        node.isActive = node.isActive == null ? true : !node.isActive;
+        node.isActive = false;
+        this.setChangeisActive(node);
       }
     const parentNode = this.flatNodeMap.get(node);
     this.insertItem(parentNode!,this.values.id,$event);
@@ -3279,20 +3289,21 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (parent) {
       parent.children.push({
         title: '',
-        uid: 'optnew' + parent.id + parent.children.length,
+        uid: 'childNode' + parent.uid + parent.children.length,
         dashboardPanel_id: idpanel,
         icon: 'IconOption6.png',
         parent: parent.uid,
         children: [],
         description: null,
         isActive: true
-      } as any);      
-      this.dataChange.next(this.dataEditActionList);
+      } as any);
       this.optionSelected = parent.children[parent.children.length-1];
+      this.dataChange.next(this.dataEditActionList);
     } else {
+      let size = this.dataSourceEditActionList.data.length ? this.dataSourceEditActionList.data.length : 0;
       this.dataSourceEditActionList.data.push({
         title: '',
-        uid: 'catnew' + this.dataSourceEditActionList.data.length,
+        uid: 'rootNode' + size,
         dashboardPanel_id: idpanel,
         icon: 'IconOption3.png',
         parent: null,
@@ -3300,8 +3311,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
         description: null,
         isActive: true
       } as any);
-      this.dataChange.next(this.dataEditActionList);
       this.optionSelected = this.dataSourceEditActionList.data[this.dataSourceEditActionList.data.length-1];
+      this.dataChange.next(this.dataEditActionList);
     }
     this.checkChartType();
   }
@@ -3394,6 +3405,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   convertDescription(data,convert){
     for (let index = 0; index < data.length; index++) {
       const item = data[index];
+      item.isActive = false;
       if(convert){
         data[index].description = this.getDescription(item.description);
         if(item.children.length>0){
