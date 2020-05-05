@@ -92,6 +92,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
     { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE },
+    { name: 'Editable List', flags: ChartFlags.INFO | ChartFlags.EDITACTIONLIST},
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE },
     { name: 'Simple Vertical Lines', flags: ChartFlags.LINECHART | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries },
     { name: 'Simple Vertical Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries }
@@ -271,6 +272,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   displayTable: boolean;
   displayMapbox: boolean;
   displayDynTable: boolean;
+  displayEditActionList: boolean;
 
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
@@ -2868,6 +2870,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           {
             if (this.values.currentChartType.flags & ChartFlags.PICTURE)
               this.values.picGenerated = true;
+            else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+              this.values.EditactionListGenerated = true;
             else if (this.values.currentChartType.flags & ChartFlags.FORM)
               this.values.formGenerated = true;
             else
@@ -2937,6 +2941,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           if (this.values.currentChartType.flags & ChartFlags.PICTURE)
             this.displayPic = true;
+          else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+            this.displayEditActionList = true;
           else if (this.values.currentChartType.flags & ChartFlags.FORM)
             this.displayForm = true;
           else
@@ -2983,7 +2989,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               return false;
           }
         }
-        else if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
+        else if (!(this.values.currentChartType.flags & (ChartFlags.PICTURE || ChartFlags.EDITACTIONLIST)))
         {
           if (this.values.infoVar1 != null && this.values.infoVar1.grouping)
             return false;
@@ -3160,7 +3166,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       || this.values.currentChartType.flags & ChartFlags.PICTURE
       || this.values.currentChartType.flags & ChartFlags.TABLE
       || this.values.currentChartType.flags & ChartFlags.DYNTABLE
-      || this.values.currentChartType.flags & ChartFlags.MAP)
+      || this.values.currentChartType.flags & ChartFlags.MAP
+      || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
     {
       return {
         id: this.values.id,
@@ -3631,6 +3638,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.loadTableData (false, this.msfTableRef.handlerSuccess, this.msfTableRef.handlerError);
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
       this.loadPicData ();
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+      this.loadActionListData ();
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
       this.loadFormData (this.handlerFormSuccess, this.handlerFormError);
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -3665,6 +3674,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
       {
         if (!this.values.urlImg || (this.values.urlImg && !this.values.urlImg.length))
+          return false;
+      }
+      else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+      {
+        if (!this.values.EditActionList || (this.values.EditActionList && !this.values.EditActionList.length))
           return false;
       }
       else
@@ -3717,6 +3731,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
     }
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "No image available." }
+      });
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
     {
       this.dialog.open (MessageComponent, {
         data: { title: "Error", message: "No image available." }
@@ -3897,6 +3917,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerDynTableLastestResponse, _this.handlerDynTableError);
   }
 
+  
+  loadActionListData() {
+    this.values.lastestResponse = this.values.EditActionList;
+    this.values.isLoading = true;
+    this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerEditACtionSuccess, this.handlerEditActionError);
+  }
+
   loadPicData(): void
   {
 
@@ -3911,6 +3938,51 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.values.lastestResponse = this.values.urlImg;
     this.values.isLoading = true;
     this.service.saveLastestResponse (this, this.getPanelInfo (), this.handlerPicSuccess, this.handlerPicError);
+  }
+
+  handlerEditACtionSuccess(_this): void
+  {
+    if (!_this.values.isLoading)
+      return;
+
+    _this.values.isLoading = false;
+    _this.destroyChart ();
+
+    _this.displayEditActionList = true;
+    _this.values.chartGenerated = false;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.EditactionListGenerated = true;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
+
+    _this.removeDeadVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.oldChartType),
+      analysisName: _this.oldVariableName,
+      chartSeries: _this.values.chartSeries,
+      controlVariables: _this.oldOptionCategories
+    });
+
+    _this.values.chartSeries = [];
+
+    _this.addNewVariablesAndCategories.emit ({
+      type: _this.chartTypes.indexOf (_this.values.currentChartType),
+      analysisName: null,
+      controlVariables: _this.values.currentOptionCategories,
+      chartSeries: _this.values.chartSeries,
+      optionId: null
+    });
+
+    _this.oldChartType = null;
+    _this.oldVariableName = "";
+    _this.oldOptionCategories = JSON.parse (JSON.stringify (_this.values.currentOptionCategories));
+
+    _this.anchoredArguments = []; // images has no control variables
+
+    _this.stopUpdateInterval ();
+    _this.startUpdateInterval ();
   }
 
   handlerPicSuccess(_this): void
@@ -3944,7 +4016,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       analysisName: null,
       controlVariables: _this.values.currentOptionCategories,
       chartSeries: _this.values.chartSeries,
-      optionId: _this.values.currentOption.id
+      optionId: null
     });
 
     _this.oldChartType = null;
@@ -4452,6 +4524,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.generateError ();
   }
 
+  handlerEditActionError(_this, result): void
+  {
+    _this.generateError ();
+  }
+
   handlerTableError(_this, result): void
   {
     _this.generateError ();
@@ -4525,6 +4602,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // discard any changes
     this.values.urlImg = values.urlImg;
+    if(values.EditActionList)
+      this.values.EditActionList = JSON.parse (JSON.stringify (values.EditActionList));
+    else
+      this.values.EditActionList = null;
     this.values.currentOption = JSON.parse (JSON.stringify (values.currentOption));
     this.values.chartName = values.chartName;
     this.values.chartDescription = values.chartDescription;
@@ -4573,6 +4654,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
       && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
       && this.values.chartColumnOptions != null)
     {
       if (values.infoVar1 != null)
@@ -4689,7 +4771,7 @@ export class MsfDashboardPanelComponent implements OnInit {
   // check if the x axis should be enabled or not depending of the chart type
   checkChartType(): void
   {
-    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+    if (this.values.currentChartType.flags & (ChartFlags.PICTURE || ChartFlags.EDITACTIONLIST ))
       return;
     else
     {
@@ -4791,7 +4873,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
         || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
-        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE
+        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST))
         this.values.function = this.functions[0];
 
       this.values.formVariables = [];
@@ -4825,6 +4908,11 @@ export class MsfDashboardPanelComponent implements OnInit {
     else if (this.values.currentChartType.flags & ChartFlags.PICTURE)
     {
       if (this.values.urlImg && this.values.urlImg != "")
+        return true;
+    }
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+      if (this.values.EditActionList && this.values.EditActionList.length != 0)
         return true;
     }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
@@ -5034,7 +5122,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       this.values.geodata = this.geodatas[0];
 
     // picture and map panels doesn't need any data
-    if (!(this.values.currentChartType.flags & ChartFlags.PICTURE))
+    if (!(this.values.currentChartType.flags & (ChartFlags.PICTURE || ChartFlags.EDITACTIONLIST)))
     {
       if (this.values.currentChartType.flags & ChartFlags.MAP)
       {
@@ -5072,6 +5160,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.checkChartType ();
         return;
+      }
+      if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+      {
+        this.values.EditActionList = JSON.parse (this.values.lastestResponse);
       }
     }
 
@@ -5554,6 +5646,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
       && !(this.values.currentChartType.flags & ChartFlags.MAP)
       && !(this.values.currentChartType.flags & ChartFlags.HEATMAP)
       && !(this.values.currentChartType.flags & ChartFlags.DYNTABLE))
@@ -5610,6 +5703,11 @@ export class MsfDashboardPanelComponent implements OnInit {
       panel = this.getPanelInfo ();
       panel.lastestResponse = this.values.urlImg;
     }
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+      panel = this.getPanelInfo ();
+      panel.lastestResponse = this.values.EditActionList;
+    }
     else
     {
       panel = this.getPanelInfo ();
@@ -5624,7 +5722,8 @@ export class MsfDashboardPanelComponent implements OnInit {
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)) ? true : false;
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)) ? true : false;
   }
 
   isSimpleChart(): boolean
@@ -5643,6 +5742,12 @@ export class MsfDashboardPanelComponent implements OnInit {
   isPicturePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
+  }
+
+  
+  isEditActionListPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST) ? true : false;
   }
 
   isTablePanel(): boolean
@@ -7013,6 +7118,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.displayPic = false;
     this.displayTable = false;
     this.displayDynTable = false;
+    this.displayEditActionList = false;
 
     // set new argument values
     for (let categoryArgument of this.values.currentOptionCategories)

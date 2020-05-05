@@ -947,4 +947,10 @@ export class ApplicationService {
 
     this.authService.get (_this, url, handlerSuccess, handlerError);
   }
+
+  saveActionList(_this, data, handlerSuccess, handlerError): void
+  {
+    let url = _this.globals.baseUrl + "/saveActionList";
+    this.http.post (_this, url, data, handlerSuccess, handlerError);
+  }
 }

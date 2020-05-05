@@ -1,5 +1,5 @@
 <div style="height: calc(100% - 20px)">
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-gridstack" *ngIf="!displayEditActionList && !displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && globals.readOnlyDashboard">
     <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-panel-picture-container">
       <div class="msf-dashboard-panel-picture-label-container">
         <div class="msf-dashboard-panel-picture-label">
@@ -8,7 +8,7 @@
       </div>
     </div>
   </div>
-  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && !globals.readOnlyDashboard">
+  <div class="msf-dashboard-panel-container msf-dashboard-panel-small msf-dashboard-panel-gridstack" *ngIf="!displayEditActionList && !displayChart && !displayInfo && !displayForm && !displayPic && !displayTable && !displayMapbox && !displayDynTable && !globals.readOnlyDashboard">
     <button mat-flat-button class="flat-button" (click)="configurePanel()">Configure Panel</button>
   </div>
   <!-- ngIf doesn't work with AmCharts -->
@@ -308,6 +308,31 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+  <!--action List-->
+  <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="displayEditActionList">
+    <div class="msf-dashboard-panel-title">
+      <div class="msf-dashboard-panel-title-label-icon">
+        <div class="msf-dashboard-panel-title-label" *ngIf="!globals.readOnlyDashboard && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-mobile" *ngIf="!globals.readOnlyDashboard && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-read-only" *ngIf="globals.readOnlyDashboard && !public">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public" *ngIf="globals.readOnlyDashboard && public && !isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-title-label msf-dashboard-panel-title-label-public-mobile" matTooltip="{{values.chartName}}" *ngIf="globals.readOnlyDashboard && public && isMobile">{{values.chartName}}</div>
+        <div class="msf-dashboard-panel-results-button" (click)="enableContextMenu($event)" *ngIf="!globals.readOnlyDashboard">...</div>
+        <div class="msf-dashboard-panel-results-button" *ngIf="globals.readOnlyDashboard"></div>
+        <ng-container *ngIf="public">
+          <div class="msf-dashboard-panel-powered-logo">Powered By</div>
+          <div class="msf-dashboard-panel-public-mobile-logo" *ngIf="isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightMobileLogoImage() + ')'}"></div>
+          <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
+        </ng-container>
+      </div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+    </div>
+    <div class="msf-dashboard-panel-sub-container-column">
+      <div class="content-panel-img">
+        <app-msf-action-list [values]="values.EditActionList"></app-msf-action-list>
       </div>
     </div>
   </div>

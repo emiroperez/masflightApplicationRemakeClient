@@ -2488,6 +2488,21 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             border: 1px solid $primary-color
         .color-picker-header
             border-bottom: 1px solid $dashboard-panel-background-color
+        .ActionList-container .admin-menu-tree .divNode 
+            .actionListNode, .actionListNode-child 
+                .actionListNodeTittle
+                    color: $primary-color-secundary
+                    .titleDeccription
+                        color: $font-color !important
+                .titleDeccription
+                    color: $font-color !important
+        .msf-dashboard-panel-actionList
+            .admin-menu-tree-body .admin-menu-tree
+                background: $dashboard-background-color
+            .admin-menu-tree .mat-tree-node .divNode
+                background: $dashboard-background-color
+            .admin-menu-tree .mat-tree-node .divNode-is-active
+                border: 1px solid $primary-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -12515,6 +12530,109 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         width: 70px
         text-align: center
 
+.ActionList-container
+    overflow-y: auto
+    height: 100%
+    .admin-menu-tree
+        background: transparent
+        .divNode
+            text-align: left
+            width: 100%
+            .actionListNode, .actionListNode-child
+                padding: 5px !important
+                .actionListNodeTittle
+                    display: flex
+                    flex-direction: row
+                    font-weight: 600
+                    .titleDeccription
+                        font-weight: lighter
+                .titleDeccription
+                    font-weight: lighter
+                
+.actionList-icon
+    height: 15px
+    margin-right: 5px
+
+.actionListDesc
+    margin-left: 22px
+
+.msf-dashboard-panel-actionList
+    .msf-dashboard-panel-tittle-actionList
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        padding: 0px 15px
+    .admin-menu-tree-body .admin-menu-tree
+        // background: white
+        border-radius: 10px
+    .admin-menu-tree .mat-tree-node .divNode
+        // background: white
+        border-radius: 10px
+        margin: 3px 1px 0px 1px
+        width: calc(100% - 2px)
+    .admin-menu-tree .mat-tree-node .divNode-is-active
+        // border: 1px solid #01abec
+    .admin-menu-tree .mat-tree-node[aria-level="0"]
+        .divNode
+            margin: 20px 1px 0px 1px !important
+    // .admin-menu-tree .mat-tree-node[aria-expanded="true"]
+    //     .divNode
+    //         border-radius: 10px 10px 0px 0px !important
+    // .admin-menu-tree .mat-tree-node[aria-expanded="true"][aria-level="1"]
+    //     background: white
+    //     border-radius: 0px !important
+    //     .divNode
+    //         margin-top: 0px
+    // .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="1"],.admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="2"], .admin-menu-tree .mat-tree-node[aria-expanded="false"][aria-level="3"]
+    //     background-color: white
+    //     border-radius: 0px 0px 10px 10px
+    //     .divNode
+    //         margin-top: 0px
+
+.actionListNode, .actionListNode-child
+    display: flex
+    flex-direction: column
+    padding: 10px 10px
+    width: calc(100% - 20px)
+    .mat-form-field-wrapper
+        padding-bottom: .34375em
+    .actionListNodeTittle
+        display: flex
+        flex-direction: row
+        // padding: 0px 10px
+        .IconList
+            width: 10% !important
+            .mat-form-field-infix
+                border-top: 0px !important
+                padding: 0.6em 0px !important
+                width: 40px !important
+            .IconActionLIst
+                background-size: contain
+                background-repeat: no-repeat
+                background-position: left
+                transition: background-image .5s ease-in-out
+                height: 21px                
+                display: flex
+                justify-content: flex-end
+                .mat-select-trigger
+                    display: flex !important
+                    flex-direction: row
+                    justify-content: flex-end
+                    // height: 21px
+                    align-items: flex-end
+        .input-option-tree
+            margin-left: 10px
+            width: calc(100% - 110px)
+        .menu-drag-handle
+            line-height: 24px
+    .input-description
+        width: calc(100% - 40px)
+
+.actionListNode-child
+    .actionListNodeTittle
+        .input-option-tree
+            // width: calc(100% - 150px) !important
+            width: calc(100% - 110px) !important
 .anim-checkbox
     margin-left: 15px
 

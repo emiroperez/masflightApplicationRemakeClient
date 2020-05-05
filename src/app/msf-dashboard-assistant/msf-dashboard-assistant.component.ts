@@ -17,13 +17,15 @@ import { MessageComponent } from '../message/message.component';
 import { MsfDashboardPanelValues } from '../msf-dashboard-panel/msf-dashboard-panelvalues';
 import { ConfigFlags } from '../msf-dashboard-panel/msf-dashboard-configflags';
 import { ExampleFlatNode } from '../admin-menu/admin-menu.component';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MsfDashboardInfoFunctionsComponent } from '../msf-dashboard-info-functions/msf-dashboard-info-functions.component';
 import { MsfDynamicTableVariablesComponent } from '../msf-dynamic-table-variables/msf-dynamic-table-variables.component';
 import { MsfChartPreviewComponent } from '../msf-chart-preview/msf-chart-preview.component';
 import { AirportSelection } from '../commons/AirportSelection';
+import { ActionListFlatNode } from '../model/ActionListFlatNode';
+import { MaterialIconPickerComponent } from '../material-icon-picker/material-icon-picker.component';
 import { MsfDashboardValueSelectorDialogComponent } from '../msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
 
 @Component({
@@ -36,6 +38,14 @@ export class MsfDashboardAssistantComponent implements OnInit {
   values: MsfDashboardPanelValues;
   panelForm: FormGroup;
   updateURLResults: boolean = false;
+ test : any = "<strong>Hola</strong>";
+  
+  @ViewChild("materialIconPicker", { static: false })
+  materialIconPicker: MaterialIconPickerComponent;
+  recursiveDeleteDone: boolean;
+
+  listActionIcons: any[] = ['IconOption1.png','IconOption2.png','IconOption3.png','IconOption4.png','IconOption5.png','IconOption6.png',
+  'datePeriod.png','Airlines.png','Airport_Date_Time.png','content_type.png','genre.png','media_name.png','region.png','Types.png','World Region.png'];
 
   panelTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', allowedInAdvancedMode: true },
@@ -58,7 +68,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Information', flags: ChartFlags.INFO, image: 'info.png', allowedInAdvancedMode: false },
     { name: 'Simple Form', flags: ChartFlags.INFO | ChartFlags.FORM, image: 'simple-form.png', allowedInAdvancedMode: false },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE, image: 'link-image.png', allowedInAdvancedMode: false },
-    // { name: 'Action List', flags:  ChartFlags.INFO | ChartFlags.ACTIONLIST, image: 'link-image.png', allowedInAdvancedMode: false },
+    { name: 'Editable List', flags:  ChartFlags.INFO | ChartFlags.EDITACTIONLIST, image: 'actionList.png', allowedInAdvancedMode: false },
     { name: 'Map', flags: ChartFlags.MAP, image: 'map.png', allowedInAdvancedMode: false },
     { name: 'Heat Map', flags: ChartFlags.HEATMAP, image: 'heatmap.png', allowedInAdvancedMode: false },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE, image: 'bubble-heatmap.png', allowedInAdvancedMode: false },
@@ -80,6 +90,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   selectedStep: number = 1;
   stepLoading: number = 0;
 
+  EditActionList: any;
   menuCategories: any[] = [];
   selectedItem: any = null;
 
@@ -124,6 +135,50 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   _onDestroy = new Subject<void> ();
 
+  optionSelected: any = {};
+  dataChange = new BehaviorSubject<any[]>([]);
+  get dataEditActionList(): any[] { return this.dataChange.value; }
+  expandedNodeSet = new Set<string>();
+  dragging = false;
+  expandTimeout: any;
+  expandDelay = 1000;
+  flatNodeMap = new Map<ActionListFlatNode, any>();
+  nestedNodeMap = new Map<any, ActionListFlatNode>();
+  private transformer = (node: any, level: number) =>
+      {
+        const existingNode = this.nestedNodeMap.get (node);
+        const flatNode = existingNode && existingNode.title === node.title
+          ? existingNode
+          : new ActionListFlatNode ();
+        flatNode.expandable = !!node.children && node.children.length > 0;
+        flatNode.id = node.id;
+        flatNode.uid = node.uid;
+        flatNode.icon = node.icon;
+        flatNode.dashboardPanel_id = node.dashboardPanel_id;
+        flatNode.level = level;
+        flatNode.parent = node.parent;
+        flatNode.title = node.title;
+        flatNode.description = node.description;
+        flatNode.children = node.children;
+        flatNode.isActive = node.isActive;
+        
+    this.flatNodeMap.set(flatNode, node);
+    this.nestedNodeMap.set(node, flatNode);
+    return flatNode;
+  };
+  treeControl = new FlatTreeControl<ActionListFlatNode>(
+    node => node.level,
+    node => node.expandable
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this.transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children
+  );
+  dataSourceEditActionList = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
   constructor(public dialogRef: MatDialogRef<MsfDashboardAssistantComponent>,
     public globals: Globals,
     private service: ApplicationService,
@@ -145,6 +200,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.infoGenerated = this.data.values.infoGenerated;
     this.values.formGenerated = this.data.values.formGenerated;
     this.values.picGenerated = this.data.values.picGenerated;
+    this.values.EditactionListGenerated = this.data.values.EditactionListGenerated;
     this.values.tableGenerated = this.data.values.tableGenerated;
     this.values.mapboxGenerated = this.data.values.mapboxGenerated;
     this.values.dynTableGenerated = this.data.values.dynTableGenerated;
@@ -171,6 +227,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.msfMapRef = this.data.msfMapRef;
 
     this.generateBtnEnabled = this.data.generateBtnEnabled;
+
+    this.dataChange.subscribe(data => {
+      this.dataSourceEditActionList.data = data;
+      this.values.EditActionList = data;
+    });
   }
 
   ngOnInit()
@@ -183,6 +244,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.infoFunc3 = JSON.parse (JSON.stringify (this.functions));
 
     this.values.urlImg = this.data.values.urlImg;
+    this.values.EditActionList = this.data.values.EditActionList;
 
     if (this.data.values.currentOption != null)
       this.values.currentOption = JSON.parse (JSON.stringify (this.data.values.currentOption));
@@ -203,7 +265,13 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.values.dynTableVariables = JSON.parse (JSON.stringify (this.data.values.dynTableVariables));
     this.values.intervalType = this.data.values.intervalType;
     this.values.intValue = this.data.values.intValue;
-    this.values.valueList = this.data.values.valueList;
+    this.values.valueList = this.data.values.valueList;    
+    if(this.values.EditActionList){
+      this.convertDescription(this.values.EditActionList,false);
+      this.dataChange.next(this.values.EditActionList);
+      // this.dataChange.next(this.data.values.EditActionList);
+      this.treeControl.expandAll();
+    }
 
     if (this.values.currentOption)
     {
@@ -339,6 +407,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
       && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
       && this.values.chartColumnOptions != null)
     {
       if (this.data.values.infoVar1 != null)
@@ -794,7 +863,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
   {
     return (this.values.currentChartType.flags & ChartFlags.INFO
       && !(this.values.currentChartType.flags & ChartFlags.FORM)
-      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)) ? true : false;
+      && !(this.values.currentChartType.flags & ChartFlags.PICTURE)
+      && !(this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)) ? true : false;
   }
 
   isSimpleChart(): boolean
@@ -821,6 +891,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
   isPicturePanel(): boolean
   {
     return (this.values.currentChartType.flags & ChartFlags.PICTURE) ? true : false;
+  }
+
+  isEditActionListPanel(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST) ? true : false;
   }
 
   isTablePanel(): boolean
@@ -2079,7 +2154,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   resultsGenerated(): boolean
   {
-    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated);
+    return !(!this.values.chartGenerated && !this.values.infoGenerated && !this.values.formGenerated && !this.values.picGenerated && !this.values.tableGenerated && !this.values.mapboxGenerated && !this.values.dynTableGenerated && !this.values.EditactionListGenerated);
   }
 
   isValueSelectedForSimpleChart(column): boolean
@@ -2225,7 +2300,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   hasAdditinalSettings(): boolean
   {
     if (!this.isDynTablePanel () && !this.isTablePanel () && !this.isInformationPanel () && !this.isSimpleFormPanel ()
-      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ())
+      && !this.isMapPanel () && !this.isHeatMapPanel () && !this.isPicturePanel () && !this.isMapboxPanel ()  && !this.isEditActionListPanel())
       return true;
 
     return (this.isHeatMapPanel () || this.isSimpleFormPanel () || this.isTablePanel ()) ? true : false;
@@ -2379,12 +2454,20 @@ export class MsfDashboardAssistantComponent implements OnInit {
         return true;
       }
     }
+    else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+      if (this.values.EditActionList && this.values.EditActionList.length != 0)
+      {
+        this.generateBtnEnabled = true;
+        return true;
+      }
+    }
     else if (this.values.currentChartType.flags & ChartFlags.FORM)
     {
       if (this.values.formVariables.length)
       {
         this.generateBtnEnabled = true;
-        return true;
+        return true;  
       }
     }
     else if (this.values.currentChartType.flags & ChartFlags.INFO)
@@ -2575,6 +2658,14 @@ export class MsfDashboardAssistantComponent implements OnInit {
         this.generateBtnEnabled = false;
 
       return;
+    }else if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+    {
+      if (this.values.EditActionList && this.values.EditActionList.length != 0)
+      this.generateBtnEnabled = true; //kp2020Ene23
+    else
+      this.generateBtnEnabled = false;
+
+      return;
     }
     else
     {
@@ -2677,7 +2768,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
       if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
         || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
-        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE))
+        || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE
+        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST))
         this.values.function = this.functions[0];
 
       this.values.formVariables = [];
@@ -2709,7 +2801,14 @@ export class MsfDashboardAssistantComponent implements OnInit {
     for (let threshold of this.values.thresholds)
       threshold.filteredVariables = null;
 
-    this.dialogRef.close ({ generateChart: true, values: this.values });
+    if (this.values.currentChartType.flags & ChartFlags.PICTURE)
+      this.values.currentOption = null;
+    
+    if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST){
+      this.values.currentOption = null;
+      this.convertDescription(this.values.EditActionList,true);
+    }
+      this.dialogRef.close ({ generateChart: true, values: this.values });
   }
 
   goToResults(): void
@@ -3088,4 +3187,278 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.checkPanelConfiguration ();
     });
   }
-}
+
+  getOptionSelected($event,option) {
+      if(this.optionSelected != option){
+      if(this.optionSelected){
+        this.optionSelected.isActive = false;
+      }
+      if(option){
+        option.isActive = option.isActive == null ? true : !option.isActive;
+      }
+      this.optionSelected = option;
+    }
+  }
+
+  addNewItem(node,$event) {
+    // $event.stopPropagation();
+    const parentNode = this.flatNodeMap.get(node);
+    this.insertItem(parentNode!,this.values.id,$event);
+    this.treeControl.expand(node);
+  }
+
+  DeleteItem(node) {
+    const parentNode = this.flatNodeMap.get(node);
+    this.deleteOption(parentNode!);
+    this.treeControl.expand(node);
+  }
+
+  recursiveDelete(node) {
+    if (!node.children)
+      return;
+
+    for (let i = 0; i < node.children.length; i++) {
+      if (node.children[i].uid === this.optionSelected.uid) {
+        const index: number = node.children.findIndex(d => d.uid === this.optionSelected.uid);
+        node.children.splice(index, 1);
+        // node.children.splice(node.children.indexOf(this.optionSelected), 1);
+        this.dataChange.next(this.dataEditActionList);
+        this.recursiveDeleteDone = true;
+      }
+      else
+        this.recursiveDelete(node.children[i]);
+
+      if (this.recursiveDeleteDone)
+        break;
+    }
+  }
+
+  deleteNewItem() {
+    this.recursiveDeleteDone = false;
+
+    // find the node and delete it
+    for (let i = 0; i < this.dataSourceEditActionList.data.length; i++) {
+      if (this.dataSourceEditActionList.data[i].uid === this.optionSelected.uid) {
+        this.dataSourceEditActionList.data.splice(this.dataSourceEditActionList.data.indexOf(this.optionSelected), 1);
+        this.dataChange.next(this.dataEditActionList);
+        this.recursiveDeleteDone = true;
+      }
+      else
+        this.recursiveDelete(this.dataSourceEditActionList.data[i]);
+
+      if (this.recursiveDeleteDone)
+        break;
+    }
+
+    this.optionSelected = {};
+  }
+
+  deleteOption(node) {
+    if(node.parent){
+      this.deleteNewItem();
+    }else{
+      const index: number = this.dataSourceEditActionList.data.findIndex(d => d.uid === node.uid);
+      if(index != -1){
+        this.dataSourceEditActionList.data.splice(index, 1);
+        this.dataChange.next(this.dataEditActionList);
+      }
+    }
+     
+  }
+
+  insertItem(parent: any,idpanel,$event) {
+    if (parent) {
+      parent.children.push({
+        title: '',
+        uid: 'optnew' + parent.id + parent.children.length,
+        dashboardPanel_id: idpanel,
+        icon: 'IconOption6.png',
+        parent: parent.uid,
+        children: [],
+        description: null,
+        isActive: false
+      } as any);      
+      this.dataChange.next(this.dataEditActionList);
+      // this.getOptionSelected($event,parent.children[parent.children.length-1]);
+      // if(this.optionSelected){
+      //   this.optionSelected.isActive = false;
+      // }
+      // this.optionSelected = parent.children[parent.children.length-1];
+    } else {
+      this.dataSourceEditActionList.data.push({
+        title: '',
+        uid: 'catnew' + this.dataSourceEditActionList.data.length,
+        dashboardPanel_id: idpanel,
+        icon: 'IconOption3.png',
+        parent: null,
+        children: [],
+        description: null,
+        isActive: false
+      } as any);
+      this.dataChange.next(this.dataEditActionList);
+      // if(this.optionSelected){
+      //   this.optionSelected.isActive = false;
+      // }
+      // this.optionSelected = this.dataSourceEditActionList.data[this.dataSourceEditActionList.data.length-1];
+    }
+    this.checkChartType();
+  }
+
+  setChange(node) {
+    const nestedNode = this.flatNodeMap.get(node);
+    nestedNode.title = node.title;
+    nestedNode.description = node.description;
+    nestedNode.icon = node.icon;
+    this.dataChange.next(this.dataEditActionList);
+  }
+
+  rebuildTreeForData(data: any) {
+    this.rememberExpandedTreeNodes(this.treeControl, this.expandedNodeSet);
+    this.dataSourceEditActionList.data = data;
+    this.forgetMissingExpandedNodes(this.treeControl, this.expandedNodeSet);
+    this.expandNodesById(
+      this.treeControl.dataNodes,
+      Array.from(this.expandedNodeSet)
+    );
+  }
+
+  private rememberExpandedTreeNodes(
+    treeControl: FlatTreeControl<ActionListFlatNode>,
+    expandedNodeSet: Set<string>
+  ) {
+    if (treeControl.dataNodes) {
+      treeControl.dataNodes.forEach(node => {
+        if (treeControl.isExpandable(node) && treeControl.isExpanded(node)) {
+          // capture latest expanded state
+          expandedNodeSet.add(node.uid);
+        }
+      });
+    }
+  }
+
+  private forgetMissingExpandedNodes(
+    treeControl: FlatTreeControl<ActionListFlatNode>,
+    expandedNodeSet: Set<string>
+  ) {
+    if (treeControl.dataNodes) {
+      expandedNodeSet.forEach(nodeId => {
+        if (!treeControl.dataNodes.find(n => n.uid === nodeId)) {
+          expandedNodeSet.delete(nodeId);
+        }
+      });
+    }
+  }
+
+  private expandNodesById(flatNodes: ActionListFlatNode[], ids: string[]) {
+    if (!flatNodes || flatNodes.length === 0) return;
+    const idSet = new Set(ids);
+    return flatNodes.forEach(node => {
+      if (idSet.has(node.uid)) {
+        this.treeControl.expand(node);
+        let parent = this.getParentEditActionListNode(node);
+        while (parent) {
+          this.treeControl.expand(parent);
+          parent = this.getParentEditActionListNode(parent);
+        }
+      }
+    });
+  }
+
+  private getParentEditActionListNode(node: ActionListFlatNode): ActionListFlatNode | null {
+    const currentLevel = node.level;
+    if (currentLevel < 1) {
+      return null;
+    }
+    const startIndex = this.treeControl.dataNodes.indexOf(node) - 1;
+    for (let i = startIndex; i >= 0; i--) {
+      const currentNode = this.treeControl.dataNodes[i];
+      if (currentNode.level < currentLevel) {
+        return currentNode;
+      }
+    }
+    return null;
+  }
+
+  getNodeIndent(node){
+    return 20;
+  }
+
+  stop_Propagation(node,$event){
+    if(node.isActive){
+      $event.stopPropagation()
+    }
+  }
+
+  convertDescription(data,convert){
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      if(convert){
+        data[index].description = this.getDescription(item.description);
+        if(item.children.length>0){
+          this.convertDescription(item.children,true);
+        }
+      }else{
+        data[index].description = this.RollbackDescription(item.description);
+        if(item.children.length>0){
+          this.convertDescription(item.children,false);
+        }
+      }
+    }
+  }
+
+  RollbackDescription(text){
+    if(text){
+      let exp = new RegExp('(</?strong>)\\w+(</?strong>)', 'g');
+      let matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<strong>','*');
+          newElement = newElement.replace('</strong>','*');
+          text = text.replace(element, newElement);      
+        }
+      }
+      
+      exp = new RegExp('(</?del>)\\w+(</?del>)', 'g');
+      matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('<del>','~');
+          newElement = newElement.replace('</del>','~');
+          text = text.replace(element, newElement);      
+        }
+      }
+    }
+    return text;
+  }
+    getDescription(text){
+      if(text){
+        // let exp = new RegExp('[*](\\w)+[*]', 'g');
+        let exp = new RegExp('[*](\\w)+(\\s*)(\\w)+[*]', 'g');
+        let matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('*','<strong>');
+            newElement = newElement.replace('*','</strong>');
+            text = text.replace(element, newElement);      
+          }
+        }
+        
+        // exp = new RegExp('[~](\\w)+[~]', 'g');
+        exp = new RegExp('[~](\\w)+(\\s*)(\\w)+[~]', 'g');
+        matchEpresion = text.match(exp);
+        if(matchEpresion){
+          for (let index = 0; index < matchEpresion.length; index++) {
+            const element = matchEpresion[index];
+            let newElement = element.replace('~','<del>');
+            newElement = newElement.replace('~','</del>');
+            text = text.replace(element, newElement);      
+          }
+        }
+      }
+      return text;
+    }
+
+  }

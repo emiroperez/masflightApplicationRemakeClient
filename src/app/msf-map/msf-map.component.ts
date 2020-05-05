@@ -92,7 +92,8 @@ export class MsfMapComponent implements OnInit {
 
   mapStyles: any[] = [
     { id: "mapbox://styles/mapbox/dark-v9", name: 'Dark' },
-    { id: "mapbox://styles/mapbox/light-v10", name: 'Light' }
+    { id: "mapbox://styles/mapbox/outdoors-v11", name: 'Light' }
+    // { id: "mapbox://styles/mapbox/light-v10", name: 'Light' }
   ];
 
   @Input('currentMapType')

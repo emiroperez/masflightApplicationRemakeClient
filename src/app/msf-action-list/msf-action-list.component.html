@@ -1,36 +1,62 @@
-<h3>Quick Facts</h3>
-<ul>
+<div #scrollContainer class="menu-tree-scrollbar ActionList-container">
+    <div *ngIf="!result" class="no-image">No Result</div>
+    <mat-tree *ngIf="result" class="admin-menu-tree" [dataSource]="dataSourceEditActionList"
+        [treeControl]="treeControl">
+        <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node">
+            <div class="divNode">
+                <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
+                        <img *ngIf="node.icon" src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <span>{{node.title}}</span>
+                    </div>
+                    <!-- <span class="actionListDesc">{{node.description}}</span> -->
+                    <div class="titleDeccription" [innerHTML]="node.description"></div>
+                    <!-- <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div> -->
+                </div>
+                <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
+                        <img *ngIf="node.icon" src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <!-- <span class="titleDeccription">{{node.description}}</span> -->
+                        <div class="titleDeccription" [innerHTML]="node.description"></div>
+                        <!-- <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div> -->
+                    </div>
+                </div>
+            </div>
+        </mat-tree-node>
+        <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)"
+            *matTreeNodeDef="let node;when: hasChild">
+            <div class="divNode">
+                <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
+                        <img *ngIf="node.icon" src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <span>{{node.title}}</span>
+                    </div>
+                    <!-- <span class="actionListDesc">{{node.description}}</span> -->
+                    <div class="titleDeccription" [innerHTML]="node.description"></div>
+                    <!-- <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div> -->
+                </div>
+                <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
+                        <img *ngIf="node.icon" src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <div class="titleDeccription" [innerHTML]="node.description"></div>
+                        <!-- <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div> -->
+                    </div>
+                </div>
+            </div>
+        </mat-tree-node>
+    </mat-tree>
+</div>
+
+
+
+
+<!-- <ul *ngFor="let item of values">
     <li>
-        In 2020, 4.6 million job losses are projected in the U.S
-    </li>
-    <li>
-        On April 12, 2020,
-    </li>
-    <li>
-        The number of daily
-    </li>
-    <li>
-        64% of global commercial aircraft
-    </li>
-</ul>
-<!-- <ul>
-    <li>Carnívoro
+        {{subitem.title}} - {{subitem.description}}
         <ul>
-            <li>León</li>
-            <li>Buitre</li>
-            <li>Hiena</li>
-        </ul>
-    </li>
-    <li>Herbívoro
-        <ul>
-            <li>Cabra</li>
-            <li>Vaca</li>
-        </ul>
-    </li>
-    <li>Omnívoro
-        <ul>
-            <li>Oso</li>
-            <li>Urraca</li>
+            <li *ngFor="let item of values.children">
+                {{subitem.title}} - {{subitem.description}}
+            </li>
         </ul>
     </li>
 </ul> -->

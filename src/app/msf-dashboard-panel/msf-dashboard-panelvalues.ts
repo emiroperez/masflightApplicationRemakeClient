@@ -13,6 +13,7 @@ export class MsfDashboardPanelValues {
     tableGenerated: boolean;
     mapboxGenerated: boolean;
     dynTableGenerated: boolean;
+    EditactionListGenerated: boolean;
 
     chartName: String;
     chartDescription: String;
@@ -21,6 +22,7 @@ export class MsfDashboardPanelValues {
     currentOption: any;
     currentOptionCategories: CategoryArguments[];
     urlImg: String;
+    EditActionList: any;
 
     width: number;
     height: any;
@@ -145,7 +147,7 @@ export class MsfDashboardPanelValues {
 
         if (lastestResponse)
         {
-            if (this.currentChartType != 32)
+            if (this.currentChartType != 32 && this.currentChartType != 33)
             {
                 this.lastestResponse = JSON.parse (lastestResponse);
 
@@ -154,7 +156,11 @@ export class MsfDashboardPanelValues {
             }
             else
             {
-                this.urlImg = lastestResponse.replace (/['"]+/g, '');
+                if(this.currentChartType === 33){                    
+                    this.EditActionList = JSON.parse (lastestResponse);
+                }else{
+                    this.urlImg = lastestResponse.replace (/['"]+/g, '');
+                }
                 this.lastestResponse = lastestResponse;
             }
         }
