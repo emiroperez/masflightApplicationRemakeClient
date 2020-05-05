@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
@@ -75,6 +75,9 @@ export class ApplicationComponent implements OnInit {
 
   @ViewChild('paginator', { static: false })
   paginator: MatPaginator;
+
+  @ViewChild('searchFilterInput', { static: false })
+  searchFilterInput: ElementRef;
 
   pageIndex: any;
 
@@ -1755,11 +1758,22 @@ toggle(){
   toggleSearchColumnFilter(): void
   {
     this.searchColumnFilter = !this.searchColumnFilter;
+    this.changeDetectorRef.detectChanges ();
+    this.searchFilterInput.nativeElement.focus ();
   }
 
   searchWithFilter(): void
   {
     let isMobile = false;
+
+    if (this.searchFilter == null || this.searchFilter == "")
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must at least enter one letter to search for results." }
+      });
+
+      return;
+    }
 
     this.searchColumnFilter = false;
 
@@ -1796,5 +1810,10 @@ toggle(){
     }
     else
       this.startSearch ();
+  }
+
+  clearSearchFilter(): void
+  {
+    this.search ();
   }
 }

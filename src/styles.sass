@@ -623,7 +623,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
         .search-column-filter-container
             background-color: $search-column-input-color
             border-color: $search-column-border-color
-            .search-column-filter-button
+            .search-column-filter-button, .search-column-filter-clear-button
                 background-color: $search-column-button
         .msf-intro-body
             color: $font-color
@@ -12719,10 +12719,13 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             margin-left: 10px
             margin-right: 10px
             width: calc(100% - 65px)
-        .search-column-filter-button
+        .search-column-filter-button, .search-column-filter-clear-button
             padding: 0
             min-width: 40px
             width: 40px
+        .search-column-filter-clear-button
+            margin-left: 5px
+            margin-right: 5px
         ::-webkit-input-placeholder
             color: #ffffff
         ::placeholder
