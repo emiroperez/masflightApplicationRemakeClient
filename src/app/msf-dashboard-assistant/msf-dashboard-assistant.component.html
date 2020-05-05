@@ -1173,7 +1173,7 @@
                               autocomplete="off"
                               [(ngModel)]="node.title" (ngModelChange)="setChange(node)"></textarea>
                             </mat-form-field>
-                            <button *ngIf="optionSelected==node" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
+                            <button *ngIf="optionSelected.uid==node.uid" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
                               <img src="../../assets/images/{{globals.theme}}-datalake-DeleteRow-active.png" />
                             </button>
                           </div>
@@ -1183,13 +1183,13 @@
                               <textarea matInput 
                               cdkTextareaAutosize
                               #autosize="cdkTextareaAutosize"
-                              cdkAutosizeMinRows="1"
+                              cdkAutosizeMinRows="2"
                               cdkAutosizeMaxRows="5"
                               placeholder="Description" 
                               autocomplete="off"
                               [(ngModel)]="node.description" (ngModelChange)="setChange(node)"></textarea>
                             </mat-form-field>
-                            <button *ngIf="optionSelected==node" (click)="addNewItem(node,$event)" mat-icon-button matTooltip="Add sublevel">
+                            <button *ngIf="optionSelected.uid==node.uid" (click)="addNewItem(node,$event)" mat-icon-button matTooltip="Add sublevel">
                               <img src="../../assets/images/{{globals.theme}}-Addsublevel.png" />
                             </button>
                           </div>
@@ -1227,7 +1227,7 @@
                                 autocomplete="off"
                                 [(ngModel)]="node.title" (ngModelChange)="setChange(node)"></textarea>
                               </mat-form-field>
-                              <button *ngIf="optionSelected==node" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
+                              <button *ngIf="optionSelected.uid==node.uid" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
                                 <img src="../../assets/images/{{globals.theme}}-datalake-DeleteRow-active.png" />
                               </button>
                           </div>
@@ -1237,13 +1237,13 @@
                               <textarea matInput 
                               cdkTextareaAutosize
                               #autosize="cdkTextareaAutosize"
-                              cdkAutosizeMinRows="1"
+                              cdkAutosizeMinRows="2"
                               cdkAutosizeMaxRows="5"
                               placeholder="Description" 
                               autocomplete="off"
                               [(ngModel)]="node.description" (ngModelChange)="setChange(node)"></textarea>
                             </mat-form-field>
-                            <button *ngIf="optionSelected==node" (click)="addNewItem(node)" mat-icon-button matTooltip="Add sublevel">
+                            <button *ngIf="optionSelected.uid==node.uid" (click)="addNewItem(node)" mat-icon-button matTooltip="Add sublevel">
                               <img src="../../assets/images/{{globals.theme}}-Addsublevel.png" />
                             </button>
                           </div>

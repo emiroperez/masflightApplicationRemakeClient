@@ -3189,19 +3189,28 @@ export class MsfDashboardAssistantComponent implements OnInit {
   }
 
   getOptionSelected($event,option) {
-      if(this.optionSelected != option){
+      if(this.optionSelected.uid != option.uid){
       if(this.optionSelected){
         this.optionSelected.isActive = false;
       }
       if(option){
-        option.isActive = option.isActive == null ? true : !option.isActive;
+        option.isActive = true;        
+        const nestedNode = this.flatNodeMap.get(option);
+        nestedNode.isActive = option.isActive;
+        this.dataChange.next(this.dataEditActionList);
       }
       this.optionSelected = option;
     }
   }
 
   addNewItem(node,$event) {
-    // $event.stopPropagation();
+    $event.stopPropagation();
+      if(this.optionSelected){
+        this.optionSelected.isActive = false;
+      }
+      if(node){
+        node.isActive = node.isActive == null ? true : !node.isActive;
+      }
     const parentNode = this.flatNodeMap.get(node);
     this.insertItem(parentNode!,this.values.id,$event);
     this.treeControl.expand(node);
@@ -3276,14 +3285,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
         parent: parent.uid,
         children: [],
         description: null,
-        isActive: false
+        isActive: true
       } as any);      
       this.dataChange.next(this.dataEditActionList);
-      // this.getOptionSelected($event,parent.children[parent.children.length-1]);
-      // if(this.optionSelected){
-      //   this.optionSelected.isActive = false;
-      // }
-      // this.optionSelected = parent.children[parent.children.length-1];
+      this.optionSelected = parent.children[parent.children.length-1];
     } else {
       this.dataSourceEditActionList.data.push({
         title: '',
@@ -3293,13 +3298,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
         parent: null,
         children: [],
         description: null,
-        isActive: false
+        isActive: true
       } as any);
       this.dataChange.next(this.dataEditActionList);
-      // if(this.optionSelected){
-      //   this.optionSelected.isActive = false;
-      // }
-      // this.optionSelected = this.dataSourceEditActionList.data[this.dataSourceEditActionList.data.length-1];
+      this.optionSelected = this.dataSourceEditActionList.data[this.dataSourceEditActionList.data.length-1];
     }
     this.checkChartType();
   }

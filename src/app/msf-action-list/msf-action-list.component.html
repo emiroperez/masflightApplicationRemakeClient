@@ -26,7 +26,7 @@
         <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)"
             *matTreeNodeDef="let node;when: hasChild">
             <div class="divNode">
-                <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode">
+                <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode-child">
                     <div class="actionListNodeTittle">
                         <img *ngIf="node.icon" src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <span>{{node.title}}</span>
@@ -35,7 +35,7 @@
                     <div class="titleDeccription" [innerHTML]="node.description"></div>
                     <!-- <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div> -->
                 </div>
-                <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode">
+                <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode-child">
                     <div class="actionListNodeTittle">
                         <img *ngIf="node.icon" src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <div class="titleDeccription" [innerHTML]="node.description"></div>
