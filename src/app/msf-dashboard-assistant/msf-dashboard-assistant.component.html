@@ -1155,7 +1155,7 @@
                             <button [ngStyle]="{ 'display': 'none' }" mat-icon-button disabled></button>
                             <mat-form-field appearance="outline" class="IconList">
                               <mat-select [(ngModel)]=node.icon (ngModelChange)="setChange(node)" class="IconActionLIst"
-                                [ngStyle]="{'background-image': 'url(../../assets/images/' + globals.theme+'-'+node.icon + ')'}">
+                                [ngStyle]="{'background-image': 'url(../../assets/images/components/' + globals.theme+'-'+node.icon + ')'}">
                                 <mat-option>--</mat-option>
                                 <mat-option *ngFor="let icon of listActionIcons" value="{{icon}}">
                                   <img src="../../assets/images/components/{{globals.theme}}-{{icon}}">
@@ -1209,7 +1209,7 @@
                               </button>
                               <mat-form-field appearance="outline" class="IconList">
                                 <mat-select [(ngModel)]=node.icon (ngModelChange)="setChange(node)" class="IconActionLIst"
-                                  [ngStyle]="{'background-image': 'url(../../assets/images/' + globals.theme+'-'+node.icon + ')'}">
+                                  [ngStyle]="{'background-image': 'url(../../assets/images/components/' + globals.theme+'-'+node.icon + ')'}">
                                   <mat-option>--</mat-option>
                                   <mat-option *ngFor="let icon of listActionIcons" value="{{icon}}">
                                     <img src="../../assets/images/components/{{globals.theme}}-{{icon}}">
