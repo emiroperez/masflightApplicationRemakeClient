@@ -101,6 +101,24 @@
     </div>
     <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && (globals.showTabs || globals.showDashboard)) "
         [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-right':'msf-menu-icons-right-mobile') :'msf-menu-icons-right'">
+        <div *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin' && !TabletQuery.matches" class="search-column-filter-body">
+          <button
+          [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan
+              || (globals.currentOption.tabType && globals.currentOption.tabType !== 'usageStatistics' && globals.currentOption.tabType !== 'map' && globals.currentOption.tabType !== 'scmap' && globals.currentOption.tabType !== 'scmap2' && globals.currentOption.tabType !== 'legacy')"
+              class="msf-menu-icon" (click)="toggleSearchColumnFilter()">
+              <img src="../../assets/images/dark-theme-search-filter.png"
+                  class="msf-menu-image msf-vertical-middle">
+              <span class="msf-vertical-middle">Search</span>
+          </button>
+          <div class="search-column-filter-container" *ngIf="searchColumnFilter">
+              <div class="search-column-filter-form-field">
+                  <input matInput [(ngModel)]="searchFilter" placeholder="Search" autocomplete="off"/>
+              </div>
+              <button mat-button class="search-column-filter-button" (click)="searchWithFilter()">
+                  <mat-icon>search</mat-icon>
+              </button>
+          </div>
+        </div>
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
             [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan"
             class="msf-menu-icon" (click)="dynamicTable()">
@@ -110,7 +128,7 @@
         </button>
         <button *ngIf="globals.currentOption !== 'dashboard' && globals.currentOption !== 'categoryAdmin'"
         [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan
-            || (globals.currentOption.tabType && globals.currentOption.tabType !== 'map' && globals.currentOption.tabType !== 'scmap' && globals.currentOption.tabType !== 'scmap2' && globals.currentOption.tabType !== 'legacy')"
+            || (globals.currentOption.tabType && globals.currentOption.tabType !== 'usageStatistics'&& globals.currentOption.tabType !== 'map' && globals.currentOption.tabType !== 'scmap' && globals.currentOption.tabType !== 'scmap2' && globals.currentOption.tabType !== 'legacy')"
             class="msf-menu-icon" (click)="partialSummaries()">
             <img src="../../assets/images/dark-theme-small-summary.png"
                 class="msf-menu-image msf-vertical-middle">

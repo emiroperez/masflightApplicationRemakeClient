@@ -56,6 +56,7 @@ export class ApplicationComponent implements OnInit {
   partialSummaryValues: any = null;
   dynamicTableValues: any = null;
   CSVseparator: string = "\t";
+  searchColumnFilter: boolean = false;
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -559,6 +560,9 @@ toggle(){
   {
     let isMobile = false;
 
+    this.searchFilter = null;
+    this.searchColumnFilter = false;
+
     if (this.mobileQuery.matches)
       isMobile = true;
 
@@ -626,22 +630,20 @@ toggle(){
   }
 
   search2() {
-    this.searchFilter = null;
-
     if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
       this.getRoutes ();
     else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url != null)
     {
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource ();
-      this.msfContainerRef.msfTableRef.getData (false);
+      this.msfContainerRef.msfTableRef.getData (false, this.searchFilter);
     }
     else if (this.globals.currentOption.tabType === 'usageStatistics')
       this.msfContainerRef.msfTableRef.getDataUsageStatistics ();
     else
     {
       this.clearSort ();
-      this.msfContainerRef.msfTableRef.getData (false);
+      this.msfContainerRef.msfTableRef.getData(false, this.searchFilter);
     }
   }
 
@@ -1746,7 +1748,53 @@ toggle(){
     _this.tableLoading = false;
   }
 
-  havingProblems(){
-    
+  havingProblems(): void
+  {  
+  }
+
+  toggleSearchColumnFilter(): void
+  {
+    this.searchColumnFilter = !this.searchColumnFilter;
+  }
+
+  searchWithFilter(): void
+  {
+    let isMobile = false;
+
+    this.searchColumnFilter = false;
+
+    if (this.mobileQuery.matches)
+      isMobile = true;
+
+  	// for mobile devices
+    this.globals.showCategoryArguments = false;
+    this.globals.showIntroWelcome = false;
+    this.globals.showTabs = true;
+
+    // remove summary configuration
+    this.partialSummaryValues = null;
+    this.dynamicTableValues = null;
+
+    if (this.globals.currentOption.metaData == 3)
+    {
+      this.configureCoordinates ();
+      return;
+    }
+
+    this.globals.moreResults = false;
+    this.globals.query = true;
+    this.globals.mapsc = false;
+    this.globals.tab = true;
+
+    if (isMobile)
+    {
+      this.changeDetectorRef.detectChanges ();
+
+      setTimeout (() => {
+        this.startSearch ();
+      }, 750);
+    }
+    else
+      this.startSearch ();
   }
 }
