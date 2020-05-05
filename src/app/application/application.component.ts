@@ -1766,6 +1766,15 @@ toggle(){
   {
     let isMobile = false;
 
+    if (this.searchFilter == null || this.searchFilter == "")
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must at least enter one letter to search for results." }
+      });
+
+      return;
+    }
+
     this.searchColumnFilter = false;
 
     if (this.mobileQuery.matches)
@@ -1801,5 +1810,10 @@ toggle(){
     }
     else
       this.startSearch ();
+  }
+
+  clearSearchFilter(): void
+  {
+    this.search ();
   }
 }
