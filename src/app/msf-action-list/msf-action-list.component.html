@@ -26,7 +26,7 @@
             <div class="divNode">
                 <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode">
                     <div class="actionListNodeTittle">
-                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <img src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <span>{{node.title}}</span>
                     </div>
                     <!-- <span class="actionListDesc">{{node.description}}</span> -->
@@ -34,7 +34,7 @@
                 </div>
                 <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode">
                     <div class="actionListNodeTittle">
-                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <img src="../../assets/images/components/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <!-- <span class="titleDeccription">{{node.description}}</span> -->
                         <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div>
                     </div>
