@@ -3518,6 +3518,24 @@
 .dark-theme .color-picker-header {
   border-bottom: 1px solid #3b3b3b;
 }
+.dark-theme .ActionList-container .admin-menu-tree .divNode .actionListNode .actionListNodeTittle, .dark-theme .ActionList-container .admin-menu-tree .divNode .actionListNode-child .actionListNodeTittle {
+  color: #01abec;
+}
+.dark-theme .ActionList-container .admin-menu-tree .divNode .actionListNode .actionListNodeTittle .titleDeccription, .dark-theme .ActionList-container .admin-menu-tree .divNode .actionListNode-child .actionListNodeTittle .titleDeccription {
+  color: #ffffff !important;
+}
+.dark-theme .ActionList-container .admin-menu-tree .divNode .actionListNode .titleDeccription, .dark-theme .ActionList-container .admin-menu-tree .divNode .actionListNode-child .titleDeccription {
+  color: #ffffff !important;
+}
+.dark-theme .msf-dashboard-panel-actionList .admin-menu-tree-body .admin-menu-tree {
+  background: #333333;
+}
+.dark-theme .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode {
+  background: #333333;
+}
+.dark-theme .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode-is-active {
+  border: 1px solid #01abec;
+}
 
 .dark-theme.partial-summaries-item {
   border-bottom: 1px solid #3d3d3d;
@@ -7035,6 +7053,24 @@
 }
 .light-theme .color-picker-header {
   border-bottom: 1px solid #e6e6e6;
+}
+.light-theme .ActionList-container .admin-menu-tree .divNode .actionListNode .actionListNodeTittle, .light-theme .ActionList-container .admin-menu-tree .divNode .actionListNode-child .actionListNodeTittle {
+  color: #00263E;
+}
+.light-theme .ActionList-container .admin-menu-tree .divNode .actionListNode .actionListNodeTittle .titleDeccription, .light-theme .ActionList-container .admin-menu-tree .divNode .actionListNode-child .actionListNodeTittle .titleDeccription {
+  color: #4d4d4d !important;
+}
+.light-theme .ActionList-container .admin-menu-tree .divNode .actionListNode .titleDeccription, .light-theme .ActionList-container .admin-menu-tree .divNode .actionListNode-child .titleDeccription {
+  color: #4d4d4d !important;
+}
+.light-theme .msf-dashboard-panel-actionList .admin-menu-tree-body .admin-menu-tree {
+  background: #efefef;
+}
+.light-theme .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode {
+  background: #efefef;
+}
+.light-theme .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode-is-active {
+  border: 1px solid #01abec;
 }
 
 .light-theme.partial-summaries-item {
@@ -19103,16 +19139,30 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   text-align: center;
 }
 
-.ActionList-container .divNode {
+.ActionList-container {
+  overflow-y: auto;
+  height: 100%;
+}
+.ActionList-container .admin-menu-tree {
+  background: transparent;
+}
+.ActionList-container .admin-menu-tree .divNode {
   text-align: left;
   width: 100%;
 }
-.ActionList-container .divNode .actionListNode, .ActionList-container .divNode .actionListNode-child {
+.ActionList-container .admin-menu-tree .divNode .actionListNode, .ActionList-container .admin-menu-tree .divNode .actionListNode-child {
   padding: 5px !important;
 }
-.ActionList-container .divNode .actionListNode .actionListNodeTittle, .ActionList-container .divNode .actionListNode-child .actionListNodeTittle {
+.ActionList-container .admin-menu-tree .divNode .actionListNode .actionListNodeTittle, .ActionList-container .admin-menu-tree .divNode .actionListNode-child .actionListNodeTittle {
   display: flex;
   flex-direction: row;
+  font-weight: 600;
+}
+.ActionList-container .admin-menu-tree .divNode .actionListNode .actionListNodeTittle .titleDeccription, .ActionList-container .admin-menu-tree .divNode .actionListNode-child .actionListNodeTittle .titleDeccription {
+  font-weight: lighter;
+}
+.ActionList-container .admin-menu-tree .divNode .actionListNode .titleDeccription, .ActionList-container .admin-menu-tree .divNode .actionListNode-child .titleDeccription {
+  font-weight: lighter;
 }
 
 .actionList-icon {
@@ -19131,17 +19181,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0 {
   padding: 0px 15px;
 }
 .msf-dashboard-panel-actionList .admin-menu-tree-body .admin-menu-tree {
-  background: white;
   border-radius: 10px;
 }
 .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode {
-  background: white;
   border-radius: 10px;
   margin: 3px 1px 0px 1px;
   width: calc(100% - 2px);
-}
-.msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node .divNode-is-active {
-  border: 1px solid #01abec;
 }
 .msf-dashboard-panel-actionList .admin-menu-tree .mat-tree-node[aria-level="0"] .divNode {
   margin: 20px 1px 0px 1px !important;

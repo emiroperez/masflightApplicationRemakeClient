@@ -1149,7 +1149,7 @@
                   <mat-tree class="admin-menu-tree" [dataSource]="dataSourceEditActionList" [treeControl]="treeControl">
                     <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node"
                       (click)=" getOptionSelected($event,node)">
-                      <div class="divNode" [ngClass]="{'divNode-is-active': node.isActive}">
+                      <div class="divNode" [class.divNode-is-active]="node.isActive">
                         <div class="{{globals.theme}} menu-node actionListNode">
                           <div class="actionListNodeTittle">
                             <button [ngStyle]="{ 'display': 'none' }" mat-icon-button disabled></button>
@@ -1158,14 +1158,20 @@
                                 [ngStyle]="{'background-image': 'url(../../assets/images/' + globals.theme+'-'+node.icon + ')'}">
                                 <mat-option>--</mat-option>
                                 <mat-option *ngFor="let icon of listActionIcons" value="{{icon}}">
-                                  <img src="../../assets/images/{{globals.theme}}-{{icon}}">
+                                  <img src="../../assets/images/components/{{globals.theme}}-{{icon}}">
                                 </mat-option>
                               </mat-select>
                             </mat-form-field>
                             <mat-form-field appearance="outline" class="input-option-tree">
                               <mat-label>Title</mat-label>
-                              <input matInput placeholder="Title" type="text" name="optionname" autocomplete="off"
-                                [(ngModel)]="node.title" (ngModelChange)="setChange(node)">
+                              <textarea matInput 
+                              cdkTextareaAutosize
+                              #autosize="cdkTextareaAutosize"
+                              cdkAutosizeMinRows="1"
+                              cdkAutosizeMaxRows="1"
+                              placeholder="Title" 
+                              autocomplete="off"
+                              [(ngModel)]="node.title" (ngModelChange)="setChange(node)"></textarea>
                             </mat-form-field>
                             <button *ngIf="optionSelected==node" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
                               <img src="../../assets/images/{{globals.theme}}-datalake-DeleteRow-active.png" />
@@ -1174,8 +1180,14 @@
                           <div>
                             <mat-form-field appearance="outline" class="input-option-tree input-description">
                               <mat-label>Description</mat-label>
-                              <input matInput placeholder="Description" type="text" name="optionname" autocomplete="off"
-                                [(ngModel)]="node.description" (ngModelChange)="setChange(node)">
+                              <textarea matInput 
+                              cdkTextareaAutosize
+                              #autosize="cdkTextareaAutosize"
+                              cdkAutosizeMinRows="1"
+                              cdkAutosizeMaxRows="5"
+                              placeholder="Description" 
+                              autocomplete="off"
+                              [(ngModel)]="node.description" (ngModelChange)="setChange(node)"></textarea>
                             </mat-form-field>
                             <button *ngIf="optionSelected==node" (click)="addNewItem(node,$event)" mat-icon-button matTooltip="Add sublevel">
                               <img src="../../assets/images/{{globals.theme}}-Addsublevel.png" />
@@ -1186,7 +1198,7 @@
                     </mat-tree-node>
                     <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)"
                       *matTreeNodeDef="let node;when: hasChild" (click)=" getOptionSelected($event,node)">
-                      <div class="divNode" [ngClass]="{'divNode-is-active': node.isActive}" [attr.aria-label]="node.uid">
+                      <div class="divNode" [class.divNode-is-active]="node.isActive" [attr.aria-label]="node.uid">
                         <div class="{{globals.theme}} menu-node actionListNode-child">
                           <div class="actionListNodeTittle">
                             <button [ngStyle]="{ 'display': 'none' }" mat-icon-button matTreeNodeToggle 
@@ -1200,14 +1212,20 @@
                                   [ngStyle]="{'background-image': 'url(../../assets/images/' + globals.theme+'-'+node.icon + ')'}">
                                   <mat-option>--</mat-option>
                                   <mat-option *ngFor="let icon of listActionIcons" value="{{icon}}">
-                                    <img src="../../assets/images/{{globals.theme}}-{{icon}}">
+                                    <img src="../../assets/images/components/{{globals.theme}}-{{icon}}">
                                   </mat-option>
                                 </mat-select>
                               </mat-form-field>
                               <mat-form-field appearance="outline" class="input-option-tree">
                                 <mat-label>Title</mat-label>
-                                <textarea matInput placeholder="Title" type="text" name="optionname" autocomplete="off"
-                                  [(ngModel)]="node.title" (ngModelChange)="setChange(node)">*hola*</textarea>
+                                <textarea matInput 
+                                cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize"
+                                cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="1"
+                                placeholder="Title" 
+                                autocomplete="off"
+                                [(ngModel)]="node.title" (ngModelChange)="setChange(node)"></textarea>
                               </mat-form-field>
                               <button *ngIf="optionSelected==node" (click)="DeleteItem(node)" mat-icon-button matTooltip="Delete Item">
                                 <img src="../../assets/images/{{globals.theme}}-datalake-DeleteRow-active.png" />
@@ -1216,8 +1234,14 @@
                           <div>
                             <mat-form-field appearance="outline" class="input-option-tree input-description">
                               <mat-label>Description</mat-label>
-                              <input matInput placeholder="Description" type="text" name="optionname" autocomplete="off"
-                                [(ngModel)]="node.description" (ngModelChange)="setChange(node)">
+                              <textarea matInput 
+                              cdkTextareaAutosize
+                              #autosize="cdkTextareaAutosize"
+                              cdkAutosizeMinRows="1"
+                              cdkAutosizeMaxRows="5"
+                              placeholder="Description" 
+                              autocomplete="off"
+                              [(ngModel)]="node.description" (ngModelChange)="setChange(node)"></textarea>
                             </mat-form-field>
                             <button *ngIf="optionSelected==node" (click)="addNewItem(node)" mat-icon-button matTooltip="Add sublevel">
                               <img src="../../assets/images/{{globals.theme}}-Addsublevel.png" />

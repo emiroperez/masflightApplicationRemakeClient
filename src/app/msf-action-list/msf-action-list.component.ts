@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ApplicationService } from '../services/application.service';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Globals } from '../globals/Globals';
 import { BehaviorSubject } from 'rxjs';
 import { ActionListFlatNode } from '../model/ActionListFlatNode';
@@ -10,10 +9,11 @@ import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
   selector: 'app-msf-action-list',
   templateUrl: './msf-action-list.component.html'
 })
-export class MsfActionListComponent implements OnInit {
+export class MsfActionListComponent {
 
   @Input('values')
   values: any;
+  result: boolean = false;
 
   dataChange = new BehaviorSubject<any[]>([]);
   get dataEditActionList(): any[] { return this.dataChange.value; }
@@ -58,19 +58,35 @@ export class MsfActionListComponent implements OnInit {
   dataSourceEditActionList = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   hasChild = (_: number, node: any) => (node.expandable);
   
-  constructor(private service: ApplicationService,private globals: Globals) {
+  constructor(private globals: Globals) {
     this.dataChange.subscribe(data => {
       this.dataSourceEditActionList.data = data;
     });
    }
 
-  ngOnInit() {
-    this.globals.isLoading = false;
-    this.dataChange.next(this.values);
-    this.treeControl.expandAll();
+  // ngOnInit() {
+  //   this.globals.isLoading = false;
+  //   this.dataChange.next(this.values);
+  //   this.treeControl.expandAll();
 
-    // this.service.loadActionListForDashboard(this,this.values.panelId, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
+  //   // this.service.loadActionListForDashboard(this,this.values.panelId, this.handlerGetSuccessMenuData, this.handlerGetErrorMenuData);
+  // }
+
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['values']){
+      this.dataChange.next(this.values);
+      this.treeControl.expandAll();
+      this.result = true;
+
+      // for (let index = 0; index < this.values.length; index++) {
+      //   this.values[index].description = this.getDescription(this.values[index].description)
+        
+      // }
+    }
   }
+
+
 
   rebuildTreeForData(data: any) {
     this.rememberExpandedTreeNodes(this.treeControl, this.expandedNodeSet);
@@ -145,4 +161,30 @@ export class MsfActionListComponent implements OnInit {
   }
 
 
+  getDescription(text){
+    if(text){
+      let exp = new RegExp('[*](\\w)+[*]', 'g');
+      let matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('*','<strong>');
+          newElement = newElement.replace('*','</strong>');
+          text = text.replace(element, newElement);      
+        }
+      }
+      
+      exp = new RegExp('[~](\\w)+[~]', 'g');
+      matchEpresion = text.match(exp);
+      if(matchEpresion){
+        for (let index = 0; index < matchEpresion.length; index++) {
+          const element = matchEpresion[index];
+          let newElement = element.replace('~','<del>');
+          newElement = newElement.replace('~','</del>');
+          text = text.replace(element, newElement);      
+        }
+      }
+    }
+    return text;
+  }
 }

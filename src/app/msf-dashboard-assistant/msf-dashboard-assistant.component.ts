@@ -42,8 +42,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
   
   @ViewChild("materialIconPicker", { static: false })
   materialIconPicker: MaterialIconPickerComponent;
+  recursiveDeleteDone: boolean;
 
-  listActionIcons: any[] = ['IconOption1.png','IconOption2.png','IconOption3.png','IconOption4.png','IconOption5.png','IconOption6.png'];
+  listActionIcons: any[] = ['IconOption1.png','IconOption2.png','IconOption3.png','IconOption4.png','IconOption5.png','IconOption6.png',
+  'datePeriod.png','Airlines.png','Airport_Date_Time.png','content_type.png','genre.png','media_name.png','region.png','Types.png','World Region.png'];
 
   panelTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', allowedInAdvancedMode: true },
@@ -158,6 +160,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
         flatNode.title = node.title;
         flatNode.description = node.description;
         flatNode.children = node.children;
+        flatNode.isActive = node.isActive;
         
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
@@ -2796,6 +2799,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
     for (let threshold of this.values.thresholds)
       threshold.filteredVariables = null;
 
+    if (this.values.currentChartType.flags & (ChartFlags.EDITACTIONLIST || ChartFlags.PICTURE))
+      this.values.currentOption = null;
+    
     this.dialogRef.close ({ generateChart: true, values: this.values });
   }
 
@@ -3177,11 +3183,6 @@ export class MsfDashboardAssistantComponent implements OnInit {
   }
 
   getOptionSelected($event,option) {
-    // $event.stopPropagation();
-    // if(this.optionSelected === option){
-    //   this.optionSelected.isActive = false;
-    //   this.optionSelected = null;
-    // }else{
       if(this.optionSelected != option){
       if(this.optionSelected){
         this.optionSelected.isActive = false;
@@ -3194,10 +3195,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
   }
 
   addNewItem(node,$event) {
+    // $event.stopPropagation();
     const parentNode = this.flatNodeMap.get(node);
     this.insertItem(parentNode!,this.values.id,$event);
     this.treeControl.expand(node);
-    // $event.stopPropagation();
   }
 
   DeleteItem(node) {
@@ -3205,7 +3206,60 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.deleteOption(parentNode!);
     this.treeControl.expand(node);
   }
-  
+
+  recursiveDelete(node) {
+    if (!node.children)
+      return;
+
+    for (let i = 0; i < node.children.length; i++) {
+      if (node.children[i].uid === this.optionSelected.uid) {
+        const index: number = node.children.findIndex(d => d.uid === this.optionSelected.uid);
+        node.children.splice(index, 1);
+        // node.children.splice(node.children.indexOf(this.optionSelected), 1);
+        this.dataChange.next(this.dataEditActionList);
+        this.recursiveDeleteDone = true;
+      }
+      else
+        this.recursiveDelete(node.children[i]);
+
+      if (this.recursiveDeleteDone)
+        break;
+    }
+  }
+
+  deleteNewItem() {
+    this.recursiveDeleteDone = false;
+
+    // find the node and delete it
+    for (let i = 0; i < this.dataSourceEditActionList.data.length; i++) {
+      if (this.dataSourceEditActionList.data[i].uid === this.optionSelected.uid) {
+        this.dataSourceEditActionList.data.splice(this.dataSourceEditActionList.data.indexOf(this.optionSelected), 1);
+        this.dataChange.next(this.dataEditActionList);
+        this.recursiveDeleteDone = true;
+      }
+      else
+        this.recursiveDelete(this.dataSourceEditActionList.data[i]);
+
+      if (this.recursiveDeleteDone)
+        break;
+    }
+
+    this.optionSelected = {};
+  }
+
+  deleteOption(node) {
+    if(node.parent){
+      this.deleteNewItem();
+    }else{
+      const index: number = this.dataSourceEditActionList.data.findIndex(d => d.uid === node.uid);
+      if(index != -1){
+        this.dataSourceEditActionList.data.splice(index, 1);
+        this.dataChange.next(this.dataEditActionList);
+      }
+    }
+     
+  }
+
   insertItem(parent: any,idpanel,$event) {
     if (parent) {
       parent.children.push({
@@ -3215,10 +3269,15 @@ export class MsfDashboardAssistantComponent implements OnInit {
         icon: 'IconOption6.png',
         parent: parent.uid,
         children: [],
-        description: null
+        description: null,
+        isActive: false
       } as any);      
       this.dataChange.next(this.dataEditActionList);
-      this.getOptionSelected(parent,$event);
+      // this.getOptionSelected($event,parent.children[parent.children.length-1]);
+      // if(this.optionSelected){
+      //   this.optionSelected.isActive = false;
+      // }
+      // this.optionSelected = parent.children[parent.children.length-1];
     } else {
       this.dataSourceEditActionList.data.push({
         title: '',
@@ -3227,9 +3286,14 @@ export class MsfDashboardAssistantComponent implements OnInit {
         icon: 'IconOption3.png',
         parent: null,
         children: [],
-        description: null
+        description: null,
+        isActive: false
       } as any);
       this.dataChange.next(this.dataEditActionList);
+      // if(this.optionSelected){
+      //   this.optionSelected.isActive = false;
+      // }
+      // this.optionSelected = this.dataSourceEditActionList.data[this.dataSourceEditActionList.data.length-1];
     }
     this.checkChartType();
   }
@@ -3313,16 +3377,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return 20;
   }
 
-  deleteOption(node) {
-    if(node.parent){
-      const index: number = this.dataSourceEditActionList.data.findIndex(d => d.uid === node.parent);
-    }else{
-      const index: number = this.dataSourceEditActionList.data.findIndex(d => d.uid === node.uid);
-      if(index != -1){
-        this.dataSourceEditActionList.data.splice(index, 1);
-        this.dataChange.next(this.dataEditActionList);
-      }
+  stop_Propagation(node,$event){
+    if(node.isActive){
+      $event.stopPropagation()
     }
-     
   }
+
   }

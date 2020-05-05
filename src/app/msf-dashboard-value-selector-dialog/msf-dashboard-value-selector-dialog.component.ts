@@ -116,7 +116,7 @@ export class MsfDashboardValueSelectorDialogComponent
       && !(panelType.flags & ChartFlags.FUNNELCHART)
       && !(panelType.flags & ChartFlags.MAP)
       && !(panelType.flags & ChartFlags.HEATMAP)
-      && !(panelType.flags & ChartFlags.ACTIONLIST)
+      && !(panelType.flags & ChartFlags.EDITACTIONLIST)
       && !(panelType.flags & ChartFlags.PICTURE)
       && !(panelType.flags & ChartFlags.TABLE)
       && !(panelType.flags & ChartFlags.DYNTABLE)

@@ -2488,6 +2488,21 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color,$dark-font-color, $dark-littl
             border: 1px solid $primary-color
         .color-picker-header
             border-bottom: 1px solid $dashboard-panel-background-color
+        .ActionList-container .admin-menu-tree .divNode 
+            .actionListNode, .actionListNode-child 
+                .actionListNodeTittle
+                    color: $primary-color-secundary
+                    .titleDeccription
+                        color: $font-color !important
+                .titleDeccription
+                    color: $font-color !important
+        .msf-dashboard-panel-actionList
+            .admin-menu-tree-body .admin-menu-tree
+                background: $dashboard-background-color
+            .admin-menu-tree .mat-tree-node .divNode
+                background: $dashboard-background-color
+            .admin-menu-tree .mat-tree-node .divNode-is-active
+                border: 1px solid $primary-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -12516,14 +12531,23 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         text-align: center
 
 .ActionList-container
-    .divNode
-        text-align: left
-        width: 100%
-        .actionListNode, .actionListNode-child
-            padding: 5px !important
-            .actionListNodeTittle
-                display: flex
-                flex-direction: row
+    overflow-y: auto
+    height: 100%
+    .admin-menu-tree
+        background: transparent
+        .divNode
+            text-align: left
+            width: 100%
+            .actionListNode, .actionListNode-child
+                padding: 5px !important
+                .actionListNodeTittle
+                    display: flex
+                    flex-direction: row
+                    font-weight: 600
+                    .titleDeccription
+                        font-weight: lighter
+                .titleDeccription
+                    font-weight: lighter
                 
 .actionList-icon
     height: 15px
@@ -12539,15 +12563,15 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
         justify-content: space-between
         padding: 0px 15px
     .admin-menu-tree-body .admin-menu-tree
-        background: white
+        // background: white
         border-radius: 10px
     .admin-menu-tree .mat-tree-node .divNode
-        background: white
+        // background: white
         border-radius: 10px
         margin: 3px 1px 0px 1px
         width: calc(100% - 2px)
     .admin-menu-tree .mat-tree-node .divNode-is-active
-        border: 1px solid #01abec
+        // border: 1px solid #01abec
     .admin-menu-tree .mat-tree-node[aria-level="0"]
         .divNode
             margin: 20px 1px 0px 1px !important

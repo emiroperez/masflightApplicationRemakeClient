@@ -1,26 +1,43 @@
 <div #scrollContainer class="menu-tree-scrollbar ActionList-container">
-    <mat-tree class="admin-menu-tree" [dataSource]="dataSourceEditActionList" [treeControl]="treeControl">
-        <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" 
-        *matTreeNodeDef="let node">
+    <div *ngIf="!result" class="no-image">No Result</div>
+    <mat-tree *ngIf="result" class="admin-menu-tree" [dataSource]="dataSourceEditActionList"
+        [treeControl]="treeControl">
+        <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)" *matTreeNodeDef="let node">
             <div class="divNode">
-                <div class="{{globals.theme}} menu-node actionListNode">
-                    <div class="actionListNodeTittle">                        
+                <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
                         <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <span>{{node.title}}</span>
                     </div>
-                    <span class="actionListDesc" >{{node.description}}</span>
+                    <!-- <span class="actionListDesc">{{node.description}}</span> -->
+                    <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div>
+                </div>
+                <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
+                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <!-- <span class="titleDeccription">{{node.description}}</span> -->
+                        <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div>
+                    </div>
                 </div>
             </div>
         </mat-tree-node>
         <mat-tree-node matTreeNodePadding [matTreeNodePaddingIndent]="getNodeIndent(node)"
             *matTreeNodeDef="let node;when: hasChild">
             <div class="divNode">
-                <div class="{{globals.theme}} menu-node actionListNode">
-                    <div class="actionListNodeTittle">                        
+                <div *ngIf="node.title.length!=0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
                         <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
                         <span>{{node.title}}</span>
                     </div>
-                    <span class="actionListDesc">{{node.description}}</span>
+                    <!-- <span class="actionListDesc">{{node.description}}</span> -->
+                    <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div>
+                </div>
+                <div *ngIf="node.title.length===0" class="{{globals.theme}} menu-node actionListNode">
+                    <div class="actionListNodeTittle">
+                        <img src="../../assets/images/{{globals.theme}}-{{node.icon}}" class="actionList-icon">
+                        <!-- <span class="titleDeccription">{{node.description}}</span> -->
+                        <div [innerHTML]="getDescription(node.description)" class="titleDeccription"></div>
+                    </div>
                 </div>
             </div>
         </mat-tree-node>

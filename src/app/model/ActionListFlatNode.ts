@@ -10,4 +10,5 @@ export class ActionListFlatNode {
   expandable: boolean;
   level: number;
   icon: any;
+  isActive: any;
 }

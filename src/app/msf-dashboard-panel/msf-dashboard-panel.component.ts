@@ -4593,7 +4593,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // discard any changes
     this.values.urlImg = values.urlImg;
-    this.values.EditActionList = values.EditActionList;
+    this.values.EditActionList = JSON.parse (JSON.stringify (values.EditActionList));
     this.values.currentOption = JSON.parse (JSON.stringify (values.currentOption));
     this.values.chartName = values.chartName;
     this.values.chartDescription = values.chartDescription;
@@ -5148,6 +5148,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         this.checkChartType ();
         return;
+      }
+      if (this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST)
+      {
+        this.values.EditActionList = JSON.parse (this.values.lastestResponse);
       }
     }
 
