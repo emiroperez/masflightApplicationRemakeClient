@@ -112,7 +112,7 @@
           </button>
           <div class="search-column-filter-container" *ngIf="searchColumnFilter">
               <div class="search-column-filter-form-field">
-                  <input matInput [(ngModel)]="searchFilter" placeholder="Search" autocomplete="off"/>
+                  <input #searchFilterInput matInput [(ngModel)]="searchFilter" placeholder="Search" autocomplete="off"/>
               </div>
               <button mat-button class="search-column-filter-button" (click)="searchWithFilter()">
                   <mat-icon>search</mat-icon>

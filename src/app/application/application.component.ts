@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
 import { Menu } from '../model/Menu';
 import { CategoryArguments } from '../model/CategoryArguments';
 import { Globals } from '../globals/Globals';
@@ -75,6 +75,9 @@ export class ApplicationComponent implements OnInit {
 
   @ViewChild('paginator', { static: false })
   paginator: MatPaginator;
+
+  @ViewChild('searchFilterInput', { static: false })
+  searchFilterInput: ElementRef;
 
   pageIndex: any;
 
@@ -1755,6 +1758,8 @@ toggle(){
   toggleSearchColumnFilter(): void
   {
     this.searchColumnFilter = !this.searchColumnFilter;
+    this.changeDetectorRef.detectChanges ();
+    this.searchFilterInput.nativeElement.focus ();
   }
 
   searchWithFilter(): void
