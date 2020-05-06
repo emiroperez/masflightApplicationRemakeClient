@@ -2,8 +2,8 @@
     <img class="partial-summaries-icon" src="../../assets/images/{{globals.theme}}-summary.png">
     <span class="partial-summaries-title">Subtotal</span>
     <div class="partial-summaries-header-buttons">
-        <button mat-flat-button [disabled]="!(colBreakers.length && (colAggregators.length || countRecords))" class="flat-button"
-            [ngClass]="{ 'flat-button-disabled' : !(colBreakers.length && (colAggregators.length || countRecords)), 'flat-button': colBreakers.length && (colAggregators.length || countRecords) }"
+        <button mat-flat-button [disabled]="!(colAggregators.length || countRecords)" class="flat-button"
+            [ngClass]="{ 'flat-button-disabled' : !(colAggregators.length || countRecords), 'flat-button': (colAggregators.length || countRecords) }"
             (click)="generateSummary()">
             Generate
         </button>

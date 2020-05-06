@@ -610,6 +610,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       let bullet, circle;
 
       series.strokeOpacity = 0;
+      series.minBulletDistance = 0;
 
       // add circle bullet for scatter chart
       bullet = series.bullets.push (new am4charts.Bullet ());
@@ -727,6 +728,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       let bullet, circle;
 
       series.strokeOpacity = 0;
+      series.minBulletDistance = 0;
 
       // add circle bullet for scatter chart
       bullet = series.bullets.push (new am4charts.Bullet ());
@@ -846,6 +848,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       let bullet, circle;
 
       series.strokeOpacity = 0;
+      series.minBulletDistance = 0;
 
       // add circle bullet for scatter chart
       bullet = series.bullets.push (new am4charts.Bullet ());
@@ -2076,6 +2079,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
             categoryAxis.renderer.minGridDistance = 30;
           }
+
 
           if (!(this.values.currentChartType.flags & ChartFlags.LINECHART && parseDate))
           {

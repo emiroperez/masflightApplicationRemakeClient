@@ -203,6 +203,7 @@ export class MsfDashboardChildPanelComponent {
       let bullet, circle;
 
       series.strokeOpacity = 0;
+      series.minBulletDistance = 0;
 
       // add circle bullet for scatter chart
       bullet = series.bullets.push (new am4charts.Bullet ());
