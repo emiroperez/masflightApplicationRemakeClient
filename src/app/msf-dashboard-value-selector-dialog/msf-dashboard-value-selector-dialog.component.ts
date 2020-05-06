@@ -70,7 +70,8 @@ export class MsfDashboardValueSelectorDialogComponent
         name: value.name,
         chartType: tempValueListInfo[i] ? tempValueListInfo[i].function : this.getFilteredChartType (this.data.values.currentChartType),
         function: tempValueListInfo[i] ? tempValueListInfo[i].function : 0,
-        axis: tempValueListInfo[i] ? tempValueListInfo[i].axis : (!i ? true : false)
+        axis: tempValueListInfo[i] ? tempValueListInfo[i].axis : (!i ? true : false),
+        axisName: tempValueListInfo[i] && this.data.values.valueList.length != 1 ? tempValueListInfo[i].axisName : null
       });      
     }
 
