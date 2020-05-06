@@ -82,8 +82,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     },
     {
       title: 'Link',
-      description: "To hyperlink your text, place <a url=''> at the beginning of your text  and </a> at the end of the text , inside the quotes put in link",
-      example: '<a url='+'https://pulse.globaleagle.com/'+'>Text<a>'
+      description: "To hyperlink your text, place <a url='your link'> at the beginning of your text  and </a> at the end of the text , inside the quotes put in link",
+      example: "<a url='https://pulse.globaleagle.com/'>Text<a>"
       // example: ""
     },
 
