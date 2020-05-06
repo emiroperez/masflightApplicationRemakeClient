@@ -107,6 +107,16 @@ export class ApplicationService {
       }
     }
 
+    // use total summary if no column breakers are set
+    if (config.totalSummary)
+    {
+      config.columnBreakers.push ({
+        column: null,
+        summary: true,
+        aggregators: JSON.parse (JSON.stringify (config.columnAggregators))
+      });
+    }
+
     if(_this.globals.currentOption.tabType != "legacy" && SortingColumns != "" && !_this.globals.showPaginator){
       let sortingList = "sortingList="+SortingColumns;
       if(!urlBase.includes("sortingList")){
@@ -135,6 +145,9 @@ export class ApplicationService {
       url += "&testPlanId=" + this.globals.testingPlan;
 
     this.authService.post (_this, url, config, handlerSuccess, handlerError);
+
+    if (config.totalSummary)
+      config.columnBreakers.pop ();
   }
 
   getDataTableSource(_this, handlerSuccess, handlerError, pageNumber: String, tokenResultable: String, SortingColumns: String, searchFilter: string) {

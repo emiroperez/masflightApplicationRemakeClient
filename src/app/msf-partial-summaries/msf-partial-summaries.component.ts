@@ -58,7 +58,7 @@ export class MsfPartialSummariesComponent {
       });
     }
 
-    for (let colAggregator of this.data.partialSummaryValues.columnBreakers[0].aggregators)
+    for (let colAggregator of this.data.partialSummaryValues.columnAggregators)
     {
       let temp = this.data.metadata[0];
 
@@ -137,7 +137,9 @@ export class MsfPartialSummariesComponent {
     this.dialogRef.close ({
       columnBreakers: this.colBreakers,
       countRecords: this.countRecords,
-      countAlias: this.countAlias
+      countAlias: this.countAlias,
+      columnAggregators: this.colAggregators,
+      totalSummary: this.colBreakers.length ? false : true
     });
   }
 }
