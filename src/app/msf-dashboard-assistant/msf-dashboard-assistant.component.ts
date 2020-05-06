@@ -54,6 +54,42 @@ export class MsfDashboardAssistantComponent implements OnInit {
   listActionIcons: any[] = ['IconOption1.png','IconOption2.png','IconOption3.png','IconOption4.png','IconOption5.png','IconOption6.png',
   'datePeriod.png','Airlines.png','Airport_Date_Time.png','content_type.png','genre.png','media_name.png','region.png','Types.png','World Region.png'];
 
+  listFormat: any[] = [
+    {
+      title: 'Italic',
+      description: 'To <i>italicize</i> your text, place an underscore on both sides of the text:',
+      example: '_text_'
+    },
+    {
+      title: 'Bold',
+      description: 'To <strong>bold</strong> your text, place an asterisk on both sides of the text:',
+      example: '*text*'
+    },
+    {
+      title: 'Italic-Bold',
+      description: 'To <i><strong>italicize and bold</i></strong> your text, place an underscore and an asterisk on both sides of the text:',
+      example: '_*text*_'
+    },
+    {
+      title: 'Strikethrough',
+      description: 'To <del>strikethrough</del> your text, place a tilde on both sides of the text:',
+      example: '~text~'
+    },
+    {
+      title: 'Monospace',
+      description: 'To <tt>monospace</tt> your text, place an underscore and a tilde on both sides of the text:',
+      example: '_~text~_'
+    },
+    {
+      title: 'Link',
+      description: "To hyperlink your text, place <a url=''> at the beginning of your text  and </a> at the end of the text , inside the quotes put in link",
+      example: '<a url='+'https://pulse.globaleagle.com/'+'>Text<a>'
+      // example: ""
+    },
+
+  ];
+
+
   panelTypes: any[] = [
     { name: 'Bars', flags: ChartFlags.XYCHART, image: 'vert-bar-chart.png', allowedInAdvancedMode: true },
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', allowedInAdvancedMode: true },

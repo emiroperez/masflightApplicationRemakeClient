@@ -1143,6 +1143,21 @@
                   <button mat-icon-button (click)="addNewItem(null,$event)">
                     <mat-icon class="admin-mat-icon-button" aria-label="add">add_circle</mat-icon>
                   </button>
+                  <button mat-icon-button [matMenuTriggerFor]="helpConfigList">
+                    <mat-icon class="admin-mat-icon-button" 
+                    aria-label="add">help_outline</mat-icon>
+                  </button>
+
+                  <mat-menu #helpConfigList="matMenu" xPosition="before" class='matMenuActionList'>
+                    <mat-list>
+                      <mat-list-item *ngFor= "let item of listFormat">
+                        <h3 matLine class="titleFormatList">{{item.title}}</h3>
+                        <div *ngIf = "item.title != 'Link'" matLine [innerHTML]="item.description"></div>
+                        <div *ngIf = "item.title == 'Link'" matLine >{{item.description}}</div>
+                        <span matLine>{{item.example}}</span>
+                      </mat-list-item>
+                    </mat-list>
+                  </mat-menu>
                 </div>
               </div>
               <div #scrollContainer class="menu-tree-scrollbar admin-menu-tree-body image-url-container">

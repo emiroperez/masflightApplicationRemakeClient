@@ -217,6 +217,8 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
             background-color: $selected-menu-color !important
         .mat-menu-panel
             background-color: $menu-header-color
+        .mat-menu-panel.matMenuActionList
+            background-color: $dashboard-assistant-sub-background-color !important
         .mat-menu-item
             border-bottom: 1px solid $menu-border-color !important
         .mat-menu-item-highlighted:not([disabled]), .mat-menu-item.cdk-keyboard-focused:not([disabled]), .mat-menu-item.cdk-program-focused:not([disabled]), .mat-menu-item:hover:not([disabled])
@@ -2439,6 +2441,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
                         color: $dashboard-assistant-analysis-font-color !important
         .msf-dashboard-panel-step-item
             background-color: $dashboard-assistant-sub-background-color
+            // background-color: $background-color
             .mat-form-field-label
                 color: $font-color
             .mat-form-field-appearance-outline .mat-form-field-outline
@@ -2504,10 +2507,20 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
         .msf-dashboard-panel-actionList
             .admin-menu-tree-body .admin-menu-tree
                 background: $dashboard-background-color
+                // background: $background-color
             .admin-menu-tree .mat-tree-node .divNode
                 background: $dashboard-background-color
+                // background: $background-color
             .admin-menu-tree .mat-tree-node .divNode-is-active
                 border: 1px solid $primary-color
+        .titleFormatList
+            color: $control-variable-icon-color
+        .mat-menu-panel.matMenuActionList::-webkit-scrollbar-thumb
+            background-color: $primary-color-secundary
+            outline: 1px solid $primary-color-secundary
+        .msf-dashboard-panel-tittle-actionList
+            button[aria-expanded="true"]
+                background-color: $dashboard-panel-background-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -3753,6 +3766,14 @@ button[aria-expanded="true"]
       div
         padding-top: 8px
         padding-bottom: 8px
+
+.mat-menu-panel.matMenuActionList
+    max-width: 100% !important
+    max-height: 350px
+    .mat-list-item
+        height: auto !important
+        margin-bottom: 10px
+
 
 // Airport component
 
@@ -12742,6 +12763,10 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             opacity: 0
         input:focus::-ms-input-placeholder
             opacity: 0
+
+.titleFormatList
+    font-size: larger !important
+    font-weight: bold !important
 
 //.amcharts-LineSeries
 //    stroke-linejoin: round
