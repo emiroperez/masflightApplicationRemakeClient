@@ -1149,12 +1149,13 @@
                   </button>
 
                   <mat-menu #helpConfigList="matMenu" xPosition="before" class='matMenuActionList'>
+                    <h3 style="padding: 0 16px" class="titleFormatList">How to format your text</h3>
                     <mat-list>
                       <mat-list-item *ngFor= "let item of listFormat">
                         <h3 matLine class="titleFormatList">{{item.title}}</h3>
                         <div *ngIf = "item.title != 'Link'" matLine [innerHTML]="item.description"></div>
                         <div *ngIf = "item.title == 'Link'" matLine >{{item.description}}</div>
-                        <span matLine>{{item.example}}</span>
+                        <div matLine>{{item.example}}</div>
                       </mat-list-item>
                     </mat-list>
                   </mat-menu>
