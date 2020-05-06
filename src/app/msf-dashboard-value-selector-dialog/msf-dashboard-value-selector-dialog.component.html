@@ -43,8 +43,15 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <div class="assistant-function-combobox datalake-search-input" *ngIf="value.axis">
+          <mat-form-field class="datalake-search-formfield config-panel-form-field value-item-axis-name" appearance="outline">
+            <mat-label>Axis Name</mat-label>
+            <input matInput [(ngModel)]="value.axisName" />
+          </mat-form-field>
+        </div>
+        <div class="value-item-axis-no-name" *ngIf="!value.axis"></div>
         <div class="value-item-axis-checkbox" *ngIf="i">
-          <mat-checkbox [(ngModel)]="value.axis">
+          <mat-checkbox [(ngModel)]="value.axis" (ngModelUpdate)="toggleAxisName(i)">
             Generate New Axis
           </mat-checkbox>
         </div>
