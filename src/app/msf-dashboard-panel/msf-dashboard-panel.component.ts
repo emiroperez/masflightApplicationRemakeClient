@@ -1949,6 +1949,13 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
+            if (!this.values.valueListInfo[i].axisName && !(this.values.valueListInfo[i].axisName && this.values.valueListInfo[i] != ""))
+              valueAxis.title.text = this.values.valueList[i].name;
+            else
+              valueAxis.title.text = this.values.valueListInfo[i].axisName;
+
+            valueAxis.title.fill = am4core.color (this.paletteColors[i]);
+
             if (this.values.startAtZero)
               valueAxis.min = 0;
 

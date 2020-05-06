@@ -496,7 +496,7 @@ export class MsfChartPreviewComponent {
 
         valueAxes = [];
 
-        if (this.isSimpleChart() && this.data.valueListInfo.length > 1 && this.data.chartMode !== "advanced")
+        if (this.isSimpleChart () && this.data.valueListInfo.length > 1 && this.data.chartMode !== "advanced")
         {
           for (let i = 0; i < this.data.valueListInfo.length; i++)
           {
@@ -525,6 +525,13 @@ export class MsfChartPreviewComponent {
                 valueAxis.renderer.opposite = true;
               }
             }
+
+            if (!this.data.valueListInfo[i].axisName && !(this.data.valueListInfo[i].axisName && this.data.valueListInfo[i] != ""))
+              valueAxis.title.text = this.data.valueList[i].name;
+            else
+              valueAxis.title.text = this.data.valueListInfo[i].axisName;
+
+            valueAxis.title.fill = am4core.color (this.paletteColors[i]);
 
             if (this.data.startAtZero)
               valueAxis.min = 0;

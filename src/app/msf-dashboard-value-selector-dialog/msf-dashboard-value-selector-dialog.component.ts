@@ -33,7 +33,8 @@ export class MsfDashboardValueSelectorDialogComponent
           name: curValue.name,
           chartType: valueInfo.chartType ? valueInfo.chartType : this.getFilteredChartType (data.values.currentChartType),
           function: valueInfo.function,
-          axis: valueInfo.axis
+          axis: valueInfo.axis,
+          axisName: valueInfo.axisName
         });
       }
 
@@ -106,6 +107,12 @@ export class MsfDashboardValueSelectorDialogComponent
   onNoClick(): void
   {
     this.dialogRef.close ();
+  }
+
+  toggleAxisName(index): void
+  {
+    if (!this.valueListInfo[index].axis)
+      this.valueListInfo[index].name = undefined;
   }
 
   isSimpleChart(panelType): boolean
