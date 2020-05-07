@@ -87,15 +87,16 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Advanced Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
     { name: 'Simple Lines', flags: ChartFlags.LINECHART, createSeries: this.createSimpleLineSeries },
     { name: 'Advanced Simple Lines', flags: ChartFlags.LINECHART | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createLineSeries },
-    { name: 'Advanced Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
-    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
-    { name: 'Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
+    { name: '(obsolete) Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createLineSeries },
+    { name: '(obsolete) Advanced Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createLineSeries },
+    { name: '(obsolete) Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, createSeries: this.createSimpleLineSeries },
+    { name: '(obsolete) Advanced Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ADVANCED, createSeries: this.createSimpleLineSeries },
     { name: 'Link Image', flags: ChartFlags.INFO | ChartFlags.PICTURE },
-    { name: 'Editable List', flags: ChartFlags.INFO | ChartFlags.EDITACTIONLIST},
+    { name: 'Editable List', flags: ChartFlags.INFO | ChartFlags.EDITACTIONLIST },
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE },
     { name: 'Simple Vertical Lines', flags: ChartFlags.LINECHART | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries },
-    { name: 'Simple Vertical Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries }
+    { name: '(obsolete) Simple Vertical Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, createSeries: this.createScatterSeries }
   ];
 
   functions: any[] = [
@@ -426,15 +427,25 @@ export class MsfDashboardPanelComponent implements OnInit {
               {
                 let theme = this.globals.theme;
 
-                if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                if (this.values.currentChartType.flags & ChartFlags.BULLET)
                 {
+                  this.chart.scrollbarX = new am4core.Scrollbar ();
+                  this.chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
                   this.chart.scrollbarY = new am4core.Scrollbar ();
                   this.chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
                 }
                 else
                 {
-                  this.chart.scrollbarX = new am4core.Scrollbar ();
-                  this.chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+                  if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                  {
+                    this.chart.scrollbarY = new am4core.Scrollbar ();
+                    this.chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+                  }
+                  else
+                  {
+                    this.chart.scrollbarX = new am4core.Scrollbar ();
+                    this.chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+                  }
                 }
               }
             }
@@ -589,6 +600,50 @@ export class MsfDashboardPanelComponent implements OnInit {
     return series;
   }
 
+  createScatterSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
+  {
+    let series, bullet, circle;
+
+    // Set up series
+    series = chart.series.push (new am4charts.LineSeries ());
+
+    series.name = item.valueAxis;
+    series.dataFields.valueX = values.xaxis.id;
+    series.dataFields.valueY = item.valueField;
+    series.strokeWidth = 2;
+    series.strokeOpacity = 0;
+    series.minBulletDistance = 0;
+    series.tooltip.pointerOrientation = "vertical";
+    series.tooltip.background.cornerRadius = 20;
+    series.tooltip.background.fillOpacity = 0.5;
+    series.tooltip.label.padding (12, 12, 12, 12);
+//    series.sequencedInterpolation = true;
+
+    // add circle bullet for scatter chart
+    bullet = series.bullets.push (new am4charts.Bullet ());
+
+    circle = bullet.createChild (am4core.Circle);
+    circle.horizontalCenter = "middle";
+    circle.verticalCenter = "middle";
+    circle.strokeWidth = 0;
+    circle.width = 6;
+    circle.height = 6;
+
+    circle.tooltipText = "[bold]{name}:[/]\n";
+
+    if (values.xaxis.item.columnType === "number")
+      circle.tooltipText += values.xaxis.item.columnLabel + ": " + (values.xaxis.item.prefix ? values.xaxis.item.prefix : "") + "{valueX}" + (values.xaxis.item.suffix ? values.xaxis.item.suffix : "") + "\n";
+    else
+      circle.tooltipText += values.xaxis.item.columnLabel + ": {valueX}\n";
+
+    if (values.valueColumn.item.columnType === "number")
+      circle.tooltipText += values.valueColumn.item.columnLabel + ": " + (values.valueColumn.item.prefix ? values.valueColumn.item.prefix : "") + "{valueY}" + (values.valueColumn.item.suffix ? values.valueColumn.item.suffix : "");
+    else
+      circle.tooltipText += values.valueColumn.item.columnLabel + ": {valueY}";
+
+    series.showOnInit = false;
+  }
+
   // Function to create line chart series
   createLineSeries(values, stacked, chart, item, parseDate, theme, outputFormat, paletteColors): any
   {
@@ -604,24 +659,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionX = 0.8;
-
-    if (values.currentChartType.flags & ChartFlags.BULLET)
-    {
-      let bullet, circle;
-
-      series.strokeOpacity = 0;
-      series.minBulletDistance = 0;
-
-      // add circle bullet for scatter chart
-      bullet = series.bullets.push (new am4charts.Bullet ());
-
-      circle = bullet.createChild (am4core.Circle);
-      circle.horizontalCenter = "middle";
-      circle.verticalCenter = "middle";
-      circle.strokeWidth = 0;
-      circle.width = 12;
-      circle.height = 12;
-    }
 
     if (parseDate)
     {
@@ -1331,6 +1368,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     this.values.chartSeries = [];
 
+    // Convert the old "Scatter" chart into line charts
+    if (this.values.currentChartType.flags & ChartFlags.LINECHART && this.values.currentChartType.flags & ChartFlags.BULLET)
+      this.values.currentChartType.flags &= ~ChartFlags.BULLET;
+
     if (this.values.paletteColors && this.values.paletteColors.length)
       this.paletteColors = this.values.paletteColors;
     else
@@ -1859,7 +1900,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.data));
-          if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+          if (this.values.currentChartType.flags & ChartFlags.ADVANCED || this.values.currentChartType.flags & ChartFlags.BULLET)
             parseDate = false;
           else
             parseDate = (this.values.xaxis.item.columnType === "date") ? true : false;
@@ -1867,7 +1908,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
-          if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
+          if (this.values.currentChartType.flags & ChartFlags.ADVANCED || this.values.currentChartType.flags & ChartFlags.BULLET)
             parseDate = false;
           else
             parseDate = (this.values.variable.item.columnType === "date") ? true : false;
@@ -2027,9 +2068,19 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
           {
-            categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-            categoryAxis.renderer.minGridDistance = 15;
-            categoryAxis.renderer.labels.template.maxWidth = 160;
+            if (this.values.currentChartType.flags & ChartFlags.BULLET)
+            {
+              categoryAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+              if (this.values.startAtZero)
+                categoryAxis.min = 0;
+            }
+            else
+            {
+              categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+              categoryAxis.renderer.minGridDistance = 15;
+              categoryAxis.renderer.labels.template.maxWidth = 160;
+            }
           }
 
           if (!(this.isSimpleChart () && valueAxes.length > 1))
@@ -2043,8 +2094,18 @@ export class MsfDashboardPanelComponent implements OnInit {
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1 && !this.isMobile)
           {
-            chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            if (this.values.currentChartType.flags & ChartFlags.BULLET)
+            {
+              chart.scrollbarX = new am4core.Scrollbar ();
+              chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+              chart.scrollbarY = new am4core.Scrollbar ();
+              chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
+            else
+            {
+              chart.scrollbarY = new am4core.Scrollbar ();
+              chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
           }
         }
         else
@@ -2083,12 +2144,22 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
           {
-            categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
-            categoryAxis.renderer.minGridDistance = 30;
+            if (this.values.currentChartType.flags & ChartFlags.BULLET)
+            {
+              categoryAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+              if (this.values.startAtZero)
+                categoryAxis.min = 0;
+            }
+            else
+            {
+              categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+              categoryAxis.renderer.minGridDistance = 30;
+            }
           }
 
 
-          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART && parseDate))
+          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART && parseDate) && !(this.values.currentChartType.flags & ChartFlags.BULLET))
           {
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
@@ -2105,24 +2176,52 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           if (chart.data.length > 1 && !this.isMobile)
           {
-            chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            if (this.values.currentChartType.flags & ChartFlags.BULLET)
+            {
+              chart.scrollbarX = new am4core.Scrollbar ();
+              chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+              chart.scrollbarY = new am4core.Scrollbar ();
+              chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
+            else
+            {
+              chart.scrollbarX = new am4core.Scrollbar ();
+              chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
           }
         }
 
         // Set category axis properties
-        categoryAxis.renderer.labels.template.fontSize = 10;
-        categoryAxis.renderer.labels.template.wrap = true;
-        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
-        categoryAxis.renderer.labels.template.textAlign  = "end";
-        categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-        categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.renderer.grid.template.strokeOpacity = 1;
-        categoryAxis.renderer.line.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
-        categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
-        categoryAxis.renderer.grid.template.strokeWidth = 1;
-        categoryAxis.renderer.line.strokeWidth = 1;
+        if (this.values.currentChartType.flags & ChartFlags.BULLET)
+        {
+          categoryAxis.renderer.labels.template.fontSize = 10;
+          categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          categoryAxis.renderer.grid.template.strokeOpacity = 1;
+          categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+          categoryAxis.renderer.grid.template.strokeWidth = 1;
+
+          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+
+          // Set axis tooltip background color depending of the theme
+          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
+        }
+        else
+        {
+          categoryAxis.renderer.labels.template.fontSize = 10;
+          categoryAxis.renderer.labels.template.wrap = true;
+          categoryAxis.renderer.labels.template.horizontalCenter  = "right";
+          categoryAxis.renderer.labels.template.textAlign  = "end";
+          categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          categoryAxis.renderer.grid.template.location = 0;
+          categoryAxis.renderer.grid.template.strokeOpacity = 1;
+          categoryAxis.renderer.line.strokeOpacity = 1;
+          categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+          categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
+          categoryAxis.renderer.grid.template.strokeWidth = 1;
+          categoryAxis.renderer.line.strokeWidth = 1;
+        }
 
         if (!(this.isSimpleChart () && valueAxes.length > 1))
         {
@@ -2136,10 +2235,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
-
-        // Set axis tooltip background color depending of the theme
-        categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-        categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
         if (this.values.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -2253,7 +2348,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             }
           }
 
-          if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
+          if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.BULLET))
           {
             // Sort chart series from least to greatest by calculating the
             // total value of each key item to compensate for the lack of proper
@@ -2418,7 +2513,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED))
+            if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.BULLET))
             {
               if (this.values.valueList && this.values.valueList.length > 1)
               {
@@ -2660,19 +2755,28 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
-        if (this.values.currentChartType.flags & ChartFlags.LINECHART && !chart.cursor)
+        if ((this.values.currentChartType.flags & ChartFlags.LINECHART || this.values.currentChartType.flags & ChartFlags.BULLET) && !chart.cursor)
         {
           chart.cursor = new am4charts.XYCursor ();
 
-          if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+          if (this.values.currentChartType.flags & ChartFlags.BULLET)
+          {
             chart.cursor.lineX.zIndex = 2;
-          else
             chart.cursor.lineY.zIndex = 2;
+            chart.cursor.behavior = "zoomXY";
+          }
+          else
+          {
+            if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+              chart.cursor.lineX.zIndex = 2;
+            else
+              chart.cursor.lineY.zIndex = 2;
+          }
         }
 
         if (chart.cursor)
         {
-          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART) && !barChartHoverSet)
+          if (!(this.values.currentChartType.flags & ChartFlags.LINECHART) && !(this.values.currentChartType.flags & ChartFlags.BULLET) && !barChartHoverSet)
           {
             if (this.values.currentChartType.flags & ChartFlags.ROTATED)
             {
@@ -3409,6 +3513,8 @@ export class MsfDashboardPanelComponent implements OnInit {
       // don't use the xaxis parameter if the chart type is pie, donut or radar
       if (this.values.currentChartType.flags & ChartFlags.PIECHART || this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
         url += "&chartType=pie";
+      else if (this.values.currentChartType.flags & ChartFlags.BULLET)
+        url += "&chartType=scatter";
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
         url += "&chartType=simplebar";
     }
@@ -4885,7 +4991,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
         || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
         || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE
-        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST))
+        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST) && this.functions.indexOf (this.values.function) == -1)
         this.values.function = this.functions[0];
 
       this.values.formVariables = [];

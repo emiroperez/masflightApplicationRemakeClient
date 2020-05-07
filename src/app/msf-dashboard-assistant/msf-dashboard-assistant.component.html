@@ -375,7 +375,8 @@
                 <div class="msf-dashboard-assistant-chart-config-button"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
                      (click)="selectValue()" *ngIf="!isSimpleChart()">
-                  Value
+                  <span *ngIf="!isScatterChart()">Value</span>
+                  <span *ngIf="isScatterChart()">Y - Axis</span>
                 </div>
                 <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && !isAdvChartPanel()">
                   Set Values
@@ -391,7 +392,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart() && !isAdvChartPanel()">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart() && !isAdvChartPanel() && !isScatterChart()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
                     <mat-label>Function</mat-label>
                     <mat-select [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
@@ -449,8 +450,8 @@
                 </mat-radio-button>
               </mat-radio-group>
             </div>
-            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && isLineOrBarChart()">
-              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
+            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && (isLineOrBarChart() || isScatterChart())">
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" *ngIf="!isScatterChart()" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
               <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
             </div>
           </div>
