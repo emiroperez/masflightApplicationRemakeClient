@@ -2160,13 +2160,6 @@ export class MsfDashboardPanelComponent implements OnInit {
           categoryAxis.renderer.grid.template.strokeOpacity = 1;
           categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
           categoryAxis.renderer.grid.template.strokeWidth = 1;
-
-          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
-
-          // Set axis tooltip background color depending of the theme
-          categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-          categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
         else
         {
@@ -2183,6 +2176,10 @@ export class MsfDashboardPanelComponent implements OnInit {
           categoryAxis.renderer.grid.template.strokeWidth = 1;
           categoryAxis.renderer.line.strokeWidth = 1;
         }
+
+        // Set axis tooltip background color depending of the theme
+        categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+        categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
         if (!(this.isSimpleChart () && valueAxes.length > 1))
         {
