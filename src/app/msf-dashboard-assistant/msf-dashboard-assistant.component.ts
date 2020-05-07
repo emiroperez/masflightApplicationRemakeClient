@@ -2136,6 +2136,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
       }
     }
+    else
+    {
+      this.values.currentOptionCategories = [];
+      this.configureControlVariables ();
+    }
   }
 
   selectItem(item): void

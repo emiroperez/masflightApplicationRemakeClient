@@ -206,10 +206,10 @@
           <div [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
             <div class="msf-dashboard-assistant-content">
               <div class="msf-dashboard-assistant-tab-group">
-                <div class="no-control-variables-container" *ngIf="!values.currentOptionCategories && stepLoading != 4 && tablePreview">
+                <div class="no-control-variables-container" *ngIf="(!values.currentOptionCategories || !values.currentOptionCategories.length) && stepLoading != 4 && tablePreview">
                   No Control Variables For This Option
                 </div>
-                <ng-container *ngIf="values.currentOptionCategories && stepLoading != 4 && tablePreview">
+                <ng-container *ngIf="values.currentOptionCategories && values.currentOptionCategories.length && stepLoading != 4 && tablePreview">
                   <mat-tab-group #configTabs>
                     <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                       <ng-template mat-tab-label>
