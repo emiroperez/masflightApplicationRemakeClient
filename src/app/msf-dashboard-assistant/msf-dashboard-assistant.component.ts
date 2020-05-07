@@ -139,7 +139,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   hasChild = (_: number, node: any) => (node.expandable);
 
   configTableLoading: boolean = false;
-  noControlVariables: boolean = true;
+  noControlVariables: boolean = false;
   configuredControlVariables: boolean = false;
   panelMode: string = "basic";
   panelConfigRefresh: boolean = false;
