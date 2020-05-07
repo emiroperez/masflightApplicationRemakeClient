@@ -973,12 +973,21 @@
                       <ng-container>Use Theme Colors</ng-container>
                     </mat-checkbox>
                   </div>
-                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length">
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && !isScatterChart()">
                     <div class="msf-dashboard-color-picker-grid-layout">
                       <div *ngFor="let color of values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
                         <span class="msf-dashboard-color-picker-selector-label">Color {{i + 1}}</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[i]" [style.background]="values.paletteColors[i]" [(cpOutputFormat)]="hex" />
                         <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[i]}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && isScatterChart()">
+                    <div class="msf-dashboard-color-picker-grid-layout">
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Plot Color</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
                       </div>
                     </div>
                   </div>

@@ -100,7 +100,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', allowedInAdvancedMode: false },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', allowedInAdvancedMode: true },
     { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', allowedInAdvancedMode: true },
-//    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: false },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: false },
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', allowedInAdvancedMode: false },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', allowedInAdvancedMode: false },

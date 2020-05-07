@@ -607,9 +607,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Set up series
     series = chart.series.push (new am4charts.LineSeries ());
 
-    series.name = item.valueAxis;
     series.dataFields.valueX = values.xaxis.id;
-    series.dataFields.valueY = item.valueField;
+    series.dataFields.valueY = values.valueColumn.id;
     series.strokeWidth = 2;
     series.strokeOpacity = 0;
     series.minBulletDistance = 0;
@@ -628,7 +627,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     circle.width = 6;
     circle.height = 6;
 
-    circle.tooltipText = "[bold]{name}:[/]\n";
+    circle.tooltipText = "[bold]{title}:[/]\n";
 
     if (values.xaxis.item.columnType === "number")
       circle.tooltipText += values.xaxis.item.columnLabel + ": " + (values.xaxis.item.prefix ? values.xaxis.item.prefix : "") + "{valueX}" + (values.xaxis.item.suffix ? values.xaxis.item.suffix : "") + "\n";
@@ -2810,7 +2809,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.setFormatOptions ("pdf", options);
       }
 
-      if (this.values.currentChartType.flags & ChartFlags.XYCHART
+      if (this.values.currentChartType.flags & ChartFlags.XYCHART && !(this.values.currentChartType.flags & ChartFlags.BULLET)
         || (this.isSimpleChart () && this.values.valueList && this.values.valueList.length > 1))
       {
         // Display Legend
