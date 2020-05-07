@@ -100,7 +100,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', allowedInAdvancedMode: false },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', allowedInAdvancedMode: true },
     { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', allowedInAdvancedMode: true },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: false },
+//    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: false },
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', allowedInAdvancedMode: false },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', allowedInAdvancedMode: false },
@@ -139,6 +139,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   hasChild = (_: number, node: any) => (node.expandable);
 
   configTableLoading: boolean = false;
+  noControlVariables: boolean = true;
   configuredControlVariables: boolean = false;
   panelMode: string = "basic";
   panelConfigRefresh: boolean = false;
@@ -1401,6 +1402,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     {
       // load table when there are no control variables
       _this.configTableLoading = true;
+      _this.noControlVariables = true;
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
       return;
     }
@@ -2136,8 +2138,9 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
       }
     }
-    else
+    else if (this.noControlVariables)
     {
+      this.noControlVariables = false;
       this.values.currentOptionCategories = [];
       this.configureControlVariables ();
     }
