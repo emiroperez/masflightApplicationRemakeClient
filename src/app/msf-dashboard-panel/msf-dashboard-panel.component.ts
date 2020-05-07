@@ -617,7 +617,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.background.cornerRadius = 20;
     series.tooltip.background.fillOpacity = 0.5;
     series.tooltip.label.padding (12, 12, 12, 12);
-//    series.sequencedInterpolation = true;
 
     // add circle bullet for scatter chart
     bullet = series.bullets.push (new am4charts.Bullet ());
@@ -760,25 +759,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tensionX = 0.8;
     series.zIndex = 1;
 
-    if (values.currentChartType.flags & ChartFlags.BULLET)
-    {
-      let bullet, circle;
-
-      series.strokeOpacity = 0;
-      series.minBulletDistance = 0;
-
-      // add circle bullet for scatter chart
-      bullet = series.bullets.push (new am4charts.Bullet ());
-
-      circle = bullet.createChild (am4core.Circle);
-      circle.horizontalCenter = "middle";
-      circle.verticalCenter = "middle";
-      circle.fill = am4core.color (paletteColors[index]);
-      circle.strokeWidth = 0;
-      circle.width = 12;
-      circle.height = 12;
-    }
-
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       series.dataFields.categoryX = item.titleField;
@@ -879,25 +859,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     series.tooltip.label.padding (12, 12, 12, 12);
     series.tensionY = 0.8;
     series.zIndex = 1;
-
-    if (values.currentChartType.flags & ChartFlags.BULLET)
-    {
-      let bullet, circle;
-
-      series.strokeOpacity = 0;
-      series.minBulletDistance = 0;
-
-      // add circle bullet for scatter chart
-      bullet = series.bullets.push (new am4charts.Bullet ());
-
-      circle = bullet.createChild (am4core.Circle);
-      circle.horizontalCenter = "middle";
-      circle.verticalCenter = "middle";
-      circle.fill = am4core.color (paletteColors[index]);
-      circle.strokeWidth = 0;
-      circle.width = 12;
-      circle.height = 12;
-    }
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
@@ -3366,7 +3327,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         description: this.values.chartDescription,
         analysis: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.item.id : null) : null,
         xaxis: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.item.id : null) : null,
-        values: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.item.id : null) : null,
+        values: this.values.chartColumnOptions ? (this.values.valueColumn && !(this.values.valueList && this.values.valueList.length) ? this.values.valueColumn.item.id : null) : null,
         function: this.functions.indexOf (this.values.function),
         chartType: this.chartTypes.indexOf (this.values.currentChartType),
         categoryOptions: this.values.currentOptionCategories ? JSON.stringify (this.values.currentOptionCategories) : null,
