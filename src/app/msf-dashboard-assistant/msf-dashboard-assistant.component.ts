@@ -100,8 +100,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', allowedInAdvancedMode: false },
     { name: 'Lines', flags: ChartFlags.XYCHART | ChartFlags.LINECHART, image: 'normal-line-chart.png', allowedInAdvancedMode: true },
     { name: 'Simple Lines', flags: ChartFlags.LINECHART, image: 'line-chart.png', allowedInAdvancedMode: true },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: true },
-    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET, image: 'simple-scatter-chart.png', allowedInAdvancedMode: true },
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, image: 'scatter-chart.png', allowedInAdvancedMode: false },
     { name: 'Area', flags: ChartFlags.XYCHART | ChartFlags.AREACHART, image: 'area-chart.png', allowedInAdvancedMode: false },
     { name: 'Stacked Area', flags: ChartFlags.XYCHART | ChartFlags.STACKED | ChartFlags.AREACHART, image: 'stacked-area-chart.png', allowedInAdvancedMode: false },
     { name: 'Pie', flags: ChartFlags.PIECHART, image: 'pie-chart.png', allowedInAdvancedMode: false },
@@ -140,6 +139,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
   hasChild = (_: number, node: any) => (node.expandable);
 
   configTableLoading: boolean = false;
+  noControlVariables: boolean = false;
   configuredControlVariables: boolean = false;
   panelMode: string = "basic";
   panelConfigRefresh: boolean = false;
@@ -866,7 +866,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.advConfigFlags = ConfigFlags.HEATMAPCOLOR;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
-      this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
+      if (this.values.currentChartType.flags & ChartFlags.BULLET)
+        this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.AXISNAMES;
+      else
+        this.advConfigFlags = ConfigFlags.CHARTCOLORS | ConfigFlags.GOALS | ConfigFlags.AXISNAMES;
 
       if (this.values.currentChartType.flags & ChartFlags.LINECHART)
         this.advConfigFlags |= ConfigFlags.ANIMATIONS;
@@ -920,10 +923,15 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   isLineOrBarChart(): boolean
   {
-    if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
+    if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART) && !(this.values.currentChartType.flags & ChartFlags.BULLET))
       return true;
 
     return false;
+  }
+
+  isScatterChart(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.BULLET) ? true : false;
   }
 
   isSimpleFormPanel(): boolean
@@ -1394,6 +1402,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     {
       // load table when there are no control variables
       _this.configTableLoading = true;
+      _this.noControlVariables = true;
       _this.loadConfigTableData (_this.msfConfigTableRef.handlerSuccess, _this.msfConfigTableRef.handlerError);
       return;
     }
@@ -2129,6 +2138,12 @@ export class MsfDashboardAssistantComponent implements OnInit {
         }
       }
     }
+    else if (this.noControlVariables)
+    {
+      this.noControlVariables = false;
+      this.values.currentOptionCategories = [];
+      this.configureControlVariables ();
+    }
   }
 
   selectItem(item): void
@@ -2812,7 +2827,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
       if (!(this.values.currentChartType.flags & ChartFlags.INFO || this.values.currentChartType.flags & ChartFlags.MAP
         || this.values.currentChartType.flags & ChartFlags.HEATMAP || this.values.currentChartType.flags & ChartFlags.TABLE
         || this.values.currentChartType.flags & ChartFlags.DYNTABLE || this.values.currentChartType.flags & ChartFlags.PICTURE
-        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST))
+        || this.values.currentChartType.flags & ChartFlags.EDITACTIONLIST) && this.functions.indexOf(this.values.function) == -1)
         this.values.function = this.functions[0];
 
       this.values.formVariables = [];

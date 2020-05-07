@@ -206,10 +206,10 @@
           <div [ngStyle]="{ 'display': checkTablePreviewVisibility() }" [style.height.%]="100">
             <div class="msf-dashboard-assistant-content">
               <div class="msf-dashboard-assistant-tab-group">
-                <div class="no-control-variables-container" *ngIf="!values.currentOptionCategories && stepLoading != 4 && tablePreview">
+                <div class="no-control-variables-container" *ngIf="(!values.currentOptionCategories || !values.currentOptionCategories.length) && stepLoading != 4 && tablePreview">
                   No Control Variables For This Option
                 </div>
-                <ng-container *ngIf="values.currentOptionCategories && stepLoading != 4 && tablePreview">
+                <ng-container *ngIf="values.currentOptionCategories && values.currentOptionCategories.length && stepLoading != 4 && tablePreview">
                   <mat-tab-group #configTabs>
                     <mat-tab *ngFor="let controlVariable of values.currentOptionCategories">
                       <ng-template mat-tab-label>
@@ -375,7 +375,8 @@
                 <div class="msf-dashboard-assistant-chart-config-button"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"
                      (click)="selectValue()" *ngIf="!isSimpleChart()">
-                  Value
+                  <span *ngIf="!isScatterChart()">Value</span>
+                  <span *ngIf="isScatterChart()">Y - Axis</span>
                 </div>
                 <div class="msf-dashboard-assistant-chart-config-button msf-dashboard-assistant-chart-config-values-button" (click)="setSimpleValues()" *ngIf="isSimpleChart() && !isAdvChartPanel()">
                   Set Values
@@ -391,7 +392,7 @@
                     </mat-select>
                   </mat-form-field>
                 </div>
-                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart() && !isAdvChartPanel()">
+                <div class="assistant-function-combobox datalake-search-input" *ngIf="!isSimpleChart() && !isAdvChartPanel() && !isScatterChart()">
                   <mat-form-field class="datalake-search-formfield config-panel-form-field" appearance="outline">
                     <mat-label>Function</mat-label>
                     <mat-select [(ngModel)]="values.function" (ngModelChange)="checkPanelConfiguration()">
@@ -449,8 +450,8 @@
                 </mat-radio-button>
               </mat-radio-group>
             </div>
-            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && isLineOrBarChart()">
-              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
+            <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && (isLineOrBarChart() || isScatterChart())">
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" *ngIf="!isScatterChart()" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
               <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
             </div>
           </div>
@@ -972,12 +973,21 @@
                       <ng-container>Use Theme Colors</ng-container>
                     </mat-checkbox>
                   </div>
-                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length">
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && !isScatterChart()">
                     <div class="msf-dashboard-color-picker-grid-layout">
                       <div *ngFor="let color of values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
                         <span class="msf-dashboard-color-picker-selector-label">Color {{i + 1}}</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[i]" [style.background]="values.paletteColors[i]" [(cpOutputFormat)]="hex" />
                         <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[i]}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && isScatterChart()">
+                    <div class="msf-dashboard-color-picker-grid-layout">
+                      <div class="msf-dashboard-color-picker-selector-container">
+                        <span class="msf-dashboard-color-picker-selector-label">Plot Color</span>
+                        <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
+                        <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
                       </div>
                     </div>
                   </div>

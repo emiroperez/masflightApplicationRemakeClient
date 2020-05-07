@@ -52,9 +52,7 @@ export class MsfDashboardDrillDownComponent {
     { name: 'Pie', flags: ChartFlags.PIECHART },
     { name: 'Donut', flags: ChartFlags.DONUTCHART },
     { name: 'Table', flags: ChartFlags.TABLE },
-    { name: 'Simple Lines', flags: ChartFlags.LINECHART },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.LINECHART | ChartFlags.BULLET },
-    { name: 'Simple Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET }
+    { name: 'Simple Lines', flags: ChartFlags.LINECHART }
   ];
 
   constructor(

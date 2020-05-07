@@ -15,6 +15,9 @@ import { Themes } from '../globals/Themes';
 import { MessageComponent } from '../message/message.component';
 import { DatePipe } from '@angular/common';
 
+// AmCharts colors
+const black = am4core.color ("#000000");
+
 @Component({
   selector: 'app-msf-chart-preview',
   templateUrl: './msf-chart-preview.component.html'
@@ -166,6 +169,8 @@ export class MsfChartPreviewComponent {
       // don't use the xaxis parameter if the chart type is pie, donut or radar
       if (this.data.currentChartType.flags & ChartFlags.PIECHART || this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
         url += "&chartType=pie";
+      else if (this.data.currentChartType.flags & ChartFlags.BULLET)
+        url += "&chartType=scatter";
       else if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
         url += "&chartType=simplebar";
     }
@@ -413,9 +418,10 @@ export class MsfChartPreviewComponent {
       }
       else
       {
-        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis;
+        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet;;
 
-        chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
+        chart = am4core.create("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
+        barChartHoverSet = false;
 
         if (this.data.valueColumn && !this.data.valueList)
         {
@@ -436,7 +442,7 @@ export class MsfChartPreviewComponent {
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.data));
-          if (this.data.currentChartType.flags & ChartFlags.ADVANCED)
+          if (this.data.currentChartType.flags & ChartFlags.ADVANCED || this.data.currentChartType.flags & ChartFlags.BULLET)
             parseDate = false;
           else
             parseDate = (this.data.xaxis.item.columnType === "date") ? true : false;
@@ -444,7 +450,7 @@ export class MsfChartPreviewComponent {
         else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
           chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
-          if (this.data.currentChartType.flags & ChartFlags.ADVANCED)
+          if (this.data.currentChartType.flags & ChartFlags.ADVANCED || this.data.currentChartType.flags & ChartFlags.BULLET)
             parseDate = false;
           else
             parseDate = (this.data.variable.item.columnType === "date") ? true : false;
@@ -608,9 +614,19 @@ export class MsfChartPreviewComponent {
           }
           else
           {
-            categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
-            categoryAxis.renderer.minGridDistance = 15;
-            categoryAxis.renderer.labels.template.maxWidth = 240;
+            if (this.data.currentChartType.flags & ChartFlags.BULLET)
+            {
+              categoryAxis = chart.yAxes.push (new am4charts.ValueAxis ());
+
+              if (this.data.startAtZero)
+                categoryAxis.min = 0;
+            }
+            else
+            {
+              categoryAxis = chart.yAxes.push (new am4charts.CategoryAxis ());
+              categoryAxis.renderer.minGridDistance = 15;
+              categoryAxis.renderer.labels.template.maxWidth = 240;
+            }
           }
 
           if (!(this.isSimpleChart () && valueAxes.length > 1))
@@ -624,8 +640,18 @@ export class MsfChartPreviewComponent {
           // Add scrollbar into the chart for zooming if there are multiple series
           if (chart.data.length > 1)
           {
-            chart.scrollbarY = new am4core.Scrollbar ();
-            chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            if (this.data.currentChartType.flags & ChartFlags.BULLET)
+            {
+              chart.scrollbarX = new am4core.Scrollbar ();
+              chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+              chart.scrollbarY = new am4core.Scrollbar ();
+              chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
+            else
+            {
+              chart.scrollbarY = new am4core.Scrollbar ();
+              chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
           }
         }
         else
@@ -668,11 +694,21 @@ export class MsfChartPreviewComponent {
           }
           else
           {
-            categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
-            categoryAxis.renderer.minGridDistance = 30;
+            if (this.data.currentChartType.flags & ChartFlags.BULLET)
+            {
+              categoryAxis = chart.xAxes.push (new am4charts.ValueAxis ());
+
+              if (this.data.startAtZero)
+                categoryAxis.min = 0;
+            }
+            else
+            {
+              categoryAxis = chart.xAxes.push (new am4charts.CategoryAxis ());
+              categoryAxis.renderer.minGridDistance = 30;
+            }
           }
 
-          if (!(this.data.currentChartType.flags & ChartFlags.LINECHART && parseDate))
+          if (!(this.data.currentChartType.flags & ChartFlags.LINECHART && parseDate) && !(this.data.currentChartType.flags & ChartFlags.BULLET))
           {
             // Rotate labels if the chart is displayed vertically
             categoryAxis.renderer.labels.template.rotation = 330;
@@ -689,24 +725,49 @@ export class MsfChartPreviewComponent {
 
           if (chart.data.length > 1)
           {
-            chart.scrollbarX = new am4core.Scrollbar ();
-            chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            if (this.data.currentChartType.flags & ChartFlags.BULLET)
+            {
+              chart.scrollbarX = new am4core.Scrollbar ();
+              chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+              chart.scrollbarY = new am4core.Scrollbar ();
+              chart.scrollbarY.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
+            else
+            {
+              chart.scrollbarX = new am4core.Scrollbar ();
+              chart.scrollbarX.background.fill = Themes.AmCharts[theme].chartZoomScrollBar;
+            }
           }
         }
 
         // Set category axis properties
-        categoryAxis.renderer.labels.template.fontSize = 10;
-        categoryAxis.renderer.labels.template.wrap = true;
-        categoryAxis.renderer.labels.template.horizontalCenter  = "right";
-        categoryAxis.renderer.labels.template.textAlign  = "end";
-        categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
-        categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.renderer.grid.template.strokeOpacity = 1;
-        categoryAxis.renderer.line.strokeOpacity = 1;
-        categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
-        categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
-        categoryAxis.renderer.grid.template.strokeWidth = 1;
-        categoryAxis.renderer.line.strokeWidth = 1;
+        if (this.data.currentChartType.flags & ChartFlags.BULLET)
+        {
+          categoryAxis.renderer.labels.template.fontSize = 10;
+          categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          categoryAxis.renderer.grid.template.strokeOpacity = 1;
+          categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+          categoryAxis.renderer.grid.template.strokeWidth = 1;
+        }
+        else
+        {
+          categoryAxis.renderer.labels.template.fontSize = 10;
+          categoryAxis.renderer.labels.template.wrap = true;
+          categoryAxis.renderer.labels.template.horizontalCenter  = "right";
+          categoryAxis.renderer.labels.template.textAlign  = "end";
+          categoryAxis.renderer.labels.template.fill = Themes.AmCharts[theme].fontColor;
+          categoryAxis.renderer.grid.template.location = 0;
+          categoryAxis.renderer.grid.template.strokeOpacity = 1;
+          categoryAxis.renderer.line.strokeOpacity = 1;
+          categoryAxis.renderer.grid.template.stroke = Themes.AmCharts[theme].stroke;
+          categoryAxis.renderer.line.stroke = Themes.AmCharts[theme].stroke;
+          categoryAxis.renderer.grid.template.strokeWidth = 1;
+          categoryAxis.renderer.line.strokeWidth = 1;
+        }
+
+        // Set axis tooltip background color depending of the theme
+        categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
+        categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
         if (!(this.isSimpleChart () && valueAxes.length > 1))
         {
@@ -720,10 +781,6 @@ export class MsfChartPreviewComponent {
           valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
-
-        // Set axis tooltip background color depending of the theme
-        categoryAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
-        categoryAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
 
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -838,7 +895,7 @@ export class MsfChartPreviewComponent {
             }
           }
 
-          if (this.data.ordered && this.data.chartMode !== "advanced")
+          if (this.data.ordered && this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.BULLET))
           {
             // Sort chart series from least to greatest by calculating the
             // total value of each key item to compensate for the lack of proper
@@ -1000,7 +1057,7 @@ export class MsfChartPreviewComponent {
               }
             }
 
-            if (this.data.ordered && this.data.chartMode !== "advanced")
+            if (this.data.ordered && this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.BULLET))
             {
               if (this.data.valueList && this.data.valueList.length > 1)
               {
@@ -1156,6 +1213,50 @@ export class MsfChartPreviewComponent {
                 }
               }
 
+              if (!chart.cursor)
+              {
+                chart.cursor = new am4charts.XYCursor ();
+
+                if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                  chart.cursor.lineX.zIndex = 2;
+                else
+                  chart.cursor.lineY.zIndex = 2;
+              }
+
+              if (!(this.data.currentChartType.flags & ChartFlags.LINECHART) && !barChartHoverSet)
+              {
+                if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                {
+                  chart.cursor.fullWidthLineY = true;
+                  chart.cursor.yAxis = categoryAxis;
+                  chart.cursor.lineX.disabled = true;
+                  chart.cursor.lineX.zIndex = 1;
+                  chart.cursor.lineY.strokeOpacity = 0;
+                  chart.cursor.lineY.fill = black;
+                  chart.cursor.lineY.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+                }
+                else
+                {
+                  chart.cursor.fullWidthLineX = true;
+                  chart.cursor.xAxis = categoryAxis;
+                  chart.cursor.lineY.disabled = true;
+                  chart.cursor.lineY.zIndex = 1;
+                  chart.cursor.lineX.strokeOpacity = 0;
+                  chart.cursor.lineX.fill = black;
+                  chart.cursor.lineX.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+                }
+
+                barChartHoverSet = true;
+              }
+
+              if (this.data.currentChartType.flags & ChartFlags.LINECHART && barChartHoverSet)
+              {
+                if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                  chart.cursor.lineX.disabled = false;
+                else
+                  chart.cursor.lineY.disabled = false;
+              }
+
               this.data.currentChartType = prevChartType;
             }
           }
@@ -1197,16 +1298,72 @@ export class MsfChartPreviewComponent {
           }
         }
 
-        // Add cursor if the chart type is line, area or stacked area
-        if (this.data.currentChartType.flags & ChartFlags.LINECHART)
-          chart.cursor = new am4charts.XYCursor();
+        if ((this.data.currentChartType.flags & ChartFlags.LINECHART || this.data.currentChartType.flags & ChartFlags.BULLET) && !chart.cursor)
+        {
+          chart.cursor = new am4charts.XYCursor ();
+
+          if (this.data.currentChartType.flags & ChartFlags.BULLET)
+          {
+            chart.cursor.lineX.zIndex = 2;
+            chart.cursor.lineY.zIndex = 2;
+            chart.cursor.behavior = "zoomXY";
+          }
+          else
+          {
+            if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+              chart.cursor.lineX.zIndex = 2;
+            else
+              chart.cursor.lineY.zIndex = 2;
+          }
+        }
+
+        if (chart.cursor)
+        {
+          if (!(this.data.currentChartType.flags & ChartFlags.LINECHART) && !(this.data.currentChartType.flags & ChartFlags.BULLET) && !barChartHoverSet)
+          {
+            if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+            {
+              chart.cursor.fullWidthLineY = true;
+              chart.cursor.yAxis = categoryAxis;
+              chart.cursor.lineX.disabled = true;
+              chart.cursor.lineY.strokeOpacity = 0;
+              chart.cursor.lineY.fill = black;
+              chart.cursor.lineY.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+            }
+            else
+            {
+              chart.cursor.fullWidthLineX = true;
+              chart.cursor.xAxis = categoryAxis;
+              chart.cursor.lineY.disabled = true;
+              chart.cursor.lineX.strokeOpacity = 0;
+              chart.cursor.lineX.fill = black;
+              chart.cursor.lineX.fillOpacity = Themes.AmCharts[theme].barHoverOpacity;
+            }
+
+            barChartHoverSet = true;
+          }
+
+          if (this.data.currentChartType.flags & ChartFlags.LINECHART && barChartHoverSet)
+          {
+             if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+              chart.cursor.lineX.disabled = false;
+            else
+              chart.cursor.lineY.disabled = false;
+          }
+        }
+
+        // Create axis ranges if available
+        if (!(this.isSimpleChart() && valueAxes.length > 1))
+          goalAxis = valueAxis;
+        else
+          goalAxis = valueAxes[0].item;
 
         // Create axis ranges if available
         if (this.data.goals && this.data.goals.length)
         {
           for (let goal of this.data.goals)
           {
-            let range = valueAxis.axisRanges.create ();
+            let range = goalAxis.axisRanges.create ();
 
             range.value = goal.value;
             range.grid.stroke = am4core.color(goal.color);

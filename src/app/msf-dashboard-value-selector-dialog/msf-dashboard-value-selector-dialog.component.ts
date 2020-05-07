@@ -129,6 +129,7 @@ export class MsfDashboardValueSelectorDialogComponent
       && !(panelType.flags & ChartFlags.TABLE)
       && !(panelType.flags & ChartFlags.DYNTABLE)
       && !(panelType.flags & ChartFlags.INFO)
-      && !(panelType.flags & ChartFlags.ROTATED);
+      && !(panelType.flags & ChartFlags.ROTATED)
+      && !(panelType.flags & ChartFlags.BULLET);
   }
 }

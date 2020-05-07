@@ -608,7 +608,7 @@ toggle(){
       this.globals.mapsc = true;
       this.routeLoading = true;
     }
-    else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url != null)
+    else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.baseUrl != null)
     {
       this.globals.map = true;
       this.globals.selectedIndex = 3;
@@ -635,7 +635,7 @@ toggle(){
   search2() {
     if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
       this.getRoutes ();
-    else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.url != null)
+    else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.baseUrl != null)
     {
       this.globals.map = true;
       this.msfContainerRef.msfMapRef.getTrackingDataSource ();
