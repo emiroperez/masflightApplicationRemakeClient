@@ -686,16 +686,21 @@ export class Utils{
                 let inputFormat = this.getDateFormatFromArg (argument.dateFormat);
                 let dateFormat = "MM/dd/yyyy";
 
-                switch (currentValueType)
+                if (value.toString().length === 24)
+                  return this.getDateFormat (moment (value, "YYYY-MM-DDTHH:mm:ssZ"), inputFormat, dateFormat);
+                else
                 {
+                  switch (currentValueType)
+                  {
                     case 3:
                     case 2:
-                        dateFormat = "yyyy";
-                        break;
+                      dateFormat = "yyyy";
+                      break;
 
                     case 1:
-                        dateFormat = "MMM/yyyy";
-                        break;
+                      dateFormat = "MMM/yyyy";
+                      break;
+                  }
                 }
 
                 return this.getDateFormat (moment (value, argument.dateFormat), inputFormat, dateFormat);
@@ -916,6 +921,9 @@ export class Utils{
             {
               if (format == null)
                 format = 'MMddyyyy';
+
+              if (!value.isValid ())
+                return null;
 
               datePipe = new DatePipe ('en-US');
               return datePipe.transform (value.toDate (), outputFormat ? outputFormat : format);

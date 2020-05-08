@@ -626,7 +626,7 @@ export class MsfTableComponent implements OnInit {
         mainElement = [mainElement];
       }
       if( _this.tableOptions.totalRecord > 0){
-        if(_this.currentOption.metaData==1 || _this.currentOption.metaData==3 || _this.currentOption.tabType=='scmap'){  
+        if (_this.currentOption.metaData == 1 || _this.currentOption.metaData == 3 || _this.currentOption.tabType == 'scmap' || (_this.currentOption.tabType == 'scmap2')){  
           _this.tableOptions.displayedColumns = data.metadata;
           let dataResult = new MatTableDataSource(mainElement);
                   
@@ -1144,7 +1144,7 @@ export class MsfTableComponent implements OnInit {
 
     if (_this.tableOptions.dataSource && !_this.tableOptions.template && 
       ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || 
-      (_this.currentOption.tabType=='scmap')))
+      (_this.currentOption.tabType == 'scmap') || (_this.currentOption.tabType == 'scmap2')))
       _this.resultsAvailable = "msf-visible";
     else
       _this.resultsAvailable = "msf-no-visible";
@@ -1154,7 +1154,7 @@ export class MsfTableComponent implements OnInit {
   {    
     _this.finishLoading.emit (false);
 
-    if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || (_this.currentOption.tabType=='scmap')))
+    if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData == 1) || (_this.currentOption.metaData == 3) || (_this.currentOption.tabType == 'scmap' || (_this.currentOption.tabType == 'scmap2'))))
       _this.resultsAvailable = "msf-visible";
     else
       _this.resultsAvailable = "msf-no-visible";
