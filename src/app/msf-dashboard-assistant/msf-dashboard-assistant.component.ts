@@ -1901,6 +1901,16 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     _this.stepLoading = 0;
 
+    if (!_this.menuCategories.length)
+    {
+      // go to previous step if no options are available
+      _this.dialog.open (MessageComponent, {
+        data: { title: "Information", message: "No data sources available. Please select another panel type." }
+      });
+
+      _this.selectStep (2);
+    }
+
     if (_this.scrollToOption)
     {
       let target, optionOffsetTop;
