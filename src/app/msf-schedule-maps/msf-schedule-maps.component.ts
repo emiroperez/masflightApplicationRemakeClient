@@ -209,7 +209,10 @@ export class MsfScheduleMapsComponent implements OnInit {
 
       // Sort the results by origin
       records.sort (function (e1, e2) {
-        return e2.origin - e1.origin;
+        if (e1.origin === e2.origin)
+          return 0;
+
+        return e2.origin < e1.origin ? -1 : 1;
       });
 
       lastOrigin = null;
@@ -236,7 +239,7 @@ export class MsfScheduleMapsComponent implements OnInit {
           console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
           continue;
         }
-
+        console.log(record);
         if (cities.indexOf (record.origin) == -1)
         {
           // Add origin city

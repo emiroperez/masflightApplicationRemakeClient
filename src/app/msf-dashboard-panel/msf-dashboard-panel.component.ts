@@ -7369,7 +7369,10 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     // Sort the results by origin
     this.values.lastestResponse.sort (function (e1, e2) {
-      return e2.origin - e1.origin;
+      if (e1.origin === e2.origin)
+        return 0;
+
+      return e2.origin < e1.origin ? -1 : 1;
     });
 
     lastOrigin = null;
