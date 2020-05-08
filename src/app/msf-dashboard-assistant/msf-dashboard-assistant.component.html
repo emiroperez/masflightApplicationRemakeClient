@@ -153,13 +153,13 @@
                   </ng-container>
                   <div class="no-info" *ngIf="!(menuCategory.welcome.shortDescription && menuCategory.welcome.shortDescription != '')"></div>
                   <span class="menu-category-title">{{menuCategory.label}}</span>
+                  <div class="menu-category-description" *ngIf="menuCategory.infoOpen">
+                    <ng-container *ngIf="menuCategory.welcome.shortDescription">
+                      {{menuCategory.welcome.shortDescription}}
+                    </ng-container>
+                  </div>
                 </div>
                 <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}" />
-                <div class="menu-category-description" *ngIf="menuCategory.infoOpen">
-                  <ng-container *ngIf="menuCategory.welcome.shortDescription">
-                    {{menuCategory.welcome.shortDescription}}
-                  </ng-container>
-                </div>
               </div>
               <div class="menu-category-search">
                 <mat-form-field class="menu-item-search-input">

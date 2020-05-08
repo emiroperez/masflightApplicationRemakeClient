@@ -1752,6 +1752,16 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.stepLoading = 0;
   }
 
+  isOptionAllowed(option): boolean
+  {
+    if (((((option.tabType !== 'scmap' && option.tabType !== 'scmap2') && this.values.currentChartType.flags & ChartFlags.MAP && !(this.values.currentChartType.flags & ChartFlags.MAPBOX))
+      || (option.tabType !== 'map' && this.values.currentChartType.flags & ChartFlags.MAPBOX))
+      && !(option.children && option.children.length)) || option.typeOption == '1')
+      return false;
+
+    return true;
+  }
+
   recursiveMenuCategory(menuCategory): void
   {
     if (menuCategory.children && menuCategory.children.length)
@@ -1768,10 +1778,15 @@ export class MsfDashboardAssistantComponent implements OnInit {
       {
         let child = menuCategory.children[i];
 
-        if (child.typeOption == '1')
+        if (!this.isOptionAllowed (child))
           menuCategory.children.splice (i, 1);
         else if (child.children && child.children.length)
+        {
           this.recursiveMenuCategory (child);
+
+          if (!child.children.length)
+            menuCategory.children.splice (i, 1);
+        }
       }
     }
   }
@@ -1783,8 +1798,10 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     _this.menuCategories = data;
 
-    for (let menuCategory of _this.menuCategories)
+    for (let i = _this.menuCategories.length - 1; i >= 0; i--)
     {
+      let menuCategory = _this.menuCategories[i];
+
       // remove options that are exclusive to the main menu
       if (menuCategory.children && menuCategory.children.length)
       {
@@ -1796,15 +1813,26 @@ export class MsfDashboardAssistantComponent implements OnInit {
           return e2.children.length - e1.children.length;
         });
 
-        for (let i = menuCategory.children.length - 1; i >= 0; i--)
+        for (let j = menuCategory.children.length - 1; j >= 0; j--)
         {
-          let child = menuCategory.children[i];
+          let child = menuCategory.children[j];
 
-          if (child.typeOption == '1')
-            menuCategory.children.splice (i, 1);
+          if (!_this.isOptionAllowed (child))
+            menuCategory.children.splice (j, 1);
           else if (child.children && child.children.length)
+          {
             _this.recursiveMenuCategory (child);
+
+            if (!child.children.length)
+              menuCategory.children.splice (j, 1);
+          }
         }
+      }
+
+      if (!menuCategory.children.length)
+      {
+        _this.menuCategories.splice (i, 1);
+        continue;
       }
 
       menuCategory.flatNodeMap = new Map<ExampleFlatNode, any> ();
@@ -1881,11 +1909,15 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
       // scroll to the selected option
       target = document.getElementById (_this.scrollToOption.category);
-      target.parentNode.parentNode.parentNode.scrollLeft = 401 * _this.scrollToOption.categoryIndex;
 
-      optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 527;
-      if (optionOffsetTop + 32 > 294)
-        target.scrollTop = optionOffsetTop;
+      if (target)
+      {
+        target.parentNode.parentNode.parentNode.scrollLeft = 401 * _this.scrollToOption.categoryIndex;
+
+        optionOffsetTop = document.getElementById (_this.scrollToOption.option).offsetTop - 527;
+        if (optionOffsetTop + 32 > 294)
+          target.scrollTop = optionOffsetTop;
+      }
 
       _this.scrollToOption = null;
     }
