@@ -3868,7 +3868,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   finishMapboxLoading(error)
   {
     if (error)
+    {
+      this.displayMapbox = false;
       this.handlerMapboxError (this, "Failed to generate the results for the map tracker.");
+    }
     else
     {
       if (!this.values.isLoading)
@@ -4022,6 +4025,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
     _this.destroyChart ();
 
+    _this.displayChart = false;
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
     _this.displayEditActionList = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -4067,6 +4077,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.values.isLoading = false;
     _this.destroyChart ();
 
+    _this.displayChart = false;
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayPic = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -4175,6 +4192,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     _this.destroyChart ();
 
     _this.values.isLoading = false;
+    _this.displayChart = false;
+    _this.displayInfo = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayForm = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -4221,6 +4245,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
+    _this.displayChart = false;
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayTable = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -4267,6 +4298,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
+    _this.displayChart = false;
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayEditActionList = false;
     _this.displayDynTable = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
@@ -4312,6 +4350,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.destroyChart ();
 
+    _this.displayChart = false;
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = false;
     _this.values.formGenerated = false;
@@ -4368,6 +4413,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.destroyChart ();
 
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
@@ -4397,6 +4449,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
@@ -4434,6 +4493,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart later
     _this.destroyChart ();
 
+    _this.displayChart = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayInfo = true;
     _this.values.chartGenerated = false;
     _this.values.infoGenerated = true;
@@ -4492,6 +4558,13 @@ export class MsfDashboardPanelComponent implements OnInit {
     // destroy current chart if it's already generated to avoid a blank chart
     _this.destroyChart ();
 
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
     _this.displayChart = true;
     _this.values.chartGenerated = true;
     _this.values.infoGenerated = false;
@@ -4610,6 +4683,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerMapboxError(_this, result): void
   {
+    _this.displayMapbox = false;
     _this.generateError ();
   }
 
