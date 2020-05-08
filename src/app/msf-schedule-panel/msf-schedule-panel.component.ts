@@ -487,7 +487,7 @@ export class MsfSchedulePanelComponent implements OnInit {
         this.globals.schedulepanelinfo.TotalTime= this.globals.schedulepanelinfo.TotalTime.replace("Hours", "H").replace("Minutes","M");
       }
 
-      this.globals.scheduleChart.deltaLongitude = 360 - Number (zoomlong);
+      this.globals.scheduleChart.chart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
       this.globals.scheduleChart.homeZoomLevel = zoomLevel;

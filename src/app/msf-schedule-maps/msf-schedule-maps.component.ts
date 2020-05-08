@@ -348,7 +348,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       else
         zoomLevel = 4;
 
-      this.globals.scheduleChart.deltaLongitude = 360 - Number (zoomlong);
+      this.globals.scheduleChart.chart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
       this.globals.scheduleChart.homeZoomLevel = zoomLevel;

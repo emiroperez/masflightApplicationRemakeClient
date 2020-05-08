@@ -6635,7 +6635,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         };
 
         zoomLevel = 4;
-        this.chart.deltaLongitude = 360 - this.chart.homeGeoPoint.longitude;
+        this.chart.deltaLongitude = Math.trunc (360 - this.chart.homeGeoPoint.longitude); // truncate value to avoid invisible maps
 
         // Create map line series and connect to the cities
         if (this.lineSeries != null)
@@ -7508,7 +7508,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     else
       zoomLevel = 4;
 
-    chart.deltaLongitude = 360 - Number (zoomlong);
+    chart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
     chart.homeGeoPoint.longitude = Number (zoomlong);
     chart.homeGeoPoint.latitude = Number (zoomlat);
     chart.homeZoomLevel = zoomLevel;
