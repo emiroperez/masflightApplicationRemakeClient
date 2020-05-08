@@ -6681,7 +6681,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             mapLine = this.lineSeries.mapLines.create ();
             mapLine.imagesToConnect = [city1, city2];
             mapLine.line.strokeOpacity = 0.6;
-            mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
+            mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor[0];
             mapLine.line.horizontalCenter = "middle";
             mapLine.line.verticalCenter = "middle";
   
@@ -7307,7 +7307,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   setRouteNetworks(chart, theme): void
   {
-    let scheduleImageSeries, scheduleLineSeries, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
+    let scheduleImageSeries, scheduleLineSeries, mapLinesTemplate, imageSeriesTemplate, circle, hoverState, label, zoomLevel, lastOrigin, numorigincities;
     let cities = [];
     let routes = [];
 
@@ -7366,6 +7366,14 @@ export class MsfDashboardPanelComponent implements OnInit {
     var sumX = 0;
     var sumY = 0;
     var sumZ = 0;
+
+    // Sort the results by origin
+    this.values.lastestResponse.sort (function (e1, e2) {
+      return e2.origin - e1.origin;
+    });
+
+    lastOrigin = null;
+    numorigincities = 0;
 
     // Add cities and routes
     for (let record of this.values.lastestResponse)
@@ -7467,25 +7475,50 @@ export class MsfDashboardPanelComponent implements OnInit {
           lonDest /= 1000000;
       }
 
-      // Add route
-      routes.push ([
-        { "latitude": latOrigin, "longitude": lonOrigin },
-        { "latitude": latDest, "longitude": lonDest }
-      ]);
+      if (record.origin == lastOrigin)
+      {
+        // Add route
+        routes.push ([
+          { "latitude": latOrigin, "longitude": lonOrigin },
+          { "latitude": latDest, "longitude": lonDest }
+        ]);
+      }
+      else
+      {
+        if (lastOrigin != null)
+        {
+          // Create map line series and connect the origin city to the desination cities
+          scheduleLineSeries = chart.series.push (new am4maps.MapLineSeries ());
+          scheduleLineSeries.zIndex = 10;
+          scheduleLineSeries.data = [{
+            "multiGeoLine": routes
+          }];
+
+          // Set map line template
+          mapLinesTemplate = scheduleLineSeries.mapLines.template;
+          mapLinesTemplate.opacity = 0.6;
+          mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numorigincities];
+          mapLinesTemplate.horizontalCenter = "middle";
+          mapLinesTemplate.verticalCenter = "middle";
+
+          routes = [];
+          numorigincities++;
+          if (numorigincities > 12)
+            numorigincities = 12;
+        }
+        else
+        {
+          routes.push ([
+            { "latitude": latOrigin, "longitude": lonOrigin },
+            { "latitude": latDest, "longitude": lonDest }
+          ]);
+        }
+
+        lastOrigin = record.origin;
+      }
     }
 
-    var avgX = sumX / cities.length;
-    var avgY = sumY / cities.length;
-    var avgZ = sumZ / cities.length;
-
-    // convert average x, y, z coordinate to latitude and longtitude
-    var lng = Math.atan2 (avgY, avgX);
-    var hyp = Math.sqrt (avgX * avgX + avgY * avgY);
-    var lat = Math.atan2 (avgZ, hyp);
-    var zoomlat =  this.utils.rad2degr (lat);
-    var zoomlong = this.utils.rad2degr (lng);
-
-    // Create map line series and connect the origin city to the desination cities
+    // Set last route list
     scheduleLineSeries = chart.series.push (new am4maps.MapLineSeries ());
     scheduleLineSeries.zIndex = 10;
     scheduleLineSeries.data = [{
@@ -7493,11 +7526,22 @@ export class MsfDashboardPanelComponent implements OnInit {
     }];
 
     // Set map line template
-    let mapLinesTemplate = scheduleLineSeries.mapLines.template;
+    mapLinesTemplate = scheduleLineSeries.mapLines.template;
     mapLinesTemplate.opacity = 0.6;
-    mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor;
+    mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numorigincities];
     mapLinesTemplate.horizontalCenter = "middle";
     mapLinesTemplate.verticalCenter = "middle";
+
+    var avgX = sumX / cities.length;
+    var avgY = sumY / cities.length;
+    var avgZ = sumZ / cities.length;
+
+    // Convert average x, y, z coordinate to latitude and longtitude
+    var lng = Math.atan2 (avgY, avgX);
+    var hyp = Math.sqrt (avgX * avgX + avgY * avgY);
+    var lat = Math.atan2 (avgZ, hyp);
+    var zoomlat =  this.utils.rad2degr (lat);
+    var zoomlong = this.utils.rad2degr (lng);
 
     if (!cities.length)
     {

@@ -143,7 +143,7 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   setRoutesToScMap(records): void
   {
-    let theme, imageSeriesTemplate, circle, hoverState, label, zoomLevel;
+    let theme, imageSeriesTemplate, mapLinesTemplate, circle, hoverState, label, zoomLevel, lastOrigin, numorigincities;
     let cities = [];
     let routes = [];
 
@@ -206,6 +206,14 @@ export class MsfScheduleMapsComponent implements OnInit {
       var sumX = 0;
       var sumY = 0;
       var sumZ = 0;
+
+      // Sort the results by origin
+      records.sort (function (e1, e2) {
+        return e2.origin - e1.origin;
+      });
+
+      lastOrigin = null;
+      numorigincities = 0;
 
       // Add cities and routes
       for (let record of records)
@@ -307,12 +315,62 @@ export class MsfScheduleMapsComponent implements OnInit {
             lonDest /= 1000000;
         }
 
-        // Add route
-        routes.push ([
-          { "latitude": latOrigin, "longitude": lonOrigin },
-          { "latitude": latDest, "longitude": lonDest }
-        ]);
+        if (record.origin == lastOrigin)
+        {
+          // Add route
+          routes.push ([
+            { "latitude": latOrigin, "longitude": lonOrigin },
+            { "latitude": latDest, "longitude": lonDest }
+          ]);
+        }
+        else
+        {
+          if (lastOrigin != null)
+          {
+            // Create map line series and connect the origin city to the desination cities
+            this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+            this.globals.scheduleLineSeries.zIndex = 10;
+            this.globals.scheduleLineSeries.data = [{
+              "multiGeoLine": routes
+            }];
+
+            // Set map line template
+            mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
+            mapLinesTemplate.opacity = 0.6;
+            mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numorigincities];
+            mapLinesTemplate.horizontalCenter = "middle";
+            mapLinesTemplate.verticalCenter = "middle";
+
+            routes = [];
+            numorigincities++;
+            if (numorigincities > 12)
+              numorigincities = 12;
+          }
+          else
+          {
+            routes.push ([
+              { "latitude": latOrigin, "longitude": lonOrigin },
+              { "latitude": latDest, "longitude": lonDest }
+            ]);
+          }
+
+          lastOrigin = record.origin;
+        }
       }
+
+      // Create map line series and connect the origin city to the desination cities
+      this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+      this.globals.scheduleLineSeries.zIndex = 10;
+      this.globals.scheduleLineSeries.data = [{
+        "multiGeoLine": routes
+      }];
+
+      // Set map line template
+      mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
+      mapLinesTemplate.opacity = 0.6;
+      mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numorigincities];
+      mapLinesTemplate.horizontalCenter = "middle";
+      mapLinesTemplate.verticalCenter = "middle";
 
       var avgX = sumX / cities.length;
       var avgY = sumY / cities.length;
@@ -325,20 +383,6 @@ export class MsfScheduleMapsComponent implements OnInit {
       var zoomlat =  this.utils.rad2degr (lat);
       var zoomlong = this.utils.rad2degr (lng);
 
-      // Create map line series and connect the origin city to the desination cities
-      this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
-      this.globals.scheduleLineSeries.zIndex = 10;
-      this.globals.scheduleLineSeries.data = [{
-        "multiGeoLine": routes
-      }];
-
-      // Set map line template
-      let mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
-      mapLinesTemplate.opacity = 0.6;
-      mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor;
-      mapLinesTemplate.horizontalCenter = "middle";
-      mapLinesTemplate.verticalCenter = "middle";
-
       if (!cities.length)
       {
         zoomLevel = 1;
@@ -348,7 +392,7 @@ export class MsfScheduleMapsComponent implements OnInit {
       else
         zoomLevel = 4;
 
-      this.globals.scheduleChart.chart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
+      this.globals.scheduleChart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
       this.globals.scheduleChart.homeZoomLevel = zoomLevel;

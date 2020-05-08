@@ -370,7 +370,7 @@ export class MsfSchedulePanelComponent implements OnInit {
       var avgY = sumY / newCities.length;
       var avgZ = sumZ / newCities.length;
   
-      // convert average x, y, z coordinate to latitude and longtitude
+      // Convert average x, y, z coordinate to latitude and longtitude
       var lng = Math.atan2 (avgY, avgX);
       var hyp = Math.sqrt (avgX * avgX + avgY * avgY);
       var lat = Math.atan2 (avgZ, hyp);
@@ -415,7 +415,7 @@ export class MsfSchedulePanelComponent implements OnInit {
           mapLine = this.globals.scheduleLineSeries.mapLines.create ();
           mapLine.imagesToConnect = [city1, city2];
           mapLine.line.strokeOpacity = 0.6;
-          mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor;
+          mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor[0];
           mapLine.line.horizontalCenter = "middle";
           mapLine.line.verticalCenter = "middle";
 
@@ -487,7 +487,7 @@ export class MsfSchedulePanelComponent implements OnInit {
         this.globals.schedulepanelinfo.TotalTime= this.globals.schedulepanelinfo.TotalTime.replace("Hours", "H").replace("Minutes","M");
       }
 
-      this.globals.scheduleChart.chart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
+      this.globals.scheduleChart.deltaLongitude = Math.trunc (360 - Number (zoomlong)); // truncate value to avoid invisible maps
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
       this.globals.scheduleChart.homeZoomLevel = zoomLevel;

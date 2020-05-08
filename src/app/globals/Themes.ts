@@ -9,14 +9,11 @@ const lightGray = am4core.color ("#b2b2b2");
 const lightGray2 = am4core.color ("#a1c0df");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
-// const orange = am4core.color ("#eb5c1b");
-const orange = am4core.color ("#003d5b");
-// const darkOrange = am4core.color ("#d54505");
-const darkOrange = am4core.color ("#00263E");
+const prussianBlue = am4core.color ("#003d5b");
+const tangaroa = am4core.color ("#00263E");
 const darkGreen = am4core.color ("#00be11");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
-const lightBlue = am4core.color ("#01abec");
 
 // Light theme
 
@@ -31,10 +28,10 @@ function am4themes_light(target)
         target.setFor ("secondaryButtonText", black);
         target.setFor ("secondaryButtonStroke", lightGray.lighten (-0.15));
         target.setFor ("alternativeBackground", black);
-        target.setFor ("primaryButton", orange);
-        target.setFor ("primaryButtonHover", darkOrange);
-        target.setFor ("primaryButtonDown", darkOrange);
-        target.setFor ("primaryButtonActive", darkOrange);
+        target.setFor ("primaryButton", prussianBlue);
+        target.setFor ("primaryButtonHover", tangaroa);
+        target.setFor ("primaryButtonDown", tangaroa);
+        target.setFor ("primaryButtonActive", tangaroa);
     }
 }
 
@@ -46,7 +43,21 @@ export class Themes {
             mapPolygonStroke: black,
             mapCityColor: white,
             mapCityLabelHoverColor: darkGreen,
-            mapLineColor: cyan,
+            mapLineColor: [
+                cyan,
+                am4core.color ("#6b94fc"),
+                am4core.color ("#a769f6"),
+                am4core.color ("#51e9bd"),
+                am4core.color ("#00aca9"),
+                am4core.color ("#136ffc"),
+                am4core.color ("#8436ff"),
+                am4core.color ("#c767dc"),
+                am4core.color ("#dc677e"),
+                am4core.color ("#dc4238"),
+                am4core.color ("#ff8b3b"),
+                am4core.color ("#f3ba25"),
+                am4core.color ("#ffdb7c")
+            ],
             mapPlaneColor: cyan,
             tooltipFill: black,
             ticks: darkBlue,
@@ -80,15 +91,29 @@ export class Themes {
             mainTheme: am4themes_light,
             mapPolygonColor: lightGray2,
             mapPolygonStroke: white,
-            mapCityLabelHoverColor: darkOrange,
+            mapCityLabelHoverColor: tangaroa,
             mapCityColor: darkGray2,
-            mapLineColor: orange,
-            mapPlaneColor: orange,
+            mapLineColor: [
+                prussianBlue,
+                am4core.color ("#00ca77"),
+                am4core.color ("#00a68b"),
+                am4core.color ("#136fc1"),
+                am4core.color ("#6b94fc"),
+                am4core.color ("#a769f6"),
+                am4core.color ("#8436ff"),
+                am4core.color ("#c767dc"),
+                am4core.color ("#dc677e"),
+                am4core.color ("#dc4238"),
+                am4core.color ("#ff7242"),
+                am4core.color ("#ffc54f"),
+                am4core.color ("#8bcccc")
+            ],
+            mapPlaneColor: prussianBlue,
             tooltipFill: white,
             ticks: lightGray,
             stroke: lightGray.lighten (0.65),
             fontColor: darkGray2,
-            chartZoomScrollBar: orange,
+            chartZoomScrollBar: prussianBlue,
             axisTooltipFontColor: black,
             sumStroke: darkGray,
             barHoverOpacity: 0.1,
