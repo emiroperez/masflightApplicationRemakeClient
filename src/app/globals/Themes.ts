@@ -45,7 +45,6 @@ export class Themes {
             mapCityLabelHoverColor: darkGreen,
             mapLineColor: [
                 cyan,
-                am4core.color ("#6b94fc"),
                 am4core.color ("#a769f6"),
                 am4core.color ("#51e9bd"),
                 am4core.color ("#00aca9"),
@@ -95,7 +94,6 @@ export class Themes {
             mapCityColor: darkGray2,
             mapLineColor: [
                 prussianBlue,
-                am4core.color ("#00ca77"),
                 am4core.color ("#00a68b"),
                 am4core.color ("#136fc1"),
                 am4core.color ("#6b94fc"),

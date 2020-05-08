@@ -343,8 +343,8 @@ export class MsfScheduleMapsComponent implements OnInit {
 
             routes = [];
             numorigincities++;
-            if (numorigincities > 12)
-              numorigincities = 12;
+            if (numorigincities > 11)
+              numorigincities = 11;
           }
           else
           {
