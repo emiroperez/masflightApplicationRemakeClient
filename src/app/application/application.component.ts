@@ -657,7 +657,7 @@ toggle(){
     this.authService.removeTokenResultTable();
     let tokenResultTable = this.authService.getTokenResultTable() ? this.authService.getTokenResultTable() : "";
 
-    this.appService.getDataSource(this, this.handlerRouteSuccess, this.handlerRouteError, tokenResultTable);
+    this.appService.getDataSource (this, this.handlerRouteSuccess, this.handlerRouteError, tokenResultTable);
   }
 
   handlerRouteSuccess(_this, data): void

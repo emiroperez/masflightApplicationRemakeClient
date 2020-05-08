@@ -7307,7 +7307,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   setRouteNetworks(chart, theme): void
   {
-    let scheduleImageSeries, scheduleLineSeries, mapLinesTemplate, imageSeriesTemplate, circle, hoverState, label, zoomLevel, lastOrigin, numorigincities;
+    let scheduleImageSeries, scheduleLineSeries, mapLinesTemplate, imageSeriesTemplate, circle, hoverState, label, zoomLevel, keyValue, lastKeyValue, numKeyValues;
     let cities = [];
     let routes = [];
 
@@ -7368,20 +7368,37 @@ export class MsfDashboardPanelComponent implements OnInit {
     var sumZ = 0;
 
     // Sort the results by origin
-    this.values.lastestResponse.sort (function (e1, e2) {
-      if (e1.origin === e2.origin)
-        return 0;
+    if (this.values.currentOption.metaData == 5)
+    {
+      this.values.lastestResponse.sort (function (e1, e2) {
+        if (e1.yyyymmdd === e2.yyyymmdd)
+          return 0;
 
-      return e2.origin < e1.origin ? -1 : 1;
-    });
+        return e2.yyyymmdd < e1.yyyymmdd ? -1 : 1;
+      });
+    }
+    else
+    {
+      this.values.lastestResponse.sort (function (e1, e2) {
+        if (e1.origin === e2.origin)
+          return 0;
 
-    lastOrigin = null;
-    numorigincities = 0;
+        return e2.origin < e1.origin ? -1 : 1;
+      });
+    }
+
+    lastKeyValue = null;
+    numKeyValues = 0;
 
     // Add cities and routes
     for (let record of this.values.lastestResponse)
     {
       let city, latOrigin, lonOrigin, latDest, lonDest;
+
+      if (this.values.currentOption.metaData == 5)
+        keyValue = record.yyyymmdd;
+      else
+        keyValue = record.origin;
 
       latOrigin = parseFloat (record.latOrigin);
       lonOrigin = parseFloat (record.lonOrigin);
@@ -7478,7 +7495,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           lonDest /= 1000000;
       }
 
-      if (record.origin == lastOrigin)
+      if (keyValue == lastKeyValue)
       {
         // Add route
         routes.push ([
@@ -7488,7 +7505,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        if (lastOrigin != null)
+        if (lastKeyValue != null)
         {
           // Create map line series and connect the origin city to the desination cities
           scheduleLineSeries = chart.series.push (new am4maps.MapLineSeries ());
@@ -7500,14 +7517,14 @@ export class MsfDashboardPanelComponent implements OnInit {
           // Set map line template
           mapLinesTemplate = scheduleLineSeries.mapLines.template;
           mapLinesTemplate.opacity = 0.6;
-          mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numorigincities];
+          mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
           mapLinesTemplate.horizontalCenter = "middle";
           mapLinesTemplate.verticalCenter = "middle";
 
           routes = [];
-          numorigincities++;
-          if (numorigincities > 11)
-            numorigincities = 11;
+          numKeyValues++;
+          if (numKeyValues > 11)
+            numKeyValues = 11;
         }
         else
         {
@@ -7517,7 +7534,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           ]);
         }
 
-        lastOrigin = record.origin;
+        lastKeyValue = record.origin;
       }
     }
 
@@ -7531,7 +7548,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     // Set map line template
     mapLinesTemplate = scheduleLineSeries.mapLines.template;
     mapLinesTemplate.opacity = 0.6;
-    mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numorigincities];
+    mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
     mapLinesTemplate.horizontalCenter = "middle";
     mapLinesTemplate.verticalCenter = "middle";
 
