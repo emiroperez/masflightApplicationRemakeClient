@@ -160,6 +160,7 @@
                   </div>
                 </div>
                 <img class="menu-category-image" *ngIf="menuCategory.welcome.imageURL != null && menuCategory.welcome.imageURL != ''" src="{{globals.baseUrl}}/categoryImage/{{globals.theme}}-{{menuCategory.welcome.imageURL}}" />
+                <div class="menu-category-image" *ngIf="menuCategory.welcome.imageURL == null || menuCategory.welcome.imageURL == ''"></div>
               </div>
               <div class="menu-category-search">
                 <mat-form-field class="menu-item-search-input">
