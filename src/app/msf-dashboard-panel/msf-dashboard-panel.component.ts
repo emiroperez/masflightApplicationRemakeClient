@@ -1777,7 +1777,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         this.oldOptionCategories = JSON.parse (JSON.stringify (this.values.currentOptionCategories));
 
         // If the option meta data is 4 (Route Networks), add origin cities and its destinations
-        if (this.values.currentOption.metaData == 4)
+        if (this.values.currentOption.metaData == 4 || this.values.currentOption.metaData == 5)
           this.setRouteNetworks (chart, theme);
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART

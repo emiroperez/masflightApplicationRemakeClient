@@ -1123,7 +1123,8 @@ export class AdminMenuComponent implements OnInit, AfterViewInit {
     { name: 'Map', metaData: 1 , tabType: 'map'},
     { name: 'Schedule Maps', metaData: 2 , tabType: 'scmap'},
     { name: 'Coordinates Map', metaData: 3, tabType: 'map'},
-    { name: 'Route Network Map', metaData: 4, tabType: 'scmap2'}
+    { name: 'Route Network Map', metaData: 4, tabType: 'scmap2' },
+    { name: 'Route Network Comparison', metaData: 5, tabType: 'scmap2' }
   ];
 
   numArgumentsPerType: any[] = [

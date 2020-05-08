@@ -603,7 +603,7 @@ toggle(){
 
   startSearch(): void
   {
-    if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
+    if (this.globals.currentOption.tabType === 'scmap2' && (this.globals.currentOption.metaData == 4 || this.globals.currentOption.metaData == 5))
     {
       this.globals.mapsc = true;
       this.routeLoading = true;
@@ -633,7 +633,7 @@ toggle(){
   }
 
   search2() {
-    if (this.globals.currentOption.tabType === 'scmap2' && this.globals.currentOption.metaData == 4)
+    if (this.globals.currentOption.tabType === 'scmap2' && (this.globals.currentOption.metaData == 4 || this.globals.currentOption.metaData == 5))
       this.getRoutes ();
     else if (this.globals.currentOption.tabType === 'map' && this.globals.currentOption.baseUrl != null)
     {
