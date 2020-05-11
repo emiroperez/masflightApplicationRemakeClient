@@ -65,6 +65,12 @@
           <tr><td>Total Time</td><td>{{checkedRoutes[0].TotalTime}}</td></tr>
         </table>
       </div>
+      <div class="route-panelinfo" *ngIf="isMapPanel() && routepanelinfo.length">
+        <div class="map-route-container" *ngFor="let route of routepanelinfo">
+          <mat-checkbox class="map-route-checkbox" [(ngModel)]="route.enabled" (ngModelChange)="rebuildMapRoutes()"></mat-checkbox>
+          <span [style.color]="getMapLineColor(route.colorIndex)">{{getMapRouteFormat(route.name)}}</span>
+        </div>
+      </div>
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="displayInfo">

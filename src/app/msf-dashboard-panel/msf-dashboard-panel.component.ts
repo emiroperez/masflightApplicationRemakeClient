@@ -275,6 +275,10 @@ export class MsfDashboardPanelComponent implements OnInit {
   displayDynTable: boolean;
   displayEditActionList: boolean;
 
+  // map route values for "Network Map Route" services
+  routepanelinfo: any[] = [];
+  scheduleImageSeries: any = null;
+
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
@@ -1778,7 +1782,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         // If the option meta data is 4 (Route Networks), add origin cities and its destinations
         if (this.values.currentOption.metaData == 4 || this.values.currentOption.metaData == 5)
-          this.setRouteNetworks (chart, theme);
+          this.setRouteNetworks (chart, theme, false);
       }
       else if (this.values.currentChartType.flags & ChartFlags.FUNNELCHART
         || this.values.currentChartType.flags & ChartFlags.PIECHART)
@@ -3688,6 +3692,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (!this.values.chartName)
       this.values.chartName = "Untitled";
 
+    this.routepanelinfo = [];
     this.globals.startTimestamp = new Date ();
 
     // check if any variable that requires grouping are in configure properly
@@ -3944,7 +3949,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.values.lastestResponse = result;
 
-    if (_this.values.currentOption.metaData == 4)
+    if (_this.values.currentOption.metaData == 4 || _this.values.currentOption.metaData == 5)
       _this.values.flightRoutes = [];
     else
       _this.values.flightRoutes = JSON.parse (JSON.stringify (_this.values.lastestResponse));
@@ -4959,7 +4964,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       {
         if (this.values.currentChartType.flags & ChartFlags.MAP)
         {
-          if (this.values.currentOption == null || ((this.values.currentOption.metaData != 2 && this.values.currentOption.metaData != 4)
+          if (this.values.currentOption == null || ((this.values.currentOption.metaData != 2 && this.values.currentOption.metaData != 4 && this.values.currentOption.metaData != 5)
             && !(this.values.currentChartType.flags & ChartFlags.MAPBOX)) || (this.values.currentOption.tabType !== 'map' && this.values.currentChartType.flags & ChartFlags.MAPBOX))
             this.values.currentOption = null;
         }
@@ -7305,18 +7310,37 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.anchoredArguments = JSON.parse (JSON.stringify (this.savedAnchoredArguments));
   }
 
-  setRouteNetworks(chart, theme): void
+  setRouteNetworks(chart, theme, rebuild): void
   {
-    let scheduleImageSeries, scheduleLineSeries, mapLinesTemplate, imageSeriesTemplate, circle, hoverState, label, zoomLevel, keyValue, lastKeyValue, numKeyValues;
+    let mapLinesTemplate, imageSeriesTemplate, circle, hoverState, label, zoomLevel, keyValue, lastKeyValue, numKeyValues, numOrigRoutes, routeEnabled;
     let cities = [];
     let routes = [];
 
     if (!this.values.lastestResponse.length)
       return;
 
+    if (!rebuild)
+      this.routepanelinfo = [];
+
+    if (rebuild)
+    {
+      for (let i = this.routepanelinfo.length - 1; i >= 0; i--)
+      {
+        let route = this.routepanelinfo[i];
+
+        if (route.serie != null)
+        {
+          chart.series.removeIndex (chart.series.indexOf (route.serie));
+          route.serie = null;
+        }
+      }
+
+      chart.series.removeIndex (chart.series.indexOf (this.scheduleImageSeries));
+    }
+
     // Create image container for the circles and city labels
-    scheduleImageSeries = chart.series.push (new am4maps.MapImageSeries ());
-    imageSeriesTemplate = scheduleImageSeries.mapImages.template;
+    this.scheduleImageSeries = chart.series.push (new am4maps.MapImageSeries ());
+    imageSeriesTemplate = this.scheduleImageSeries.mapImages.template;
 
     // Set property fields for the cities
     imageSeriesTemplate.propertyFields.latitude = "latitude";
@@ -7367,28 +7391,32 @@ export class MsfDashboardPanelComponent implements OnInit {
     var sumY = 0;
     var sumZ = 0;
 
-    // Sort the results by origin
-    if (this.values.currentOption.metaData == 5)
+    if (!rebuild)
     {
-      this.values.lastestResponse.sort (function (e1, e2) {
-        if (e1.yyyymmdd === e2.yyyymmdd)
-          return 0;
+      // Sort the results by origin
+      if (this.values.currentOption.metaData == 5)
+      {
+        this.values.lastestResponse.sort (function (e1, e2) {
+          if (e1.yyyymmdd === e2.yyyymmdd)
+            return 0;
 
-        return e2.yyyymmdd < e1.yyyymmdd ? -1 : 1;
-      });
-    }
-    else
-    {
-      this.values.lastestResponse.sort (function (e1, e2) {
-        if (e1.origin === e2.origin)
-          return 0;
+          return e2.yyyymmdd < e1.yyyymmdd ? -1 : 1;
+        });
+      }
+      else
+      {
+        this.values.lastestResponse.sort (function (e1, e2) {
+          if (e1.origin === e2.origin)
+            return 0;
 
-        return e2.origin < e1.origin ? -1 : 1;
-      });
+          return e2.origin < e1.origin ? -1 : 1;
+        });
+      }
     }
 
     lastKeyValue = null;
     numKeyValues = 0;
+    numOrigRoutes = 0;
 
     // Add cities and routes
     for (let record of this.values.lastestResponse)
@@ -7400,133 +7428,161 @@ export class MsfDashboardPanelComponent implements OnInit {
       else
         keyValue = record.origin;
 
-      latOrigin = parseFloat (record.latOrigin);
-      lonOrigin = parseFloat (record.lonOrigin);
-      latDest = parseFloat (record.latDest);
-      lonDest = parseFloat (record.lonDest);
+      if (!rebuild || (rebuild && this.routepanelinfo[numOrigRoutes].enabled))
+        routeEnabled = true;
+      else
+        routeEnabled = false;
 
-      if (latOrigin === "NULL" || lonOrigin === "NULL")
+      if (routeEnabled)
       {
-        console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
-        continue;
-      }
+        latOrigin = parseFloat (record.latOrigin);
+        lonOrigin = parseFloat (record.lonOrigin);
+        latDest = parseFloat (record.latDest);
+        lonDest = parseFloat (record.lonDest);
 
-      if (latDest === "NULL" || lonDest === "NULL")
-      {
-        console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
-        continue;
-      }
-
-      if (cities.indexOf (record.origin) == -1)
-      {
-        // Add origin city
-        city = scheduleImageSeries.mapImages.create ();
-    
-        if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+        if (latOrigin === "NULL" || lonOrigin === "NULL")
         {
           console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+          continue;
+        }
 
+        if (latDest === "NULL" || lonDest === "NULL")
+        {
+          console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+          continue;
+        }
+
+        if (cities.indexOf (record.origin) == -1)
+        {
+          // Add origin city
+          city = this.scheduleImageSeries.mapImages.create ();
+    
+          if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+          {
+            console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+
+            if (latOrigin < -90 || latOrigin > 90)
+              latOrigin /= 1000000;
+
+            if (lonOrigin < -180 || lonOrigin > 180)
+              lonOrigin /= 1000000;
+          }
+    
+          city.latitude = latOrigin;
+          city.longitude = lonOrigin;
+          city.nonScaling = true;
+          city.tooltipText = record.origin;
+
+          cities.push (record.origin);
+
+          tempLat = this.utils.degr2rad (city.latitude);
+          tempLng = this.utils.degr2rad (city.longitude);
+          tempLatCos = Math.cos (tempLat);
+          sumX += tempLatCos * Math.cos (tempLng);
+          sumY += tempLatCos * Math.sin (tempLng);
+          sumZ += Math.sin (tempLat);
+        }
+        else
+        {
           if (latOrigin < -90 || latOrigin > 90)
             latOrigin /= 1000000;
 
           if (lonOrigin < -180 || lonOrigin > 180)
             lonOrigin /= 1000000;
         }
-    
-        city.latitude = latOrigin;
-        city.longitude = lonOrigin;
-        city.nonScaling = true;
-        city.tooltipText = record.origin;
 
-        cities.push (record.origin);
-
-        tempLat = this.utils.degr2rad (city.latitude);
-        tempLng = this.utils.degr2rad (city.longitude);
-        tempLatCos = Math.cos (tempLat);
-        sumX += tempLatCos * Math.cos (tempLng);
-        sumY += tempLatCos * Math.sin (tempLng);
-        sumZ += Math.sin (tempLat);
-      }
-      else
-      {
-        if (latOrigin < -90 || latOrigin > 90)
-          latOrigin /= 1000000;
-
-        if (lonOrigin < -180 || lonOrigin > 180)
-          lonOrigin /= 1000000;
-      }
-
-      // Add destination city
-      if (cities.indexOf (record.dest) == -1)
-      {
-        city = scheduleImageSeries.mapImages.create ();
-  
-        if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+        // Add destination city
+        if (cities.indexOf (record.dest) == -1)
         {
-          console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+          city = this.scheduleImageSeries.mapImages.create ();
+  
+          if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+          {
+            console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
 
+            if (latDest < -90 || latDest > 90)
+              latDest /= 1000000;
+
+            if (lonDest < -180 || lonDest > 180)
+              lonDest /= 1000000;
+          }
+    
+          city.latitude = latDest;
+          city.longitude = lonDest;
+          city.nonScaling = true;
+          city.tooltipText = record.dest;
+
+          cities.push (record.dest);
+
+          tempLat = this.utils.degr2rad (city.latitude);
+          tempLng = this.utils.degr2rad (city.longitude);
+          tempLatCos = Math.cos (tempLat);
+          sumX += tempLatCos * Math.cos (tempLng);
+          sumY += tempLatCos * Math.sin (tempLng);
+          sumZ += Math.sin (tempLat);
+        }
+        else
+        {
           if (latDest < -90 || latDest > 90)
             latDest /= 1000000;
 
           if (lonDest < -180 || lonDest > 180)
             lonDest /= 1000000;
         }
-    
-        city.latitude = latDest;
-        city.longitude = lonDest;
-        city.nonScaling = true;
-        city.tooltipText = record.dest;
-
-        cities.push (record.dest);
-
-        tempLat = this.utils.degr2rad (city.latitude);
-        tempLng = this.utils.degr2rad (city.longitude);
-        tempLatCos = Math.cos (tempLat);
-        sumX += tempLatCos * Math.cos (tempLng);
-        sumY += tempLatCos * Math.sin (tempLng);
-        sumZ += Math.sin (tempLat);
-      }
-      else
-      {
-        if (latDest < -90 || latDest > 90)
-          latDest /= 1000000;
-
-        if (lonDest < -180 || lonDest > 180)
-          lonDest /= 1000000;
       }
 
       if (keyValue == lastKeyValue)
       {
-        // Add route
-        routes.push ([
-          { "latitude": latOrigin, "longitude": lonOrigin },
-          { "latitude": latDest, "longitude": lonDest }
-        ]);
+        if (routeEnabled)
+        {
+          // Add route
+          routes.push ([
+            { "latitude": latOrigin, "longitude": lonOrigin },
+            { "latitude": latDest, "longitude": lonDest }
+          ]);
+        }
       }
       else
       {
         if (lastKeyValue != null)
         {
-          // Create map line series and connect the origin city to the desination cities
-          scheduleLineSeries = chart.series.push (new am4maps.MapLineSeries ());
-          scheduleLineSeries.zIndex = 10;
-          scheduleLineSeries.data = [{
-            "multiGeoLine": routes
-          }];
+          if (routeEnabled)
+          {
+            // Create map line series and connect the origin city to the desination cities
+            let lineSeries = chart.series.push (new am4maps.MapLineSeries ());
+            lineSeries.zIndex = 10;
+            lineSeries.data = [{
+              "multiGeoLine": routes
+            }];
 
-          // Set map line template
-          mapLinesTemplate = scheduleLineSeries.mapLines.template;
-          mapLinesTemplate.opacity = 0.6;
-          mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
-          mapLinesTemplate.horizontalCenter = "middle";
-          mapLinesTemplate.verticalCenter = "middle";
+            // Set map line template
+            mapLinesTemplate = lineSeries.mapLines.template;
+            mapLinesTemplate.opacity = 0.6;
+            mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
+            mapLinesTemplate.horizontalCenter = "middle";
+            mapLinesTemplate.verticalCenter = "middle";
+
+            if (!rebuild)
+            {
+              // Add key value into the list
+              this.routepanelinfo.push ({
+                name: lastKeyValue,
+                enabled: true,
+                colorIndex: numKeyValues,
+                serie: lineSeries
+              });
+            }
+            else
+              this.routepanelinfo[numOrigRoutes].serie = lineSeries;
+          }
 
           routes = [];
           numKeyValues++;
+          numOrigRoutes++;
           if (numKeyValues > 11)
             numKeyValues = 11;
         }
-        else
+        else if (routeEnabled)
         {
           routes.push ([
             { "latitude": latOrigin, "longitude": lonOrigin },
@@ -7534,23 +7590,42 @@ export class MsfDashboardPanelComponent implements OnInit {
           ]);
         }
 
-        lastKeyValue = record.origin;
+        lastKeyValue = keyValue;
       }
     }
 
-    // Set last route list
-    scheduleLineSeries = chart.series.push (new am4maps.MapLineSeries ());
-    scheduleLineSeries.zIndex = 10;
-    scheduleLineSeries.data = [{
-      "multiGeoLine": routes
-    }];
+    if (!rebuild || (rebuild && this.routepanelinfo[numOrigRoutes].enabled))
+      routeEnabled = true;
+    else
+      routeEnabled = false;
 
-    // Set map line template
-    mapLinesTemplate = scheduleLineSeries.mapLines.template;
-    mapLinesTemplate.opacity = 0.6;
-    mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
-    mapLinesTemplate.horizontalCenter = "middle";
-    mapLinesTemplate.verticalCenter = "middle";
+    if (routeEnabled)
+    {
+      // Add last set of routes
+      let lineSeries = chart.series.push (new am4maps.MapLineSeries ());
+      lineSeries.zIndex = 10;
+      lineSeries.data = [{
+        "multiGeoLine": routes
+      }];
+
+      mapLinesTemplate = lineSeries.mapLines.template;
+      mapLinesTemplate.opacity = 0.6;
+      mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
+      mapLinesTemplate.horizontalCenter = "middle";
+      mapLinesTemplate.verticalCenter = "middle";
+
+      if (!rebuild)
+      {
+        this.routepanelinfo.push ({
+          name: lastKeyValue,
+          enabled: true,
+          colorIndex: numKeyValues,
+          serie: lineSeries
+        });
+      }
+      else
+        this.routepanelinfo[numOrigRoutes].serie = lineSeries;
+    }
 
     var avgX = sumX / cities.length;
     var avgY = sumY / cities.length;
@@ -7576,7 +7651,45 @@ export class MsfDashboardPanelComponent implements OnInit {
     chart.homeGeoPoint.longitude = Number (zoomlong);
     chart.homeGeoPoint.latitude = Number (zoomlat);
     chart.homeZoomLevel = zoomLevel;
-    chart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel);
+
+    if (!rebuild)
+      chart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel);
+    else
+    {
+      // avoid thick lines
+      chart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel - 0.00001);
+
+      setTimeout (() => {
+        chart.goHome ();
+      }, 50);
+    }
+  }
+
+  rebuildMapRoutes(): void
+  {
+    this.zone.runOutsideAngular (() => {
+      this.setRouteNetworks (this.chart, this.globals.theme, true);
+    });
+  }
+
+  getMapLineColor(index: number): string
+  {
+    return Themes.AmCharts[this.globals.theme].mapLineColor[index].rgba;
+  }
+
+  getMapRouteFormat(name: string): string
+  {
+    if (this.values.currentOption.metaData == 5)
+    {
+      let momentValue = moment (name, "YYYYMMDD");
+
+      if (!momentValue.isValid())
+        return name;
+
+      return new DatePipe ('en-US').transform (momentValue.toDate (), "MM/dd/yyyy");
+    }
+
+    return name;
   }
 
   startURLUpdate(): void
