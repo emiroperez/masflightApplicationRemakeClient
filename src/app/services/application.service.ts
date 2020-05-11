@@ -327,7 +327,12 @@ export class ApplicationService {
     }
 
     for (let value of values)
+    {
+      if (!value.type)
+        value.type = "number";
+
       data.values.push (value);
+    }
 
     if (this.globals.testingPlan != -1)
       url += "&testPlanId=" + this.globals.testingPlan;

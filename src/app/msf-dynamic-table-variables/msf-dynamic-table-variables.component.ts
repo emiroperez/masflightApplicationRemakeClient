@@ -160,6 +160,7 @@ export class MsfDynamicTableVariablesComponent {
       this.columns.push ({
         id: columnConfig.columnName,
         name: columnConfig.columnLabel,
+        type: columnConfig.columnType,
         hidden: false,
         funcopen: false,
         summary: false,
@@ -176,7 +177,7 @@ export class MsfDynamicTableVariablesComponent {
         minAlias: "",
         stdDevAlias: "",
         cntAlias: "",
-        index: i
+        index: i,
       });
 
       i++;
@@ -196,7 +197,7 @@ export class MsfDynamicTableVariablesComponent {
 
   setPanelSettings(): void
   {
-    this.dialogRef.close({
+    this.dialogRef.close ({
       xaxis: this.xaxis,
       yaxis: this.yaxis,
       values: this.values
@@ -228,7 +229,7 @@ export class MsfDynamicTableVariablesComponent {
     for (let value of this.values)
     {
       if (!value.average && !value.summary && !value.min && !value.max 
-        && !value.count && !value.mean && !value.stddeviation)
+        && !value.count && !value.mean && !value.stddeviation && value.type === "number")
         return false;
     }
 
@@ -534,7 +535,7 @@ export class MsfDynamicTableVariablesComponent {
     {
       this.previewAvailable = true;
       this.tableLoading = true;
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges ();
 
       if (this.data.dashboardPanel)
         this.dynamicTablePreview.loadData (this.xaxis, this.yaxis, this.values, this.data.dashboardPanel);

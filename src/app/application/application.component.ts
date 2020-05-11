@@ -862,7 +862,7 @@ toggle(){
       }
     });
 
-    dialogRef.afterClosed ().subscribe(result => {
+    dialogRef.afterClosed ().subscribe (result => {
       if (result != null)
       {
         this.globals.selectedIndex = 3;

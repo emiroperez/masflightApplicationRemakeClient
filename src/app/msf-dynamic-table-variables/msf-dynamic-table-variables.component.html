@@ -84,7 +84,7 @@
           <div class="values-list-container" id="values-list" [ngClass]="{'values-list-container-extended': values.length > 1}">
             <div class="values-variable" id="value-{{i}}" *ngFor="let variable of values; let i = index">
               <span class="variable-label">{{variable.name}}</span>
-              <mat-icon class="func-button" matTooltip="Functions" (click)="toggleFunctions($event,i,variable)">
+              <mat-icon class="func-button" matTooltip="Functions" *ngIf="variable.type === 'number'" (click)="toggleFunctions($event,i,variable)">
                 <ng-container *ngIf="!variable.funcopen">arrow_drop_down</ng-container>
                 <ng-container *ngIf="variable.funcopen">arrow_drop_up</ng-container>
               </mat-icon>

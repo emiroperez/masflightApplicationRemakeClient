@@ -5415,6 +5415,9 @@ export class MsfDashboardPanelComponent implements OnInit {
                   tableValue.cntAlias = value.cntAlias;
               }
 
+              if (!value.type)
+                value.type = "number";
+
               break;
             }
           }
