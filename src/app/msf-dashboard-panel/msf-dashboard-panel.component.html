@@ -28,7 +28,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-anchor-container" *ngIf="displayAnchoredArguments">
       <div class="msf-dashboard-panel-anchored-argument" *ngFor="let anchoredArgument of anchoredArguments">
@@ -83,7 +83,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="width: 100%; height: 100%">
@@ -118,7 +118,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column simple-form-results-container" [ngClass]="{ 'simple-form-results-container-with-anchored-args': displayAnchoredArguments }">
       <div class="msf-dashboard-form-container">
@@ -152,7 +152,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
@@ -176,7 +176,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-table-container" [ngClass]="{ 'msf-dashboard-table-container-with-anchroed-args': displayAnchoredArguments }">
@@ -218,7 +218,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div style="height: calc(100% - 7px)" class="msf-dashboard-panel-mapbox">
@@ -242,7 +242,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: calc(100% - 20px)">
@@ -284,7 +284,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="msf-dashboard-child-panel-table msf-dashboard-panel-table msf-adv-chart-table" style="height: calc(100% - 20px)" [style.width.%]="100" [style.margin-top.px]="5">
@@ -328,7 +328,7 @@
           <div class="msf-dashboard-panel-public-logo" *ngIf="!isMobile" [ngStyle]="{'background-image': 'url(' + getMasFlightLogoImage() + ')'}"></div>
         </ng-container>
       </div>
-      <div class="msf-dashboard-panel-title-description" *ngIf="!globals.readOnlyDashboard && values.chartDescription">{{values.chartDescription}}</div>
+      <div class="msf-dashboard-panel-title-description" *ngIf="values.chartDescription">{{values.chartDescription}}</div>
     </div>
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="content-panel-img">
