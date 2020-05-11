@@ -241,7 +241,7 @@ export class MsfScheduleMapsComponent implements OnInit {
             if (e1.yyyymmdd === e2.yyyymmdd)
               return 0;
 
-            return e2.yyyymmdd < e1.yyyymmdd ? -1 : 1;
+            return e2.yyyymmdd < e1.yyyymmdd ? 1 : -1;
           });
         }
         else
