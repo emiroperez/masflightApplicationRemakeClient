@@ -45,17 +45,11 @@ export class Themes {
             mapCityLabelHoverColor: darkGreen,
             mapLineColor: [
                 cyan,
-                am4core.color ("#00ff51"),
-                am4core.color ("#51e9bd"),
-                am4core.color ("#00aca9"),
-                am4core.color ("#136ffc"),
-                am4core.color ("#8436ff"),
-                am4core.color ("#c767dc"),
-                am4core.color ("#dc677e"),
                 am4core.color ("#dc4238"),
-                am4core.color ("#ff8b3b"),
+                am4core.color ("#74d15e"),
                 am4core.color ("#f3ba25"),
-                am4core.color ("#ffdb7c")
+                am4core.color ("#c767dc"),
+                am4core.color ("#ff8b3b")
             ],
             mapPlaneColor: cyan,
             tooltipFill: black,
@@ -94,17 +88,10 @@ export class Themes {
             mapCityColor: darkGray2,
             mapLineColor: [
                 prussianBlue,
-                am4core.color ("#8436ff"),
-                am4core.color ("#00aca9"),
-                am4core.color ("#74d15e"),
-                am4core.color ("#ffa400"),
-                am4core.color ("#fb6600"),
-                am4core.color ("#dc4238"),
-                am4core.color ("#dc677e"),
-                am4core.color ("#d100ff"),
-                am4core.color ("#9e005d"),
-                am4core.color ("#6b94fc"),
-                am4core.color ("#187073")
+                am4core.color ("#911109"),
+                am4core.color ("#156302"),
+                am4core.color ("#a37500"),
+                am4core.color ("#6d1980")
             ],
             mapPlaneColor: prussianBlue,
             tooltipFill: white,

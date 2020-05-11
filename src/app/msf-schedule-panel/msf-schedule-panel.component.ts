@@ -417,6 +417,7 @@ export class MsfSchedulePanelComponent implements OnInit {
           mapLine.imagesToConnect = [city1, city2];
           mapLine.line.strokeOpacity = 0.6;
           mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor[0];
+          mapLine.line.strokeWidth = 0.75;
           mapLine.line.horizontalCenter = "middle";
           mapLine.line.verticalCenter = "middle";
 

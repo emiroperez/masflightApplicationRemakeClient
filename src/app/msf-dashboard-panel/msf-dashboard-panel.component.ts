@@ -6687,6 +6687,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             mapLine.imagesToConnect = [city1, city2];
             mapLine.line.strokeOpacity = 0.6;
             mapLine.line.stroke = Themes.AmCharts[theme].mapLineColor[0];
+            mapLine.line.strokeWidth = 0.75;
             mapLine.line.horizontalCenter = "middle";
             mapLine.line.verticalCenter = "middle";
   
@@ -7559,6 +7560,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             mapLinesTemplate = lineSeries.mapLines.template;
             mapLinesTemplate.opacity = 0.6;
             mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
+            mapLinesTemplate.strokeWidth = 0.75;
             mapLinesTemplate.horizontalCenter = "middle";
             mapLinesTemplate.verticalCenter = "middle";
 
@@ -7579,8 +7581,8 @@ export class MsfDashboardPanelComponent implements OnInit {
           routes = [];
           numKeyValues++;
           numOrigRoutes++;
-          if (numKeyValues > 11)
-            numKeyValues = 11;
+          if (numKeyValues > 5)
+            numKeyValues = 5;
         }
         else if (routeEnabled)
         {
@@ -7611,6 +7613,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       mapLinesTemplate = lineSeries.mapLines.template;
       mapLinesTemplate.opacity = 0.6;
       mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
+      mapLinesTemplate.strokeWidth = 0.75;
       mapLinesTemplate.horizontalCenter = "middle";
       mapLinesTemplate.verticalCenter = "middle";
 
