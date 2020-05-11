@@ -684,7 +684,7 @@ toggle(){
     _this.msfContainerRef.msfScMapRef.destroyScheduleChart ();
 
     setTimeout (() => {
-      _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records);
+      _this.msfContainerRef.msfScMapRef.setRoutesToScMap (data.Response.records, false);
 
       _this.routeLoading = false;
     }, 50);

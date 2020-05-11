@@ -71,8 +71,9 @@ export class Globals {
   hideParametersPanels : boolean =false;
   Airportdataorigin:any;
   Airportdatadest:any;
-  scheduleChart :any;
-  schedulepanelinfo :any;
+  scheduleChart:any;
+  schedulepanelinfo: any;
+  routepanelinfo: any = [];
   scheduleImageSeries: any;
   scheduleLineSeries: any;
   scheduleShadowLineSeries: any;

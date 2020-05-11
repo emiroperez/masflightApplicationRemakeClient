@@ -980,7 +980,7 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
             color: $primary-color
             cursor: pointer
             height: 88px
-        .panelinfo, .mapbox-panelinfo
+        .panelinfo, .mapbox-panelinfo, .route-panelinfo
             background-color: $map-panelinfo-background-color
             border-color: $schedule-map-info-border
         #chartdivmap
@@ -7666,6 +7666,25 @@ mat-form-field.msf-table-input
     right: 26px
     padding: 5px
     border-style: solid
+
+.route-panelinfo
+    max-height: 85px
+    border-bottom-left-radius: 10px
+    border-top-left-radius: 10px
+    border-bottom-right-radius: 10px
+    border-top-right-radius: 10px
+    position: absolute
+    bottom: 26px
+    right: 26px
+    padding: 12px
+    border-style: solid
+    overflow-y: auto
+    .map-route-container
+        display: flex
+        flex-direction: row
+        margin-bottom: 2px
+        .map-route-checkbox
+            padding-right: 5px
 
 .msf-schedule-panel-info
     width: 100%

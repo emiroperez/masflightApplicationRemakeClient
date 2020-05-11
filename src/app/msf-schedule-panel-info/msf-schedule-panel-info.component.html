@@ -5,3 +5,9 @@
     <tr><td>Total Time</td><td>{{globals.schedulepanelinfo.TotalTime}}</td></tr>
   </table>
 </div>
+<div class="route-panelinfo" *ngIf="globals.routepanelinfo.length">
+  <div class="map-route-container" *ngFor="let route of globals.routepanelinfo">
+    <mat-checkbox class="map-route-checkbox" [(ngModel)]="route.enabled" (ngModelChange)="rebuildMapRoutes.emit()"></mat-checkbox>
+    <span [style.color]="getMapLineColor(route.colorIndex)">{{getFormat(route.name)}}</span>
+  </div>
+</div>

@@ -35,6 +35,8 @@ export class MsfScheduleMapsComponent implements OnInit {
   setRouteLoading = new EventEmitter ();
 
   utils: Utils;
+  records: any;
+  routeseries: any;
 
   constructor(private zone: NgZone, public globals: Globals, private dialog: MatDialog)
   {
@@ -63,6 +65,7 @@ export class MsfScheduleMapsComponent implements OnInit {
 
   ngOnDestroy()
   {
+    this.globals.routepanelinfo = [];
     this.destroyScheduleChart ();
   }
 
@@ -85,6 +88,7 @@ export class MsfScheduleMapsComponent implements OnInit {
     let theme, chart, continentSeries, zoomControl, home;
 
     theme = this.globals.theme;
+    this.globals.routepanelinfo = [];
 
     this.zone.runOutsideAngular (() => {
       chart = am4core.create ("chartdivmap", am4maps.MapChart);
@@ -141,19 +145,40 @@ export class MsfScheduleMapsComponent implements OnInit {
     });
   }
 
-  setRoutesToScMap(records): void
+  setRoutesToScMap(records, rebuild): void
   {
-    let theme, imageSeriesTemplate, mapLinesTemplate, circle, hoverState, label, zoomLevel, lastKeyValue, numKeyValues;
+    let theme, imageSeriesTemplate, mapLinesTemplate, circle, hoverState, label, zoomLevel, lastKeyValue, numKeyValues, numOrigRoutes, routeEnabled;
     let cities = [];
     let routes = [];
 
-    this.makeScheduleChart ();
+    if (!rebuild)
+      this.makeScheduleChart ();
+
     theme = this.globals.theme;
 
     if (!records)
       return; // Don't set routes if there are no records
 
+    if (!rebuild)
+      this.globals.routepanelinfo = [];
+
     this.zone.runOutsideAngular (() => {
+      if (rebuild)
+      {
+        for (let i = this.globals.routepanelinfo.length - 1; i >= 0; i--)
+        {
+          let route = this.globals.routepanelinfo[i];
+
+          if (route.serie != null)
+          {
+            this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (route.serie));
+            route.serie = null;
+          }
+        }
+
+        this.globals.scheduleChart.series.removeIndex (this.globals.scheduleChart.series.indexOf (this.globals.scheduleImageSeries));
+      }
+
       // Create image container for the circles and city labels
       this.globals.scheduleImageSeries = this.globals.scheduleChart.series.push (new am4maps.MapImageSeries ());
       imageSeriesTemplate = this.globals.scheduleImageSeries.mapImages.template;
@@ -207,28 +232,32 @@ export class MsfScheduleMapsComponent implements OnInit {
       var sumY = 0;
       var sumZ = 0;
 
-      // Sort the results by origin
-      if (this.globals.currentOption.metaData == 5)
+      if (!rebuild)
       {
-        records.sort(function (e1, e2) {
-          if (e1.yyyymmdd === e2.yyyymmdd)
-            return 0;
+        // Sort the results by origin
+        if (this.globals.currentOption.metaData == 5)
+        {
+          records.sort(function (e1, e2) {
+            if (e1.yyyymmdd === e2.yyyymmdd)
+              return 0;
 
-          return e2.yyyymmdd < e1.yyyymmdd ? -1 : 1;
-        });
-      }
-      else
-      {
-        records.sort (function (e1, e2) {
-          if (e1.origin === e2.origin)
-            return 0;
+            return e2.yyyymmdd < e1.yyyymmdd ? -1 : 1;
+          });
+        }
+        else
+        {
+          records.sort (function (e1, e2) {
+            if (e1.origin === e2.origin)
+              return 0;
 
-          return e2.origin < e1.origin ? -1 : 1;
-        });
+            return e2.origin < e1.origin ? -1 : 1;
+          });
+        }
       }
 
       lastKeyValue = null;
       numKeyValues = 0;
+      numOrigRoutes = 0;
 
       // Add cities and routes
       for (let record of records)
@@ -240,133 +269,161 @@ export class MsfScheduleMapsComponent implements OnInit {
         else
           keyValue = record.origin;
 
-        latOrigin = parseFloat (record.latOrigin);
-        lonOrigin = parseFloat (record.lonOrigin);
-        latDest = parseFloat (record.latDest);
-        lonDest = parseFloat (record.lonDest);
+        if (!rebuild || (rebuild && this.globals.routepanelinfo[numOrigRoutes].enabled))
+          routeEnabled = true;
+        else
+          routeEnabled = false;
 
-        if (latOrigin === "NULL" || lonOrigin === "NULL")
+        if (routeEnabled)
         {
-          console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
-          continue;
-        }
-  
-        if (latDest === "NULL" || lonDest === "NULL")
-        {
-          console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
-          continue;
-        }
-        console.log(record);
-        if (cities.indexOf (record.origin) == -1)
-        {
-          // Add origin city
-          city = this.globals.scheduleImageSeries.mapImages.create ();
-    
-          if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+          latOrigin = parseFloat (record.latOrigin);
+          lonOrigin = parseFloat (record.lonOrigin);
+          latDest = parseFloat (record.latDest);
+          lonDest = parseFloat (record.lonDest);
+
+          if (latOrigin === "NULL" || lonOrigin === "NULL")
           {
             console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+            continue;
+          }
+  
+          if (latDest === "NULL" || lonDest === "NULL")
+          {
+            console.warn (record.origin + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+            continue;
+          }
 
+          if (cities.indexOf (record.origin) == -1)
+          {
+            // Add origin city
+            city = this.globals.scheduleImageSeries.mapImages.create ();
+    
+            if (latOrigin < -90 || latOrigin > 90 || lonOrigin < -180 || lonOrigin > 180)
+            {
+              console.warn (record.origin + " have invalid coordinates! (lat: " + latOrigin + ", lon: " + lonOrigin + ")");
+
+              if (latOrigin < -90 || latOrigin > 90)
+                latOrigin /= 1000000;
+
+              if (lonOrigin < -180 || lonOrigin > 180)
+                lonOrigin /= 1000000;
+            }
+    
+            city.latitude = latOrigin;
+            city.longitude = lonOrigin;
+            city.nonScaling = true;
+            city.tooltipText = record.origin;
+
+            cities.push (record.origin);
+
+            tempLat = this.utils.degr2rad (city.latitude);
+            tempLng = this.utils.degr2rad (city.longitude);
+            tempLatCos = Math.cos (tempLat);
+            sumX += tempLatCos * Math.cos (tempLng);
+            sumY += tempLatCos * Math.sin (tempLng);
+            sumZ += Math.sin (tempLat);
+          }
+          else
+          {
             if (latOrigin < -90 || latOrigin > 90)
               latOrigin /= 1000000;
 
             if (lonOrigin < -180 || lonOrigin > 180)
               lonOrigin /= 1000000;
           }
-    
-          city.latitude = latOrigin;
-          city.longitude = lonOrigin;
-          city.nonScaling = true;
-          city.tooltipText = record.origin;
 
-          cities.push (record.origin);
-
-          tempLat = this.utils.degr2rad (city.latitude);
-          tempLng = this.utils.degr2rad (city.longitude);
-          tempLatCos = Math.cos (tempLat);
-          sumX += tempLatCos * Math.cos (tempLng);
-          sumY += tempLatCos * Math.sin (tempLng);
-          sumZ += Math.sin (tempLat);
-        }
-        else
-        {
-          if (latOrigin < -90 || latOrigin > 90)
-            latOrigin /= 1000000;
-
-          if (lonOrigin < -180 || lonOrigin > 180)
-            lonOrigin /= 1000000;
-        }
-
-        // Add destination city
-        if (cities.indexOf (record.dest) == -1)
-        {
-          city = this.globals.scheduleImageSeries.mapImages.create ();
-    
-          if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+          // Add destination city
+          if (cities.indexOf (record.dest) == -1)
           {
-            console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+            city = this.globals.scheduleImageSeries.mapImages.create ();
 
+            if (latDest < -90 || latDest > 90 || lonDest < -180 || lonDest > 180)
+            {
+              console.warn (record.dest + " have invalid coordinates! (lat: " + latDest + ", lon: " + lonDest + ")");
+
+              if (latDest < -90 || latDest > 90)
+                latDest /= 1000000;
+
+              if (lonDest < -180 || lonDest > 180)
+                lonDest /= 1000000;
+            }
+    
+            city.latitude = latDest;
+            city.longitude = lonDest;
+            city.nonScaling = true;
+            city.tooltipText = record.dest;
+
+            cities.push (record.dest);
+
+            tempLat = this.utils.degr2rad (city.latitude);
+            tempLng = this.utils.degr2rad (city.longitude);
+            tempLatCos = Math.cos (tempLat);
+            sumX += tempLatCos * Math.cos (tempLng);
+            sumY += tempLatCos * Math.sin (tempLng);
+            sumZ += Math.sin (tempLat);
+          }
+          else
+          {
             if (latDest < -90 || latDest > 90)
               latDest /= 1000000;
 
             if (lonDest < -180 || lonDest > 180)
               lonDest /= 1000000;
           }
-    
-          city.latitude = latDest;
-          city.longitude = lonDest;
-          city.nonScaling = true;
-          city.tooltipText = record.dest;
-
-          cities.push (record.dest);
-
-          tempLat = this.utils.degr2rad (city.latitude);
-          tempLng = this.utils.degr2rad (city.longitude);
-          tempLatCos = Math.cos (tempLat);
-          sumX += tempLatCos * Math.cos (tempLng);
-          sumY += tempLatCos * Math.sin (tempLng);
-          sumZ += Math.sin (tempLat);
-        }
-        else
-        {
-          if (latDest < -90 || latDest > 90)
-            latDest /= 1000000;
-
-          if (lonDest < -180 || lonDest > 180)
-            lonDest /= 1000000;
         }
 
         if (keyValue == lastKeyValue)
         {
-          // Add route
-          routes.push ([
-            { "latitude": latOrigin, "longitude": lonOrigin },
-            { "latitude": latDest, "longitude": lonDest }
-          ]);
+          if (routeEnabled)
+          {
+            // Add route
+            routes.push ([
+              { "latitude": latOrigin, "longitude": lonOrigin },
+              { "latitude": latDest, "longitude": lonDest }
+            ]);
+          }
         }
         else
         {
           if (lastKeyValue != null)
           {
-            // Create map line series and connect the origin city to the desination cities
-            this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
-            this.globals.scheduleLineSeries.zIndex = 10;
-            this.globals.scheduleLineSeries.data = [{
-              "multiGeoLine": routes
-            }];
+            if (routeEnabled)
+            {
+              // Create map line series and connect the origin city to the desination cities
+              let lineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+              lineSeries.zIndex = 10;
+              lineSeries.data = [{
+                "multiGeoLine": routes
+              }];
 
-            // Set map line template
-            mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
-            mapLinesTemplate.opacity = 0.6;
-            mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
-            mapLinesTemplate.horizontalCenter = "middle";
-            mapLinesTemplate.verticalCenter = "middle";
+              // Set map line template
+              mapLinesTemplate = lineSeries.mapLines.template;
+              mapLinesTemplate.opacity = 0.6;
+              mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
+              mapLinesTemplate.horizontalCenter = "middle";
+              mapLinesTemplate.verticalCenter = "middle";
+
+              if (!rebuild)
+              {
+                // Add key value into the list
+                this.globals.routepanelinfo.push ({
+                  name: lastKeyValue,
+                  enabled: true,
+                  colorIndex: numKeyValues,
+                  serie: lineSeries
+                });
+              }
+              else
+                this.globals.routepanelinfo[numOrigRoutes].serie = lineSeries;
+            }
 
             routes = [];
             numKeyValues++;
+            numOrigRoutes++
             if (numKeyValues > 11)
               numKeyValues = 11;
           }
-          else
+          else if (routeEnabled)
           {
             routes.push ([
               { "latitude": latOrigin, "longitude": lonOrigin },
@@ -378,19 +435,38 @@ export class MsfScheduleMapsComponent implements OnInit {
         }
       }
 
-      // Create map line series and connect the origin city to the desination cities
-      this.globals.scheduleLineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
-      this.globals.scheduleLineSeries.zIndex = 10;
-      this.globals.scheduleLineSeries.data = [{
-        "multiGeoLine": routes
-      }];
+      if (!rebuild || (rebuild && this.globals.routepanelinfo[numOrigRoutes].enabled))
+        routeEnabled = true;
+      else
+        routeEnabled = false;
 
-      // Set map line template
-      mapLinesTemplate = this.globals.scheduleLineSeries.mapLines.template;
-      mapLinesTemplate.opacity = 0.6;
-      mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
-      mapLinesTemplate.horizontalCenter = "middle";
-      mapLinesTemplate.verticalCenter = "middle";
+      if (routeEnabled)
+      {
+        // Add last set of routes
+        let lineSeries = this.globals.scheduleChart.series.push (new am4maps.MapLineSeries ());
+        lineSeries.zIndex = 10;
+        lineSeries.data = [{
+          "multiGeoLine": routes
+        }];
+
+        mapLinesTemplate = lineSeries.mapLines.template;
+        mapLinesTemplate.opacity = 0.6;
+        mapLinesTemplate.stroke = Themes.AmCharts[theme].mapLineColor[numKeyValues];
+        mapLinesTemplate.horizontalCenter = "middle";
+        mapLinesTemplate.verticalCenter = "middle";
+
+        if (!rebuild)
+        {
+          this.globals.routepanelinfo.push ({
+            name: lastKeyValue,
+            enabled: true,
+            colorIndex: numKeyValues,
+            serie: lineSeries
+          });
+        }
+        else
+          this.globals.routepanelinfo[numOrigRoutes].serie = lineSeries;
+      }
 
       var avgX = sumX / cities.length;
       var avgY = sumY / cities.length;
@@ -416,8 +492,27 @@ export class MsfScheduleMapsComponent implements OnInit {
       this.globals.scheduleChart.homeGeoPoint.longitude = Number (zoomlong);
       this.globals.scheduleChart.homeGeoPoint.latitude = Number (zoomlat);
       this.globals.scheduleChart.homeZoomLevel = zoomLevel;
-      this.globals.scheduleChart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel);
+
+      if (!rebuild)
+      {
+        this.globals.scheduleChart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel);
+        this.records = records;
+      }
+      else
+      {
+        // avoid thick lines
+        this.globals.scheduleChart.zoomToGeoPoint ({ latitude: zoomlat, longitude: zoomlong }, zoomLevel - 0.00001);
+
+        setTimeout (() => {
+          this.globals.scheduleChart.goHome ();
+        }, 50);
+      }
     });
+  }
+
+  rebuildMapRoutes(): void
+  {
+    this.setRoutesToScMap (this.records, true);
   }
 
   cancelLoading(): void

@@ -60,7 +60,8 @@ export class MsfSchedulePanelComponent implements OnInit {
  }
 
  ngOnDestroy(): void {
-  this.globals.schedulepanelinfo=false;
+  this.globals.schedulepanelinfo = false;
+  this.globals.routepanelinfo = [];
   this.TabletQuery.removeListener(this._TabletQueryListener);
  }
 
@@ -495,8 +496,8 @@ export class MsfSchedulePanelComponent implements OnInit {
     });
    }
    returnSearch(){
-    this.globals.hideParametersPanels=false;
-    this.globals.schedulepanelinfo =false;
+    this.globals.hideParametersPanels = false;
+    this.globals.schedulepanelinfo = false;
   }
    
   ngOnInit()
