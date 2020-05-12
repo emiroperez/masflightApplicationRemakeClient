@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ReplaySubject } from 'rxjs';
 
 import { Globals } from '../globals/Globals';
 
@@ -23,7 +24,8 @@ export class SearchDynamicTableComponent {
         name: yaxis.name,
         values: [],
         selected: [],
-        searchFilter: ""
+        searchFilter: "",
+        filteredValues: new ReplaySubject<any[]> (1)
       });
     }
 
@@ -44,13 +46,17 @@ export class SearchDynamicTableComponent {
     }
 
     for (let yAxisValue of yAxisValues)
+    {
       this.dynTableValues.push (yAxisValue);
+      this.dynTableValues[this.dynTableValues.length - 1].filteredValues.next (yAxisValue.values.slice ());
+    }
 
     for (i = 0; i < data.xaxis.length; i++)
     {
       let header = data.dataAdapter.headers[i];
       let xaxis = data.xaxis[i];
       let xAxisValues = [];
+      let dynTableValue;
 
       for (let item of header.values)
       {
@@ -62,18 +68,33 @@ export class SearchDynamicTableComponent {
         name: xaxis.name,
         values: xAxisValues,
         selected: [],
-        searchFilter: ""
+        searchFilter: "",
+        filteredValues: new ReplaySubject<any[]> (1)
       });
+
+      dynTableValue = this.dynTableValues[this.dynTableValues.length - 1];
+      dynTableValue.filteredValues.next (dynTableValue.values.slice ());
     }
   }
 
-/*  ngOnInit()
+  filterValues(dynTableValue): void
   {
-    // headers (xaxis), body (values), body, first value from body (yaxis, no secondary values if only title)
-    console.log (this.data.dataAdapter);
-    console.log (this.data.xaxis);
-    console.log (this.data.yaxis);
-    console.log (this.data.values);
-  }*/
+    let search;
 
+    if (!dynTableValue.values)
+      return;
+
+    // get the search keyword
+    search = dynTableValue.searchFilter;
+    if (!search)
+    {
+      dynTableValue.filteredValues.next (dynTableValue.values.slice ());
+      return;
+    }
+
+    search = search.toLowerCase ();
+    dynTableValue.filteredValues.next (
+      dynTableValue.values.filter (a => a.toLowerCase ().indexOf (search) > -1)
+    );
+  }
 }
