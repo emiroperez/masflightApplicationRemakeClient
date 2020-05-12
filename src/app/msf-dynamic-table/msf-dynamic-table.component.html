@@ -1,9 +1,14 @@
 <div class="dynamic-table-scroll" *ngIf="!isLoading">
   <table *ngIf="dataAdapter" class="mat-elevation-z8 dynamic-table-container">
-    <tr class="dynamic-table-header-container" *ngFor="let header of dataAdapter.headers">
+    <tr class="dynamic-table-header-container" *ngFor="let header of dataAdapter.headers; last as isLast">
       <!-- Always insert a blank tab header first since it's a pivot table -->
       <th class="dyanmic-table-padding" [style.top.px]="header.topOffset"></th>
-      <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+      <ng-container *ngIf="!isLast">
+        <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+      </ng-container>
+      <ng-container *ngIf="isLast">
+        <th class="dynamic-table-header-last" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+      </ng-container>
     </tr>
     <tr class="dynamic-table-body-container" *ngFor="let body of dataAdapter.body">
       <ng-container *ngIf="body[0].titleOnly">

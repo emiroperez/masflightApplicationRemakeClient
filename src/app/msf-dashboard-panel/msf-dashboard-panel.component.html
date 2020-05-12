@@ -253,10 +253,15 @@
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: calc(100% - 20px)">
         <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
-          <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers">
+          <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers; last as isLast">
             <!-- Always insert a blank tab header first since it's a pivot table -->
             <th class="dyanmic-table-padding" [style.top.px]="header.topOffset"></th>
-            <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+            <ng-container *ngIf="!isLast">
+              <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+            </ng-container>
+            <ng-container *ngIf="isLast">
+              <th class="dynamic-table-header-last" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+            </ng-container>
           </tr>
           <tr class="dynamic-table-body-container" *ngFor="let body of dynTableData.body">
             <ng-container *ngIf="body[0].titleOnly">
