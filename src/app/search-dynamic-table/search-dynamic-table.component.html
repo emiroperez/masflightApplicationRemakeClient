@@ -1,0 +1,33 @@
+<div class="dyntable-search-title">
+  <img src="../../assets/images/dark-theme-search-filter.png">
+  <span class="dyntable-search-title-label">Search Filters</span>
+  <div class="dynamic-table-header-buttons">
+    <button mat-flat-button class="flat-button">
+      Search
+    </button>
+    <button mat-icon-button class="dyntable-close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="dyntable-search-filters">
+  <div class="dyntable-item" *ngFor="let dynTableValue of dynTableValues">
+    <div class="dyntable-search-input">
+      <div class="dyntable-input">
+        <input matInput [(ngModel)]="dynTableValue.searchFilter" placeholder="Search" autocomplete="off"/>
+        <mat-icon>search</mat-icon>
+      </div>
+    </div>
+    <div class="dyntable-item-list">
+      <mat-selection-list [(ngModel)]="dynTableValue.selected">
+        <mat-list-option [checkboxPosition]="'before'"  *ngFor="let value of dynTableValue.values">
+          {{value}}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="dyntable-search-footer">
+      <span class="value-filter-label">Value Filters</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </div>
+  </div>
+</div>

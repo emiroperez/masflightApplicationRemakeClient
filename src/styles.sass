@@ -2544,6 +2544,26 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
             border: 1px solid $dynamic-table-border-color
         .mat-sort-header-arrow
             color: $table-sort-arrow
+        .dyntable-search-title
+            background-color: $dynamic-table-background-color
+        .dyntable-item-list
+            .mat-pseudo-checkbox-checked
+                background-color: $primary-color !important
+                border-color: $primary-color !important
+        .dyntable-search-input, .dyntable-search-footer
+            background-color: $dynamic-table-header-color
+            border: 1px solid $dynamic-table-border-color
+        .dyntable-input
+            background-color: $dynamic-table-background-color
+        .dyntable-search-filters
+            ::-webkit-input-placeholder
+                color: $dynamic-table-border-color
+            ::placeholder
+                color: $dynamic-table-border-color
+            :-ms-input-placeholder
+                color: $dynamic-table-border-color
+            ::-ms-input-placeholder
+                color: $dynamic-table-border-color
     .#{$name}.partial-summaries-item
         border-bottom: 1px solid $dashboard-config-location-border-color
     .#{$name}.metadata-item
@@ -12819,6 +12839,86 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 .titleFormatList
     font-size: larger !important
     font-weight: bold !important
+
+.dyntable-search-title
+    position: relative
+    display: flex
+    height: 30px
+    align-items: center
+    padding: 10px
+    color: #ffffff
+    font-weight: 550
+    font-size: 14px
+    .dyntable-search-title-label
+        margin-left: 10px
+    .dynamic-table-header-buttons
+        position: absolute
+        right: 10px
+        .dyntable-close-button
+            height: 35px !important
+            line-height: 35px !important
+            margin-left: 10px
+
+.dyntable-search-filters
+    display: flex
+    height: 351px
+    overflow-x: auto
+    overflow-y: hidden
+    .mat-selection-list
+        padding-top: 0 !important
+    .dyntable-item
+        height: 240px
+        width: 200px
+        .dyntable-search-input
+            display: flex
+            align-items: center
+            justify-content: center
+            height: 50px
+            border-left: none
+            .dyntable-input
+                display: flex
+                width: 85%
+                padding: 5px
+                .mat-icon
+                    color: #ffffff
+                    width: 20px
+                    height: 20px
+                    font-size: 20px
+                    margin-left: 10px
+        .dyntable-item-list
+            background-color: #ffffff
+            height: 250px
+            overflow-y: auto
+            border: 1px solid #dadada
+            border-left: none
+            .mat-pseudo-checkbox
+                border-color: #4d4d4d
+                border-radius: inherit !important
+            .mat-list-item
+                color: #4d4d4d
+                height: 35px !important
+                border-bottom: 1px solid #dadada
+            .mat-list-item:hover
+                background-color: inherit !important
+        .dyntable-search-footer
+            border-left: none
+            display: flex
+            align-items: center
+            color: #ffffff
+            padding: 10px
+            height: 25px
+            .value-filter-label
+                width: 160px
+            .mat-icon
+                color: #01abec
+    input:focus::-webkit-input-placeholder
+        opacity: 0
+    input:focus::placeholder
+        opacity: 0
+    input:focus:-ms-input-placeholder
+        opacity: 0
+    input:focus::-ms-input-placeholder
+        opacity: 0
 
 //.amcharts-LineSeries
 //    stroke-linejoin: round

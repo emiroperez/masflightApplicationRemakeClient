@@ -26,6 +26,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { DashboardCategory } from '../model/DashboardCategory';
 import { MsfPartialSummariesComponent } from '../msf-partial-summaries/msf-partial-summaries.component';
 import { ExportCsvDialogComponent } from '../export-csv-dialog/export-csv-dialog.component';
+import { SearchDynamicTableComponent } from '../search-dynamic-table/search-dynamic-table.component';
 
 @Component({
   selector: 'app-application',
@@ -94,6 +95,10 @@ export class ApplicationComponent implements OnInit {
   pageSize: any;
   showMoreResult: boolean;
   defaultOptionId: number = null;
+
+  dynTableXAxis: any[];
+  dynTableYAxis: any[];
+  dynTableValues: any[];
 
   constructor(public dialog: MatDialog, public globals: Globals, private menuService: MenuService,private router: Router,private excelService:ExcelService,
     private appService: ApplicationService, private authService: AuthService, private changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private authGuard: AuthGuard,
@@ -865,6 +870,10 @@ toggle(){
     dialogRef.afterClosed ().subscribe (result => {
       if (result != null)
       {
+        this.dynTableXAxis = result.xaxis;
+        this.dynTableYAxis = result.yaxis;
+        this.dynTableValues = result.values;
+
         this.globals.selectedIndex = 3;
         this.dynTableLoading = true;
         this.dynamicTableValues = result; // store the dynamic table configuration
@@ -1757,9 +1766,26 @@ toggle(){
 
   toggleSearchColumnFilter(): void
   {
+    /*if (this.globals.selectedIndex == 3)
+    {
+      this.dialog.open (SearchDynamicTableComponent, {
+        autoFocus: false,
+        panelClass: 'dynamic-table-dialog',
+        data: {
+          dataAdapter: this.msfContainerRef.msfDynamicTableRef.dataAdapter,
+          xaxis: this.dynTableXAxis,
+          yaxis: this.dynTableYAxis
+        }
+      });
+
+      return;
+    }*/
+
     this.searchColumnFilter = !this.searchColumnFilter;
-    this.changeDetectorRef.detectChanges ();
-    this.searchFilterInput.nativeElement.focus ();
+    this.changeDetectorRef.detectChanges();
+
+    if (this.searchColumnFilter)
+      this.searchFilterInput.nativeElement.focus ();
   }
 
   searchWithFilter(): void
