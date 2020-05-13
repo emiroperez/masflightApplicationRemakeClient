@@ -371,7 +371,8 @@
                 <div class="msf-dashboard-assistant-chart-config-button"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-config-axis-button': !xAxisSelected, 'msf-dashboard-assistant-chart-config-axis-button-selected': (xAxisSelected || (!xAxisSelected && selectingXAxis)) }"
                      (click)="selectXAxis()" *ngIf="haveXAxis()">
-                  X - Axis
+                  <span *ngIf="isAnimatedChart()">Result Set</span>
+                  <span *ngIf="!isAnimatedChart()">X - Axis</span>
                 </div>
                 <div class="msf-dashboard-assistant-chart-config-button"
                      [ngClass]="{ 'msf-dashboard-assistant-chart-config-values-button': !valueSelected, 'msf-dashboard-assistant-chart-config-values-button-selected': (valueSelected || (!valueSelected && selectingValue)) }"

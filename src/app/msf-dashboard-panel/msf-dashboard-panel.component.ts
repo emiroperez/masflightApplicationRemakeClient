@@ -96,7 +96,9 @@ export class MsfDashboardPanelComponent implements OnInit {
     { name: 'Bubble Heat Map', flags: ChartFlags.HEATMAP | ChartFlags.BUBBLE },
     { name: 'Simple Vertical Lines', flags: ChartFlags.LINECHART | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries },
     { name: '(obsolete) Simple Vertical Scatter', flags: ChartFlags.LINECHART | ChartFlags.BULLET | ChartFlags.ROTATED, createSeries: this.createSimpleVertLineSeries },
-    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, createSeries: this.createScatterSeries }
+    { name: 'Scatter', flags: ChartFlags.XYCHART | ChartFlags.BULLET, createSeries: this.createScatterSeries },
+    { name: 'Bar Chart Race', flags: ChartFlags.MULTIRESULTS, createSeries: this.createSimpleVertColumnSeries },
+    { name: 'Horizontal Bar Chart Race', flags: ChartFlags.ROTATED | ChartFlags.MULTIRESULTS, createSeries: this.createSimpleHorizColumnSeries }
   ];
 
   functions: any[] = [
@@ -955,6 +957,19 @@ export class MsfDashboardPanelComponent implements OnInit {
       series.dataFields.valueY = item.valueField;
     }
 
+    if (values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+    {
+      let labelBullet = series.bullets.push (new am4charts.LabelBullet ());
+
+      labelBullet.label.text = "{values.valueY.workingValue}";
+      labelBullet.label.rotation = 270;
+      labelBullet.label.truncate = false;
+      labelBullet.label.dy = -30;
+
+      series.interpolationDuration = 4000;
+      series.interpolationEasing = am4core.ease.linear;
+    }
+
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
     {
       series.dataFields.categoryX = item.titleField;
@@ -1044,6 +1059,18 @@ export class MsfDashboardPanelComponent implements OnInit {
     {
       series.name = item.valueField;
       series.dataFields.valueX = item.valueField;
+    }
+
+    if (values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+    {
+      let labelBullet = series.bullets.push (new am4charts.LabelBullet ());
+
+      labelBullet.label.text = "{values.valueX.workingValue}";
+      labelBullet.label.truncate = false;
+      labelBullet.label.dx = 30;
+
+      series.interpolationDuration = 4000;
+      series.interpolationEasing = am4core.ease.linear;
     }
 
     if (values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -3476,6 +3503,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         url += "&chartType=pie";
       else if (this.values.currentChartType.flags & ChartFlags.BULLET)
         url += "&chartType=scatter";
+      else if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+        url += "&chartType=barsets";
       else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
         url += "&chartType=simplebar";
     }
@@ -5887,7 +5916,8 @@ export class MsfDashboardPanelComponent implements OnInit {
     return !(this.values.currentChartType.flags & ChartFlags.XYCHART)
       && !(this.values.currentChartType.flags & ChartFlags.ADVANCED)
       && !(this.values.currentChartType.flags & ChartFlags.PIECHART)
-      && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART);
+      && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+      && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS);
   }
 
   isSimpleFormPanel(): boolean

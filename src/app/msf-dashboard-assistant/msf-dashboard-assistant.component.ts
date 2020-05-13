@@ -95,6 +95,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     { name: 'Horizontal Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED, image: 'horiz-bar-chart.png', allowedInAdvancedMode: true },
     { name: 'Simple Bars', flags: ChartFlags.NONE, image: 'simple-vert-bar-chart.png', allowedInAdvancedMode: true },
     { name: 'Simple Horizontal Bars', flags: ChartFlags.ROTATED, image: 'simple-horiz-bar-chart.png', allowedInAdvancedMode: true },
+    { name: 'Bar Chart Race', flags: ChartFlags.MULTIRESULTS, image: 'simple-vert-bar-chart.png', allowedInAdvancedMode: false },
+    { name: 'Horizontal Bar Chart Race', flags: ChartFlags.ROTATED | ChartFlags.MULTIRESULTS, image: 'simple-horiz-bar-chart.png', allowedInAdvancedMode: false },
     { name: 'Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.STACKED, image: 'stacked-vert-column-chart.png', allowedInAdvancedMode: true },
     { name: 'Horizontal Stacked Bars', flags: ChartFlags.XYCHART | ChartFlags.ROTATED | ChartFlags.STACKED, image: 'stacked-horiz-column-chart.png', allowedInAdvancedMode: true },
     { name: 'Funnel', flags: ChartFlags.FUNNELCHART, image: 'funnel-chart.png', allowedInAdvancedMode: false },
@@ -918,7 +920,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
     return !(this.values.currentChartType.flags & ChartFlags.XYCHART)
       && !(this.values.currentChartType.flags & ChartFlags.ADVANCED)
       && !(this.values.currentChartType.flags & ChartFlags.PIECHART)
-      && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART);
+      && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART)
+      && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS);
   }
 
   isLineOrBarChart(): boolean
@@ -927,6 +930,11 @@ export class MsfDashboardAssistantComponent implements OnInit {
       return true;
 
     return false;
+  }
+
+  isAnimatedChart(): boolean
+  {
+    return (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS) ? true : false;
   }
 
   isScatterChart(): boolean
@@ -1123,7 +1131,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     this.selectingAggregationValue = null;
 
     // Remove X Axis selection if the chart type doesn't use it
-    if (!this.haveXAxis())
+    if (!this.haveXAxis ())
     {
       this.xAxisSelected = null;
       this.values.xaxis = null;
@@ -2391,7 +2399,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
   haveXAxis(): boolean
   {
-    if (this.selectedPanelType.flags & ChartFlags.XYCHART)
+    if (this.selectedPanelType.flags & ChartFlags.XYCHART || this.selectedPanelType.flags & ChartFlags.MULTIRESULTS)
       return true;
 
     return false;
@@ -2627,7 +2635,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     }
     else
     {
-      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      if (!(this.values.currentChartType.flags & ChartFlags.XYCHART) && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
       {
         if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
         {
@@ -2828,7 +2836,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
           this.values.dynTableVariables = [];
         }
       }
-      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART) && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
       {
         this.values.xaxis = null;
 
@@ -3195,7 +3203,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
     else
       variable = null;
 
-    if (this.selectedPanelType.flags & ChartFlags.XYCHART && this.xAxisSelected)
+    if ((this.selectedPanelType.flags & ChartFlags.XYCHART || this.selectedPanelType.flags & ChartFlags.MULTIRESULTS) && this.xAxisSelected)
     {
       for (i = 0; i < this.values.chartColumnOptions.length; i++)
       {

@@ -8,5 +8,6 @@ export enum ConfigFlags
   GOALS           = 0x00000010,
   HEATMAPCOLOR    = 0x00000020,
   AXISNAMES       = 0x00000040,
-  ANIMATIONS      = 0x00000080
+  ANIMATIONS      = 0x00000080,
+  MULTIRESULTS    = 0x00000100
 };

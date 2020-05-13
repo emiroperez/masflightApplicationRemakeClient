@@ -18,6 +18,8 @@ import { DatePipe } from '@angular/common';
 // AmCharts colors
 const black = am4core.color ("#000000");
 
+const raceStepInterval = 4000;
+
 @Component({
   selector: 'app-msf-chart-preview',
   templateUrl: './msf-chart-preview.component.html'
@@ -28,6 +30,13 @@ export class MsfChartPreviewComponent {
   isLoading: boolean;
   chart: any;
   chartInfo: any;
+  resultSets: any[] = [];
+  nameSets: string[] = [];
+  numSets: number = 0;
+  animCategoryAxis: any = null;
+  animChartInterval: any = null;
+  animChartLabel: any = null;
+  resultSetIndex: number = 0;
 
   addUpValuesSet: boolean = false;
   sumValueAxis: any = null;
@@ -171,6 +180,8 @@ export class MsfChartPreviewComponent {
         url += "&chartType=pie";
       else if (this.data.currentChartType.flags & ChartFlags.BULLET)
         url += "&chartType=scatter";
+      else if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+        url += "&chartType=barsets";
       else if (!(this.data.currentChartType.flags & ChartFlags.XYCHART))
         url += "&chartType=simplebar";
     }
@@ -207,7 +218,7 @@ export class MsfChartPreviewComponent {
         maxValueRange: null,
         variableName: this.data.chartColumnOptions ? (this.data.variable ? this.data.variable.id : null) : null,
         xaxisName: this.data.chartColumnOptions ? (this.data.xaxis ? this.data.xaxis.id : null) : null,
-        valueName: this.data.chartColumnOptions ? ((this.data.valueColumn && !this.isSimpleChart()) ? this.data.valueColumn.id : null) : null,
+        valueName: this.data.chartColumnOptions ? ((this.data.valueColumn && !this.isSimpleChart ()) ? this.data.valueColumn.id : null) : null,
         functionName: this.data.function.id,
         valueNameList: this.generateValueNameList (),
         valueListInfo: this.generateValueListInfo ()
@@ -279,7 +290,14 @@ export class MsfChartPreviewComponent {
       return;
     }
 
-    if ((!(_this.data.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
+    if (_this.data.currentChartType.flags & ChartFlags.MULTIRESULTS && data.sets.length == 0)
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    if (!(_this.data.currentChartType.flags & ChartFlags.MULTIRESULTS) &&
+      (!(_this.data.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
       (_this.data.currentChartType.flags & ChartFlags.XYCHART && !data.filter))
     {
       _this.noDataFound ();
@@ -375,6 +393,20 @@ export class MsfChartPreviewComponent {
     this.advTableView = false;
     this.intervalTableRows = [];
     this.chartInfo = chartInfo;
+    this.resultSetIndex = 0;
+
+    if (chartInfo.sets)
+    {
+      this.resultSets = chartInfo.sets;
+      this.nameSets = chartInfo.names;
+      this.numSets = chartInfo.sets.length - 1;
+    }
+    else
+    {
+      this.resultSets = null;
+      this.nameSets = null;
+      this.numSets = 0;
+    }
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
@@ -418,7 +450,7 @@ export class MsfChartPreviewComponent {
       }
       else
       {
-        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet;;
+        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet, numNonZeroResults;
 
         chart = am4core.create("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
         barChartHoverSet = false;
@@ -428,9 +460,9 @@ export class MsfChartPreviewComponent {
           if (this.data.valueColumn.item.columnType === "number")
           {
             if (this.data.valueColumn.item.outputFormat)
-              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat(this.data.valueColumn.item.outputFormat);
+              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.item.outputFormat);
             else
-              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat(this.data.valueColumn.item.columnFormat);
+              chart.numberFormatter.numberFormat = this.utils.convertNumberFormat (this.data.valueColumn.item.columnFormat);
           }
           else
             chart.numberFormatter.numberFormat = "#,###.#";
@@ -449,7 +481,58 @@ export class MsfChartPreviewComponent {
         }
         else if (!(this.data.currentChartType.flags & ChartFlags.PIECHART) && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
-          chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
+          if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+          {
+            let categoryNames = [];
+
+            chart.data = [];
+            numNonZeroResults = 0;
+
+            for (let set of chartInfo.sets)
+            {
+              for (let data of set)
+              {
+                let name = data[this.data.variable.id];
+
+                if (categoryNames.indexOf (name) == -1)
+                  categoryNames.push (name);
+              }
+            }
+
+            for (let categoryName of categoryNames)
+            {
+              let value = {};
+
+              value[this.data.variable.id] = categoryName;
+              value[this.data.valueColumn.id] = 0;
+
+              chart.data.push (value);
+            }
+
+            for (let data of chart.data)
+            {
+              let name = data[this.data.variable.id];
+
+              for (let item of chartInfo.sets[0])
+              {
+                if (item[this.data.variable.id] === name)
+                {
+                  if (item[this.data.valueColumn.id] == null)
+                    data[this.data.valueColumn.id] = 0;
+                  else
+                  {
+                    data[this.data.valueColumn.id] = item[this.data.valueColumn.id];
+
+                    if (item[this.data.valueColumn.id] != 0)
+                      numNonZeroResults++;
+                  }
+                }
+              }
+            }
+          }
+          else
+            chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
+
           if (this.data.currentChartType.flags & ChartFlags.ADVANCED || this.data.currentChartType.flags & ChartFlags.BULLET)
             parseDate = false;
           else
@@ -635,10 +718,17 @@ export class MsfChartPreviewComponent {
 
             if (this.data.startAtZero)
               valueAxis.min = 0;
+
+            if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              valueAxis.rangeChangeEasing = am4core.ease.linear;
+              valueAxis.rangeChangeDuration = raceStepInterval;
+              valueAxis.extraMax = 0.1;
+            }
           }
 
           // Add scrollbar into the chart for zooming if there are multiple series
-          if (chart.data.length > 1)
+          if (!(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS) && chart.data.length > 1)
           {
             if (this.data.currentChartType.flags & ChartFlags.BULLET)
             {
@@ -721,9 +811,16 @@ export class MsfChartPreviewComponent {
 
             if (this.data.startAtZero)
               valueAxis.min = 0;
+
+            if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              valueAxis.rangeChangeEasing = am4core.ease.linear;
+              valueAxis.rangeChangeDuration = raceStepInterval;
+              valueAxis.extraMax = 0.1;
+            }
           }
 
-          if (chart.data.length > 1)
+          if (!(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS) && chart.data.length > 1)
           {
             if (this.data.currentChartType.flags & ChartFlags.BULLET)
             {
@@ -781,6 +878,16 @@ export class MsfChartPreviewComponent {
           valueAxis.tooltip.label.fill = Themes.AmCharts[theme].axisTooltipFontColor;
           valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
+
+        if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+        {
+          this.animCategoryAxis = categoryAxis;
+
+          categoryAxis.zoom ({ start: 0, end: numNonZeroResults / chart.data.length });
+          chart.zoomOutButton.disabled = true;
+        }
+        else
+          this.animCategoryAxis = null;
 
         if (this.data.currentChartType.flags & ChartFlags.XYCHART)
         {
@@ -1057,7 +1164,7 @@ export class MsfChartPreviewComponent {
               }
             }
 
-            if (this.data.ordered && this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.BULLET))
+            if (this.data.ordered && this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.BULLET) && !(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS))
             {
               if (this.data.valueList && this.data.valueList.length > 1)
               {
@@ -1128,11 +1235,11 @@ export class MsfChartPreviewComponent {
             }
           }
 
-          // The category will the values if the chart type lacks an x axis
+          // The category will use the values if the chart type lacks an x axis
           categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Create the series
-          if (this.data.valueList && this.data.valueList.length > 1)
+          if (this.data.valueList && this.data.valueList.length > 1 && !(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS))
           {
             let series;
 
@@ -1294,7 +1401,15 @@ export class MsfChartPreviewComponent {
               }
             }
 
-            this.data.currentChartType.createSeries(this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
+            let series = this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
+
+            if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              this.animCategoryAxis.sortBySeries = series;
+
+              if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                this.animCategoryAxis.renderer.inversed = true;
+            }
           }
         }
 
@@ -1376,6 +1491,47 @@ export class MsfChartPreviewComponent {
             range.label.verticalCenter = "bottom";
           }
         }
+
+        // Add play button for the bar chart race
+        if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+        {
+          let playButton = chart.plotContainer.createChild(am4core.PlayButton);
+          let label = chart.plotContainer.createChild (am4core.Label);
+          let _this = this;
+
+          playButton.x = am4core.percent (97);
+          label.x = am4core.percent (97);
+
+          if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+          {
+            playButton.y = am4core.percent (95);
+            label.y = am4core.percent (95);
+          }
+          else
+          {
+            playButton.y = am4core.percent (5);
+            label.y = am4core.percent (5);
+          }
+
+          playButton.dy = -2;
+          playButton.verticalCenter = "middle";
+          playButton.events.on ("toggled", function (event) {
+            if (event.target.isActive)
+              _this.playAnimChart ();
+            else
+              _this.stopAnimChart ();
+          });
+
+          label.horizontalCenter = "right";
+          label.verticalCenter = "middle";
+          label.dx = -15;
+          label.fontSize = 50;
+          label.text = chartInfo.names[0];
+
+          this.animChartLabel = label;
+        }
+        else
+          this.animChartLabel = null;
       }
 
       // Add export menu
@@ -1794,6 +1950,62 @@ export class MsfChartPreviewComponent {
     return !(this.data.currentChartType.flags & ChartFlags.XYCHART)
       && !(this.data.currentChartType.flags & ChartFlags.ADVANCED)
       && !(this.data.currentChartType.flags & ChartFlags.PIECHART)
-      && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART);
+      && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
+      && !(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS);
+  }
+
+  playAnimChart(): void
+  {
+    this.animChartInterval = setInterval (() => {
+      this.changeResultSet ();
+    }, raceStepInterval);
+
+    this.changeResultSet ();
+  }
+
+  stopAnimChart(): void
+  {
+    if (this.animChartInterval)
+    {
+      clearInterval (this.animChartInterval);
+      this.animChartInterval = null;
+    }
+  }
+
+  changeResultSet(): void
+  {
+    let numNonZeroResults = 0;
+
+    this.resultSetIndex++;
+    if (this.resultSetIndex >= this.resultSets.length)
+      this.resultSetIndex = 0;
+
+    for (let i = this.chart.data.length - 1; i >= 0; i--)
+    {
+      let data = this.chart.data[i];
+      let name = data[this.data.variable.id];
+
+      for (let item of this.resultSets[this.resultSetIndex])
+      {
+        if (item[this.data.variable.id] === name)
+        {
+          if (item[this.data.valueColumn.id] == null)
+            data[this.data.valueColumn.id] = 0;
+          else
+          {
+            data[this.data.valueColumn.id] = item[this.data.valueColumn.id];
+
+            if (item[this.data.valueColumn.id] != 0)
+              numNonZeroResults++;
+          }
+
+          break;
+        }
+      }
+    }
+
+    this.animCategoryAxis.zoom ({ start: 0, end: numNonZeroResults / this.chart.data.length });
+    this.chart.invalidateRawData ();
+    this.animChartLabel.text = this.nameSets[this.resultSetIndex];
   }
 }
