@@ -1,14 +1,27 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, PipeTransform, Pipe } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ReplaySubject } from 'rxjs';
 
 import { Globals } from '../globals/Globals';
+
+@Pipe({
+  name: 'searchFilter'
+})
+export class ValueSearchFilter implements PipeTransform {
+  public transform(values: any[], searchText: any): any
+  {
+    if (searchText == null || values == null)
+      return values;
+
+    return values.filter (value => value.name.toLowerCase ().indexOf (searchText.toLowerCase ()) !== -1);
+  }
+}
 
 @Component({
   selector: 'app-search-dynamic-table',
   templateUrl: './search-dynamic-table.component.html'
 })
 export class SearchDynamicTableComponent {
+
   dynTableValues: any[] = [];
 
   constructor(public dialogRef: MatDialogRef<SearchDynamicTableComponent>,
@@ -24,8 +37,7 @@ export class SearchDynamicTableComponent {
         name: yaxis.name,
         values: [],
         selected: [],
-        searchFilter: "",
-        filteredValues: new ReplaySubject<any[]> (1)
+        searchFilter: ""
       });
     }
 
@@ -36,8 +48,8 @@ export class SearchDynamicTableComponent {
       if (lastValue && !lastValue.titleOnly && body[0].titleOnly)
         j = 0;
 
-      if (yAxisValues[j].values.indexOf (body[0].value) == -1)
-        yAxisValues[j].values.push (body[0].value);
+      if (this.getIndex (yAxisValues[j].values, body[0].value) == -1)
+        yAxisValues[j].values.push ({ name: body[0].value, selected: false });
 
       if (body[0].titleOnly)
         j++;
@@ -46,55 +58,47 @@ export class SearchDynamicTableComponent {
     }
 
     for (let yAxisValue of yAxisValues)
-    {
       this.dynTableValues.push (yAxisValue);
-      this.dynTableValues[this.dynTableValues.length - 1].filteredValues.next (yAxisValue.values.slice ());
-    }
 
     for (i = 0; i < data.xaxis.length; i++)
     {
       let header = data.dataAdapter.headers[i];
       let xaxis = data.xaxis[i];
       let xAxisValues = [];
-      let dynTableValue;
 
       for (let item of header.values)
       {
-        if (xAxisValues.indexOf (item.value) == -1)
-          xAxisValues.push (item.value);
+        if (this.getIndex (xAxisValues, item.value) == -1)
+          xAxisValues.push ({ name: item.value, selected: false });
       }
 
       this.dynTableValues.push ({
         name: xaxis.name,
         values: xAxisValues,
         selected: [],
-        searchFilter: "",
-        filteredValues: new ReplaySubject<any[]> (1)
+        searchFilter: ""
       });
 
-      dynTableValue = this.dynTableValues[this.dynTableValues.length - 1];
-      dynTableValue.filteredValues.next (dynTableValue.values.slice ());
     }
   }
 
-  filterValues(dynTableValue): void
+  getIndex(axisArray, value): number
   {
-    let search;
-
-    if (!dynTableValue.values)
-      return;
-
-    // get the search keyword
-    search = dynTableValue.searchFilter;
-    if (!search)
+    for (let i = 0; i < axisArray.length; i++)
     {
-      dynTableValue.filteredValues.next (dynTableValue.values.slice ());
-      return;
+      let item = axisArray[i];
+
+      if (item.name === value)
+        return i;
     }
 
-    search = search.toLowerCase ();
-    dynTableValue.filteredValues.next (
-      dynTableValue.values.filter (a => a.toLowerCase ().indexOf (search) > -1)
-    );
+    return -1;
+  }
+
+  selectedValueChange(dynTableValue): void
+  {
+    dynTableValue.selected = dynTableValue.values.filter (value => {
+      return value.selected; 
+    });
   }
 }

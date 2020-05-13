@@ -14,14 +14,14 @@
   <div class="dyntable-item" *ngFor="let dynTableValue of dynTableValues">
     <div class="dyntable-search-input">
       <div class="dyntable-input">
-        <input matInput [(ngModel)]="dynTableValue.searchFilter" (ngModelChange)="filterValues(dynTableValue)" placeholder="{{dynTableValue.name}}" autocomplete="off"/>
+        <input matInput [(ngModel)]="dynTableValue.searchFilter" placeholder="{{dynTableValue.name}}" autocomplete="off"/>
         <mat-icon>search</mat-icon>
       </div>
     </div>
     <div class="dyntable-item-list">
-      <mat-selection-list [(ngModel)]="dynTableValue.selected">
-        <mat-list-option [checkboxPosition]="'before'" *ngFor="let value of dynTableValue.filteredValues | async" [value]="value">
-          {{value}}
+      <mat-selection-list (selectionChange)="selectedValueChange(dynTableValue)">
+        <mat-list-option *ngFor="let value of dynTableValue.values | searchFilter: dynTableValue.searchFilter" [checkboxPosition]="'before'" [selected]="value.selected" [value]="value.name" (click)="value.selected = !value.selected">
+          {{value.name}}
         </mat-list-option>
       </mat-selection-list>
     </div>

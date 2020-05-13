@@ -214,7 +214,7 @@ import { MsfChartPreviewComponent } from './msf-chart-preview/msf-chart-preview.
 import { ExportCsvDialogComponent } from './export-csv-dialog/export-csv-dialog.component';
 import { MsfActionListComponent } from './msf-action-list/msf-action-list.component';
 import { MsfDashboardValueSelectorDialogComponent } from './msf-dashboard-value-selector-dialog/msf-dashboard-value-selector-dialog.component';
-import { SearchDynamicTableComponent } from './search-dynamic-table/search-dynamic-table.component';
+import { SearchDynamicTableComponent, ValueSearchFilter } from './search-dynamic-table/search-dynamic-table.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -406,7 +406,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ExportCsvDialogComponent,
     MsfActionListComponent,
     MsfDashboardValueSelectorDialogComponent,
-    SearchDynamicTableComponent
+    SearchDynamicTableComponent,
+    ValueSearchFilter
   ],
   imports: [
     BrowserModule,
@@ -464,7 +465,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     Utils,
     AuthGuard,
     Cookie,
-    MenuDashboardComponent
+    MenuDashboardComponent,
+    ValueSearchFilter
   ],
   bootstrap: [AppComponent],
   entryComponents: [
