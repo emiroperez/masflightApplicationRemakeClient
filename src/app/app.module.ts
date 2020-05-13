@@ -517,8 +517,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PublicizeDashboardDialogComponent,
     MsfChartPreviewComponent,
     ExportCsvDialogComponent,
-    MsfDashboardValueSelectorDialogComponent,
-    SearchDynamicTableComponent
+    MsfDashboardValueSelectorDialogComponent
   ]
 })
 export class AppModule { }

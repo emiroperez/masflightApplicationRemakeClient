@@ -110,6 +110,9 @@
                   class="msf-menu-image msf-vertical-middle">
               <span class="msf-vertical-middle">Search</span>
           </button>
+          <div class="dynamic-table-search-filter-container" *ngIf="dynTableSearchColumnFilter">
+            <app-search-dynamic-table [data]="dynTableData"></app-search-dynamic-table>
+          </div>
           <div class="search-column-filter-container" *ngIf="searchColumnFilter">
               <div class="search-column-filter-form-field">
                   <input #searchFilterInput matInput [(ngModel)]="searchFilter" placeholder="Search" autocomplete="off"/>

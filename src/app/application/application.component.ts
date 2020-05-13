@@ -58,6 +58,8 @@ export class ApplicationComponent implements OnInit {
   dynamicTableValues: any = null;
   CSVseparator: string = "\t";
   searchColumnFilter: boolean = false;
+  dynTableSearchColumnFilter: boolean = false;
+  dynTableData: any = null;
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -1768,15 +1770,20 @@ toggle(){
   {
     /*if (this.globals.selectedIndex == 3)
     {
-      this.dialog.open (SearchDynamicTableComponent, {
-        autoFocus: false,
-        panelClass: 'dynamic-table-dialog',
-        data: {
+      this.dynTableSearchColumnFilter = !this.dynTableSearchColumnFilter;
+
+      if (this.dynTableSearchColumnFilter)
+      {
+        this.dynTableData = {
           dataAdapter: this.msfContainerRef.msfDynamicTableRef.dataAdapter,
           xaxis: this.dynTableXAxis,
           yaxis: this.dynTableYAxis
-        }
-      });
+        };
+      }
+      else
+        this.dynTableData = null;
+
+      this.changeDetectorRef.detectChanges ();
 
       return;
     }*/

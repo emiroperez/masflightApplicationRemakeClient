@@ -1,5 +1,4 @@
-import { Component, Inject, PipeTransform, Pipe } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, PipeTransform, Pipe, Input, OnInit } from '@angular/core';
 
 import { Globals } from '../globals/Globals';
 
@@ -20,18 +19,24 @@ export class ValueSearchFilter implements PipeTransform {
   selector: 'app-search-dynamic-table',
   templateUrl: './search-dynamic-table.component.html'
 })
-export class SearchDynamicTableComponent {
+export class SearchDynamicTableComponent implements OnInit {
+
+  @Input("data")
+  data: any = null;
 
   dynTableValues: any[] = [];
 
-  constructor(public dialogRef: MatDialogRef<SearchDynamicTableComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, public globals: Globals)
+  constructor(public globals: Globals)
+  {
+  }
+
+  ngOnInit(): void
   {
     let yAxisValues = [];
     let lastValue = null;
     let i, j;
 
-    for (let yaxis of data.yaxis)
+    for (let yaxis of this.data.yaxis)
     {
       yAxisValues.push ({
         name: yaxis.name,
@@ -43,7 +48,7 @@ export class SearchDynamicTableComponent {
 
     j = 0;
 
-    for (let body of data.dataAdapter.body)
+    for (let body of this.data.dataAdapter.body)
     {
       if (lastValue && !lastValue.titleOnly && body[0].titleOnly)
         j = 0;
@@ -60,10 +65,10 @@ export class SearchDynamicTableComponent {
     for (let yAxisValue of yAxisValues)
       this.dynTableValues.push (yAxisValue);
 
-    for (i = 0; i < data.xaxis.length; i++)
+    for (i = 0; i < this.data.xaxis.length; i++)
     {
-      let header = data.dataAdapter.headers[i];
-      let xaxis = data.xaxis[i];
+      let header = this.data.dataAdapter.headers[i];
+      let xaxis = this.data.xaxis[i];
       let xAxisValues = [];
 
       for (let item of header.values)
@@ -78,7 +83,6 @@ export class SearchDynamicTableComponent {
         selected: [],
         searchFilter: ""
       });
-
     }
   }
 
