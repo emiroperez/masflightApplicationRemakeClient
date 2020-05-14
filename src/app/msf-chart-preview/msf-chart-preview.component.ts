@@ -290,8 +290,8 @@ export class MsfChartPreviewComponent {
     }
 
     if (!(_this.data.currentChartType.flags & ChartFlags.MULTIRESULTS) &&
-      (!(_this.data.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
-      (_this.data.currentChartType.flags & ChartFlags.XYCHART && !data.filter))
+      ((!(_this.data.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
+      (_this.data.currentChartType.flags & ChartFlags.XYCHART && !data.filter)))
     {
       _this.noDataFound ();
       return;
@@ -968,7 +968,7 @@ export class MsfChartPreviewComponent {
           chart.zoomOutButton.disabled = true;
         }
 
-        if (this.data.currentChartType.flags & ChartFlags.XYCHART)
+        if (this.data.currentChartType.flags & ChartFlags.XYCHART || this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
         {
           // Set axis name into the chart
           if (this.data.chartMode === "advanced")
@@ -1019,49 +1019,81 @@ export class MsfChartPreviewComponent {
           else
           {
             // Set axis name into the chart
-            if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+            if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
             {
-              if (this.data.horizAxisName && this.data.horizAxisName != "")
-                categoryAxis.title.text = this.data.horizAxisName;
-              else
-                categoryAxis.title.text = this.data.xaxis.name;
-
-              if (!(this.isSimpleChart () && valueAxes.length > 1))
+              if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
               {
+                if (this.data.horizAxisName && this.data.horizAxisName != "")
+                  categoryAxis.title.text = this.data.horizAxisName;
+                else
+                  categoryAxis.title.text = this.data.variable.name;
+
                 if (this.data.vertAxisName && this.data.vertAxisName != "")
                   valueAxis.title.text = this.data.vertAxisName;
                 else
-                {
-                  if (this.data.valueColumn)
-                    valueAxis.title.text = this.data.valueColumn.name;
-                  else
-                    valueAxis.title.text = "Count";
-                }
+                  valueAxis.title.text = this.data.valueColumn.name;
               }
-            }
-            else
-            {
-              if (this.data.vertAxisName && this.data.vertAxisName != "")
-                categoryAxis.title.text = this.data.vertAxisName;
               else
-                categoryAxis.title.text = this.data.xaxis.name;
-
-              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
+                if (this.data.vertAxisName && this.data.vertAxisName != "")
+                  categoryAxis.title.text = this.data.vertAxisName;
+                else
+                  categoryAxis.title.text = this.data.variable.name;
+
                 if (this.data.horizAxisName && this.data.horizAxisName != "")
                   valueAxis.title.text = this.data.horizAxisName;
                 else
+                 valueAxis.title.text = this.data.valueColumn.name;
+              }
+
+              categoryAxis.dataFields.category = this.data.variable.id;
+            }
+            else
+            {
+              if (!(this.data.currentChartType.flags & ChartFlags.ROTATED))
+              {
+                if (this.data.horizAxisName && this.data.horizAxisName != "")
+                  categoryAxis.title.text = this.data.horizAxisName;
+                else
+                  categoryAxis.title.text = this.data.xaxis.name;
+
+                if (!(this.isSimpleChart () && valueAxes.length > 1))
                 {
-                  if (this.data.valueColumn)
-                    valueAxis.title.text = this.data.valueColumn.name;
+                  if (this.data.vertAxisName && this.data.vertAxisName != "")
+                    valueAxis.title.text = this.data.vertAxisName;
                   else
-                    valueAxis.title.text = "Count";
+                  {
+                    if (this.data.valueColumn)
+                      valueAxis.title.text = this.data.valueColumn.name;
+                    else
+                      valueAxis.title.text = "Count";
+                  }
                 }
               }
+              else
+              {
+                if (this.data.vertAxisName && this.data.vertAxisName != "")
+                  categoryAxis.title.text = this.data.vertAxisName;
+                else
+                  categoryAxis.title.text = this.data.xaxis.name;
+
+                if (!(this.isSimpleChart () && valueAxes.length > 1))
+                {
+                  if (this.data.horizAxisName && this.data.horizAxisName != "")
+                    valueAxis.title.text = this.data.horizAxisName;
+                  else
+                  {
+                    if (this.data.valueColumn)
+                      valueAxis.title.text = this.data.valueColumn.name;
+                    else
+                      valueAxis.title.text = "Count";
+                  }
+                }
+              }
+
+              // The category will be the x axis if the chart type has it
+              categoryAxis.dataFields.category = this.data.xaxis.id;
             }
-  
-            // The category will be the x axis if the chart type has it
-            categoryAxis.dataFields.category = this.data.xaxis.id;
           }
 
           stacked = (this.data.currentChartType.flags & ChartFlags.STACKED) ? true : false;
@@ -1081,7 +1113,7 @@ export class MsfChartPreviewComponent {
             }
           }
 
-          if (this.data.ordered && this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.BULLET))
+          if (this.data.ordered && this.data.chartMode !== "advanced" && !(this.data.currentChartType.flags & ChartFlags.BULLET) && !(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS))
           {
             // Sort chart series from least to greatest by calculating the
             // total value of each key item to compensate for the lack of proper
@@ -1129,26 +1161,55 @@ export class MsfChartPreviewComponent {
           for (let color of this.paletteColors)
             chart.colors.list.push (am4core.color (color));
 
-          for (let object of chartInfo.filter)
+          if (chartInfo.filter)
           {
-            if (this.data.variable.item.columnType === "date")
+            for (let object of chartInfo.filter)
             {
-              let date = this.parseDate (object.valueAxis, this.data.variable.item.columnFormat);
-              let legendOutputFormat;
+              if (this.data.variable.item.columnType === "date")
+              {
+                let date = this.parseDate (object.valueAxis, this.data.variable.item.columnFormat);
+                let legendOutputFormat;
 
-              if (this.data.variable.item.outputFormat)
-                legendOutputFormat = this.data.variable.item.outputFormat;
-              else
-                legendOutputFormat = this.data.variable.item.columnFormat;
+                if (this.data.variable.item.outputFormat)
+                  legendOutputFormat = this.data.variable.item.outputFormat;
+                else
+                  legendOutputFormat = this.data.variable.item.columnFormat;
 
-              // Set predefined format if used
-              if (this.predefinedColumnFormats[legendOutputFormat])
-                legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+                // Set predefined format if used
+                if (this.predefinedColumnFormats[legendOutputFormat])
+                  legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-              object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+                object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+              }
+
+              this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors);
+            }
+          }
+          else
+          {
+            let curValue = null;
+            let series;
+
+            for (let item of this.data.chartColumnOptions)
+            {
+              if (item.id === chartInfo.valueField)
+              {
+                curValue = item;
+                break;
+              }
             }
 
-            this.data.currentChartType.createSeries (this.data, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors);
+            series = this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
+
+            if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              categoryAxis.sortBySeries = series;
+
+              if (this.data.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
+
+              animSeries = series;
+            }
           }
         }
         else
@@ -1361,7 +1422,7 @@ export class MsfChartPreviewComponent {
                 }
               }
 
-              series = this.data.currentChartType.createSeries(this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
+              series = this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, i, outputFormat, this.paletteColors);
 
               if (this.data.chartMode !== "advanced")
               {
@@ -1480,17 +1541,7 @@ export class MsfChartPreviewComponent {
               }
             }
 
-            let series = this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
-
-            if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
-            {
-              categoryAxis.sortBySeries = series;
-
-              if (this.data.currentChartType.flags & ChartFlags.ROTATED)
-                categoryAxis.renderer.inversed = true;
-
-              animSeries = series;
-            }
+            this.data.currentChartType.createSeries (this.data, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
           }
         }
 
@@ -1642,7 +1693,7 @@ export class MsfChartPreviewComponent {
       options.addURL = false;
       chart.exporting.setFormatOptions ("pdf", options);
 
-      if (this.data.currentChartType.flags & ChartFlags.XYCHART
+      if (this.data.currentChartType.flags & ChartFlags.XYCHART && !(this.data.currentChartType.flags & ChartFlags.BULLET)
         || (this.isSimpleChart () && this.data.valueList && this.data.valueList.length > 1))
       {
         // Display Legend

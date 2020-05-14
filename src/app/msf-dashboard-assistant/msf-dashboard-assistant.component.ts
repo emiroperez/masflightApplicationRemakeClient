@@ -866,6 +866,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
       this.advConfigFlags = ConfigFlags.LIMITVALUES | ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
       this.advConfigFlags = ConfigFlags.HEATMAPCOLOR;
+    else if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+      this.advConfigFlags = ConfigFlags.CHARTCOLORS;
     else if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.isSimpleChart ())
     {
       if (this.values.currentChartType.flags & ChartFlags.BULLET)

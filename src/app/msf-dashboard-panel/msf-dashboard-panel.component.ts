@@ -1350,7 +1350,100 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
+    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries;
     let theme = this.globals.theme;
+    let _this = this;
+
+    resultSetIndex = 0;
+
+    // functions used for the bar chart race
+    function playAnimChart()
+    {
+      resultSetIndex = 0;
+
+      animChartInterval = setInterval (() => {
+        changeResultSet ();
+      }, raceStepInterval);
+
+      changeResultSet ();
+    }
+
+    function stopAnimChart()
+    {
+      if (animChartInterval)
+      {
+        clearInterval (animChartInterval);
+        animChartInterval = null;
+      }
+    }
+
+    function changeResultSet()
+    {
+      let numNonZeroResults = 0;
+
+      if (!animChartInterval)
+        return;
+
+      resultSetIndex++;
+      if (resultSetIndex >= resultSets.length)
+        resultSetIndex = 0;
+
+      for (let i = _this.chart.data.length - 1; i >= 0; i--)
+      {
+        let data = _this.chart.data[i];
+        let name = data[_this.values.variable.id];
+
+        for (let item of resultSets[resultSetIndex])
+        {
+          if (item[_this.values.variable.id] === name)
+          {
+            if (item[_this.values.valueColumn.id] == null)
+              data[_this.values.valueColumn.id] = 0;
+            else
+            {
+              data[_this.values.valueColumn.id] = item[_this.values.valueColumn.id];
+
+              if (item[_this.values.valueColumn.id] != 0)
+                numNonZeroResults++;
+            }
+
+            break;
+          }
+        }
+      }
+
+      categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
+      _this.chart.invalidateRawData ();
+
+      if (!resultSetIndex)
+      {
+        animSeries.interpolationDuration = raceStepInterval / 4;
+        valueAxis.rangeChangeDuration = raceStepInterval / 4;
+      }
+      else
+      {
+        animSeries.interpolationDuration = raceStepInterval;
+        valueAxis.rangeChangeDuration = raceStepInterval;
+      }
+
+      if (_this.values.xaxis.item.columnType === "date")
+      {
+        let legendOutputFormat;
+
+        if (_this.values.xaxis.item.outputFormat)
+          legendOutputFormat = _this.values.xaxis.item.outputFormat;
+        else
+          legendOutputFormat = _this.values.xaxis.item.columnFormat;
+
+        // Set predefined format if used
+        if (_this.predefinedColumnFormats[legendOutputFormat])
+          legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+        label.text = new DatePipe ('en-US').transform (_this.parseDate (nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
+      }
+      else
+        label.text = nameSets[resultSetIndex];
+    }
 
     this.removeDeadVariablesAndCategories.emit ({
       type: this.chartTypes.indexOf (this.oldChartType),
@@ -1382,6 +1475,17 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.advTableView = false;
     this.intervalTableRows = [];
     this.chartInfo = chartInfo;
+
+    if (chartInfo.sets)
+    {
+      resultSets = chartInfo.sets;
+      nameSets = chartInfo.names;
+    }
+    else
+    {
+      resultSets = null;
+      nameSets = null;
+    }
 
     this.zone.runOutsideAngular (() => {
       let chart, options;
@@ -1869,7 +1973,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        let categoryAxis, valueAxis, valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet;
+        let valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet, numNonZeroResults;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
         barChartHoverSet = false;
@@ -1900,7 +2004,58 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
         else if (!(this.values.currentChartType.flags & ChartFlags.PIECHART) && !(this.values.currentChartType.flags & ChartFlags.FUNNELCHART))
         {
-          chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
+          if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+          {
+            let categoryNames = [];
+
+            chart.data = [];
+            numNonZeroResults = 0;
+
+            for (let set of chartInfo.sets)
+            {
+              for (let data of set)
+              {
+                let name = data[this.values.variable.id];
+
+                if (categoryNames.indexOf (name) == -1)
+                  categoryNames.push (name);
+              }
+            }
+
+            for (let categoryName of categoryNames)
+            {
+              let value = {};
+
+              value[this.values.variable.id] = categoryName;
+              value[this.values.valueColumn.id] = 0;
+
+              chart.data.push (value);
+            }
+
+            for (let data of chart.data)
+            {
+              let name = data[this.values.variable.id];
+
+              for (let item of chartInfo.sets[0])
+              {
+                if (item[this.values.variable.id] === name)
+                {
+                  if (item[this.values.valueColumn.id] == null)
+                    data[this.values.valueColumn.id] = 0;
+                  else
+                  {
+                    data[this.values.valueColumn.id] = item[this.values.valueColumn.id];
+
+                    if (item[this.values.valueColumn.id] != 0)
+                      numNonZeroResults++;
+                  }
+                }
+              }
+            }
+          }
+          else
+            chart.data = JSON.parse (JSON.stringify (chartInfo.dataProvider));
+
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED || this.values.currentChartType.flags & ChartFlags.BULLET)
             parseDate = false;
           else
@@ -2082,10 +2237,17 @@ export class MsfDashboardPanelComponent implements OnInit {
 
             if (this.values.startAtZero)
               valueAxis.min = 0;
+
+            if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              valueAxis.rangeChangeEasing = am4core.ease.linear;
+              valueAxis.rangeChangeDuration = raceStepInterval;
+              valueAxis.extraMax = 0.1;
+            }
           }
 
           // Add scrollbar into the chart for zooming if there are multiple series
-          if (chart.data.length > 1 && !this.isMobile)
+          if (!(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS) && chart.data.length > 1 && !this.isMobile)
           {
             if (this.values.currentChartType.flags & ChartFlags.BULLET)
             {
@@ -2165,9 +2327,16 @@ export class MsfDashboardPanelComponent implements OnInit {
 
             if (this.values.startAtZero)
               valueAxis.min = 0;
+
+            if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              valueAxis.rangeChangeEasing = am4core.ease.linear;
+              valueAxis.rangeChangeDuration = raceStepInterval;
+              valueAxis.extraMax = 0.1;
+            }
           }
 
-          if (chart.data.length > 1 && !this.isMobile)
+          if (!(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS) && chart.data.length > 1 && !this.isMobile)
           {
             if (this.values.currentChartType.flags & ChartFlags.BULLET)
             {
@@ -2226,7 +2395,13 @@ export class MsfDashboardPanelComponent implements OnInit {
           valueAxis.tooltip.background.fill = Themes.AmCharts[theme].tooltipFill;
         }
 
-        if (this.values.currentChartType.flags & ChartFlags.XYCHART)
+        if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+        {
+          categoryAxis.zoom ({ start: 0, end: numNonZeroResults / chart.data.length });
+          chart.zoomOutButton.disabled = true;
+        }
+
+        if (this.values.currentChartType.flags & ChartFlags.XYCHART || this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
         {
           if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
           {
@@ -2276,49 +2451,81 @@ export class MsfDashboardPanelComponent implements OnInit {
           else
           {
             // Set axis name into the chart
-            if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
+            if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
             {
-              if (this.values.horizAxisName && this.values.horizAxisName != "")
-                categoryAxis.title.text = this.values.horizAxisName;
-              else
-                categoryAxis.title.text = this.values.xaxis.name;
-
-              if (!(this.isSimpleChart () && valueAxes.length > 1))
+              if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
               {
+                if (this.values.horizAxisName && this.values.horizAxisName != "")
+                  categoryAxis.title.text = this.values.horizAxisName;
+                else
+                  categoryAxis.title.text = this.values.variable.name;
+
                 if (this.values.vertAxisName && this.values.vertAxisName != "")
                   valueAxis.title.text = this.values.vertAxisName;
                 else
-                {
-                  if (this.values.valueColumn)
-                    valueAxis.title.text = this.values.valueColumn.name;
-                  else
-                    valueAxis.title.text = "Count";
-                }
+                  valueAxis.title.text = this.values.valueColumn.name;
               }
-            }
-            else
-            {
-              if (this.values.vertAxisName && this.values.vertAxisName != "")
-                categoryAxis.title.text = this.values.vertAxisName;
               else
-                categoryAxis.title.text = this.values.xaxis.name;
-
-              if (!(this.isSimpleChart () && valueAxes.length > 1))
               {
+                if (this.values.vertAxisName && this.values.vertAxisName != "")
+                  categoryAxis.title.text = this.values.vertAxisName;
+                else
+                  categoryAxis.title.text = this.values.variable.name;
+
                 if (this.values.horizAxisName && this.values.horizAxisName != "")
                   valueAxis.title.text = this.values.horizAxisName;
                 else
+                  valueAxis.title.text = this.values.valueColumn.name;
+              }
+
+              categoryAxis.dataFields.category = this.values.variable.id;
+            }
+            else
+            {
+              if (!(this.values.currentChartType.flags & ChartFlags.ROTATED))
+              {
+                if (this.values.horizAxisName && this.values.horizAxisName != "")
+                  categoryAxis.title.text = this.values.horizAxisName;
+                else
+                  categoryAxis.title.text = this.values.xaxis.name;
+
+                if (!(this.isSimpleChart () && valueAxes.length > 1))
                 {
-                  if (this.values.valueColumn)
-                    valueAxis.title.text = this.values.valueColumn.name;
+                  if (this.values.vertAxisName && this.values.vertAxisName != "")
+                    valueAxis.title.text = this.values.vertAxisName;
                   else
-                    valueAxis.title.text = "Count";
+                  {
+                    if (this.values.valueColumn)
+                      valueAxis.title.text = this.values.valueColumn.name;
+                    else
+                      valueAxis.title.text = "Count";
+                  }
                 }
               }
-            }
+              else
+              {
+                if (this.values.vertAxisName && this.values.vertAxisName != "")
+                  categoryAxis.title.text = this.values.vertAxisName;
+                else
+                  categoryAxis.title.text = this.values.xaxis.name;
 
-            // The category will be the x axis if the chart type has it
-            categoryAxis.dataFields.category = this.values.xaxis.id;
+                if (!(this.isSimpleChart () && valueAxes.length > 1))
+                {
+                  if (this.values.horizAxisName && this.values.horizAxisName != "")
+                    valueAxis.title.text = this.values.horizAxisName;
+                  else
+                  {
+                    if (this.values.valueColumn)
+                      valueAxis.title.text = this.values.valueColumn.name;
+                    else
+                      valueAxis.title.text = "Count";
+                  }
+                }
+              }
+
+              // The category will be the x axis if the chart type has it
+              categoryAxis.dataFields.category = this.values.xaxis.id;
+            }
           }
 
           stacked = (this.values.currentChartType.flags & ChartFlags.STACKED) ? true : false;
@@ -2338,7 +2545,7 @@ export class MsfDashboardPanelComponent implements OnInit {
             }
           }
 
-          if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.BULLET))
+          if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.BULLET) && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
           {
             // Sort chart series from least to greatest by calculating the
             // total value of each key item to compensate for the lack of proper
@@ -2386,29 +2593,60 @@ export class MsfDashboardPanelComponent implements OnInit {
           for (let color of this.paletteColors)
             chart.colors.list.push (am4core.color (color));
 
-          for (let object of chartInfo.filter)
+          if (chartInfo.filter)
           {
-            if (this.values.variable.item.columnType === "date")
+            for (let object of chartInfo.filter)
             {
-              let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
-              let legendOutputFormat;
+              if (this.values.variable.item.columnType === "date")
+              {
+                let date = this.parseDate (object.valueAxis, this.values.variable.item.columnFormat);
+                let legendOutputFormat;
 
-              if (date == null)
-                continue;
+                if (date == null)
+                  continue;
 
-              if (this.values.variable.item.outputFormat)
-                legendOutputFormat = this.values.variable.item.outputFormat;
-              else
-                legendOutputFormat = this.values.variable.item.columnFormat;
+                if (this.values.variable.item.outputFormat)
+                  legendOutputFormat = this.values.variable.item.outputFormat;
+                else
+                  legendOutputFormat = this.values.variable.item.columnFormat;
 
-              // Set predefined format if used
-              if (this.predefinedColumnFormats[legendOutputFormat])
-                legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+                // Set predefined format if used
+                if (this.predefinedColumnFormats[legendOutputFormat])
+                  legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-              object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+                object.valueAxis = new DatePipe ('en-US').transform (date.toString (), legendOutputFormat);
+              }
+
+              this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors));
+            }
+          }
+          else
+          {
+            let curValue = null;
+            let series;
+
+            for (let item of this.values.chartColumnOptions)
+            {
+              if (item.id === chartInfo.valueField)
+              {
+                curValue = item;
+                break;
+              }
             }
 
-            this.values.chartSeries.push (this.values.currentChartType.createSeries (this.values, stacked, chart, object, parseDate, theme, outputFormat, this.paletteColors));
+            series = this.values.currentChartType.createSeries (this.values, curValue, chart, chartInfo, parseDate, 0, outputFormat, this.paletteColors);
+
+            if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+            {
+              categoryAxis.sortBySeries = series;
+
+              if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+                categoryAxis.renderer.inversed = true;
+
+              animSeries = series;
+            }
+
+            this.values.chartSeries.push (series);
           }
         }
         else
@@ -2503,7 +2741,7 @@ export class MsfDashboardPanelComponent implements OnInit {
               }
             }
 
-            if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.BULLET))
+            if (this.values.ordered && !(this.values.currentChartType.flags & ChartFlags.ADVANCED) && !(this.values.currentChartType.flags & ChartFlags.BULLET) && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
             {
               if (this.values.valueList && this.values.valueList.length > 1)
               {
@@ -2578,7 +2816,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           categoryAxis.dataFields.category = chartInfo.titleField;
 
           // Create the series
-          if (this.values.valueList && this.values.valueList.length > 1)
+          if (this.values.valueList && this.values.valueList.length > 1 && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
           {
             for (let i = 0; i < chartInfo.valueFields.length; i++)
             {
@@ -2821,6 +3059,61 @@ export class MsfDashboardPanelComponent implements OnInit {
             range.label.fill = range.grid.stroke;
             range.label.verticalCenter = "bottom";
           }
+        }
+
+        // Add play button for the bar chart race
+        if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+        {
+          let playButton = chart.plotContainer.createChild(am4core.PlayButton);
+
+          playButton.x = am4core.percent (97);
+          label = chart.plotContainer.createChild (am4core.Label);
+          label.x = am4core.percent (97);
+
+          if (this.values.currentChartType.flags & ChartFlags.ROTATED)
+          {
+            playButton.y = am4core.percent (95);
+            label.y = am4core.percent (95);
+          }
+          else
+          {
+            playButton.y = am4core.percent (5);
+            label.y = am4core.percent (5);
+          }
+
+          playButton.dy = -2;
+          playButton.verticalCenter = "middle";
+          playButton.fill = Themes.AmCharts[theme].playButtonColor;
+          playButton.events.on ("toggled", function (event) {
+            if (event.target.isActive)
+              playAnimChart ();
+            else
+              stopAnimChart ();
+          });
+
+          label.horizontalCenter = "right";
+          label.verticalCenter = "middle";
+          label.dx = -15;
+          label.fontSize = 50;
+          label.fill = Themes.AmCharts[theme].fontColor;
+
+          if (this.values.xaxis.item.columnType === "date")
+          {
+            let legendOutputFormat;
+
+            if (this.values.xaxis.item.outputFormat)
+              legendOutputFormat = this.values.xaxis.item.outputFormat;
+            else
+              legendOutputFormat = this.values.xaxis.item.columnFormat;
+
+            // Set predefined format if used
+            if (this.predefinedColumnFormats[legendOutputFormat])
+              legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+            label.text = new DatePipe ('en-US').transform (this.parseDate (chartInfo.names[0], this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
+          }
+          else
+            label.text = chartInfo.names[0];
         }
 
         this.oldChartType = this.values.currentChartType;
@@ -3802,8 +4095,12 @@ export class MsfDashboardPanelComponent implements OnInit {
       if (this.values.currentChartType.flags & ChartFlags.XYCHART && this.utils.isJSONEmpty (this.values.lastestResponse.data))
         return false;
 
-      if ((!(this.values.currentChartType.flags & ChartFlags.XYCHART) && this.values.lastestResponse.dataProvider == null) ||
-        (this.values.currentChartType.flags & ChartFlags.XYCHART && !this.values.lastestResponse.filter))
+      if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS && this.values.lastestResponse.sets.length == 0)
+        return false;
+
+      if (!(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS) &&
+        ((!(this.values.currentChartType.flags & ChartFlags.XYCHART) && this.values.lastestResponse.dataProvider == null) ||
+        (this.values.currentChartType.flags & ChartFlags.XYCHART && !this.values.lastestResponse.filter)))
         return false;
     }
 
@@ -4584,7 +4881,14 @@ export class MsfDashboardPanelComponent implements OnInit {
       return;
     }
 
-    if ((!(_this.values.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
+    if (_this.values.currentChartType.flags & ChartFlags.MULTIRESULTS && data.sets.length == 0)
+    {
+      _this.noDataFound ();
+      return;
+    }
+
+    if (!(_this.values.currentChartType.flags & ChartFlags.MULTIRESULTS) &&
+      (!(_this.values.currentChartType.flags & ChartFlags.XYCHART) && data.dataProvider == null) ||
       (_this.values.currentChartType.flags & ChartFlags.XYCHART && !data.filter))
     {
       _this.noDataFound ();
@@ -5017,7 +5321,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           this.values.dynTableVariables = [];
         }
       }
-      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART))
+      else if (!(this.values.currentChartType.flags & ChartFlags.XYCHART) && !(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
       {
         this.values.xaxis = null;
 

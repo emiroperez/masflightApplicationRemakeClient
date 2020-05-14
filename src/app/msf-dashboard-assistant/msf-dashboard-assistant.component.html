@@ -453,7 +453,7 @@
               </mat-radio-group>
             </div>
             <div class="msf-dashboard-assistant-min-value-at-zero" *ngIf="panelMode !== 'advanced' && (isLineOrBarChart() || isScatterChart())">
-              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" *ngIf="!isScatterChart()" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
+              <mat-checkbox class="cancels-checkbox" style="display: inline-block;" *ngIf="!isScatterChart() && !isAnimatedChart()" [(ngModel)]="values.ordered">Ordered</mat-checkbox>
               <mat-checkbox class="cancels-checkbox" style="display: inline-block;" [(ngModel)]="values.startAtZero">Min Value At 0</mat-checkbox>
             </div>
           </div>
@@ -975,7 +975,7 @@
                       <ng-container>Use Theme Colors</ng-container>
                     </mat-checkbox>
                   </div>
-                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && !isScatterChart()">
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && !isScatterChart() && !isAnimatedChart()">
                     <div class="msf-dashboard-color-picker-grid-layout">
                       <div *ngFor="let color of values.paletteColors; let i = index; trackBy: trackColor" class="msf-dashboard-color-picker-selector-container">
                         <span class="msf-dashboard-color-picker-selector-label">Color {{i + 1}}</span>
@@ -984,10 +984,11 @@
                       </div>
                     </div>
                   </div>
-                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && isScatterChart()">
+                  <div class="msf-dashboard-color-picker-grid-layout-container" *ngIf="values.paletteColors && values.paletteColors.length && (isScatterChart() || isAnimatedChart())">
                     <div class="msf-dashboard-color-picker-grid-layout">
                       <div class="msf-dashboard-color-picker-selector-container">
-                        <span class="msf-dashboard-color-picker-selector-label">Plot Color</span>
+                        <span class="msf-dashboard-color-picker-selector-label" *ngIf="isScatterChart()">Plot Color</span>
+                        <span class="msf-dashboard-color-picker-selector-label" *ngIf="isAnimatedChart()">Bar Color</span>
                         <input class="msf-dashboard-color-picker-selector" [(colorPicker)]="values.paletteColors[0]" [style.background]="values.paletteColors[0]" [(cpOutputFormat)]="hex" />
                         <span class="msf-dashboard-color-picker-color-label">{{values.paletteColors[0]}}</span>
                       </div>
