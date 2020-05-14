@@ -435,7 +435,6 @@ export class MsfChartPreviewComponent {
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
-      _this.chart.invalidateRawData ();
 
       if (!resultSetIndex)
       {
@@ -447,6 +446,8 @@ export class MsfChartPreviewComponent {
         animSeries.interpolationDuration = raceStepInterval;
         valueAxis.rangeChangeDuration = raceStepInterval;
       }
+
+      _this.chart.invalidateRawData ();
 
       if (_this.data.xaxis.item.columnType === "date")
       {

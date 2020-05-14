@@ -1373,6 +1373,29 @@ export class MsfDashboardPanelComponent implements OnInit {
         clearInterval (animChartInterval);
         animChartInterval = null;
       }
+
+      animSeries.interpolationDuration = raceStepInterval / 6;
+      valueAxis.rangeChangeDuration = raceStepInterval / 6;
+
+      _this.chart.invalidateRawData ();
+
+      if (_this.values.xaxis.item.columnType === "date")
+      {
+        let legendOutputFormat;
+
+        if (_this.values.xaxis.item.outputFormat)
+          legendOutputFormat = _this.values.xaxis.item.outputFormat;
+        else
+          legendOutputFormat = _this.values.xaxis.item.columnFormat;
+
+        // Set predefined format if used
+        if (_this.predefinedColumnFormats[legendOutputFormat])
+          legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
+
+        label.text = new DatePipe('en-US').transform(_this.parseDate(nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
+      }
+      else
+        label.text = nameSets[resultSetIndex];
     }
 
     function changeResultSet()
@@ -1413,7 +1436,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
-      _this.chart.invalidateRawData ();
 
       if (!resultSetIndex)
       {
@@ -1425,6 +1447,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         animSeries.interpolationDuration = raceStepInterval;
         valueAxis.rangeChangeDuration = raceStepInterval;
       }
+
+      _this.chart.invalidateRawData ();
 
       if (_this.values.xaxis.item.columnType === "date")
       {
