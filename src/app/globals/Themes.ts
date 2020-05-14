@@ -1,5 +1,4 @@
 import * as am4core from "@amcharts/amcharts4/core";
-import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 
 // AmChart colors
 const black = am4core.color ("#000000");
@@ -14,6 +13,7 @@ const tangaroa = am4core.color ("#00263E");
 const darkGreen = am4core.color ("#00be11");
 const darkBlue = am4core.color ("#30303d");
 const blueJeans = am4core.color ("#67b7dc");
+const deepSkyBlue = am4core.color ("#01abec");
 
 // Light theme
 
@@ -21,24 +21,48 @@ function am4themes_light(target)
 {
     if (target instanceof am4core.InterfaceColorSet)
     {
-        target.setFor ("secondaryButton", lightGray.lighten (0.25));
-        target.setFor ("secondaryButtonHover", lightGray);
-        target.setFor ("secondaryButtonDown", lightGray);
-        target.setFor ("secondaryButtonActive", lightGray);
+        target.setFor ("secondaryButton", lightGray);
+        target.setFor ("secondaryButtonHover", lightGray.lighten (-0.25));
+        target.setFor ("secondaryButtonDown", lightGray.lighten (-0.35));
+        target.setFor ("secondaryButtonActive", lightGray.lighten (0.35));
         target.setFor ("secondaryButtonText", black);
         target.setFor ("secondaryButtonStroke", lightGray.lighten (-0.15));
+        target.setFor ("alternativeText", darkGray2);
         target.setFor ("alternativeBackground", black);
+        target.setFor ("background", white);
         target.setFor ("primaryButton", prussianBlue);
-        target.setFor ("primaryButtonHover", tangaroa);
-        target.setFor ("primaryButtonDown", tangaroa);
-        target.setFor ("primaryButtonActive", tangaroa);
+        target.setFor ("text", darkGray2);
+        target.setFor ("primaryButtonHover", prussianBlue.lighten (-0.15));
+        target.setFor ("primaryButtonDown", prussianBlue.lighten (-0.25));
+        target.setFor ("primaryButtonActive", prussianBlue.lighten (-0.25));
+    }
+}
+
+function am4themes_masFlightDark(target)
+{
+    if (target instanceof am4core.InterfaceColorSet)
+    {
+        target.setFor ("secondaryButton", darkGray);
+        target.setFor ("secondaryButtonHover", darkGray.lighten (0.1));
+        target.setFor ("secondaryButtonDown", darkGray.lighten (0.15));
+        target.setFor ("secondaryButtonActive", darkGray.lighten (0.15));
+        target.setFor ("secondaryButtonText", darkGray);
+        target.setFor ("secondaryButtonStroke", darkGray.lighten (-0.2));
+        target.setFor ("alternativeText", black);
+        target.setFor ("alternativeBackground", white);
+        target.setFor ("background", black);
+        target.setFor ("text", white);
+        target.setFor ("primaryButton", deepSkyBlue);
+        target.setFor ("primaryButtonHover", deepSkyBlue.lighten (-0.15));
+        target.setFor ("primaryButtonDown", deepSkyBlue.lighten (-0.25));
+        target.setFor ("primaryButtonActive", deepSkyBlue.lighten (-0.25));
     }
 }
 
 export class Themes {
     public static AmCharts: any = {
         "dark-theme": {
-            mainTheme: am4themes_dark,
+            mainTheme: am4themes_masFlightDark,
             mapPolygonColor: darkGray,
             mapPolygonStroke: black,
             mapCityColor: white,
