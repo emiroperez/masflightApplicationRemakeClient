@@ -474,8 +474,6 @@ export class MsfDashboardComponent implements OnInit {
     let panelToDelete = null;
     let i;
 
-    _this.addingOrRemovingPanels = 2;
-
     for (i = 0; i < _this.dashboardPanels.length; i++)
     {
       let dashboardPanel = _this.dashboardPanels[i];
@@ -489,12 +487,12 @@ export class MsfDashboardComponent implements OnInit {
 
     if (panelToDelete != null)
     {
+      _this.addingOrRemovingPanels = 2;
       _this.dashboardPanels.splice (_this.dashboardPanels.indexOf (panelToDelete), 1);
       _this.changeDetector.detectChanges ();
     }
-
-    _this.addingOrRemovingPanels = 0;
-    _this.globals.isLoading = false;
+    else
+      _this.globals.isLoading = false;
   }
 
   addPanel(): void
@@ -512,8 +510,6 @@ export class MsfDashboardComponent implements OnInit {
       null, null, defaultPanelWidth, defaultPanelHeight));
 
     this.changeDetector.detectChanges ();
-    this.newDashboardPanel = false;
-    this.addingOrRemovingPanels = 0;
   }
 
   positionUpdated(_this): void
@@ -885,6 +881,14 @@ export class MsfDashboardComponent implements OnInit {
 
       this.service.createDashboardPanel (this, newPanel, this.addPanelSuccess, this.handlerError);
       newPanelInfo.autoposition = false; // panel position has been set
+
+      this.newDashboardPanel = false;
+      this.addingOrRemovingPanels = 0;
+    }
+    else if (this.addingOrRemovingPanels == 2)
+    {
+      this.addingOrRemovingPanels = 0;
+      this.globals.isLoading = false;
     }
     else if (panels.length)
     {
