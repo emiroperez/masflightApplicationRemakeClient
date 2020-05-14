@@ -372,15 +372,22 @@ export class MsfChartPreviewComponent {
 
   makeChart(chartInfo): void
   {
-    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries;
+    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries, animFinished, playButton;
     let theme = this.globals.theme;
     let _this = this;
 
     resultSetIndex = 0;
+    animFinished = false;
 
     // functions used for the bar chart race
     function playAnimChart()
     {
+      if (animFinished)
+      {
+        resultSetIndex = -1;
+        animFinished = false;
+      }
+
       animChartInterval = setInterval (() => {
         changeResultSet ();
       }, raceStepInterval);
@@ -395,20 +402,23 @@ export class MsfChartPreviewComponent {
         clearInterval (animChartInterval);
         animChartInterval = null;
       }
+
+      animSeries.interpolationDuration = 1;
+      valueAxis.rangeChangeDuration = 1;
+
+      _this.chart.invalidateRawData ();
     }
 
     function changeResultSet()
     {
       let numNonZeroResults = 0;
-      let index;
 
       resultSetIndex++;
       if (resultSetIndex >= resultSets.length)
-        resultSetIndex = 0;
-
-      index = resultSetIndex - 1;
-      if (index == -1)
-        index = resultSets.length - 1;
+      {
+        playButton.dispatchImmediately ("hit");
+        animFinished = true;
+      }
 
       for (let i = _this.chart.data.length - 1; i >= 0; i--)
       {
@@ -438,8 +448,8 @@ export class MsfChartPreviewComponent {
 
       if (!resultSetIndex)
       {
-        animSeries.interpolationDuration = raceStepInterval / 4;
-        valueAxis.rangeChangeDuration = raceStepInterval / 4;
+        animSeries.interpolationDuration = 1;
+        valueAxis.rangeChangeDuration = 1;
       }
       else
       {
@@ -462,10 +472,10 @@ export class MsfChartPreviewComponent {
         if (_this.predefinedColumnFormats[legendOutputFormat])
           legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-        label.text = new DatePipe ('en-US').transform (_this.parseDate (nameSets[index], _this.data.xaxis.item.columnFormat).toString (), legendOutputFormat);
+        label.text = new DatePipe ('en-US').transform (_this.parseDate (nameSets[resultSetIndex], _this.data.xaxis.item.columnFormat).toString (), legendOutputFormat);
       }
       else
-        label.text = nameSets[index];
+        label.text = nameSets[resultSetIndex];
     }
 
     if (this.data.paletteColors && this.data.paletteColors.length)
@@ -1628,7 +1638,7 @@ export class MsfChartPreviewComponent {
         // Add play button for the bar chart race
         if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
         {
-          let playButton = chart.plotContainer.createChild(am4core.PlayButton);
+          playButton = chart.plotContainer.createChild(am4core.PlayButton);
 
           playButton.x = am4core.percent (97);
           label = chart.plotContainer.createChild (am4core.Label);

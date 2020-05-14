@@ -1350,15 +1350,28 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
-    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries;
+    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries, animFinished, playButton;
     let theme = this.globals.theme;
     let _this = this;
 
     resultSetIndex = 0;
+    animFinished = false;
+
+    if (animChartInterval)
+    {
+      clearInterval (animChartInterval);
+      animChartInterval = null;
+    }
 
     // functions used for the bar chart race
     function playAnimChart()
     {
+      if (animFinished)
+      {
+        resultSetIndex = -1;
+        animFinished = false;
+      }
+
       animChartInterval = setInterval (() => {
         changeResultSet ();
       }, raceStepInterval);
@@ -1374,42 +1387,22 @@ export class MsfDashboardPanelComponent implements OnInit {
         animChartInterval = null;
       }
 
-      animSeries.interpolationDuration = raceStepInterval / 6;
-      valueAxis.rangeChangeDuration = raceStepInterval / 6;
+      animSeries.interpolationDuration = 1;
+      valueAxis.rangeChangeDuration = 1;
 
       _this.chart.invalidateRawData ();
-
-      if (_this.values.xaxis.item.columnType === "date")
-      {
-        let legendOutputFormat;
-
-        if (_this.values.xaxis.item.outputFormat)
-          legendOutputFormat = _this.values.xaxis.item.outputFormat;
-        else
-          legendOutputFormat = _this.values.xaxis.item.columnFormat;
-
-        // Set predefined format if used
-        if (_this.predefinedColumnFormats[legendOutputFormat])
-          legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
-
-        label.text = new DatePipe('en-US').transform(_this.parseDate(nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
-      }
-      else
-        label.text = nameSets[resultSetIndex];
     }
 
     function changeResultSet()
     {
       let numNonZeroResults = 0;
-      let index;
 
       resultSetIndex++;
       if (resultSetIndex >= resultSets.length)
-        resultSetIndex = 0;
-
-      index = resultSetIndex - 1;
-      if (index == -1)
-        index = resultSets.length - 1;
+      {
+        playButton.dispatchImmediately ("hit");
+        animFinished = true;
+      }
 
       for (let i = _this.chart.data.length - 1; i >= 0; i--)
       {
@@ -1439,8 +1432,8 @@ export class MsfDashboardPanelComponent implements OnInit {
 
       if (!resultSetIndex)
       {
-        animSeries.interpolationDuration = raceStepInterval / 4;
-        valueAxis.rangeChangeDuration = raceStepInterval / 4;
+        animSeries.interpolationDuration = 1;
+        valueAxis.rangeChangeDuration = 1;
       }
       else
       {
@@ -1463,10 +1456,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (_this.predefinedColumnFormats[legendOutputFormat])
           legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-        label.text = new DatePipe('en-US').transform(_this.parseDate(nameSets[index], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
+        label.text = new DatePipe ('en-US').transform (_this.parseDate(nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
       }
       else
-        label.text = nameSets[index];
+        label.text = nameSets[resultSetIndex];
     }
 
     this.removeDeadVariablesAndCategories.emit ({
@@ -3088,7 +3081,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         // Add play button for the bar chart race
         if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
         {
-          let playButton = chart.plotContainer.createChild(am4core.PlayButton);
+          playButton = chart.plotContainer.createChild(am4core.PlayButton);
 
           playButton.x = am4core.percent (97);
           label = chart.plotContainer.createChild (am4core.Label);
