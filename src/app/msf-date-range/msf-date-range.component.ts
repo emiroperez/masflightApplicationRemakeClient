@@ -397,10 +397,10 @@ export class MsfDateRangeComponent implements OnInit {
       switch (this.currentValueType)
       {
         case 3:
-          this.setYearValue1 (moment (this.argument.value1, "YYYY"));
+          this.setYearValue1 (moment (moment (this.argument.value1, this.argument.dateFormat), "YYYY"));
 
           if (this.isDateRange)
-            this.setYearValue2 (moment (this.argument.value2, "YYYY"));
+            this.setYearValue2 (moment (moment (this.argument.value2, this.argument.dateFormat), "YYYY"));
           break;
 
         case 2:
@@ -411,10 +411,10 @@ export class MsfDateRangeComponent implements OnInit {
           break;
 
         case 1:
-          this.setMonthValue1 (moment (this.argument.value1, "MMM/YYYY"));
+          this.setMonthValue1 (moment (moment (this.argument.value1, this.argument.dateFormat), "MMM/YYYY"));
 
           if (this.isDateRange)
-            this.setMonthValue2 (moment (this.argument.value2, "MMM/YYYY"));
+            this.setMonthValue2 (moment (moment (this.argument.value2, this.argument.dateFormat), "MMM/YYYY"));
       }
     }
   }
@@ -426,14 +426,14 @@ export class MsfDateRangeComponent implements OnInit {
       switch (this.currentValueType)
       {
         case 3:
-          this.argument.value1 = moment (this.argument.value1, "YYYY");
+          this.argument.value1 = moment (moment (this.argument.value1, this.argument.dateFormat), "YYYY");
 
           if (this.isDateRange)
-            this.argument.value2 = moment (this.argument.value2, "YYYY");
+            this.argument.value2 = moment (moment (this.argument.value2, this.argument.dateFormat), "YYYY");
           break;
 
         case 2:
-          this.argument.value1 = moment (this.argument.value1, "YYYY");
+          this.argument.value1 = moment (moment (this.argument.value1, this.argument.dateFormat), "YYYY");
 
           for (let quarterIndex of this.quarterRange)
           {
@@ -446,7 +446,7 @@ export class MsfDateRangeComponent implements OnInit {
 
           if (this.isDateRange)
           {
-            this.argument.value2 = moment (this.argument.value2, "YYYY");
+            this.argument.value2 = moment (moment (this.argument.value2, this.argument.dateFormat), "YYYY");
 
             for (let quarterIndex of this.quarterRange)
             {
@@ -1067,7 +1067,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   setQuarterValue1FromArgument(): void
   {
-    let normalizedDate = moment (this.argument.value1, "YYYY");
+    let normalizedDate = moment (moment (this.argument.value1, this.argument.dateFormat), "YYYY");
 
     for (let quarter of this.quarters)
     {
@@ -1083,7 +1083,7 @@ export class MsfDateRangeComponent implements OnInit {
 
   setQuarterValue2FromArgument(): void
   {
-    let normalizedDate = moment (this.argument.value2, "YYYY");
+    let normalizedDate = moment (moment (this.argument.value2, this.argument.dateFormat), "YYYY");
 
     for (let quarter of this.quarters)
     {
