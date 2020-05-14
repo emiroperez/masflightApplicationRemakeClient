@@ -1359,8 +1359,6 @@ export class MsfDashboardPanelComponent implements OnInit {
     // functions used for the bar chart race
     function playAnimChart()
     {
-      resultSetIndex = 0;
-
       animChartInterval = setInterval (() => {
         changeResultSet ();
       }, raceStepInterval);
@@ -1380,13 +1378,15 @@ export class MsfDashboardPanelComponent implements OnInit {
     function changeResultSet()
     {
       let numNonZeroResults = 0;
-
-      if (!animChartInterval)
-        return;
+      let index;
 
       resultSetIndex++;
       if (resultSetIndex >= resultSets.length)
         resultSetIndex = 0;
+
+      index = resultSetIndex - 1;
+      if (index == -1)
+        index = resultSets.length - 1;
 
       for (let i = _this.chart.data.length - 1; i >= 0; i--)
       {
@@ -1439,10 +1439,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (_this.predefinedColumnFormats[legendOutputFormat])
           legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-        label.text = new DatePipe ('en-US').transform (_this.parseDate (nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
+        label.text = new DatePipe('en-US').transform(_this.parseDate(nameSets[index], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
       }
       else
-        label.text = nameSets[resultSetIndex];
+        label.text = nameSets[index];
     }
 
     this.removeDeadVariablesAndCategories.emit ({
