@@ -414,7 +414,7 @@ export class MsfDateRangeComponent implements OnInit {
           this.setMonthValue1 (moment (this.argument.value1, "MMM/YYYY"));
 
           if (this.isDateRange)
-            this.setMonthValue2 (moment (this.argument.value1, "MMM/YYYY"));
+            this.setMonthValue2 (moment (this.argument.value2, "MMM/YYYY"));
       }
     }
   }
