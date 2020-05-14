@@ -1350,7 +1350,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   makeChart(chartInfo): void
   {
-    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries, animFinished, playButton;
+    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries, animFinished, playButton, slider, sliderAnimation;
     let theme = this.globals.theme;
     let _this = this;
 
@@ -1372,16 +1372,27 @@ export class MsfDashboardPanelComponent implements OnInit {
         animFinished = false;
       }
 
-      animChartInterval = setInterval (() => {
+      if (slider)
+      {
+        if (slider.start >= 1)
+        {
+          slider.start = 0;
+          sliderAnimation.start ();
+        }
+
+        sliderAnimation.resume ();
+      }
+
+/*      animChartInterval = setInterval (() => {
         changeResultSet ();
       }, raceStepInterval);
 
-      changeResultSet ();
+      changeResultSet ();*/
     }
 
     function stopAnimChart()
     {
-      if (animChartInterval)
+/*      if (animChartInterval)
       {
         clearInterval (animChartInterval);
         animChartInterval = null;
@@ -1390,25 +1401,31 @@ export class MsfDashboardPanelComponent implements OnInit {
       animSeries.interpolationDuration = 1;
       valueAxis.rangeChangeDuration = 1;
 
-      _this.chart.invalidateRawData ();
+      _this.chart.invalidateRawData ();*/
     }
 
     function changeResultSet()
     {
       let numNonZeroResults = 0;
+      //let lastResultSetIndex = resultSetIndex;
 
-      resultSetIndex++;
+/*      resultSetIndex++;
       if (resultSetIndex >= resultSets.length)
       {
         playButton.dispatchImmediately ("hit");
         animFinished = true;
-      }
+      }*/
 
       for (let i = _this.chart.data.length - 1; i >= 0; i--)
       {
         let data = _this.chart.data[i];
         let name = data[_this.values.variable.id];
 
+        data[_this.values.valueColumn.id] = slider.start * (4000 * resultSets.length);
+//        for (let item of resultSets[0])
+        numNonZeroResults++;
+/*        offset = value1 - value2;
+        offset - slider.start;
         for (let item of resultSets[resultSetIndex])
         {
           if (item[_this.values.variable.id] === name)
@@ -1425,17 +1442,17 @@ export class MsfDashboardPanelComponent implements OnInit {
 
             break;
           }
-        }
+        }*/
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
 
-      if (!resultSetIndex)
+/*      if (!resultSetIndex)
       {
         animSeries.interpolationDuration = 1;
         valueAxis.rangeChangeDuration = 1;
       }
-      else
+      else*/
       {
         animSeries.interpolationDuration = raceStepInterval;
         valueAxis.rangeChangeDuration = raceStepInterval;
@@ -1990,9 +2007,16 @@ export class MsfDashboardPanelComponent implements OnInit {
       }
       else
       {
-        let valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet, numNonZeroResults;
+        let valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet, numNonZeroResults, container;
 
-        chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.XYChart);
+        container = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4core.Container);
+        container.width = am4core.percent (100);
+        container.height = am4core.percent (100);
+        container.layout = "vertical";
+
+        chart = container.createChild (am4charts.XYChart);
+        chart.height = am4core.percent (100);
+
         barChartHoverSet = false;
 
         if (this.values.valueColumn && !this.values.valueList)
@@ -3078,29 +3102,30 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
         }
 
-        // Add play button for the bar chart race
+        // Add play button and slider for the bar chart race
         if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
         {
-          playButton = chart.plotContainer.createChild(am4core.PlayButton);
+          let sliderContainer = container.createChild (am4core.Container);
 
-          playButton.x = am4core.percent (97);
+          sliderContainer.height = 30;
+          sliderContainer.width = am4core.percent (100);
+          sliderContainer.padding (0, 50, 0, 50);
+          sliderContainer.layout = "horizontal";
+          sliderContainer.height = 50;
+
+          playButton = sliderContainer.createChild (am4core.PlayButton);
+          playButton.dx = 5;
+          playButton.dy = 25;
+
           label = chart.plotContainer.createChild (am4core.Label);
-          label.x = am4core.percent (97);
+          label.x = am4core.percent (100);
 
           if (this.values.currentChartType.flags & ChartFlags.ROTATED)
-          {
-            playButton.y = am4core.percent (95);
             label.y = am4core.percent (95);
-          }
           else
-          {
-            playButton.y = am4core.percent (5);
             label.y = am4core.percent (5);
-          }
 
-          playButton.dy = -2;
           playButton.verticalCenter = "middle";
-          playButton.fill = Themes.AmCharts[theme].playButtonColor;
           playButton.events.on ("toggled", function (event) {
             if (event.target.isActive)
               playAnimChart ();
@@ -3131,6 +3156,27 @@ export class MsfDashboardPanelComponent implements OnInit {
           }
           else
             label.text = chartInfo.names[0];
+
+          slider = sliderContainer.createChild (am4core.Slider);
+          slider.valign = "middle";
+          slider.margin (0, 0, 0, 0);
+          slider.marginLeft = 30;
+          slider.height = 15;
+
+          slider.events.on("rangechanged", function () {
+            changeResultSet();
+          });
+
+          slider.startGrip.events.on("drag", function ()
+          {
+            stopAnimChart ();
+            sliderAnimation.setProgress (slider.start);
+          });
+
+          sliderAnimation = slider.animate ({ property: "start", to: 1 }, 4000 * chartInfo.sets.length, am4core.ease.linear).pause ();
+          sliderAnimation.events.on ("animationended", function () {
+            playButton.dispatchImmediately ("hit");
+          });
         }
 
         this.oldChartType = this.values.currentChartType;
