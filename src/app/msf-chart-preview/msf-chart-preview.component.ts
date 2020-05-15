@@ -1671,7 +1671,7 @@ export class MsfChartPreviewComponent {
 
           sliderContainer.height = 30;
           sliderContainer.width = am4core.percent (100);
-          sliderContainer.padding (0, 15, 0, 15);
+          sliderContainer.padding (0, 15, 0, 0);
           sliderContainer.layout = "horizontal";
           sliderContainer.height = 50;
 
