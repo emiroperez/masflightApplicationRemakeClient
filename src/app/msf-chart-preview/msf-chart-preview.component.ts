@@ -372,92 +372,108 @@ export class MsfChartPreviewComponent {
 
   makeChart(chartInfo): void
   {
-    let valueAxis, categoryAxis, label, animChartInterval, resultSetIndex, resultSets, nameSets, animSeries, animFinished, playButton;
+    let valueAxis, categoryAxis, label, resultSetIndex, resultSets, nameSets, animSeries, playButton, slider, sliderAnimation, animStarted;
     let theme = this.globals.theme;
     let _this = this;
 
-    resultSetIndex = 0;
-    animFinished = false;
+    animStarted = false;
 
     // functions used for the bar chart race
     function playAnimChart()
     {
-      if (animFinished)
+      if (slider)
       {
-        resultSetIndex = -1;
-        animFinished = false;
+        if (slider.start >= 1)
+        {
+          slider.start = 0;
+          sliderAnimation.start ();
+          animStarted = true;
+        }
+
+        sliderAnimation.resume ();
+        playButton.isActive = true;
       }
-
-      animChartInterval = setInterval (() => {
-        changeResultSet ();
-      }, raceStepInterval);
-
-      changeResultSet ();
     }
 
     function stopAnimChart()
     {
-      if (animChartInterval)
-      {
-        clearInterval (animChartInterval);
-        animChartInterval = null;
-      }
-
-      animSeries.interpolationDuration = 1;
-      valueAxis.rangeChangeDuration = 1;
-
-      _this.chart.invalidateRawData ();
+      sliderAnimation.pause ();
+      playButton.isActive = false;
     }
 
     function changeResultSet()
     {
+      let resultSetIndex = Math.trunc (slider.start * (resultSets.length - 1));
+      let setLength = 1 / (resultSets.length - 1);
+      let sliderSetValue = (((resultSetIndex * setLength) - slider.start) * (resultSets.length - 1));
       let numNonZeroResults = 0;
 
-      resultSetIndex++;
-      if (resultSetIndex >= resultSets.length)
+      for (let i = animSeries.dataItems.length - 1; i >= 0; i--)
       {
-        playButton.dispatchImmediately ("hit");
-        animFinished = true;
-      }
+        let dataItem = animSeries.dataItems.getIndex (i);
+        let value1, value2, workingValue;
 
-      for (let i = _this.chart.data.length - 1; i >= 0; i--)
-      {
-        let data = _this.chart.data[i];
-        let name = data[_this.data.variable.id];
+        value1 = null;
+        value2 = null;
 
-        for (let item of resultSets[resultSetIndex])
+        if (resultSetIndex == resultSets.length - 1)
         {
-          if (item[_this.data.variable.id] === name)
+          for (let item of resultSets[resultSetIndex])
           {
-            if (item[_this.data.valueColumn.id] == null)
-              data[_this.data.valueColumn.id] = 0;
-            else
+            if (dataItem.categoryY === item[_this.data.variable.id])
             {
-              data[_this.data.valueColumn.id] = item[_this.data.valueColumn.id];
-
-              if (item[_this.data.valueColumn.id] != 0)
-                numNonZeroResults++;
+              value1 = item[_this.data.valueColumn.id];
+              break;
             }
-
-            break;
           }
+
+          if (value1 == null)
+            value1 = 0;
+
+          workingValue = value1;
         }
+        else
+        {
+          let animValue;
+
+          for (let item of resultSets[resultSetIndex])
+          {
+            if (dataItem.categoryY === item[_this.data.variable.id])
+            {
+              value1 = item[_this.data.valueColumn.id];
+              break;
+            }
+          }
+
+          for (let item of resultSets[resultSetIndex + 1])
+          {
+            if (dataItem.categoryY === item[_this.data.variable.id])
+            {
+              value2 = item[_this.data.valueColumn.id];
+              break;
+            }
+          }
+
+          if (value1 == null)
+            value1 = 0;
+
+          if (value2 == null)
+            value2 = 0;
+
+          animValue = sliderSetValue * (value1 - value2);
+          workingValue = value1 + animValue;
+        }
+
+        dataItem.setValue ("valueX", workingValue, 1);
+
+        if (workingValue)
+          numNonZeroResults++;
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
 
-      if (!resultSetIndex)
-      {
-        animSeries.interpolationDuration = 1;
-        valueAxis.rangeChangeDuration = 1;
-      }
-      else
-      {
-        animSeries.interpolationDuration = raceStepInterval;
-        valueAxis.rangeChangeDuration = raceStepInterval;
-      }
-
-      _this.chart.invalidateRawData ();
+      if (resultSetIndex == resultSets.length)
+        resultSetIndex--;
 
       if (_this.data.xaxis.item.columnType === "date")
       {
@@ -476,6 +492,14 @@ export class MsfChartPreviewComponent {
       }
       else
         label.text = nameSets[resultSetIndex];
+
+      if (animStarted)
+      {
+        valueAxis.rangeChangeDuration = 0;
+        animStarted = false;
+      }
+      else
+        valueAxis.rangeChangeDuration = raceStepInterval / 4;
     }
 
     if (this.data.paletteColors && this.data.paletteColors.length)
@@ -544,9 +568,16 @@ export class MsfChartPreviewComponent {
       }
       else
       {
-        let valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet, numNonZeroResults;
+        let valueAxes, parseDate, outputFormat, stacked, goalAxis, barChartHoverSet, numNonZeroResults, container;
 
-        chart = am4core.create("msf-dashboard-child-panel-chart-display", am4charts.XYChart);
+        container = am4core.create ("msf-dashboard-child-panel-chart-display", am4core.Container);
+        container.width = am4core.percent (100);
+        container.height = am4core.percent (100);
+        container.layout = "vertical";
+
+        chart = container.createChild (am4charts.XYChart);
+        chart.height = am4core.percent (100);
+
         barChartHoverSet = false;
 
         if (this.data.valueColumn && !this.data.valueList)
@@ -816,7 +847,6 @@ export class MsfChartPreviewComponent {
             if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
             {
               valueAxis.rangeChangeEasing = am4core.ease.linear;
-              valueAxis.rangeChangeDuration = raceStepInterval;
               valueAxis.extraMax = 0.1;
             }
           }
@@ -909,7 +939,6 @@ export class MsfChartPreviewComponent {
             if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
             {
               valueAxis.rangeChangeEasing = am4core.ease.linear;
-              valueAxis.rangeChangeDuration = raceStepInterval;
               valueAxis.extraMax = 0.1;
             }
           }
@@ -1635,29 +1664,31 @@ export class MsfChartPreviewComponent {
           }
         }
 
-        // Add play button for the bar chart race
+        // Add play button and slider for the bar chart race
         if (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS)
         {
-          playButton = chart.plotContainer.createChild(am4core.PlayButton);
+          let sliderContainer = container.createChild (am4core.Container);
 
-          playButton.x = am4core.percent (97);
+          sliderContainer.height = 30;
+          sliderContainer.width = am4core.percent (100);
+          sliderContainer.padding (0, 10, 0, 0);
+          sliderContainer.layout = "horizontal";
+          sliderContainer.height = 50;
+
+          playButton = sliderContainer.createChild (am4core.PlayButton);
+          playButton.dx = 5;
+          playButton.dy = 25;
+          playButton.width = 35;
+
           label = chart.plotContainer.createChild (am4core.Label);
-          label.x = am4core.percent (97);
+          label.x = am4core.percent (100);
 
           if (this.data.currentChartType.flags & ChartFlags.ROTATED)
-          {
-            playButton.y = am4core.percent (95);
             label.y = am4core.percent (95);
-          }
           else
-          {
-            playButton.y = am4core.percent (5);
             label.y = am4core.percent (5);
-          }
 
-          playButton.dy = -2;
           playButton.verticalCenter = "middle";
-          playButton.fill = Themes.AmCharts[theme].playButtonColor;
           playButton.events.on ("toggled", function (event) {
             if (event.target.isActive)
               playAnimChart ();
@@ -1684,25 +1715,33 @@ export class MsfChartPreviewComponent {
             if (this.predefinedColumnFormats[legendOutputFormat])
               legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-            label.text = new DatePipe ('en-US').transform (this.parseDate (chartInfo.names[0], this.data.xaxis.item.columnFormat).toString (), legendOutputFormat);
+            label.text = new DatePipe('en-US').transform (this.parseDate (chartInfo.names[0], this.data.xaxis.item.columnFormat).toString (), legendOutputFormat);
           }
           else
             label.text = chartInfo.names[0];
+
+          slider = sliderContainer.createChild (am4core.Slider);
+          slider.valign = "middle";
+          slider.margin (0, 0, 0, 0);
+          slider.marginLeft = 30;
+          slider.height = 15;
+          slider.background.fill = Themes.AmCharts[theme].animSliderColor;
+
+          slider.events.on ("rangechanged", function () {
+            changeResultSet ();
+          });
+
+          slider.startGrip.events.on ("drag", function () {
+            stopAnimChart ();
+            sliderAnimation.setProgress (slider.start);
+          });
+
+          sliderAnimation = slider.animate ({ property: "start", to: 1 }, raceStepInterval * (chartInfo.sets.length - 1), am4core.ease.linear).pause ();
+          sliderAnimation.events.on ("animationended", function () {
+            playButton.isActive = false;
+          });
         }
       }
-
-      // Add export menu
-      chart.exporting.menu = new am4core.ExportMenu ();
-      chart.exporting.menu.align = "left";
-      chart.exporting.menu.verticalAlign = "bottom";
-      chart.exporting.title = "Chart Preview";
-      chart.exporting.filePrefix = "Chart Preview";
-      chart.exporting.useWebFonts = false;
-
-      // Remove "Saved from..." message on PDF files
-      options = chart.exporting.getFormatOptions ("pdf");
-      options.addURL = false;
-      chart.exporting.setFormatOptions ("pdf", options);
 
       if (this.data.currentChartType.flags & ChartFlags.XYCHART && !(this.data.currentChartType.flags & ChartFlags.BULLET)
         || (this.isSimpleChart () && this.data.valueList && this.data.valueList.length > 1))
@@ -2109,5 +2148,10 @@ export class MsfChartPreviewComponent {
       && !(this.data.currentChartType.flags & ChartFlags.PIECHART)
       && !(this.data.currentChartType.flags & ChartFlags.FUNNELCHART)
       && !(this.data.currentChartType.flags & ChartFlags.MULTIRESULTS);
+  }
+
+  isAnimatedChart(): boolean
+  {
+    return (this.data.currentChartType.flags & ChartFlags.MULTIRESULTS) ? true : false;
   }
 }

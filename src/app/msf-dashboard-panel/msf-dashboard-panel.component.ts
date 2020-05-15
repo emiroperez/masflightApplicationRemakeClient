@@ -1464,7 +1464,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         if (_this.predefinedColumnFormats[legendOutputFormat])
           legendOutputFormat = this.predefinedColumnFormats[legendOutputFormat];
 
-        label.text = new DatePipe ('en-US').transform (_this.parseDate(nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
+        label.text = new DatePipe ('en-US').transform (_this.parseDate (nameSets[resultSetIndex], _this.values.xaxis.item.columnFormat).toString (), legendOutputFormat);
       }
       else
         label.text = nameSets[resultSetIndex];
@@ -1475,7 +1475,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         animStarted = false;
       }
       else
-        valueAxis.rangeChangeDuration = raceStepInterval / 2;
+        valueAxis.rangeChangeDuration = raceStepInterval / 4;
     }
 
     this.removeDeadVariablesAndCategories.emit ({
