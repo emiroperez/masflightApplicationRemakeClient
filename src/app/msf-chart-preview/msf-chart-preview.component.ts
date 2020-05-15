@@ -401,7 +401,7 @@ export class MsfChartPreviewComponent {
       playButton.isActive = false;
     }
 
-    function changeResultSet()
+    function changeBarResultSet()
     {
       let resultSetIndex = Math.trunc (slider.start * (resultSets.length - 1));
       let setLength = 1 / (resultSets.length - 1);
@@ -549,6 +549,8 @@ export class MsfChartPreviewComponent {
         else
           chart = am4core.create ("msf-dashboard-child-panel-chart-display", am4charts.PieChart);
 
+        this.chart = chart;
+
         chart.data = chartInfo.dataProvider;
 
         if (this.data.valueColumn.item.columnType === "number")
@@ -585,6 +587,8 @@ export class MsfChartPreviewComponent {
         container.width = am4core.percent (100);
         container.height = am4core.percent (100);
         container.layout = "vertical";
+
+        this.chart = chart;
 
         chart = container.createChild (am4charts.XYChart);
         chart.height = am4core.percent (100);
@@ -1739,7 +1743,7 @@ export class MsfChartPreviewComponent {
           slider.background.fill = Themes.AmCharts[theme].animSliderColor;
 
           slider.events.on ("rangechanged", function () {
-            changeResultSet ();
+            changeBarResultSet ();
           });
 
           slider.startGrip.events.on ("drag", function () {
@@ -1764,8 +1768,6 @@ export class MsfChartPreviewComponent {
         chart.legend.labels.template.fontSize = 10;
         chart.legend.labels.template.fill = Themes.AmCharts[theme].fontColor;
       }
-
-      this.chart = chart;
 
       // build interval table for advanced charts
       if (this.data.chartMode === "advanced")
