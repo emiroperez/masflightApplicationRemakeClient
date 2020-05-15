@@ -55,7 +55,7 @@ const raceStepInterval = 4000;
 export class MsfDashboardPanelComponent implements OnInit {
   utils: Utils;
 
-  chart: any;
+  chart: any = null;
   chartInfo: any;
 
   paletteColors: any[];
@@ -1377,7 +1377,7 @@ export class MsfDashboardPanelComponent implements OnInit {
       playButton.isActive = false;
     }
 
-    function changeResultSet()
+    function changeBarResultSet()
     {
       let resultSetIndex = Math.trunc (slider.start * (resultSets.length - 1));
       let setLength = 1 / (resultSets.length - 1);
@@ -1544,6 +1544,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         let home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
+        this.chart = chart;
 
         if (this.values.valueColumn.item.columnType === "number")
         {
@@ -1764,6 +1765,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           legend.itemContainers.template.focusable = false;
           legend.align = "right";
           legend.valign = "bottom";
+          legend.zIndex = 20;
           legend.data = [];
 
           for (let i = this.values.thresholds.length - 1; i >= 0; i--)
@@ -1810,6 +1812,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           heatLegend.maxColor = am4core.color (this.paletteColors[1]);
           heatLegend.align = "right";
           heatLegend.valign = "bottom";
+          heatLegend.zIndex = 20;
           heatLegend.width = am4core.percent (20);
           heatLegend.marginRight = am4core.percent (1);
           heatLegend.dx -= 10;
@@ -1900,6 +1903,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         let polygonSeries, zoomControl, home;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
+        this.chart = chart;
 
         // Create map instance
         chart.geodata = am4geodata_worldLow;
@@ -1969,6 +1973,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         else
           chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4charts.PieChart);
 
+        this.chart = chart;
+
         chart.data = chartInfo.dataProvider;
 
         if (this.values.valueColumn.item.columnType === "number")
@@ -2023,6 +2029,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         container.width = am4core.percent (100);
         container.height = am4core.percent (100);
         container.layout = "vertical";
+
+        this.chart = chart;
 
         chart = container.createChild (am4charts.XYChart);
         chart.height = am4core.percent (100);
@@ -3173,7 +3181,7 @@ export class MsfDashboardPanelComponent implements OnInit {
           slider.background.fill = Themes.AmCharts[theme].animSliderColor;
 
           slider.events.on ("rangechanged", function () {
-            changeResultSet ();
+            changeBarResultSet ();
           });
 
           slider.startGrip.events.on ("drag", function () {
@@ -3230,8 +3238,6 @@ export class MsfDashboardPanelComponent implements OnInit {
       });
 
       chart.tapToActivate = true;
-
-      this.chart = chart;
 
       // build interval table for advanced charts
       if (this.values.currentChartType.flags & ChartFlags.ADVANCED)
@@ -3609,7 +3615,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         valueList: null,
         minValueRange: null,
         maxValueRange: null,
-        horizAxisName: this.values.horizAxisName
+        horizAxisName: this.values.horizAxisName,
+        variableName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
+        //xaxisName: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.id : null) : null,
+        valueName: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.id : null) : null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
@@ -3886,6 +3895,38 @@ export class MsfDashboardPanelComponent implements OnInit {
     this.authService.post (this, url, panel, handlerSuccess, handlerError);
   }
 
+  loadHeatMapData(handlerSuccess, handlerError): void
+  {
+    let url, urlBase, urlArg;
+
+    this.values.isLoading = true;
+    if (this.globals.currentApplication.name === "DataLake")
+    {
+      if (this.getParameters ())
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName + "&" + this.getParameters ();
+      else
+        urlBase = this.values.currentOption.baseUrl + "?uName=" + this.globals.userName;
+    }
+    else
+      urlBase = this.values.currentOption.baseUrl + "?" + this.getParameters ();
+
+    urlBase += "&MIN_VALUE=0&MAX_VALUE=999&minuteunit=m&pageSize=999999&page_number=0";
+    urlArg = encodeURIComponent (urlBase);
+
+    if (isDevMode ())
+      console.log (urlBase);
+
+    if (this.public)
+      url = this.service.host + "/getHeatMapResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+    else
+      url = this.service.host + "/secure/getHeatMapResponse?url=" + urlArg + "&optionId=" + this.values.currentOption.id;
+
+    if (this.globals.testingPlan != -1)
+      url += "&testPlanId=" + this.globals.testingPlan;
+
+    this.authService.post (this, url, this.getPanelInfo (), handlerSuccess, handlerError);
+  }
+
   loadMapData(handlerSuccess, handlerError): void
   {
     let url, urlBase, urlArg;
@@ -4106,7 +4147,7 @@ export class MsfDashboardPanelComponent implements OnInit {
     if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
       this.loadMapboxData (this.msfMapRef.successHandler, this.msfMapRef.errorHandler);
     else if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
-      this.loadMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
+      this.loadHeatMapData (this.handlerHeatMapSuccess, this.handlerHeatMapError);
     else if (this.values.currentChartType.flags & ChartFlags.MAP)
       this.loadMapData (this.handlerMapSuccess, this.handlerMapError);
     else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
@@ -4291,34 +4332,44 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerHeatMapSuccess(_this, data): void
   {
-    let response, result;
-
     if (!_this.values.isLoading)
       return;
 
-    if (_this.utils.isJSONEmpty (data) || _this.utils.isJSONEmpty (data.Response))
+    if (!data.length)
     {
       _this.noDataFound ();
       return;
     }
 
-    // only use the first result and filter out the values
-    response = data.Response;
-    for (let key in response)
-    {
-      let array = response[key];
-      if (array != null)
-      {
-        if (Array.isArray (array))
-        {
-          result = array;
-          break;
-        }
-      }
-    }
+    _this.values.lastestResponse = data;
+    _this.destroyChart ();
 
-    _this.values.lastestResponse = result;
-    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerHeatMapLastestResponse, _this.handlerHeatMapError);
+    _this.displayInfo = false;
+    _this.displayForm = false;
+    _this.displayMapbox = false;
+    _this.displayPic = false;
+    _this.displayTable = false;
+    _this.displayDynTable = false;
+    _this.displayEditActionList = false;
+    _this.displayChart = true;
+    _this.values.chartGenerated = true;
+    _this.values.infoGenerated = false;
+    _this.values.formGenerated = false;
+    _this.values.picGenerated = false;
+    _this.values.tableGenerated = false;
+    _this.values.mapboxGenerated = false;
+    _this.values.dynTableGenerated = false;
+
+    setTimeout (() =>
+    {
+      _this.values.isLoading = false;
+
+      _this.makeChart (_this.values.lastestResponse);
+      _this.configureAnchoredControlVariables ();
+  
+      _this.stopUpdateInterval ();
+      _this.startUpdateInterval ();
+    }, 50);
   }
 
   handlerMapSuccess(_this, data): void
@@ -4811,41 +4862,6 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     _this.stopUpdateInterval ();
     _this.startUpdateInterval ();
-  }
-
-  handlerHeatMapLastestResponse(_this): void
-  {
-    if (!_this.values.isLoading)
-      return;
-
-    _this.destroyChart ();
-
-    _this.displayInfo = false;
-    _this.displayForm = false;
-    _this.displayMapbox = false;
-    _this.displayPic = false;
-    _this.displayTable = false;
-    _this.displayDynTable = false;
-    _this.displayEditActionList = false;
-    _this.displayChart = true;
-    _this.values.chartGenerated = true;
-    _this.values.infoGenerated = false;
-    _this.values.formGenerated = false;
-    _this.values.picGenerated = false;
-    _this.values.tableGenerated = false;
-    _this.values.mapboxGenerated = false;
-    _this.values.dynTableGenerated = false;
-
-    setTimeout (() =>
-    {
-      _this.values.isLoading = false;
-
-      _this.makeChart (_this.values.lastestResponse);
-      _this.configureAnchoredControlVariables ();
-  
-      _this.stopUpdateInterval ();
-      _this.startUpdateInterval ();
-    }, 50);
   }
 
   handlerMapLastestResponse(_this): void
