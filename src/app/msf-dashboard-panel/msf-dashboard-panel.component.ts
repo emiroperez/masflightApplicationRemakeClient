@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, NgZone, SimpleChanges, Output, EventEmitter, isDevMode, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4maps from "@amcharts/amcharts4/maps";
@@ -1383,6 +1383,14 @@ export class MsfDashboardPanelComponent implements OnInit {
       let setLength = 1 / (resultSets.length - 1);
       let sliderSetValue = (((resultSetIndex * setLength) - slider.start) * (resultSets.length - 1));
       let numNonZeroResults = 0;
+      let valueOutputFormat;
+
+      if (_this.values.valueColumn.item.outputFormat)
+        valueOutputFormat = _this.values.valueColumn.item.outputFormat;
+      else if (_this.values.valueColumn.item.columnFormat && _this.values.valueColumn.item.columnFormat !== "")
+        valueOutputFormat = _this.values.valueColumn.item.columnFormat;
+      else
+        valueOutputFormat = "1.0-2";
 
       for (let i = animSeries.dataItems.length - 1; i >= 0; i--)
       {
@@ -1407,6 +1415,9 @@ export class MsfDashboardPanelComponent implements OnInit {
             value1 = 0;
 
           workingValue = value1;
+
+          if (workingValue)
+            numNonZeroResults++;
         }
         else
         {
@@ -1437,13 +1448,13 @@ export class MsfDashboardPanelComponent implements OnInit {
             value2 = 0;
 
           animValue = sliderSetValue * (value1 - value2);
-          workingValue = value1 + animValue;
+          workingValue = new DecimalPipe ('en-US').transform (value1 + animValue, valueOutputFormat);
+
+          if (workingValue !== "0")
+            numNonZeroResults++;
         }
 
         dataItem.setValue ("valueX", workingValue, 1);
-
-        if (workingValue)
-          numNonZeroResults++;
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
