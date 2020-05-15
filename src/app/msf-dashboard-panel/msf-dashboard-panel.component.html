@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="msf-dashboard-panel-sub-container-column" id="msf-dashboard-chart-display-container-{{values.id}}">
+    <div class="msf-dashboard-panel-sub-container-column msf-dashboard-panel-chart-display" id="msf-dashboard-chart-display-container-{{values.id}}">
       <div class="msf-dashboard-map-routelist" *ngIf="isMapPanel() && values.flightRoutes.length">
         <div class="msf-dashboard-map-routelist-container">
           <div class="msf-dashboard-map-routelist-item" *ngFor="let item of values.flightRoutes">
@@ -71,6 +71,7 @@
           <span [style.color]="getMapLineColor(route.colorIndex)">{{getMapRouteFormat(route.name)}}</span>
         </div>
       </div>
+      <div id="msf-dashboard-panel-anim-export-button-{{values.id}}" style="position: absolute; bottom: 50px" *ngIf="isAnimatedChart()"></div>
     </div>
   </div>
   <div class="msf-dashboard-panel-container-chart msf-dashboard-panel-gridstack" *ngIf="displayInfo">

@@ -5,7 +5,7 @@ const black = am4core.color ("#000000");
 const darkGray = am4core.color ("#3b3b3b");
 const darkGray2 = am4core.color ("#4d4d4d");
 const lightGray = am4core.color ("#b2b2b2");
-const lightGray2 = am4core.color ("#a1c0df");
+const lightSkyBlue = am4core.color ("#a1c0df");
 const white = am4core.color ("#ffffff");
 const cyan = am4core.color ("#00a3e1");
 const prussianBlue = am4core.color ("#003d5b");
@@ -84,6 +84,7 @@ export class Themes {
             axisTooltipFontColor: white,
             sumStroke: white,
             barHoverOpacity: 0.3,
+            animSliderColor: darkGray,
             heatMapColors: [
                 "#dddddd",
                 "#01abec"
@@ -106,7 +107,7 @@ export class Themes {
         },
         "light-theme": {
             mainTheme: am4themes_light,
-            mapPolygonColor: lightGray2,
+            mapPolygonColor: lightSkyBlue,
             mapPolygonStroke: white,
             mapCityLabelHoverColor: tangaroa,
             mapCityColor: darkGray2,
@@ -126,6 +127,7 @@ export class Themes {
             axisTooltipFontColor: black,
             sumStroke: darkGray,
             barHoverOpacity: 0.1,
+            animSliderColor: lightGray,
             heatMapColors: [
                 "#ffffff",
                 "#003d5b"
