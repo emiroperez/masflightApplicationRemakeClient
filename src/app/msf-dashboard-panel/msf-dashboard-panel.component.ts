@@ -3616,9 +3616,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         minValueRange: null,
         maxValueRange: null,
         horizAxisName: this.values.horizAxisName,
-        variableName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
+        valueName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
         //xaxisName: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.id : null) : null,
-        valueName: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.id : null) : null
+        variableName: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.id : null) : null
       };
     }
     else if (this.values.currentChartType.flags & ChartFlags.MAPBOX)
