@@ -29,7 +29,7 @@
                             <mat-form-field [formGroup]="loginForm">
                                 <mat-icon class="input_img">person</mat-icon>
                                 <input matInput autocomplete="off" type="text" placeholder="Username" class="input-username"
-                                    formControlName="usernameValidator" name="username" [(value)]="user.username" />
+                                    formControlName="usernameValidator" name="username" [(value)]="user.username" (keydown.enter)="login()"/>
                                 <mat-error *ngIf="isUsernameInvalid()">{{getErrorUsernameMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
@@ -37,7 +37,7 @@
                             <mat-form-field [formGroup]="loginForm">
                                 <mat-icon class="input_img">lock</mat-icon>
                                 <input matInput type="password" placeholder="Password" class="input-password"
-                                    formControlName="passwordValidator" name="password" [(value)]="user.password" />
+                                    formControlName="passwordValidator" name="password" [(value)]="user.password" (keydown.enter)="login()"/>
                                 <mat-error *ngIf="isPasswordInvalid()">{{getErrorPasswordMessage()}}</mat-error>
                             </mat-form-field>
                         </div>
