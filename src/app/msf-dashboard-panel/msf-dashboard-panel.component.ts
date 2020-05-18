@@ -1492,9 +1492,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         }
 
         if (_this.values.currentChartType.flags & ChartFlags.ROTATED)
-          dataItem.setValue ("valueY", workingValue, 1);
-        else
           dataItem.setValue ("valueX", workingValue, 1);
+        else
+          dataItem.setValue ("valueY", workingValue, 1);
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
