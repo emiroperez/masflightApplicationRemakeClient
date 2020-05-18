@@ -1,4 +1,4 @@
-<div #scrollContainer (touchstart)="disableContextMenu()" (touchend)="disableContextMenu()" (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" [style.height]="screenHeight">
+<div #scrollContainer (touchstart)="disableContextMenu()" (touchend)="disableContextMenu()" (click)="disableContextMenu()" (contextmenu)="disableContextMenu()" (scroll)="disableContextMenu()" class="msf-dashboard-container" id="msf-dashboard-element" [style.height]="screenHeight">
   <!-- ngClass must be used for the control variable overlay it can override the overlays used on some dialogs such as the wizard -->
   <div [ngClass]="{ 'msf-control-variables-overlay': (!controlVariableDialogOpen && !displayContextMenu && !displayPanelContextMenu) }">
     <div [ngClass]="mobileQuery.matches ? (public ? 'msf-dashboard-header is-mobile' : 'msf-dashboard-header is-mobile msf-dashboard-header-private-mobile') : 'msf-dashboard-header'" *ngIf="currentDashboardMenu">
