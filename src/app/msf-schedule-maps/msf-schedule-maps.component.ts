@@ -125,6 +125,8 @@ export class MsfScheduleMapsComponent implements OnInit {
       zoomControl.marginLeft = 10;
       zoomControl.plusButton.height = 26;
       zoomControl.minusButton.height = 26;
+      zoomControl.plusButton.label.fill = black;
+      zoomControl.minusButton.label.fill = black;
 
       // Add home buttom to zoom out
       home = chart.chartContainer.createChild (am4core.Button);

@@ -426,12 +426,26 @@ export class MsfChartPreviewComponent {
 
         if (resultSetIndex == resultSets.length - 1)
         {
-          for (let item of resultSets[resultSetIndex])
+          if (_this.data.currentChartType.flags & ChartFlags.ROTATED)
           {
-            if (dataItem.categoryY === item[_this.data.variable.id])
+            for (let item of resultSets[resultSetIndex])
             {
-              value1 = item[_this.data.valueColumn.id];
-              break;
+              if (dataItem.categoryY === item[_this.data.variable.id])
+              {
+                value1 = item[_this.data.valueColumn.id];
+                break;
+              }
+            }
+          }
+          else
+          {
+            for (let item of resultSets[resultSetIndex])
+            {
+              if (dataItem.categoryX === item[_this.data.variable.id])
+              {
+                value1 = item[_this.data.valueColumn.id];
+                break;
+              }
             }
           }
 
@@ -447,21 +461,44 @@ export class MsfChartPreviewComponent {
         {
           let animValue;
 
-          for (let item of resultSets[resultSetIndex])
+          if (_this.data.currentChartType.flags & ChartFlags.ROTATED)
           {
-            if (dataItem.categoryY === item[_this.data.variable.id])
+            for (let item of resultSets[resultSetIndex])
             {
-              value1 = item[_this.data.valueColumn.id];
-              break;
+              if (dataItem.categoryY === item[_this.data.variable.id])
+              {
+                value1 = item[_this.data.valueColumn.id];
+                break;
+              }
+            }
+
+            for (let item of resultSets[resultSetIndex + 1])
+            {
+              if (dataItem.categoryY === item[_this.data.variable.id])
+              {
+                value2 = item[_this.data.valueColumn.id];
+                break;
+              }
             }
           }
-
-          for (let item of resultSets[resultSetIndex + 1])
+          else
           {
-            if (dataItem.categoryY === item[_this.data.variable.id])
+            for (let item of resultSets[resultSetIndex])
             {
-              value2 = item[_this.data.valueColumn.id];
-              break;
+              if (dataItem.categoryX === item[_this.data.variable.id])
+              {
+                value1 = item[_this.data.valueColumn.id];
+                break;
+              }
+            }
+
+            for (let item of resultSets[resultSetIndex + 1])
+            {
+              if (dataItem.categoryX === item[_this.data.variable.id])
+              {
+                value2 = item[_this.data.valueColumn.id];
+                break;
+              }
             }
           }
 
@@ -478,7 +515,10 @@ export class MsfChartPreviewComponent {
             numNonZeroResults++;
         }
 
-        dataItem.setValue ("valueX", workingValue, 1);
+        if (_this.data.currentChartType.flags & ChartFlags.ROTATED)
+          dataItem.setValue ("valueY", workingValue, 1);
+        else
+          dataItem.setValue ("valueX", workingValue, 1);
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });

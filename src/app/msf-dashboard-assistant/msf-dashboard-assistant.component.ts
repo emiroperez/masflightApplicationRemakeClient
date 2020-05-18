@@ -2533,7 +2533,7 @@ export class MsfDashboardAssistantComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
-      if (this.values.variable != null && this.values.geodata != null)
+      if (this.values.variable != null && this.values.geodata != null && this.values.valueColumn != null)
       {
         this.generateBtnEnabled = true;
         return true;
@@ -2821,7 +2821,8 @@ export class MsfDashboardAssistantComponent implements OnInit {
             this.values.currentOption = null;
         }
 
-        this.values.xaxis = null;
+        if (!(this.values.currentChartType.flags & ChartFlags.MULTIRESULTS))
+          this.values.xaxis = null;
 
         if (!(this.values.currentChartType.flags & ChartFlags.HEATMAP))
         {

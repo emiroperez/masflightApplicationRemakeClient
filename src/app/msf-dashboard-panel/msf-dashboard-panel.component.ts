@@ -1402,12 +1402,26 @@ export class MsfDashboardPanelComponent implements OnInit {
 
         if (resultSetIndex == resultSets.length - 1)
         {
-          for (let item of resultSets[resultSetIndex])
+          if (_this.values.currentChartType.flags & ChartFlags.ROTATED)
           {
-            if (dataItem.categoryY === item[_this.values.variable.id])
+            for (let item of resultSets[resultSetIndex])
             {
-              value1 = item[_this.values.valueColumn.id];
-              break;
+              if (dataItem.categoryY === item[_this.values.variable.id])
+              {
+                value1 = item[_this.values.valueColumn.id];
+                break;
+              }
+            }
+          }
+          else
+          {
+            for (let item of resultSets[resultSetIndex])
+            {
+              if (dataItem.categoryX === item[_this.values.variable.id])
+              {
+                value1 = item[_this.values.valueColumn.id];
+                break;
+              }
             }
           }
 
@@ -1423,21 +1437,44 @@ export class MsfDashboardPanelComponent implements OnInit {
         {
           let animValue;
 
-          for (let item of resultSets[resultSetIndex])
+          if (_this.values.currentChartType.flags & ChartFlags.ROTATED)
           {
-            if (dataItem.categoryY === item[_this.values.variable.id])
+            for (let item of resultSets[resultSetIndex])
             {
-              value1 = item[_this.values.valueColumn.id];
-              break;
+              if (dataItem.categoryY === item[_this.values.variable.id])
+              {
+                value1 = item[_this.values.valueColumn.id];
+                break;
+              }
+            }
+
+            for (let item of resultSets[resultSetIndex + 1])
+            {
+              if (dataItem.categoryY === item[_this.values.variable.id])
+              {
+                value2 = item[_this.values.valueColumn.id];
+                break;
+              }
             }
           }
-
-          for (let item of resultSets[resultSetIndex + 1])
+          else
           {
-            if (dataItem.categoryY === item[_this.values.variable.id])
+            for (let item of resultSets[resultSetIndex])
             {
-              value2 = item[_this.values.valueColumn.id];
-              break;
+              if (dataItem.categoryX === item[_this.values.variable.id])
+              {
+                value1 = item[_this.values.valueColumn.id];
+                break;
+              }
+            }
+
+            for (let item of resultSets[resultSetIndex + 1])
+            {
+              if (dataItem.categoryX === item[_this.values.variable.id])
+              {
+                value2 = item[_this.values.valueColumn.id];
+                break;
+              }
             }
           }
 
@@ -1454,7 +1491,10 @@ export class MsfDashboardPanelComponent implements OnInit {
             numNonZeroResults++;
         }
 
-        dataItem.setValue ("valueX", workingValue, 1);
+        if (_this.values.currentChartType.flags & ChartFlags.ROTATED)
+          dataItem.setValue ("valueY", workingValue, 1);
+        else
+          dataItem.setValue ("valueX", workingValue, 1);
       }
 
       categoryAxis.zoom ({ start: 0, end: numNonZeroResults / categoryAxis.dataItems.length });
@@ -1544,6 +1584,7 @@ export class MsfDashboardPanelComponent implements OnInit {
         let home, zoomControl;
 
         chart = am4core.create ("msf-dashboard-chart-display-" + this.values.id, am4maps.MapChart);
+
         this.chart = chart;
 
         if (this.values.valueColumn.item.columnType === "number")
@@ -1614,13 +1655,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           for (let result of chartInfo)
           {
+            let resultInfo = result[this.values.valueColumn.id];
+
+            if (resultInfo == null)
+              continue;
+
             for (let item of chart.geodata.features)
             {
-              let resultInfo = result[this.values.valueColumn.id];
-
-              if (resultInfo == null)
-                continue;
-
               if (item.id.includes (resultInfo))
               {
                 item.value = result[this.values.variable.id];
@@ -1681,13 +1722,13 @@ export class MsfDashboardPanelComponent implements OnInit {
 
           for (let result of chartInfo)
           {
+            let resultInfo = result[this.values.valueColumn.id];
+
+            if (resultInfo == null)
+              continue;
+
             for (let item of chart.geodata.features)
             {
-              let resultInfo = result[this.values.valueColumn.id];
-
-              if (resultInfo == null)
-                continue;
-
               if (item.id.includes (resultInfo))
               {
                 item.value = result[this.values.variable.id];
@@ -1864,6 +1905,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         zoomControl.marginLeft = 10;
         zoomControl.plusButton.height = 26;
         zoomControl.minusButton.height = 26;
+        zoomControl.plusButton.label.fill = black;
+        zoomControl.minusButton.label.fill = black;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
@@ -1892,6 +1935,9 @@ export class MsfDashboardPanelComponent implements OnInit {
         chart.exporting.description = this.values.chartDescription;
         chart.exporting.filePrefix = this.values.chartName;
         chart.exporting.useWebFonts = false;
+
+        if (this.values.currentChartType.flags & ChartFlags.MULTIRESULTS)
+          chart.exporting.menu.container = document.getElementById ("msf-dashboard-panel-anim-export-button-" + this.values.id);
 
         // Remove "Saved from..." message on PDF files
         options = chart.exporting.getFormatOptions ("pdf");
@@ -1941,6 +1987,8 @@ export class MsfDashboardPanelComponent implements OnInit {
         zoomControl.marginLeft = 10;
         zoomControl.plusButton.height = 26;
         zoomControl.minusButton.height = 26;
+        zoomControl.plusButton.label.fill = black;
+        zoomControl.minusButton.label.fill = black;
 
         // Add home buttom to zoom out
         home = chart.chartContainer.createChild (am4core.Button);
@@ -2030,10 +2078,10 @@ export class MsfDashboardPanelComponent implements OnInit {
         container.height = am4core.percent (100);
         container.layout = "vertical";
 
-        this.chart = chart;
-
         chart = container.createChild (am4charts.XYChart);
         chart.height = am4core.percent (100);
+
+        this.chart = chart;
 
         barChartHoverSet = false;
 
@@ -3617,7 +3665,6 @@ export class MsfDashboardPanelComponent implements OnInit {
         maxValueRange: null,
         horizAxisName: this.values.horizAxisName,
         valueName: this.values.chartColumnOptions ? (this.values.variable ? this.values.variable.id : null) : null,
-        //xaxisName: this.values.chartColumnOptions ? (this.values.xaxis ? this.values.xaxis.id : null) : null,
         variableName: this.values.chartColumnOptions ? (this.values.valueColumn ? this.values.valueColumn.id : null) : null
       };
     }
@@ -5469,7 +5516,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
     if (this.values.currentChartType.flags & ChartFlags.HEATMAP)
     {
-      if (this.values.variable != null && this.values.geodata != null)
+      if (this.values.variable != null && this.values.geodata != null && this.values.valueColumn != null)
         return true;
     }
     else if (this.values.currentChartType.flags & ChartFlags.DYNTABLE)
