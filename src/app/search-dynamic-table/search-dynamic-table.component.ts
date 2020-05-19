@@ -66,7 +66,8 @@ export class SearchDynamicTableComponent implements OnInit {
         values: [],
         selected: [],
         searchFilter: "",
-        selectAll: false
+        selectAll: false,
+        onlySelected: false
       });
     }
 
@@ -108,7 +109,8 @@ export class SearchDynamicTableComponent implements OnInit {
         selected: [],
         searchFilter: "",
         valueFiltersMenu: false,
-        selectAll: false
+        selectAll: false,
+        onlySelected: false
       });
     }
 
@@ -185,5 +187,13 @@ export class SearchDynamicTableComponent implements OnInit {
     }
 
     this.dynTableSearchWithFilter.emit (this.dynTableValues);
+  }
+
+  toggleFilterValue(dynTableValue, value): void
+  {
+    value.selected = !value.selected;
+
+    if (!value.selected && dynTableValue.selectAll)
+      dynTableValue.selectAll = false;
   }
 }

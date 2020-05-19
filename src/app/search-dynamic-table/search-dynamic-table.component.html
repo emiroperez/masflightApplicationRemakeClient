@@ -20,14 +20,21 @@
     </div>
     <div class="dyntable-item-list">
       <div class="filter-select-all-checkbox">
+        <mat-checkbox [checked]="dynTableValue.onlySelected" (click)="dynTableValue.onlySelected = !dynTableValue.onlySelected">
+          Only Selected
+        </mat-checkbox>
+      </div>
+      <div class="filter-select-all-checkbox">
         <mat-checkbox [checked]="dynTableValue.selectAll" (click)="selectAllValues(dynTableValue)">
           Select All
         </mat-checkbox>
       </div>
       <mat-selection-list (selectionChange)="selectedValueChange(dynTableValue)">
-        <mat-list-option *ngFor="let value of dynTableValue.values | searchFilter: dynTableValue.searchFilter" [checkboxPosition]="'before'" [selected]="value.selected" [value]="value.name" (click)="value.selected = !value.selected">
-          {{value.name}}
-        </mat-list-option>
+        <ng-container *ngFor="let value of dynTableValue.values | searchFilter: dynTableValue.searchFilter">
+          <mat-list-option *ngIf="(value.selected && dynTableValue.onlySelected) || !dynTableValue.onlySelected" [checkboxPosition]="'before'" [selected]="value.selected" [value]="value.name" (click)="toggleFilterValue(dynTableValue, value)">
+            {{value.name}}
+          </mat-list-option>
+        </ng-container>
       </mat-selection-list>
     </div>
     <!--
