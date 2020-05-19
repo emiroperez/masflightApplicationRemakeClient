@@ -1,5 +1,5 @@
 <!--Header-->
-<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header">
+<div *ngIf="!globals.isFullscreen || (globals.isFullscreen && globals.currentOption !== 'dashboard')" class="msf-menu-header" (click)="closeSearchColumnFilter()">
     <!-- div to Menu Mobile-->
     <div *ngIf="mobileQuery.matches || ResponsiveQuery.matches" class="msf-mobile-menu-header">
         <button *ngIf="((globals.showMenu || globals.showIntroWelcome) && mobileQuery.matches) 
@@ -93,7 +93,7 @@
 <div *ngIf="(!globals.isFullscreen && !mobileQuery.matches 
             || (globals.isFullscreen && globals.currentOption !== 'dashboard') &&  !mobileQuery.matches )  
             || (mobileQuery.matches && !ResponsiveQuery.matches && !globals.showMenu) " 
-            class="msf-menu-icons-container">
+            class="msf-menu-icons-container" (click)="closeSearchColumnFilter()">
     <div *ngIf="!mobileQuery.matches || (mobileQuery.matches && !globals.showMenu && !globals.showDashboard && !globals.showTabs) "
         [ngClass]="mobileQuery.matches ? (globals.showTabs ? 'msf-menu-icons-left':'msf-menu-icons-left-mobile') :'msf-menu-icons-left'">
         <span *ngIf="globals.currentOption != 'categoryAdmin'">{{globals.currentOption ? globals.currentOption.label:''}}</span>
@@ -105,15 +105,15 @@
           <button
           [disabled]="(!msfContainerRef.msfTableRef || !msfContainerRef.msfTableRef.dataSource || msfContainerRef.msfTableRef.dataSource.length < 0 || globals.mapsc) || !dynamicTablePlan
               || (globals.currentOption.tabType && globals.currentOption.tabType !== 'usageStatistics' && globals.currentOption.tabType !== 'map' && globals.currentOption.tabType !== 'scmap' && globals.currentOption.tabType !== 'scmap2' && globals.currentOption.tabType !== 'legacy')"
-              class="msf-menu-icon" (click)="toggleSearchColumnFilter()">
+              class="msf-menu-icon" (click)="toggleSearchColumnFilter($event)">
               <img src="../../assets/images/dark-theme-search-filter.png"
                   class="msf-menu-image msf-vertical-middle">
               <span class="msf-vertical-middle">Search</span>
           </button>
-          <div class="dynamic-table-search-filter-container" *ngIf="dynTableSearchColumnFilter">
-            <app-search-dynamic-table [data]="dynTableData"></app-search-dynamic-table>
+          <div class="dynamic-table-search-filter-container" *ngIf="dynTableSearchColumnFilter" (click)="keepSearchFilter($event)">
+            <app-search-dynamic-table [data]="dynTableData" [filterValues]="dynTableFilterValues" (dynTableSearchWithFilter)="dynTableSearchWithFilter($event)" (removeDynTableFilter)="removeDynTableFilter()"></app-search-dynamic-table>
           </div>
-          <div class="search-column-filter-container" *ngIf="searchColumnFilter">
+          <div class="search-column-filter-container" *ngIf="searchColumnFilter" (click)="keepSearchFilter($event)">
               <div class="search-column-filter-form-field">
                   <input #searchFilterInput matInput [(ngModel)]="searchFilter" placeholder="Search" autocomplete="off"/>
               </div>
@@ -203,7 +203,7 @@
 </div>
 
 <!--body-->
-<div class="msf-menu-body" [class.is-mobile]="mobileQuery.matches">
+<div class="msf-menu-body" [class.is-mobile]="mobileQuery.matches" (click)="closeSearchColumnFilter()">
     <!--nav-->
     <div
         [ngClass]="(isSimpleContent() && !mobileQuery.matches) 
@@ -267,7 +267,7 @@
                                                : (mobileQuery.matches ? (globals.showMenu ? 'msf-menu-internal-content-all-mobile'
                                                                         : (globals.showTabs ? 'msf-menu-internal-content-tabs': 'msf-menu-internal-content-mobile'))
                                                                         : (globals.showPaginator && !tableLoading && !mobileQuery.matches && (globals.moreResultsBtn || (!globals.moreResultsBtn && pageI!=0))) ? 'msf-menu-internal-content-with-paginator' : 'msf-menu-internal-content') "  [class.is-MQueryresponsive]="ResponsiveQuery.matches">
-                <app-msf-container #msfContainerRef [paginator]="paginator" [pageIndex]="pageIndex" [tableLoading]="tableLoading" [mapboxLoading]="mapboxLoading" [routeLoading]="routeLoading" [dynTableLoading]="dynTableLoading" [partialSummaryValues]="partialSummaryValues" (setTableLoading)="setTableLoading($event)" (setMapboxLoading)="setMapboxLoading($event)" (setRouteLoading)="setRouteLoading($event)" (setDynTableLoading)="setDynTableLoading($event)" (lengthpaginator)="lengthpaginator($event)" (moreResult)="moreResult($event)" (refreshDashboardMenu)="refreshDashboardMenu()"></app-msf-container>
+                <app-msf-container #msfContainerRef [paginator]="paginator" [pageIndex]="pageIndex" [tableLoading]="tableLoading" [mapboxLoading]="mapboxLoading" [routeLoading]="routeLoading" [dynTableLoading]="dynTableLoading" [partialSummaryValues]="partialSummaryValues" (setTableLoading)="setTableLoading($event)" (setMapboxLoading)="setMapboxLoading($event)" (setRouteLoading)="setRouteLoading($event)" (setDynTableLoading)="setDynTableLoading($event)" (lengthpaginator)="lengthpaginator($event)" (moreResult)="moreResult($event)" (refreshDashboardMenu)="refreshDashboardMenu()" (closeSearchColumnFilter)="closeSearchColumnFilter()"></app-msf-container>
                 <!-- <app-menu-nav *ngIf="(ResponsiveQuery.matches || mobileQuery.matches) && globals.showMenu " [menu]="menu" [dashboards]="dashboards"
                     [dashboardCategories]="dashboardCategories" [sharedDashboards]="sharedDashboards" (cancelLoadingFromLastService)="cancelLoadingFromLastService()"></app-menu-nav> -->
             </div>            

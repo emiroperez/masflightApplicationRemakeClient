@@ -2,10 +2,10 @@
   <img src="../../assets/images/dark-theme-search-filter.png">
   <span class="dyntable-search-title-label">Search Filters</span>
   <div class="dynamic-table-header-buttons">
-    <button mat-flat-button class="flat-button">
+    <button mat-flat-button class="flat-button" (click)="startFilteredQuery()">
       Search
     </button>
-    <button mat-icon-button class="dyntable-close-button">
+    <button mat-icon-button class="dyntable-close-button" (click)="removeDynTableFilter.emit()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -25,9 +25,25 @@
         </mat-list-option>
       </mat-selection-list>
     </div>
-    <div class="dyntable-search-footer">
+    <!--
+    <div class="dyntable-search-footer" (click)="toggleValueFilters(dynTableValue)">
       <span class="value-filter-label">Value Filters</span>
       <mat-icon>arrow_drop_down</mat-icon>
     </div>
+    <div class="dyntable-filter-menu" *ngIf="dynTableValue.valueFiltersMenu">
+      <div class="dyntable-filter-menu-item">Equals...</div>
+      <div class="dyntable-filter-menu-item">Does Not Equal...</div>
+      <hr>
+      <div class="dyntable-filter-menu-item">Greater Than...</div>
+      <div class="dyntable-filter-menu-item">Greater Than Or Equal To...</div>
+      <div class="dyntable-filter-menu-item">Less Than...</div>
+      <div class="dyntable-filter-menu-item">Less Than Or Equal To...</div>
+      <hr>
+      <div class="dyntable-filter-menu-item">Between...</div>
+      <div class="dyntable-filter-menu-item">Not Between...</div>
+      <hr>
+      <div class="dyntable-filter-menu-item">Top 10...</div>
+    </div>
+    -->
   </div>
 </div>

@@ -12796,7 +12796,7 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
     z-index: 1
     top: 23px
     right: 0
-    width: min(33vw, 450px)
+    width: min(33vw, 200px)
     display: flex
 
 .search-column-filter-body
@@ -12869,13 +12869,11 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
 
 .dyntable-search-filters
     display: flex
-    height: 351px
     overflow-x: auto
     overflow-y: hidden
     .mat-selection-list
         padding-top: 0 !important
     .dyntable-item
-        height: 240px
         width: 200px
         .dyntable-search-input
             display: flex
@@ -12918,10 +12916,26 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             color: #ffffff
             padding: 10px
             height: 25px
+            cursor: pointer
             .value-filter-label
                 width: 160px
             .mat-icon
                 color: #01abec
+        .dyntable-filter-menu
+            height: 300px
+            padding-top: 15px !important
+            padding: 10px
+            background-color: #ffffff
+            color: #4d4d4d
+            box-shadow: 0 5px 5px -3px rgba(0,0,0,.1), 0 8px 10px 1px rgba(0,0,0,.07),0 3px 14px 2px rgba(0,0,0,.06) !important
+            .dyntable-filter-menu-item
+                display: flex
+                align-items: center
+                height: 20px
+                padding: 5px 10px
+                cursor: pointer
+                &:hover
+                    background-color: rgba(0, 0, 0, 0.25)
     input:focus::-webkit-input-placeholder
         opacity: 0
     input:focus::placeholder

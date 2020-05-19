@@ -56,6 +56,7 @@ export class ApplicationComponent implements OnInit {
   userName : any;
   partialSummaryValues: any = null;
   dynamicTableValues: any = null;
+  dynTableFilterValues: any = null;
   CSVseparator: string = "\t";
   searchColumnFilter: boolean = false;
   dynTableSearchColumnFilter: boolean = false;
@@ -584,6 +585,8 @@ toggle(){
     // remove summary configuration
     this.partialSummaryValues = null;
     this.dynamicTableValues = null;
+    this.dynTableFilterValues = null;
+    this.dynTableData = null;
 
     if (this.globals.currentOption.metaData == 3)
     {
@@ -879,6 +882,8 @@ toggle(){
         this.globals.selectedIndex = 3;
         this.dynTableLoading = true;
         this.dynamicTableValues = result; // store the dynamic table configuration
+        this.dynTableFilterValues = null;
+        this.dynTableData = null;
         this.msfContainerRef.msfDynamicTableRef.loadData (result.xaxis, result.yaxis, result.values);
       }
     });
@@ -1433,6 +1438,8 @@ toggle(){
 
     this.partialSummaryValues = null;
     this.dynamicTableValues = null;
+    this.dynTableFilterValues = null;
+    this.dynTableData = null;
     this.changeDetectorRef.detectChanges ();
   }
 
@@ -1766,13 +1773,28 @@ toggle(){
   {  
   }
 
-  toggleSearchColumnFilter(): void
+  keepSearchFilter(): void
   {
-    /*if (this.globals.selectedIndex == 3)
+    event.preventDefault ();
+    event.stopPropagation ();
+  }
+
+  closeSearchColumnFilter(): void
+  {
+    this.dynTableSearchColumnFilter = false;
+    this.searchColumnFilter = false;
+  }
+
+  toggleSearchColumnFilter(event): void
+  {
+    event.preventDefault ();
+    event.stopPropagation ();
+
+    if (this.globals.selectedIndex == 3)
     {
       this.dynTableSearchColumnFilter = !this.dynTableSearchColumnFilter;
 
-      if (this.dynTableSearchColumnFilter)
+      if (this.dynTableSearchColumnFilter && this.dynTableData == null)
       {
         this.dynTableData = {
           dataAdapter: this.msfContainerRef.msfDynamicTableRef.dataAdapter,
@@ -1780,19 +1802,33 @@ toggle(){
           yaxis: this.dynTableYAxis
         };
       }
-      else
-        this.dynTableData = null;
 
       this.changeDetectorRef.detectChanges ();
-
       return;
-    }*/
+    }
 
     this.searchColumnFilter = !this.searchColumnFilter;
     this.changeDetectorRef.detectChanges();
 
     if (this.searchColumnFilter)
       this.searchFilterInput.nativeElement.focus ();
+  }
+
+  removeDynTableFilter(): void
+  {
+    this.dynTableLoading = true;
+    this.dynTableData = null;
+    this.dynTableFilterValues = null;
+    this.dynTableSearchColumnFilter = false;
+    this.msfContainerRef.msfDynamicTableRef.loadData (this.dynTableXAxis, this.dynTableYAxis, this.dynTableValues);
+  }
+
+  dynTableSearchWithFilter(dynTableFilterValues): void
+  {
+    this.dynTableFilterValues = dynTableFilterValues;
+    this.dynTableLoading = true;
+    this.dynTableSearchColumnFilter = false;
+    this.msfContainerRef.msfDynamicTableRef.loadDataWithFilter (this.dynTableXAxis, this.dynTableYAxis, this.dynTableValues, this.dynTableFilterValues);
   }
 
   searchWithFilter(): void
@@ -1821,6 +1857,8 @@ toggle(){
     // remove summary configuration
     this.partialSummaryValues = null;
     this.dynamicTableValues = null;
+    this.dynTableFilterValues = null;
+    this.dynTableData = null;
 
     if (this.globals.currentOption.metaData == 3)
     {

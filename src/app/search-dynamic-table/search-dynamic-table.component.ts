@@ -1,6 +1,9 @@
-import { Component, PipeTransform, Pipe, Input, OnInit } from '@angular/core';
+import { Component, PipeTransform, Pipe, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { Globals } from '../globals/Globals';
+import { MessageComponent } from '../message/message.component';
+
 
 @Pipe({
   name: 'searchFilter'
@@ -24,9 +27,18 @@ export class SearchDynamicTableComponent implements OnInit {
   @Input("data")
   data: any = null;
 
+  @Input("filterValues")
+  filterValues: any = null;
+
+  @Output("dynTableSearchWithFilter")
+  dynTableSearchWithFilter = new EventEmitter ();
+
+  @Output("removeDynTableFilter")
+  removeDynTableFilter = new EventEmitter ();
+
   dynTableValues: any[] = [];
 
-  constructor(public globals: Globals)
+  constructor(public globals: Globals, private dialog: MatDialog)
   {
   }
 
@@ -36,10 +48,21 @@ export class SearchDynamicTableComponent implements OnInit {
     let lastValue = null;
     let i, j;
 
+    if (this.filterValues)
+    {
+      this.dynTableValues = JSON.parse (JSON.stringify (this.filterValues));
+
+      for (let dynTableValue of this.dynTableValues)
+        dynTableValue.searchFilter = "";
+
+      return;
+    }
+
     for (let yaxis of this.data.yaxis)
     {
       yAxisValues.push ({
         name: yaxis.name,
+        id: yaxis.id,
         values: [],
         selected: [],
         searchFilter: ""
@@ -79,9 +102,11 @@ export class SearchDynamicTableComponent implements OnInit {
 
       this.dynTableValues.push ({
         name: xaxis.name,
+        id: xaxis.id,
         values: xAxisValues,
         selected: [],
-        searchFilter: ""
+        searchFilter: "",
+        valueFiltersMenu: false
       });
     }
   }
@@ -104,5 +129,46 @@ export class SearchDynamicTableComponent implements OnInit {
     dynTableValue.selected = dynTableValue.values.filter (value => {
       return value.selected; 
     });
+  }
+
+  toggleValueFilters(dynTableValue): void
+  {
+    dynTableValue.valueFiltersMenu = !dynTableValue.valueFiltersMenu;
+  }
+
+  configValid(): boolean
+  {
+    for (let dynTableValue of this.dynTableValues)
+    {
+      let noColumnSelected = true;
+
+      for (let value of dynTableValue.values)
+      {
+        if (value.selected)
+        {
+          noColumnSelected = false;
+          break;
+        }
+      }
+
+      if (noColumnSelected)
+        return false;
+    }
+
+    return true;
+  }
+
+  startFilteredQuery(): void
+  {
+    if (!this.configValid())
+    {
+      this.dialog.open (MessageComponent, {
+        data: { title: "Error", message: "You must at least select one column for each variable." }
+      });
+
+      return;
+    }
+
+    this.dynTableSearchWithFilter.emit (this.dynTableValues);
   }
 }

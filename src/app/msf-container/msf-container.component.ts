@@ -78,6 +78,9 @@ export class MsfContainerComponent implements OnInit {
   @Output("setDynTableLoading")
   setDynTableLoading = new EventEmitter ();
 
+  @Output("closeSearchColumnFilter")
+  closeSearchColumnFilter = new EventEmitter ();
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -149,7 +152,10 @@ export class MsfContainerComponent implements OnInit {
     this.setMapboxLoading.emit (false);
   }
 
-  onLinkClick(event: MatTabChangeEvent) {
+  onLinkClick(event: MatTabChangeEvent)
+  {
+    this.closeSearchColumnFilter.emit ();
+
     this.globals.selectedIndex = event.index;
 
     // refresh mapbox if tab changed when it is not loading the coordinates
