@@ -283,6 +283,9 @@ export class MsfDashboardPanelComponent implements OnInit {
   routepanelinfo: any[] = [];
   scheduleImageSeries: any = null;
 
+  // airline names for the dynamic table
+  nameAirlines: any[] = null;
+
   constructor(private zone: NgZone, public globals: Globals,
     private service: ApplicationService, private http: ApiClient, private authService: AuthService, public dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder)
@@ -4459,6 +4462,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerDynTableSuccess(_this, data): void
   {
+    let airlineIataList = [];
     let topOffsetValue = 0;
 
     if (!_this.values.isLoading)
@@ -4478,14 +4482,15 @@ export class MsfDashboardPanelComponent implements OnInit {
       let header = _this.dynTableData.headers[i];
       header.topOffset = topOffsetValue;
 
-      if (!i)
+      for (let j = 0; j < header.values.length; j++)
       {
-        for (let j = 0; j < header.values.length - 1; j++)
-        {
-          let value = header.values[j];
+        let value = header.values[j];
 
+        if (_this.dynTableData.types[i] === "Airline")
+          airlineIataList.push (value.value);
+
+        if (!i && j != header.values.length - 1)
           _this.yAxisColSpan += value.colSpan;
-        }
       }
 
       topOffsetValue += 35;
@@ -4496,9 +4501,20 @@ export class MsfDashboardPanelComponent implements OnInit {
       values: _this.values.dynTableValues
     };
 
-    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerDynTableLastestResponse, _this.handlerDynTableError);
+    if (airlineIataList.length)
+    {
+      let iataAirline = airlineIataList.join ();
+      _this.service.getAirlinesRecords (_this, iataAirline, _this.airlineIataSuccess, _this.handlerDynTableError);
+    }
+    else
+      _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerDynTableLastestResponse, _this.handlerDynTableError);
   }
 
+  airlineIataSuccess(_this, result)
+  {
+    _this.nameAirlines = result;
+    _this.service.saveLastestResponse (_this, _this.getPanelInfo (), _this.handlerDynTableLastestResponse, _this.handlerDynTableError);
+  }
   
   loadActionListData() {
     this.values.lastestResponse = this.values.EditActionList;
@@ -5176,6 +5192,7 @@ export class MsfDashboardPanelComponent implements OnInit {
 
   handlerDynTableError(_this, result): void
   {
+    _this.nameAirlines = null;
     _this.generateError ();
   }
 
@@ -8324,5 +8341,18 @@ export class MsfDashboardPanelComponent implements OnInit {
   getMasFlightLogoImage(): string
   {
     return "../../assets/images/dark-theme-masFlight-logo.png";
+  }
+
+  getNameAirline(iata): string
+  {
+    if (this.nameAirlines == null)
+      return iata;
+
+    const index: number = this.nameAirlines.findIndex (d => d.iata === iata);
+
+    if (index != -1)
+      return this.nameAirlines[index].name;
+    else
+      return iata;
   }
 }

@@ -254,24 +254,32 @@
     <div class="msf-dashboard-panel-sub-container-column">
       <div class="dynamic-table-scroll dashboard-panel-dynamic-table-scroll" style="height: calc(100% - 20px)">
         <table *ngIf="dynTableData" class="mat-elevation-z8 dynamic-table-container">
-          <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers; last as isLast">
+          <tr class="dynamic-table-header-container" *ngFor="let header of dynTableData.headers; let i = index; last as isLast">
             <!-- Always insert a blank tab header first since it's a pivot table -->
             <th class="dyanmic-table-padding" [style.top.px]="header.topOffset"></th>
             <ng-container *ngIf="!isLast">
-              <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+              <th class="dynamic-table-header" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">
+                <ng-container *ngIf="dynTableData.types[i] !== 'Airline'">{{value.value}}</ng-container>
+                <ng-container *ngIf="dynTableData.types[i] === 'Airline'">{{getNameAirline(value.value)}}</ng-container>
+              </th>
             </ng-container>
             <ng-container *ngIf="isLast">
-              <th class="dynamic-table-header-last" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">{{value.value}}</th>
+              <th class="dynamic-table-header-last" [style.top.px]="header.topOffset" *ngFor="let value of header.values" [colSpan]="value.colSpan">
+                <ng-container *ngIf="dynTableData.types[i] !== 'Airline'">{{value.value}}</ng-container>
+                <ng-container *ngIf="dynTableData.types[i] === 'Airline'">{{getNameAirline(value.value)}}</ng-container>
+              </th>
             </ng-container>
           </tr>
           <tr class="dynamic-table-body-container" *ngFor="let body of dynTableData.body">
             <ng-container *ngIf="body[0].titleOnly">
               <th class="dynamic-table-yaxis-title" [colSpan]="yAxisColSpan">
-                <div [style.margin-left.px]="body[0].margin">{{body[0].value}}</div>
+                <div [style.margin-left.px]="body[0].margin" *ngIf="body[0].type !== 'Airline'">{{body[0].value}}</div>
+                <div [style.margin-left.px]="body[0].margin" *ngIf="body[0].type === 'Airline'">{{getNameAirline(body[0].value)}}</div>
               </th>
             </ng-container>
             <ng-container *ngIf="!body[0].titleOnly">
-              <th class="dynamic-table-body-title">{{body[0].value}}</th>
+              <th class="dynamic-table-body-title" *ngIf="body[0].type !== 'Airline'">{{body[0].value}}</th>
+              <th class="dynamic-table-body-title" *ngIf="body[0].type === 'Airline'">{{getNameAirline(body[0].value)}}</th>
               <td class="dynamic-table-value" *ngFor="let value of body | slice: 1; let valueindex = index"><span *ngIf="body[valueindex + 1]">{{body[valueindex + 1]}}</span></td>
             </ng-container>
           </tr>

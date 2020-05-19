@@ -36,6 +36,9 @@ export class SearchDynamicTableComponent implements OnInit {
   @Output("removeDynTableFilter")
   removeDynTableFilter = new EventEmitter ();
 
+  @Input("nameAirlines")
+  nameAirlines: any[] = null;
+
   dynTableValues: any[] = [];
 
   constructor(public globals: Globals, private dialog: MatDialog)
@@ -63,6 +66,7 @@ export class SearchDynamicTableComponent implements OnInit {
       yAxisValues.push ({
         name: yaxis.name,
         id: yaxis.id,
+        type: yaxis.type,
         values: [],
         selected: [],
         searchFilter: "",
@@ -105,6 +109,7 @@ export class SearchDynamicTableComponent implements OnInit {
       this.dynTableValues.push ({
         name: xaxis.name,
         id: xaxis.id,
+        type: xaxis.type,
         values: xAxisValues,
         selected: [],
         searchFilter: "",
@@ -195,5 +200,15 @@ export class SearchDynamicTableComponent implements OnInit {
 
     if (!value.selected && dynTableValue.selectAll)
       dynTableValue.selectAll = false;
+  }
+
+  getNameAirline(iata)
+  {
+    const index: number = this.nameAirlines.findIndex (d => d.iata === iata);
+
+    if (index != -1)
+      return this.nameAirlines[index].name;
+    else
+      return iata;
   }
 }

@@ -81,6 +81,9 @@ export class MsfContainerComponent implements OnInit {
   @Output("closeSearchColumnFilter")
   closeSearchColumnFilter = new EventEmitter ();
 
+  @Output("setNameAirlines")
+  setNameAirlines = new EventEmitter ();
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 

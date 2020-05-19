@@ -55,6 +55,9 @@ export class MsfTableComponent implements OnInit {
   @Input('partialSummaryValues')
   partialSummaryValues: any = null;
 
+  @Output('setNameAirlines')
+  setNameAirlines = new EventEmitter ();
+
   summaryColumns: string[] = ['SummaryTitle'];
 
   metadata;
@@ -1141,6 +1144,7 @@ export class MsfTableComponent implements OnInit {
   {
     _this.nameAirlines = data;    
     _this.finishLoading.emit (false);
+    _this.setNameAirlines.emit (data);
 
     if (_this.tableOptions.dataSource && !_this.tableOptions.template && 
       ((_this.currentOption.metaData==1) || (_this.currentOption.metaData==3) || 
@@ -1153,6 +1157,7 @@ export class MsfTableComponent implements OnInit {
   RecordError(_this, data): void
   {    
     _this.finishLoading.emit (false);
+    _this.setNameAirlines.emit (null);
 
     if (_this.tableOptions.dataSource && !_this.tableOptions.template && ((_this.currentOption.metaData == 1) || (_this.currentOption.metaData == 3) || (_this.currentOption.tabType == 'scmap' || (_this.currentOption.tabType == 'scmap2'))))
       _this.resultsAvailable = "msf-visible";

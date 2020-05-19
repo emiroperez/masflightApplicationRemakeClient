@@ -61,6 +61,7 @@ export class ApplicationComponent implements OnInit {
   searchColumnFilter: boolean = false;
   dynTableSearchColumnFilter: boolean = false;
   dynTableData: any = null;
+  nameAirlines: any[] = null;
 
   // admin: boolean = false;
   ELEMENT_DATA: any[];
@@ -1886,5 +1887,10 @@ toggle(){
   clearSearchFilter(): void
   {
     this.search ();
+  }
+
+  setNameAirlines(data): void
+  {
+    this.nameAirlines = data;
   }
 }

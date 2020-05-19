@@ -11,8 +11,8 @@
   </div>
 </div>
 <div class="dyntable-search-filters">
-  <div class="dyntable-item" *ngFor="let dynTableValue of dynTableValues">
-    <div class="dyntable-search-input">
+  <div class="dyntable-item" *ngFor="let dynTableValue of dynTableValues; let i = index">
+    <div class="dyntable-search-input" [ngClass]="{ 'dyntable-search-not-first': i != 0 }">
       <div class="dyntable-input">
         <input matInput [(ngModel)]="dynTableValue.searchFilter" placeholder="{{dynTableValue.name}}" autocomplete="off"/>
         <mat-icon>search</mat-icon>
@@ -32,7 +32,8 @@
       <mat-selection-list (selectionChange)="selectedValueChange(dynTableValue)">
         <ng-container *ngFor="let value of dynTableValue.values | searchFilter: dynTableValue.searchFilter">
           <mat-list-option *ngIf="(value.selected && dynTableValue.onlySelected) || !dynTableValue.onlySelected" [checkboxPosition]="'before'" [selected]="value.selected" [value]="value.name" (click)="toggleFilterValue(dynTableValue, value)">
-            {{value.name}}
+            <ng-container *ngIf="dynTableValue.type !== 'Airline'">{{value.name}}</ng-container>
+            <ng-container *ngIf="dynTableValue.type === 'Airline'">{{getNameAirline(value.name)}}</ng-container>
           </mat-list-option>
         </ng-container>
       </mat-selection-list>

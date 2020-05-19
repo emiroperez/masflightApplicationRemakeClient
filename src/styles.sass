@@ -2555,6 +2555,8 @@ $color-scheme: ((dark-theme, $dark-bthSearch-color, $dark-font-color, $dark-litt
         .dyntable-search-input, .dyntable-search-footer
             background-color: $dynamic-table-header-color
             border: 1px solid $dynamic-table-border-color
+        .dyntable-search-not-first
+            border-left: none !important
         .dyntable-input
             background-color: $dynamic-table-background-color
         .dyntable-search-filters
@@ -12933,7 +12935,12 @@ div:hover .amcharts-amexport-item.amcharts-amexport-item-level-0
             .mat-list-item:hover
                 background-color: inherit !important
             .mat-list-text
-                font-weight: normalt !important
+                display: block
+                font-weight: normal !important
+                white-space: nowrap
+                text-overflow: ellipsis
+                overflow: hidden !important
+                flex-shrink: 0
                 padding-top: 30px
                 height: 60px
         .dyntable-search-footer

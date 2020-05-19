@@ -28,7 +28,8 @@
                 [partialSummaryValues]="partialSummaryValues"
                 (paginatorlength)="paginatorlength($event)"
                 (shmoreResult)="shmoreResult($event)"
-                (sortingDataTable)="sortingDataTable($event)"></app-msf-table>
+                (sortingDataTable)="sortingDataTable($event)"
+                (setNameAirlines)="setNameAirlines.emit($event)"></app-msf-table>
             </div>    
         </mat-tab>        
         <mat-tab *ngIf="globals.generateDynamicTable" label="Dynamic Table" #msfDynamicTableTabRef>
