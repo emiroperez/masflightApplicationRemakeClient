@@ -19,6 +19,11 @@
       </div>
     </div>
     <div class="dyntable-item-list">
+      <div class="filter-select-all-checkbox">
+        <mat-checkbox [checked]="dynTableValue.selectAll" (click)="selectAllValues(dynTableValue)">
+          Select All
+        </mat-checkbox>
+      </div>
       <mat-selection-list (selectionChange)="selectedValueChange(dynTableValue)">
         <mat-list-option *ngFor="let value of dynTableValue.values | searchFilter: dynTableValue.searchFilter" [checkboxPosition]="'before'" [selected]="value.selected" [value]="value.name" (click)="value.selected = !value.selected">
           {{value.name}}

@@ -65,7 +65,8 @@ export class SearchDynamicTableComponent implements OnInit {
         id: yaxis.id,
         values: [],
         selected: [],
-        searchFilter: ""
+        searchFilter: "",
+        selectAll: false
       });
     }
 
@@ -106,9 +107,13 @@ export class SearchDynamicTableComponent implements OnInit {
         values: xAxisValues,
         selected: [],
         searchFilter: "",
-        valueFiltersMenu: false
+        valueFiltersMenu: false,
+        selectAll: false
       });
     }
+
+    for (let dynTableValue of this.dynTableValues)
+      this.selectAllValues (dynTableValue);
   }
 
   getIndex(axisArray, value): number
@@ -134,6 +139,16 @@ export class SearchDynamicTableComponent implements OnInit {
   toggleValueFilters(dynTableValue): void
   {
     dynTableValue.valueFiltersMenu = !dynTableValue.valueFiltersMenu;
+  }
+
+  selectAllValues(dynTableValue): void
+  {
+    dynTableValue.selectAll = !dynTableValue.selectAll;
+
+    for (let value of dynTableValue.values)
+      value.selected = dynTableValue.selectAll;
+
+    this.selectedValueChange (dynTableValue);
   }
 
   configValid(): boolean
